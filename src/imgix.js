@@ -25,10 +25,28 @@
 	}
 
 	// TODO: paramGroups here too..
+	imgix.getParamAliases = function() {
+			return {
+				't': 'txt',
+				'tf': 'txtfont',
+				'tsz': 'txtsize',
+				'tl': 'txtline',
+				'tsh': 'txtshad',
+				'tp': 'txtpad',
+				'txtlinecolor': 'txtlineclr',
+				'ta': 'txtalign',
+				'intensity': 'int',
+				'colorize': 'col',
+				'f': 'fit',
+				'orient': 'or',
+				'm': 'watermark',
+				'mf': 'markfit',
+				'ms': 'markscale',
+				'ma': 'markalign',
+				'mp': 'markpad'
+			};
+	};
 
-	// TODO: font options here too?
-
-	// TODO: put as private var with public getter instead of emca5-only freeze?
 	imgix.getDefaultParamValues = function() {
 		return {
 			// STYLIZE
@@ -115,11 +133,39 @@
 		this.paramAliases = {};
 	};
 
+	imgix.createParamString = function() {
+		return new imgix.URL('');
+	}
+
 	imgix.URL.prototype._handleAutoUpdate = function() {
+		var self = this;
+		function applyImg(el) {
+			var elImg = el.src,
+				elBaseUrl = elImg;
+
+			if (elImg && elImg.indexOf('?') !== -1) {
+				elBaseUrl = elImg.split('?')[0];
+			}
+
+			console.log([self.getBaseUrl(), elBaseUrl]);
+
+			if (elBaseUrl && self.getQueryString()) {
+				el.src = elBaseUrl + '?' + self.getQueryString();
+			} else if (self.getBaseUrl()) {
+				el.src = self.getUrl();
+			} else {
+				console.log('no params to apply');
+			}
+		}
+
 		if (this.autoUpdateSel !== null) {
-			var el = document.querySelector(this.autoUpdateSel);
-			if (el) {
-				el.src = this.getUrl();
+			var el = document.querySelectorAll(this.autoUpdateSel);
+			if (el && el.length === 1) {
+				applyImg(el[0]);
+			} else {
+				for (var i = 0; i < el.length; i++) {
+					applyImg(el[i]);
+				}
 			}
 		}
 	};
@@ -153,13 +199,23 @@
 
 	// TODO: handle public/private status of this -- won't handle aliases if set...
 	// TODO: error check type...see validator TODO
-	imgix.URL.prototype.setParam = function(param, value) {
+	// TODO: raise error if param does not exist or can not convert type to expected type.
+	imgix.URL.prototype.setParam = function(param, value, doOverride) {
 		param = param.toLowerCase();
+
+		if (typeof doOverride === "undefined") {
+			doOverride = true;
+		}
 
 		// console.log("setting " + param + " to " + value);
 		// TODO: handle aliases -- only need on build?
 		if (imgix.getDefaultParams().indexOf(param) === -1) {
 			console.warn("\"" + param + "\" is an invalid imgix param");
+			return;
+		}
+
+		if (!doOverride && this.urlParts.paramValues[param]) {
+			// we are not overriding because they didn't want to
 			return;
 		}
 
@@ -179,6 +235,23 @@
 
 	imgix.URL.prototype.getParam = function(param) {
 		return this.urlParts.paramValues[param];
+	};
+
+	imgix.URL.prototype.getBaseUrl = function() {
+		var url = this.getUrl();
+		if (url.indexOf('?') !== -1) {
+			return this.getUrl().split('?')[0];
+		}
+		return url;
+	};
+
+	imgix.URL.prototype.getQueryString = function() {
+		var url = this.getUrl();
+		if (url.indexOf('?') !== -1) {
+			return this.getUrl().split('?')[1];
+		}
+
+		return '';
 	};
 
 	// "param name": "pretty name" (for auto-generated get/set-ers)
@@ -223,14 +296,24 @@
 
 		//general
 		"fm": "Format",
-		"q": "Quality"
+		"q": "Quality",
+
+		// watermarks
+		'mark': '',
+		'markw': '',
+		'markh': '',
+		'markfit': 'clip',
+		'markscale': '',
+		'markalign': 'bottom,right',
+		'markalpha': 100,
+		'markpad': 5
 	});
 
 	// Dynamically create our param getter and setters
 	for (var param in imgix.URL.theGetSetFuncs) {
 		(function() {
 			var tmp = param;
-			imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v) { this.setParam(tmp, v); };
+			imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { this.setParam(tmp, v, doOverride); };
 			imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function(v) { return this.getParam(tmp); };
 		})();
 	}

@@ -36,6 +36,21 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getBlur(), 50);
 	});
 
+	it('overrides url params', function() {
+		var i2 = new imgix.URL('http://static-a.imgix.net/macaw.png');
+		i2.setRotate(33, false); // should override since does not exist
+		expect(i2.urlParts.paramValues["rot"], 33);
+		expect(i2.getRotate(), 33);
+
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?blur=40');
+		expect(i.urlParts.paramValues["blur"], 40);
+		expect(i.getBlur(), 40);
+
+		i.setBlur(50, false); // should NOT override since does exist
+
+		expect(i.urlParts.paramValues["blur"], 40);
+	});
+
 	// it('is defined', function() {
 	// 	expect(imgix.isDef(undefined)).toBe(false);
 	// 	expect(imgix.isDef(null)).toBe(true);
