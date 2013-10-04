@@ -149,12 +149,15 @@
 		return Object.keys(imgix.getDefaultParamValues());
 	};
 
-	imgix.URL = function(url, token, isRj) {
+	imgix.URL = function(url, imgParams, token, isRj) {
 		this.token = token || '';
 		this._autoUpdateSel = null;
 		this._autoUpdateCallback = null;
 		this.isRj = !imgix.isDef(isRj) ? false : isRj;
 		this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
+		if (typeof imgParams === "object") {
+			this.setParams(imgParams);
+		}
 		// this.options = {
 		// 	isRJ: false
 		// };

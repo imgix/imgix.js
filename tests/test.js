@@ -24,6 +24,20 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getUrl()).toContain("rot=30");
 	});
 
+	it('sets params in constructor', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png', {w: 200, sepia: 50});
+
+		expect(i.urlParts.paramValues["w"], 200);
+		expect(i.getParam('w'), 200);
+		expect(i.getWidth(), 200);
+		expect(i.getUrl()).toContain("w=200");
+
+		expect(i.urlParts.paramValues["sepia"], 50);
+		expect(i.getParam('sepia'), 50);
+		expect(i.getSepia(), 50);
+		expect(i.getUrl()).toContain("sepia=50");
+	});
+
 	it('sets multiple url params', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
 
