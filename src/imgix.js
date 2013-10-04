@@ -24,6 +24,41 @@
 		root.imgix = imgix;
 	}
 
+	imgix._setImgixClass = function(el) {
+		var cls = imgix._getXPathClass(imgix._getElementTreeXPath(el));
+		el.classList.add(cls);
+		return cls;
+	};
+
+	imgix._getXPathClass = function(xpath) {
+		xpath = !!xpath ? xpath: (new Date().getTime().toString());
+		return 'imgix-el-' + imgix.md5(xpath);
+	};
+
+		// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
+	imgix._getElementTreeXPath = function(element) {
+		var paths = [];
+
+		// Use nodeName (instead of localName) so namespace prefix is included (if any).
+		for (; element && element.nodeType == Node.ELEMENT_NODE; element = element.parentNode) {
+			var index = 0;
+			for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
+				// Ignore document type declaration.
+				if (sibling.nodeType == Node.DOCUMENT_TYPE_NODE)
+					continue;
+
+				if (sibling.nodeName == element.nodeName)
+					++index;
+			}
+
+			var tagName = (element.prefix ? element.prefix + ":" : "") + element.localName;
+			var pathIndex = (index ? "[" + (index+1) + "]" : "");
+			paths.splice(0, 0, tagName + pathIndex);
+		}
+
+		return paths.length ? "/" + paths.join("/") : null;
+	};
+
 	// TODO: paramGroups here too..
 	imgix.getParamAliases = function() {
 			return {
@@ -114,13 +149,6 @@
 		return Object.keys(imgix.getDefaultParamValues());
 	};
 
-	/* 
-		constructor for our imgix url object
-		Usage:
-		var i = new imgix.URL("http://static-a.imgix.net/macaw.png"); // if token is passed as second param then will auto-sign
-		i.setSepia(50); // or any param
-		i.getUrl();
-	*/
 	imgix.URL = function(url, token, isRj) {
 		this.token = token || '';
 		this._autoUpdateSel = null;
@@ -158,10 +186,11 @@
 						for (var i = 0; i < imgToEls[imgUrl].length; i++) {
 							_setImage(imgToEls[imgUrl][i], imgUrl);
 							loadedImages++;
-						}
 
-						if (typeof self._autoUpdateCallback === "function") {
-							self._autoUpdateCallback(loadedImages, loadedImages === totalImages);
+							if (typeof self._autoUpdateCallback === "function") {
+								var cls = '.' + imgix._setImgixClass(imgToEls[imgUrl][i]);
+								self._autoUpdateCallback(cls, loadedImages === totalImages);
+							}
 						}
 					};
 				})();
