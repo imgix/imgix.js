@@ -123,7 +123,8 @@
 	*/
 	imgix.URL = function(url, token, isRj) {
 		this.token = token || '';
-		this.autoUpdateSel = null;
+		this._autoUpdateSel = null;
+		this._autoUpdateCallback = null;
 		this.isRj = !imgix.isDef(isRj) ? false : isRj;
 		this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
 		// this.options = {
@@ -138,19 +139,48 @@
 	}
 
 	imgix.URL.prototype._handleAutoUpdate = function() {
-		var self = this;
+		var self = this,
+			uniqueImgCount = 0,
+			seenImages = [],
+			totalImages = 0,
+			loadedImages = 0,
+			imgToEls = {};
 
 		function isImgEl(el) {
 			return (el.tagName.toLowerCase() === 'img');
 		}
 
 		function setImage(el, imgUrl) {
+			if (!(imgUrl in imgToEls)) {
+				imgToEls[imgUrl] = [];
+				(function() {
+					var img = document.createElement('img');
+					img.src = imgUrl;
+					img.onload = img.onerror = function() {
+						for (var i = 0; i < imgToEls[imgUrl].length; i++) {
+							_setImage(imgToEls[imgUrl][i], imgUrl);
+							loadedImages++;
+						}
+
+						if (typeof self._autoUpdateCallback === "function") {
+							self._autoUpdateCallback(loadedImages, loadedImages === totalImages);
+						}
+					};
+				})();
+			}
+
+			imgToEls[imgUrl].push(el);
+		}
+
+		function _setImage(el, imgUrl) {
 			if (isImgEl(el)) {
 				el.src = imgUrl;
 			} else {
 				var curBg = getBackgroundImg(el);
 				if (curBg) {
 					el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
+				} else {
+					el.style.backgroundImage = 'url(' + imgUrl + ')';
 				}
 			}
 		}
@@ -158,6 +188,7 @@
 		function getRawBackgroundImg(el) {
 			return el.style.cssText.match(/url\(([^\)]+)/);
 		}
+
 		function hasBackgroundImg(el) {
 			return !!getRawBackgroundImg(el);
 		}
@@ -187,21 +218,28 @@
 				elBaseUrl = elImg.split('?')[0];
 			}
 
-			if (elBaseUrl && self.getQueryString()) {
-				setImage(el, elBaseUrl + '?' + self.getQueryString());
-			} else if (self.getBaseUrl()) {
+
+			if (self.getBaseUrl()) {
+				//console.log('set style 1');
 				setImage(el, self.getUrl());
+			} else if (elBaseUrl && self.getQueryString()) {
+				//console.log('set style 2');
+				setImage(el, elBaseUrl + '?' + self.getQueryString());
 			} else {
 				//console.log('no params to apply');
+				loadedImages++;
 			}
 		}
 
-		if (this.autoUpdateSel !== null) {
-			var el = document.querySelectorAll(this.autoUpdateSel);
-			if (el && el.length === 1) {
+		if (this._autoUpdateSel !== null) {
+			var el = document.querySelectorAll(this._autoUpdateSel);
+
+			totalImages = el.length;
+
+			if (el && totalImages === 1) {
 				applyImg(el[0]);
 			} else {
-				for (var i = 0; i < el.length; i++) {
+				for (var i = 0; i < totalImages; i++) {
 					applyImg(el[i]);
 				}
 			}
@@ -210,8 +248,9 @@
 
 	// takes css selector for an <img> element on the page
 	// if url changes then it will auto re-set the src of the <img> element
-	imgix.URL.prototype.autoUpdateImg = function(sel) {
-		this.autoUpdateSel = sel;
+	imgix.URL.prototype.autoUpdateImg = function(sel, callback) {
+		this._autoUpdateSel = sel;
+		this._autoUpdateCallback = callback;
 		this._handleAutoUpdate();
 	};
 
@@ -235,15 +274,23 @@
 		};
 	};
 
+	imgix.URL.prototype.setParams = function(dict, doOverride) {
+		for (var k in dict) {
+			this.setParam(k, dict[k], doOverride, true);
+		}
+
+		this._handleAutoUpdate();
+	};
+
 	// TODO: handle public/private status of this -- won't handle aliases if set...
 	// TODO: error check type...see validator TODO
 	// TODO: raise error if param does not exist or can not convert type to expected type.
-	imgix.URL.prototype.setParam = function(param, value, doOverride) {
+	imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 		param = param.toLowerCase();
 
-		if (typeof doOverride === "undefined") {
-			doOverride = true;
-		}
+		doOverride = (typeof doOverride === "undefined") ? true : doOverride;
+		noUpdate = (typeof noUpdate === "undefined") ? false : noUpdate;
+
 
 		// console.log("setting " + param + " to " + value);
 		// TODO: handle aliases -- only need on build?
@@ -268,7 +315,9 @@
 
 		this.urlParts.paramValues[param] = String(value);
 
-		this._handleAutoUpdate();
+		if (!noUpdate) {
+			this._handleAutoUpdate();
+		}
 	};
 
 	imgix.URL.prototype.getParam = function(param) {
@@ -278,10 +327,10 @@
 	imgix.URL.prototype.getBaseUrl = function() {
 		var url = this.getUrl();
 		if (url.indexOf('?') !== -1) {
-			return this.getUrl().split('?')[0];
+			url = this.getUrl().split('?')[0];
 		}
 
-		return url !== window.location.href ? url : '';
+		return url != window.location.href ? url : '';
 	};
 
 	imgix.URL.prototype.getQueryString = function() {
