@@ -139,22 +139,60 @@
 
 	imgix.URL.prototype._handleAutoUpdate = function() {
 		var self = this;
+
+		function isImgEl(el) {
+			return (el.tagName.toLowerCase() === 'img');
+		}
+
+		function setImage(el, imgUrl) {
+			if (isImgEl(el)) {
+				el.src = imgUrl;
+			} else {
+				var curBg = getBackgroundImg(el);
+				if (curBg) {
+					el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
+				}
+			}
+		}
+
+		function getRawBackgroundImg(el) {
+			return el.style.cssText.match(/url\(([^\)]+)/);
+		}
+		function hasBackgroundImg(el) {
+			return !!getRawBackgroundImg(el);
+		}
+
+		function getBackgroundImg(el) {
+			var raw = getRawBackgroundImg(el);
+			if (!raw) {
+				return '';
+			} else {
+				return raw.length === 2 ? raw[1] : '';
+			}
+		}
+
+		function getImageUrl(el) {
+			if (isImgEl(el)) {
+				return el.src;
+			} else {
+				return getBackgroundImg(el);
+			}
+		}
+
 		function applyImg(el) {
-			var elImg = el.src,
+			var elImg = getImageUrl(el),
 				elBaseUrl = elImg;
 
 			if (elImg && elImg.indexOf('?') !== -1) {
 				elBaseUrl = elImg.split('?')[0];
 			}
 
-			console.log([self.getBaseUrl(), elBaseUrl]);
-
 			if (elBaseUrl && self.getQueryString()) {
-				el.src = elBaseUrl + '?' + self.getQueryString();
+				setImage(el, elBaseUrl + '?' + self.getQueryString());
 			} else if (self.getBaseUrl()) {
-				el.src = self.getUrl();
+				setImage(el, self.getUrl());
 			} else {
-				console.log('no params to apply');
+				//console.log('no params to apply');
 			}
 		}
 
@@ -242,7 +280,8 @@
 		if (url.indexOf('?') !== -1) {
 			return this.getUrl().split('?')[0];
 		}
-		return url;
+
+		return url !== window.location.href ? url : '';
 	};
 
 	imgix.URL.prototype.getQueryString = function() {
