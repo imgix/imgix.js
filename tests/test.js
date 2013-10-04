@@ -20,8 +20,24 @@ describe('imgix-javascript unit tests', function() {
 
 		expect(i.urlParts.paramValues["rot"], 30);
 		expect(i.getParam('rot'), 30);
-		expect(i.getRotate, 30);
+		expect(i.getRotate(), 30);
 		expect(i.getUrl()).toContain("rot=30");
+	});
+
+	it('sets multiple url params', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+
+		i.setParams({rot: 30, w: 100});
+
+		expect(i.urlParts.paramValues["rot"], 30);
+		expect(i.getParam('rot'), 30);
+		expect(i.getRotate(), 30);
+		expect(i.getUrl()).toContain("rot=30");
+
+		expect(i.urlParts.paramValues["w"], 100);
+		expect(i.getParam('w'), 100);
+		expect(i.getWidth(), 100);
+		expect(i.getUrl()).toContain("w=100");
 	});
 
 	it('overrides url params', function() {
@@ -50,29 +66,4 @@ describe('imgix-javascript unit tests', function() {
 
 		expect(i.urlParts.paramValues["blur"], 40);
 	});
-
-	// it('is defined', function() {
-	// 	expect(imgix.isDef(undefined)).toBe(false);
-	// 	expect(imgix.isDef(null)).toBe(true);
-	// 	expect(imgix.isDef(0)).toBe(true);
-	// 	expect(imgix.isDef(-1)).toBe(true);
-	// 	expect(imgix.isDef("imgix")).toBe(true);
-	// });
-
-	// it('parses uri', function() {
-	// 	var uri = 'https://static.imgix.net/treefrog.jpg?sepia=100&rot=83&w=770&htn=28&px=17';
-	// 	var result = imgix.parseUri(uri);
-	// 	expect(result.protocol).toBe('https');
-	// 	expect(result.host).toBe('static.imgix.net');
-	// 	expect(result.port).toBe(undefined);
-	// 	expect(result.query).toBe('?sepia=100&rot=83&w=770&htn=28&px=17');
-	// 	expect(result.hashArgs).toEqual({});
-	// 	expect(result.queryArgs).toEqual({ sepia: '100', rot: '83', w: '770', htn: '28', px: '17'});
-	// });
-
-	// it('has a dpr', function() {
-	// 	var result = imgix.dpr;
-	// 	expect(result).toBe(1);
-	// });
-
 });

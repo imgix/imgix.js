@@ -140,8 +140,6 @@
 
 	imgix.URL.prototype._handleAutoUpdate = function() {
 		var self = this,
-			uniqueImgCount = 0,
-			seenImages = [],
 			totalImages = 0,
 			loadedImages = 0,
 			imgToEls = {};
