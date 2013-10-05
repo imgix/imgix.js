@@ -1,4 +1,4 @@
-
+"use strict";
 // TODO: UNIT TESTS
 // TODO: handle options...
 // TODO: handle encoding...
@@ -59,6 +59,101 @@
 		return paths.length ? "/" + paths.join("/") : null;
 	};
 
+	imgix.getFontLookup = function() {
+		return {
+			"American Typewriter": "American Typewriter",
+			"American Typewriter Bold": "American Typewriter,bold",
+			"American Typewriter Condensed": "American Typewriter Condensed",
+			"American Typewriter Condensed Bold": "American Typewriter Condensed,bold",
+			"American Typewriter Condensed Light": "American Typewriter Condensed Light",
+			"American Typewriter Light": "American Typewriter Light",
+			"Andale Mono": "Andale Mono",
+			"Arial": "Arial",
+			"Arial Black": "Arial Black",
+			"Arial Bold": "Arial,bold",
+			"Arial Bold Italic": "Arial,bold,italic",
+			"Arial Italic": "Arial,italic",
+			"Baskerville": "Baskerville",
+			"Big Caslon": "Big Caslon",
+			"Brush Script MT": "Brush Script MT",
+			"Cochin": "Cochin",
+			"Copperplate": "Copperplate",
+			"Courier": "Courier",
+			"Courier Bold": "Courier,bold",
+			"Courier Oblique": "Courier Oblique",
+			"Didot": "Didot",
+			"Futura": "Futura",
+			"Futura Condensed": "Futura Condensed Medium",
+			"Futura Italic": "Futura Medium,italic",
+			"Georgia": "Georgia",
+			"Georgia Bold": "Georgia,bold",
+			"Georgia Bold Italic": "Georgia,bold,italic",
+			"Georgia Italic": "Georgia,italic",
+			"Gill Sans": "Gill Sans",
+			"Gill Sans Bold": "Gill Sans,bold",
+			"Gill Sans Bold Italic": "Gill Sans,bold,italic",
+			"Gill Sans Italic": "Gill Sans,italic",
+			"Gill Sans Light": "Gill Sans Light",
+			"Gill Sans Light Italic": "Gill Sans Light,italic",
+			"Helvetica": "Helvetica",
+			"Helvetica Bold": "Helvetica,bold",
+			"Helvetica Light": "Helvetica Light",
+			"Helvetica Light Oblique": "Helvetica Light Oblique",
+			"Helvetica Neue": "Helvetica Neue",
+			"Helvetica Neue Bold": "Helvetica Neue,bold",
+			"Helvetica Neue Bold Italic": "Helvetica Neue,bold,italic",
+			"Helvetica Neue Condensed Black": "Helvetica Neue Condensed Black",
+			"Helvetica Neue Condensed Bold": "Helvetica Neue Condensed,bold",
+			"Helvetica Neue Light": "Helvetica Neue Light",
+			"Helvetica Neue Light Italic": "Helvetica Neue Light,italic",
+			"Helvetica Neue Medium": "Helvetica Neue Medium",
+			"Helvetica Neue UltraLight": "Helvetica Neue UltraLight",
+			"Helvetica Neue UltraLight Italic": "Helvetica Neue UltraLight,italic",
+			"Helvetica Oblique": "Helvetica Oblique",
+			"Herculanum": "Herculanum",
+			"Impact": "Impact",
+			"Marker Felt Thin": "Marker Felt Thin",
+			"Marker Felt Wide": "Marker Felt Wide",
+			"Optima": "Optima",
+			"Optima Bold": "Optima,bold",
+			"Optima Bold Italic": "Optima,bold,italic",
+			"Optima ExtraBlack": "Optima ExtraBlack",
+			"Optima Italic": "Optima,italic",
+			"Papyrus": "Papyrus",
+			"Papyrus Condensed": "Papyrus Condensed",
+			"Times": "Times",
+			"Times Bold": "Times,bold",
+			"Times Bold Italic": "Times,bold,italic",
+			"Times Italic": "Times,italic",
+			"Times New Roman": "Times New Roman",
+			"Times New Roman Bold": "Times New Roman,bold",
+			"Times New Roman Bold Italic": "Times New Roman,bold,italic",
+			"Times New Roman Italic": "Times New Roman,italic",
+			"Trebuchet MS": "Trebuchet MS",
+			"Trebuchet MS Bold": "Trebuchet MS,bold",
+			"Trebuchet MS Bold Italic": "Trebuchet MS,bold,italic",
+			"Trebuchet MS Italic": "Trebuchet MS,italic",
+			"Verdana": "Verdana",
+			"Verdana Bold": "Verdana,bold",
+			"Verdana Bold Italic": "Verdana,bold,italic",
+			"Verdana Italic": "Verdana,italic",
+			"Zapfino": "Zapfino"
+		};
+	};
+
+	imgix.getFonts = function() {
+		return Object.keys(imgix.getFontLookup());
+	};
+
+	imgix.searchFonts = function(needle) {
+		needle = needle.toLowerCase();
+		return imgix.getFonts().filter(function(i) { return i.toLowerCase().indexOf(needle) !== -1 });
+	}
+
+	imgix.isFontAvailable = function(font) {
+		return imgix.isDef(imgix.getFontLookup()[font]);
+	}
+
 	imgix.getParamAliases = function() {
 			return {
 				't': 'txt',
@@ -105,6 +200,7 @@
 
 			// TEXT
 			'txt': '',
+			'txtfont': 'Helvetica',
 			'txtsize': "12",
 			'txtclr': '000000',
 			'txtalign': 'bottom,right',
@@ -350,6 +446,10 @@
 			return;
 		}
 
+		if (param === 'txtfont' && imgix.isDef(imgix.isFontAvailable(value))) {
+			value = imgix.getFontLookup()[value];
+		}
+
 		if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value.length === 0) {
 			this.removeParam(param);
 			return;
@@ -420,6 +520,7 @@
 
 		//text
 		"txt": "Text",
+		"txtfont": "TextFont",
 		"txtsize": "TextSize",
 		"txtclr": "TextColor",
 		"txtalign": "TextAlign",
@@ -610,7 +711,7 @@
 		return window.btoa(str).replace(/\+/g, '-').replace(/\//g, '_');
 	};
 
-	imgix.safe_btoa_decode =	function (str) {
+	imgix.safe_btoa_decode = function (str) {
 		return window.atob(str.replace(/\-+/g, '+').replace(/_+/g, '\/')); // http://
 	}
 

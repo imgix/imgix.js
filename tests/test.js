@@ -80,6 +80,20 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getBlur(), 50);
 	});
 
+	it('has fonts', function() {
+		expect(imgix.isFontAvailable("Verdana"), true);
+		expect(imgix.isFontAvailable("Blarg"), false);
+
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?blur=40');
+		i.setTextFont("American Typewriter Condensed Bold");
+		expect(i.getTextFont(), "American Typewriter Condensed,bold");
+
+		// search fonts
+		expect(imgix.searchFonts('arial'), ["Arial", "Arial Black", "Arial Bold", "Arial Bold Italic", "Arial Italic"]);
+
+		expect(imgix.searchFonts('blah'), []);
+	});
+
 	it('overrides url params', function() {
 		var i2 = new imgix.URL('http://static-a.imgix.net/macaw.png');
 		i2.setRotate(33, false); // should override since does not exist
