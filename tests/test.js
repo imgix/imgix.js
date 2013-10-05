@@ -54,6 +54,20 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getUrl()).toContain("w=100");
 	});
 
+	it('clear params', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=500&sepia=50');
+
+		i.clearParams();
+		expect(i.params, []);
+	});
+
+	it('clearThenSetParams', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=500&sepia=50');
+
+		i.clearThenSetParams({h: 100, blur: 50});
+		expect(i.params, ["h", "blur"]);
+	});
+
 	it('overrides url params', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?blur=40');
 

@@ -59,7 +59,6 @@
 		return paths.length ? "/" + paths.join("/") : null;
 	};
 
-	// TODO: paramGroups here too..
 	imgix.getParamAliases = function() {
 			return {
 				't': 'txt',
@@ -304,6 +303,23 @@
 		};
 	};
 
+	imgix.URL.prototype.clearThenSetParams = function(params) {
+		this.clearParams(false); //do not trigger update yet
+		this.setParams(params);
+	};
+
+	imgix.URL.prototype.clearParams = function(runUpdate) {
+		runUpdate = imgix.isDef(runUpdate) ? true : runUpdate;
+
+		for (var k in this.urlParts.paramValues) {
+			this.removeParam(k)
+		}
+
+		if (runUpdate) {
+			this._handleAutoUpdate();
+		}
+	};
+
 	imgix.URL.prototype.setParams = function(dict, doOverride) {
 		for (var k in dict) {
 			this.setParam(k, dict[k], doOverride, true);
@@ -318,8 +334,8 @@
 	imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 		param = param.toLowerCase();
 
-		doOverride = (typeof doOverride === "undefined") ? true : doOverride;
-		noUpdate = (typeof noUpdate === "undefined") ? false : noUpdate;
+		doOverride = imgix.isDef(doOverride) ? true : doOverride;
+		noUpdate = imgix.isDef(noUpdate) ? false : noUpdate;
 
 
 		// console.log("setting " + param + " to " + value);
