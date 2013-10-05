@@ -264,23 +264,43 @@
 		return new imgix.URL('');
 	}
 
+	imgix._updateVersion = {};
+
 	imgix.URL.prototype._handleAutoUpdate = function() {
 		var self = this,
 			totalImages = 0,
 			loadedImages = 0,
+			curSel = this._autoUpdateSel,
 			imgToEls = {};
+
+		if (!imgix.isDef(imgix._updateVersion[curSel])) {
+			imgix._updateVersion[curSel] = 1;
+		} else {
+			imgix._updateVersion[curSel]++;
+		}
 
 		function isImgEl(el) {
 			return (el.tagName.toLowerCase() === 'img');
+		}
+
+		function isVersionFresh(v) {
+			return curSel === self._autoUpdateSel && v === imgix._updateVersion[curSel];
 		}
 
 		function setImage(el, imgUrl) {
 			if (!(imgUrl in imgToEls)) {
 				imgToEls[imgUrl] = [];
 				(function() {
-					var img = document.createElement('img');
+					var img = document.createElement('img'),
+						curV = imgix._updateVersion[curSel];
+
 					img.src = imgUrl;
 					img.onload = img.onerror = function() {
+						if (!isVersionFresh(curV)) {
+							console.log(curV + ' is an old version -- not updating');
+							return;
+						}
+
 						for (var i = 0; i < imgToEls[imgUrl].length; i++) {
 							_setImage(imgToEls[imgUrl][i], imgUrl);
 							loadedImages++;
