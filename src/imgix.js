@@ -309,7 +309,7 @@
 	};
 
 	imgix.URL.prototype.clearParams = function(runUpdate) {
-		runUpdate = imgix.isDef(runUpdate) ? true : runUpdate;
+		runUpdate = !imgix.isDef(runUpdate) ? true : runUpdate;
 
 		for (var k in this.urlParts.paramValues) {
 			this.removeParam(k)
@@ -334,8 +334,8 @@
 	imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 		param = param.toLowerCase();
 
-		doOverride = imgix.isDef(doOverride) ? true : doOverride;
-		noUpdate = imgix.isDef(noUpdate) ? false : noUpdate;
+		doOverride = !imgix.isDef(doOverride) ? true : doOverride;
+		noUpdate = !imgix.isDef(noUpdate) ? false : noUpdate;
 
 
 		// console.log("setting " + param + " to " + value);
