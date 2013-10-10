@@ -292,7 +292,8 @@
 				imgToEls[imgUrl] = [];
 				(function() {
 					var img = document.createElement('img'),
-						curV = imgix._updateVersion[curSel];
+						curV = imgix._updateVersion[curSel],
+						startTime = (new Date()).getTime();
 
 					img.src = imgUrl;
 					img.onload = img.onerror = function() {
@@ -313,6 +314,7 @@
 										isComplete: loadedImages === totalImages, // boolean
 										percentComplete: (loadedImages / totalImages) * 100, // float
 										totalComplete: loadedImages, // int
+										loadTime: (new Date()).getTime() - startTime,
 										total: totalImages // int
 									};
 								//self._autoUpdateCallback(cls, loadedImages === totalImages);
