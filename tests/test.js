@@ -45,7 +45,6 @@ describe('imgix-javascript unit tests', function() {
 			i.autoUpdateImg('#tester', function(obj) {
 				objVal = obj;
 				flag = true
-				expect(false, true);
 			});
 
 			i.setRotate(30);
@@ -56,13 +55,14 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for autoUpdateImg", 2500);
 
 		runs(function() {
-			console.log(objVal);
 			expect(objVal.className, '.imgix-el-02345d7e9857180083e75a8bd32f125b');
 			expect(objVal.percentComplete).toEqual(100);
 			expect(objVal.totalComplete).toEqual(1);
 			expect(objVal.isComplete).toEqual(true);
-		});
+			expect(!!objVal.element).toEqual(true);
 
+			expect(img.src).toContain('rot=30');
+		});
 	});
 
 	it('sets url params', function() {

@@ -308,6 +308,7 @@
 							if (typeof self._autoUpdateCallback === "function") {
 								var cls = '.' + imgix._setImgixClass(imgToEls[imgUrl][i]),
 									obj = {
+										element: document.querySelector(cls),
 										className: cls, // string class '.imgix-el-{md5}'
 										isComplete: loadedImages === totalImages, // boolean
 										percentComplete: (loadedImages / totalImages) * 100, // float
