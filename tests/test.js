@@ -24,6 +24,57 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getUrl()).toContain("rot=30");
 	});
 
+
+	var flag, objVal;
+	it('test auto update...', function() {
+
+		// create and inject and element to test with
+		var img = document.createElement('img');
+		img.id = 'tester';
+		img.src = 'http://static-a.imgix.net/macaw.png';
+		document.body.appendChild(img);
+
+		// ensure it exists
+		expect(!!document.querySelector('#tester'), true);
+
+		// run our test
+		runs(function() {
+			flag = false;
+
+			var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+			i.autoUpdateImg('#tester', function(obj) {
+				objVal = obj;
+				flag = true
+				expect(false, true);
+			});
+
+			i.setRotate(30);
+		});
+
+		waitsFor(function() {
+			return flag;
+		}, "Waiting for autoUpdateImg", 2500);
+
+		runs(function() {
+			console.log(objVal);
+			expect(objVal.className, '.imgix-el-02345d7e9857180083e75a8bd32f125b');
+			expect(objVal.percentComplete).toEqual(100);
+			expect(objVal.totalComplete).toEqual(1);
+			expect(objVal.isComplete).toEqual(true);
+		});
+
+	});
+
+	it('sets url params', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+		i.setRotate(30);
+
+		expect(i.urlParts.paramValues["rot"], 30);
+		expect(i.getParam('rot'), 30);
+		expect(i.getRotate(), 30);
+		expect(i.getUrl()).toContain("rot=30");
+	});
+
 	it('sets params in constructor', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png', {w: 200, sepia: 50});
 

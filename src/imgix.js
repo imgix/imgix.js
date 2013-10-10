@@ -306,8 +306,16 @@
 							loadedImages++;
 
 							if (typeof self._autoUpdateCallback === "function") {
-								var cls = '.' + imgix._setImgixClass(imgToEls[imgUrl][i]);
-								self._autoUpdateCallback(cls, loadedImages === totalImages);
+								var cls = '.' + imgix._setImgixClass(imgToEls[imgUrl][i]),
+									obj = {
+										className: cls, // string class '.imgix-el-{md5}'
+										isComplete: loadedImages === totalImages, // boolean
+										percentComplete: (loadedImages / totalImages) * 100, // float
+										totalComplete: loadedImages, // int
+										total: totalImages // int
+									};
+								//self._autoUpdateCallback(cls, loadedImages === totalImages);
+								self._autoUpdateCallback(obj);
 							}
 						}
 					};
