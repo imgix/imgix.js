@@ -232,7 +232,11 @@
 			'markscale': '',
 			'markalign': 'bottom,right',
 			'markalpha': 100,
-			'markpad': 5
+			'markpad': 5,
+
+			'palette': '',
+			'colors': '',
+			'class': ''
 		}
 	};
 
@@ -242,6 +246,36 @@
 
 	imgix.getDefaultParams = function() {
 		return Object.keys(imgix.getDefaultParamValues());
+	};
+
+	imgix._makeCssClass = function(url) {
+		return "tmp_" + imgix.md5(url);
+	};
+
+	imgix._injectStyleSheet = function(url) {
+		var ss = document.createElement("link");
+		ss.type = "text/css";
+		ss.rel = "stylesheet";
+		ss.href = url;
+
+		document.getElementsByTagName("head")[0].appendChild(ss);
+	};
+
+	imgix._findInjectedStyleSheet = function(url) {
+		if (document.styleSheets) {
+			for (var i = 0; i < document.styleSheets.length; i++) {
+				if (document.styleSheets[i].href === url) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	};
+
+	imgix._getCssProperty = function(elmId, property) {
+		var elem = document.getElementById(elmId);
+		return window.getComputedStyle(elem,null).getPropertyValue(property);
 	};
 
 	imgix.URL = function(url, imgParams, token, isRj) {
@@ -265,6 +299,57 @@
 	}
 
 	imgix._updateVersion = {};
+
+	var cssColorCache = {};
+	imgix.URL.prototype.getColors = function(num, callback) {
+		var clone = new imgix.URL(this.getUrl()),
+			resultColors = [],
+			paletteClass = imgix._makeCssClass(this.getUrl());
+
+		clone.setPaletteColorNumber(num);
+		clone.setPalette('css');
+		clone.setPaletteClass(paletteClass);
+
+		var cssUrl = clone.getUrl();
+
+		imgix._injectStyleSheet(cssUrl);
+
+		var lookForLoadedCss = function() {
+			if (!imgix._findInjectedStyleSheet(cssUrl)) {
+				setTimeout(lookForLoadedCss, 100);
+			} else {
+				setTimeout(function() {
+					for (var i = 1; i <= num; i++) {
+						(function(i) {
+							var tmps = document.createElement("span");
+							tmps.id = paletteClass + '-' + i;
+							tmps.className = paletteClass + '-fg-' + i
+							document.body.appendChild(tmps);
+
+							var c = imgix._getCssProperty(tmps.id, 'color');
+							resultColors.push(c);
+
+							document.body.removeChild(tmps);
+						})(i);
+					}
+
+					cssColorCache[cssUrl] = resultColors;
+					if (callback) {
+						callback(resultColors);
+					}
+				}, 200); // firefox needs this time to apply the styles.
+				// TODO: find a better way to see if the styles have been applied
+			}
+		};
+
+		if (cssColorCache.hasOwnProperty(cssUrl)) {
+			if (callback) {
+				callback(cssColorCache[cssUrl]);
+			}
+		} else {
+			lookForLoadedCss();
+		}
+	};
 
 	imgix.URL.prototype._handleAutoUpdate = function() {
 		var self = this,
@@ -298,7 +383,7 @@
 					img.src = imgUrl;
 					img.onload = img.onerror = function() {
 						if (!isVersionFresh(curV)) {
-							console.log(curV + ' is an old version -- not updating');
+							//console.log(curV + ' is an old version -- not updating');
 							return;
 						}
 
@@ -565,14 +650,19 @@
 		"q": "Quality",
 
 		// watermarks
-		'mark': '',
-		'markw': '',
-		'markh': '',
-		'markfit': 'clip',
-		'markscale': '',
-		'markalign': 'bottom,right',
-		'markalpha': 100,
-		'markpad': 5
+		'mark': 'Watermark',
+		'markw': 'WatermarkWidth',
+		'markh': 'WatermarkHeight',
+		'markfit': 'WatermarkFit',
+		'markscale': 'WatermarkScale',
+		'markalign': 'WatermarkAlign',
+		'markalpha': 'WatermarkAlpha',
+		'markpad': 'WatermarkPadding',
+
+		// palette
+		'palette': 'Palette',
+		'class': 'PaletteClass',
+		'colors': 'PaletteColorNumber'
 	});
 
 	// Dynamically create our param getter and setters
