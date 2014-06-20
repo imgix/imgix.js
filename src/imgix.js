@@ -769,10 +769,13 @@
 				var tmp = parts[y].split('=');
 				if (tmp[0] && tmp[0].length && tmp[0] !== "s") {
 					result.paramValues[tmp[0]] = (tmp.length === 2 ? tmp[1] : '');
-					result.params.push(tmp[0]);
+					if (result.params.indexOf(tmp[0]) === -1) {
+						result.params.push(tmp[0]);
+					}
 				}
 			}
 		}
+
 
 		return result;
 	};
@@ -780,6 +783,24 @@
 	imgix.buildUrl = function(parsed) {
 		var result = parsed.protocol + '//' + parsed.host + parsed.pathname;
 		if (parsed.params.length > 0) {
+
+
+			parsed.params = parsed.params.map(function(e) {
+				return e.toLowerCase();
+			});
+
+			// unique only
+			parsed.params = parsed.params.filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			});
+
+			// sort
+			parsed.params = parsed.params.sort(function(a, b) {
+				if(a < b) return -1;
+				if(a > b) return 1;
+				return 0;
+			});
+
 			var qs = [];
 			for (var i = 0; i < parsed.params.length; i++) {
 				if (parsed.paramValues[parsed.params[i]].length > 0) {
