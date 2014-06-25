@@ -238,7 +238,8 @@
 			'colors': '',
 			'class': '',
 			'auto': '',
-			'mask': ''
+			'mask': '',
+			'bg': ''
 		}
 	};
 
@@ -501,6 +502,14 @@
 		this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
 	};
 
+	imgix.URL.prototype.setURL = function(url) {
+		return this.setUrl(url);
+	};
+
+	imgix.URL.prototype.getURL = function() {
+		return this.getUrl();
+	};
+
 	imgix.URL.prototype.getUrl = function() {
 		var url = this.isRj ? imgix.buildRjUrl(this.urlParts) : imgix.buildUrl(this.urlParts);
 		if (this.token) {
@@ -551,6 +560,12 @@
 		doOverride = !imgix.isDef(doOverride) ? true : doOverride;
 		noUpdate = !imgix.isDef(noUpdate) ? false : noUpdate;
 
+		if (param === 'mark') {
+			// if not encoded then decode...
+			if (decodeURIComponent(value) === value) {
+				value = encodeURIComponent(value);
+			}
+		}
 
 		// console.log("setting " + param + " to " + value);
 		// TODO: handle aliases -- only need on build?
@@ -585,6 +600,15 @@
 	};
 
 	imgix.URL.prototype.getParam = function(param) {
+		if (param === 'mark') {
+			var result = this.urlParts.paramValues[param];
+			// if not encoded then decode...
+			if (decodeURIComponent(result) !== result) {
+				return decodeURIComponent(result);
+			}
+
+			return result;
+		}
 		return this.urlParts.paramValues[param];
 	};
 
@@ -676,7 +700,8 @@
 
 		//
 		'auto': 'Auto',
-		'mask': 'Mask'
+		'mask': 'Mask',
+		'bg': 'Background'
 	});
 
 	// Dynamically create our param getter and setters
