@@ -560,7 +560,7 @@
 		doOverride = !imgix.isDef(doOverride) ? true : doOverride;
 		noUpdate = !imgix.isDef(noUpdate) ? false : noUpdate;
 
-		if (param === 'mark') {
+		if (param === 'mark' || param === 'mask') {
 			// if not encoded then decode...
 			if (decodeURIComponent(value) === value) {
 				value = encodeURIComponent(value);
@@ -600,9 +600,9 @@
 	};
 
 	imgix.URL.prototype.getParam = function(param) {
-		if (param === 'mark') {
+		if (param === 'mark' || param === 'mask') {
 			var result = this.urlParts.paramValues[param];
-			// if not encoded then decode...
+			// if encoded then decode...
 			if (decodeURIComponent(result) !== result) {
 				return decodeURIComponent(result);
 			}
