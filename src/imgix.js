@@ -236,7 +236,9 @@
 
 			'palette': '',
 			'colors': '',
-			'class': ''
+			'class': '',
+			'auto': '',
+			'mask': ''
 		}
 	};
 
@@ -662,7 +664,11 @@
 		// palette
 		'palette': 'Palette',
 		'class': 'PaletteClass',
-		'colors': 'PaletteColorNumber'
+		'colors': 'PaletteColorNumber',
+
+		//
+		'auto': 'Auto',
+		'mask': 'Mask'
 	});
 
 	// Dynamically create our param getter and setters
