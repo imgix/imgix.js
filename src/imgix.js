@@ -588,6 +588,14 @@
 		return this.urlParts.paramValues[param];
 	};
 
+	imgix.URL.prototype.getParams = function(param) {
+		if (this.urlParts.paramValues) {
+			return this.urlParts.paramValues;
+		}
+
+		return {};
+	};
+
 	imgix.URL.prototype.getBaseUrl = function() {
 		var url = this.getUrl();
 		if (url.indexOf('?') !== -1) {
