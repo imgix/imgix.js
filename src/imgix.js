@@ -35,6 +35,11 @@
 		return 'imgix-el-' + imgix.md5(xpath);
 	};
 
+	imgix._componentToHex = function(c) {
+	    var hex = c.toString(16);
+	    return hex.length == 1 ? "0" + hex : hex;
+	};
+
 		// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
 	imgix._getElementTreeXPath = function(element) {
 		var paths = [];
@@ -564,6 +569,14 @@
 			// if not encoded then decode...
 			if (decodeURIComponent(value) === value) {
 				value = encodeURIComponent(value);
+			}
+		} else if (param === 'col' || param === 'colorize') {
+			if (value.slice(0, 3) === 'rgb') {
+				var parts = value.split(","),
+					parts = parts.map(function(a) {
+						return imgix._componentToHex(parseInt(a.replace(/\D/g, '')));
+					});
+				value = parts.join('');
 			}
 		}
 
