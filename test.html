@@ -2,9 +2,22 @@
 <html>
 	<head>
 		<title>Test imgix.js</title>
-		<script src="imgix.js#dpr=auto"></script>
+		<!-- <script src="imgix.min.js#dpr=auto"></script> -->
+		<script src="/src/imgix.js#dpr=auto"></script>
+
 	</head>
 	<body>
+		<img class="dpr-compat" src="http://static.imgix.net/treefrog.jpg?w=200&h=200&fit=crop" width="200" height="200" border="0" id="img1"/>
+
 		<img class="dpr-compat" src="http://static.imgix.net/treefrog.jpg?w=200&h=200&fit=crop" width="200" height="200" border="0" />
+
+		<img class="dpr-compat" src="http://static.imgix.net/treefrog.jpg?w=200&h=200&fit=crop" width="200" height="200" border="0" />
+		<img class="dpr-compat" src="http://static.imgix.net/treefrog.jpg?w=200&h=200&fit=crop" width="200" height="200" border="0" />
+
+		<script type="text/javascript">
+
+			imgix._setElementImage(document.querySelector("#img1"), "http://static-a.imgix.net/macaw.png?rot=33&w=200");
+		</script>
+
 	</body>
 </html>

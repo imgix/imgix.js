@@ -8,6 +8,7 @@ module.exports = function(config) {
 	singleRun: true,
     frameworks: ['jasmine'],
 		files: [
+		'config.js', // has token and other config
 		'imgix.min.js', // TO TEST
 		'tests/test.js'
 	],

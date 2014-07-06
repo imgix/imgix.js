@@ -2,6 +2,8 @@
 module.exports = function(grunt) {
 
 	var path = require('path'),
+		fs = require('fs'),
+		path = require('path'),
 		exec = require('child_process').exec,
 		srcPath = function(p) { return path.normalize(__dirname + "/src/" + p); },
 		rootPath = function(p) { return path.normalize(__dirname + "/" + p); },
@@ -47,7 +49,12 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('test', 'run tests', function() {
-		grunt.task.run(['build', 'karma']);
+		var configPath = path.join(__dirname, 'config.js');
+		if (!fs.existsSync(configPath)) {
+			throw grunt.util.error("\n\nconfig.js does not exist. Required for tests! (signing)\n");
+		} else {
+			grunt.task.run(['build', 'karma']);
+		}
 	});
 
 	grunt.registerTask('build', 'build everything', function() {
@@ -62,5 +69,4 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-karma');
-
 };

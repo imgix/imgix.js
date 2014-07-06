@@ -1,5 +1,10 @@
 'use strict';
 
+// var fs = require('fs'),
+// 	configPath = path.join(__dirname, '../config.json'),
+// 	config = JSON.parse(fs.readFileSync(configPath, 'UTF-8')),
+// 	token = config["visorToken"];
+
 describe('imgix-javascript unit tests', function() {
 
 	beforeEach(function() {
@@ -29,20 +34,21 @@ describe('imgix-javascript unit tests', function() {
 	it('test auto update...', function() {
 
 		// create and inject and element to test with
-		var img = document.createElement('img');
-		img.id = 'tester';
+		var img = document.createElement('img'),
+			tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+		img.id = tmpId;
 		img.src = 'http://static-a.imgix.net/macaw.png';
 		document.body.appendChild(img);
 
+		var flag = false;
 		// ensure it exists
 		expect(!!document.querySelector('#tester'), true);
 
 		// run our test
 		runs(function() {
-			flag = false;
 
-			var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
-			i.autoUpdateImg('#tester', function(obj) {
+			var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=200');
+			i.autoUpdateImg('#' + tmpId, function(obj) {
 				objVal = obj;
 				flag = true
 			});
@@ -52,10 +58,9 @@ describe('imgix-javascript unit tests', function() {
 
 		waitsFor(function() {
 			return flag;
-		}, "Waiting for autoUpdateImg", 2500);
+		}, "Waiting for autoUpdateImg...", 5000);
 
 		runs(function() {
-			//console.log(objVal);
 			expect(objVal.className, '.imgix-el-02345d7e9857180083e75a8bd32f125b');
 			expect(objVal.percentComplete).toEqual(100);
 			expect(objVal.totalComplete).toEqual(1);
@@ -161,4 +166,73 @@ describe('imgix-javascript unit tests', function() {
 
 		expect(i.urlParts.paramValues["blur"], 40);
 	});
+
+	it('returns the proper palette colors for no param', function() {
+		var returnColors;
+
+		runs(function() {
+			var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+
+			i.getColors(function(colors) {
+				returnColors = colors;
+			});
+		});
+
+		waitsFor(function() {
+			return returnColors;
+		}, "Waiting for autoUpdateImg...", 5000);
+
+		runs(function() {
+			expect(returnColors).toEqual(["rgb(251, 150, 23)", "rgb(240, 136, 18)", "rgb(224, 62, 5)", "rgb(216, 115, 39)", "rgb(119, 145, 198)", "rgb(149, 150, 166)", "rgb(72, 91, 134)", "rgb(57, 72, 103)", "rgb(47, 56, 78)", "rgb(50, 52, 50)"]);
+		});
+	});
+
+	it('returns the proper palette colors for 3', function() {
+		var returnColors;
+
+		runs(function() {
+			var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+
+			i.getColors(3, function(colors) {
+				returnColors = colors;
+			});
+		});
+
+		waitsFor(function() {
+			return returnColors;
+		}, "Waiting for autoUpdateImg...", 2000);
+
+		runs(function() {
+			expect(returnColors).toEqual( [ 'rgb(251, 150, 23)', 'rgb(212, 58, 6)', 'rgb(57, 72, 103)' ]);
+		});
+		
+	});
+
+	it('md5s strings correctly', function() {
+		expect(imgix.md5("imgix")).toEqual("f12c7c39333410c10c2930b57116a943");
+	});
+
+	it('re-signs correctly', function() {
+
+
+		var su = "http://visor.imgix.net/http://a.abcnews.com/assets/images/navigation/abc-logo.png?rot=10&s=blah";
+
+		var i = new imgix.URL(su, {}, config.visorToken)
+		i.setRotate(15);
+
+		expect(i.getUrl()).toEqual("http://visor.imgix.net/http://a.abcnews.com/assets/images/navigation/abc-logo.png?rot=15&s=623966184d550b3bcb6a973040f8aa5d");
+	});
+
+	it('converts rgb to hex colors correctly', function() {
+		expect(imgix._rgbToHex('rgb(251, 150, 23)').toLowerCase()).toEqual('fb9617');
+	});
+
+	it('converts rgb to hex colors correctly on setBlend', function() {
+
+		var i = new imgix.URL('http://static-a.imgix.net/');
+		i.setBlend('rgb(255, 0, 0)');
+		expect(i.getBlend()).toEqual('ff0000');
+	});
+
+
 });
