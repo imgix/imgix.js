@@ -1,10 +1,5 @@
 'use strict';
 
-// var fs = require('fs'),
-// 	configPath = path.join(__dirname, '../config.json'),
-// 	config = JSON.parse(fs.readFileSync(configPath, 'UTF-8')),
-// 	token = config["visorToken"];
-
 describe('imgix-javascript unit tests', function() {
 
 	beforeEach(function() {
@@ -42,7 +37,7 @@ describe('imgix-javascript unit tests', function() {
 
 		var flag = false;
 		// ensure it exists
-		expect(!!document.querySelector('#tester'), true);
+		expect(document.querySelector('#' + tmpId)).toBeDefined();
 
 		// run our test
 		runs(function() {
@@ -69,6 +64,8 @@ describe('imgix-javascript unit tests', function() {
 			expect(objVal.loadTime).toBeGreaterThan(-1);
 
 			expect(img.src).toContain('rot=30');
+
+			document.body.removeChild(img);
 		});
 	});
 
@@ -234,5 +231,22 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getBlend()).toEqual('ff0000');
 	});
 
+
+	it('extracts xpath correctly', function() {
+		var img = document.createElement('img'),
+			tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+		img.id = tmpId;
+		img.src = 'http://static-a.imgix.net/macaw.png';
+		document.body.appendChild(img);
+
+		var flag = false;
+		var el = document.querySelector('#' + tmpId);
+
+
+		expect(el).toBeDefined();
+		expect(imgix._getElementTreeXPath(el)).toEqual('/html/body/img');
+
+		document.body.removeChild(img);
+	});
 
 });

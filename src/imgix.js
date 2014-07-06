@@ -31,6 +31,15 @@
 		IMGIX_USABLE = 'imgix-usable';
 
 	// TODO: promote some
+
+	imgix._getElementByXPath = function(xp) {
+		return document.querySelector('.' + imgix._getXPathClass(xp));
+	};
+
+	imgix._getElementImageByXPath = function(xpath) {
+		return imgix._getElementImage(imgix._getElementByXPath(xpath));
+	};
+
 	imgix._isImageElement = function(el) {
 		return (el.tagName.toLowerCase() === 'img');
 	};
@@ -118,8 +127,8 @@
 	};
 
 	imgix._getImgixClass = function(el) {
-		if (imgix.hasClass(el, IMGIX_USABLE)) {
-			return el.className.match(/imgix-el-[^\\b]+/)[0];
+		if (imgix._hasClass(el, IMGIX_USABLE)) {
+			return el.className.match(/imgix-el-[^\s]+/)[0];
 		}
 	}
 
