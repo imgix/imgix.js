@@ -1,8 +1,11 @@
 "use strict";
 
 // TODO: promote some of the private functions to public...
+// TODO: jsdoc
+// TODO: README for installing dev, running tests, etc.
 // TODO: handle options... as obj
 // TODO: handle encoding...
+
 // TODO: handle rentjuice-style signing too
 // TODO: param validator/ranges...
 // TODO:function setOption(option, value)
@@ -81,9 +84,7 @@
 	//////////////////////////////////////////////////
 
 	imgix.getImages = function() {
-		if (!config.isDocMarked) {
-			imgix._markDocument();
-		}
+		imgix._scanDocument();
 
 		return document.querySelectorAll("." + IMGIX_USABLE);
 	}
@@ -93,21 +94,13 @@
 			el.style.cssText.indexOf('background-image') !== -1);
 	};
 
-	imgix._markDocument = function() {
-		if (config.isDocMarked) {
-			return;
-		}
-
+	imgix._scanDocument = function() {
 		var all = document.getElementsByTagName("*");
-
 		for (var i=0, max=all.length; i < max; i++) {
-			 // Do something with the element here
 			if (imgix.hasImage(all[i])) {
 				imgix._setImgixClass(all[i]);
 			}
 		}
-
-		config.isDocMarked = true;
 	};
 
 	imgix._hasClass = function(elem, name) {
@@ -393,9 +386,40 @@
 		return false;
 	};
 
-	imgix._getCssProperty = function(elmId, property) {
+	imgix._getElementImageSize = function(el) {
+		var w = 0,
+			h = 0;
+
+		if (imgix._isImageElement(el)) {
+			w = el.naturalWidth;
+			h = el.naturalHeight;
+		} else {
+			w = imgix._extractInt(imgix._getCssProperty(el, "width"));
+			h = imgix._extractInt(imgix._getCssProperty(el, "height"));
+		}
+
+		return {
+			width: w,
+			height: h
+		};
+	};
+
+	imgix._extractInt = function(str) {
+		if (str === undefined) {
+			return 0;
+		} else if (typeof str === "number") {
+			return str;
+		}
+		return parseInt(str.replace(/\D/g, ''), 10) || 0;
+	};
+
+	imgix._getCssPropertyById = function(elmId, property) {
 		var elem = document.getElementById(elmId);
 		return window.getComputedStyle(elem,null).getPropertyValue(property);
+	};
+
+	imgix._getCssProperty = function(el, property) {
+		return window.getComputedStyle(el, null).getPropertyValue(property);
 	};
 
 	imgix.URL = function(url, imgParams, token, isRj) {
@@ -457,7 +481,7 @@
 							tmps.className = paletteClass + '-fg-' + i
 							document.body.appendChild(tmps);
 
-							var c = imgix._getCssProperty(tmps.id, 'color');
+							var c = imgix._getCssPropertyById(tmps.id, 'color');
 							resultColors.push(c);
 
 							document.body.removeChild(tmps);

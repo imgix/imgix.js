@@ -249,4 +249,8 @@ describe('imgix-javascript unit tests', function() {
 		document.body.removeChild(img);
 	});
 
+	it('extracts ints correctly', function() {
+		expect(imgix._extractInt("234px")).toEqual(234);
+	});
+
 });
