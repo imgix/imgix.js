@@ -190,12 +190,13 @@ describe('imgix-javascript unit tests', function() {
 
 	it('returns unique palette colors', function() {
 		var returnColors,
-			randBlur = parseInt(Math.random() * 3000);
+			desiredColors = 10,
+			randBlur = parseInt(Math.random() * 3000, 10);
 
 		runs(function() {
 			var i = new imgix.URL('http://static-a.imgix.net/macaw.png?blur=' + randBlur);
 
-			i.getColors(10, function(colors) {
+			i.getColors(desiredColors, function(colors) {
 				returnColors = colors;
 			});
 		});
@@ -206,8 +207,8 @@ describe('imgix-javascript unit tests', function() {
 
 		runs(function() {
 			var unique = returnColors.filter(onlyUnique);
-			expect(returnColors.length).toEqual(unique.length);
-			//expect(returnColors).toEqual(["rgb(251, 150, 23)", "rgb(240, 136, 18)", "rgb(224, 62, 5)", "rgb(216, 115, 39)", "rgb(119, 145, 198)", "rgb(149, 150, 166)", "rgb(72, 91, 134)", "rgb(57, 72, 103)", "rgb(47, 56, 78)", "rgb(50, 52, 50)"]);
+			//expect(returnColors.length).toEqual(unique.length);
+			expect(desiredColors).toEqual(unique.length);
 		});
 	});
 
