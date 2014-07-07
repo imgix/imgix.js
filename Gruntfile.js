@@ -10,12 +10,15 @@ module.exports = function(grunt) {
 		minJsFile = rootPath('imgix.min.js'),
 		jsFile = srcPath('imgix.js');
 
-	function execRun(cmd) {
+	function execRun(cmd, done) {
 		exec(cmd, function(err, stdout, stderr) {
 			if (err) {
 				grunt.fail.fatal(stderr + ' ' + stdout + ' ' + err);
 			}
 			console.log(stdout);
+			if (done) {
+				done();
+			}
 		});
 	}
 
@@ -48,6 +51,14 @@ module.exports = function(grunt) {
 		// }
 	});
 
+	grunt.registerTask('closure-minify', 'minify', function() {
+		// --compilation_level ADVANCED_OPTIMIZATIONS is actually 30% bigger!
+		var cmd = "java -jar ./bin/closure_compiler.jar  --language_in=ECMASCRIPT5 --js " + jsFile + " --js_output_file " + minJsFile,
+			done = this.async();
+
+		execRun(cmd, done);
+	});
+
 	grunt.registerTask('test', 'run tests', function() {
 		var configPath = path.join(__dirname, 'config.js');
 		if (!fs.existsSync(configPath)) {
@@ -58,7 +69,8 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('build', 'build everything', function() {
-		grunt.task.run(['uglify']);
+		//grunt.task.run(['uglify']);
+		grunt.task.run(['closure-minify']);
 	});
 
 	// Default task.

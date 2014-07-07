@@ -489,6 +489,8 @@
 			if (!imgix._findInjectedStyleSheet(cssUrl)) {
 				setTimeout(lookForLoadedCss, 100);
 			} else {
+				var lastColor = null,
+					whileLimit = 10000;
 				setTimeout(function() {
 					for (var i = 1; i <= num; i++) {
 						(function(i) {
@@ -498,7 +500,17 @@
 							document.body.appendChild(tmps);
 
 							var c = imgix._getCssPropertyById(tmps.id, 'color');
-							resultColors.push(c);
+
+							var whileCount = 0;
+							while (c !== lastColor && whileCount < whileLimit) {
+								c = imgix._getCssPropertyById(tmps.id, 'color');
+								whileCount++;
+							}
+
+							if (c !== lastColor) {
+								resultColors.push(c);
+								lastColor = c;
+							}
 
 							document.body.removeChild(tmps);
 						})(i);
