@@ -244,13 +244,38 @@ describe('imgix-javascript unit tests', function() {
 
 
 		expect(el).toBeDefined();
+		expect(imgix._isImageElement(el)).toEqual(true);
 		expect(imgix._getElementTreeXPath(el)).toEqual('/html/body/img');
+		expect(imgix._getElementImage(el)).toEqual('http://static-a.imgix.net/macaw.png');
+
 
 		document.body.removeChild(img);
 	});
 
 	it('extracts ints correctly', function() {
 		expect(imgix._extractInt("234px")).toEqual(234);
+	});
+
+	it('puts a dummy transparent image when nothing set', function() {
+		expect(imgix._extractInt("234px")).toEqual(234);
+
+		var i = new imgix.URL('');
+
+		var img = document.createElement('img'),
+			tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+		img.id = tmpId;
+		img.src = i.getUrl();
+		document.body.appendChild(img);
+
+		var flag = false;
+		var el = document.querySelector('#' + tmpId);
+
+
+		expect(el).toBeDefined();
+		expect(imgix._isImageElement(el)).toEqual(true);
+		expect(el.src).toEqual(imgix._getEmptyImage());
+
+		document.body.removeChild(img);
 	});
 
 });
