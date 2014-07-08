@@ -42,8 +42,9 @@
 	 * Get html element by XPath
 	 * @memberof imgix
 	 * @static
-	 * @param {string} xpath - the xpath of the element
-	 * @returns {Element} - element with the xpath
+	 * @private
+	 * @param {string} xpath the xpath of the element
+	 * @returns {Element} element with the xpath
 	 */
 	imgix._getElementByXPath = function(xpath) {
 		return document.querySelector('.' + imgix._getXPathClass(xpath));
@@ -54,8 +55,9 @@
 	 * Get html element by XPath
 	 * @memberof imgix
 	 * @static
-	 * @param {string} xpath - the xpath of the element to get
-	 * @returns {Element} - element with the xpath
+	 * @private
+	 * @param {string} xpath the xpath of the element to get
+	 * @returns {Element} element with the xpath
 	 */
 	imgix._getElementImageByXPath = function(xpath) {
 		return imgix._getElementImage(imgix._getElementByXPath(xpath));
@@ -65,8 +67,9 @@
 	 * Reports if an element is an image tag
 	 * @memberof imgix
 	 * @static
-	 * @param {Element} el - the element to check
-	 * @returns {boolean} - true if the element is an img tag
+	 * @private
+	 * @param {Element} el the element to check
+	 * @returns {boolean} true if the element is an img tag
 	 */
 	imgix._isImageElement = function(el) {
 		return (el && el.tagName.toLowerCase() === 'img');
@@ -503,9 +506,10 @@
 
 	var cssColorCache = {};
 	/**
-	 * Get an array of the colors in the imagex
+	 * Get an array of the colors in the image
+	 * @memberof imgix
 	 * @param {number} num Desired number of colors
-	 * @param {colorsCallback} callback - handles the response of colors
+	 * @param {colorsCallback} callback handles the response of colors
 	 */
 	imgix.URL.prototype.getColors = function(num, callback) {
 		var clone = new imgix.URL(this.getUrl()),
@@ -707,13 +711,24 @@
 		}
 	};
 
-	// takes css selector for an <img> element on the page
-	// if url changes then it will auto re-set the src of the <img> element
+
+	/**
+	 * When/if the url changes it will auto re-set the image on the element of the css selector passed
+	 * @memberof imgix
+	 * @param {string} sel css selector for an <img> element on the page
+	 * @param {autoUpdateElementCallback} callback fires whenever the img element is updated
+	 */
 	imgix.URL.prototype.autoUpdateImg = function(sel, callback) {
 		this._autoUpdateSel = sel;
 		this._autoUpdateCallback = callback;
 		this._handleAutoUpdate();
 	};
+	/**
+	 * 
+	 * @callback autoUpdateElementCallback
+	 * @param {object} obj information about element and image
+	 * @todo how to doc the complex object that is passed back
+	 */
 
 	imgix.URL.prototype.setUrl = function(url) {
 		if (!url || typeof url !== "string" || url.length === 0) {
@@ -730,6 +745,11 @@
 		return this.getUrl();
 	};
 
+	/**
+	 * The generated imgix image url
+	 * @memberof imgix
+	 * @returns {string} the url
+	 */
 	imgix.URL.prototype.getUrl = function() {
 		var url = this.isRj ? imgix.buildRjUrl(this.urlParts) : imgix.buildUrl(this.urlParts);
 		if (this.token) {

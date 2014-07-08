@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 
 		grunt.file.mkdir(docsPath);
 		// npm install git+https://github.com/jsdoc3/jsdoc.git
-		var cmd = ' ./node_modules/.bin/jsdoc src/imgix.js -d ./docs';
+		var cmd = ' ./node_modules/.bin/jsdoc --private src/imgix.js -d ./docs';
 		execRun(cmd);
 	});
 
