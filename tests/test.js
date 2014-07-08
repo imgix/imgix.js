@@ -45,7 +45,6 @@ describe('imgix-javascript unit tests', function() {
 
 		// run our test
 		runs(function() {
-
 			var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=200');
 			i.autoUpdateImg('#' + tmpId, function(obj) {
 				objVal = obj;
@@ -253,12 +252,10 @@ describe('imgix-javascript unit tests', function() {
 	});
 
 	it('converts rgb to hex colors correctly on setBlend', function() {
-
-		var i = new imgix.URL('http://static-a.imgix.net/');
+		var i = new imgix.URL('https://assets.imgix.net/pixel.gif');
 		i.setBlend('rgb(255, 0, 0)');
 		expect(i.getBlend()).toEqual('ff0000');
 	});
-
 
 	it('extracts xpath correctly', function() {
 		var img = document.createElement('img'),
@@ -270,12 +267,10 @@ describe('imgix-javascript unit tests', function() {
 		var flag = false;
 		var el = document.querySelector('#' + tmpId);
 
-
 		expect(el).toBeDefined();
 		expect(imgix._isImageElement(el)).toEqual(true);
 		expect(imgix._getElementTreeXPath(el)).toEqual('/html/body/img');
 		expect(imgix._getElementImage(el)).toEqual('http://static-a.imgix.net/macaw.png');
-
 
 		document.body.removeChild(img);
 	});
@@ -304,6 +299,31 @@ describe('imgix-javascript unit tests', function() {
 		expect(el.src).toEqual(imgix._getEmptyImage());
 
 		document.body.removeChild(img);
+	});
+
+	it('correctly sets the image after the load', function() {
+		var el, newUrl;
+		runs(function() {
+			var img = document.createElement('img'),
+				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = '';
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?blur=1000';
+			imgix._setElementImageAfterLoad(el, newUrl);
+		});
+
+		waits(500); // give it time to load
+
+		runs(function() {
+			// ensure it actually loaded...
+			expect(imgix._getElementImage(el)).toEqual(newUrl);
+		});
 	});
 
 });

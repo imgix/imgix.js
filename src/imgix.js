@@ -47,6 +47,17 @@
 		return (el && el.tagName.toLowerCase() === 'img');
 	};
 
+	imgix._setElementImageAfterLoad = function(el, imgUrl, callback) {
+		var img = new Image();
+		img.src = imgUrl;
+		img.onload = function() {
+			imgix._setElementImage(el, imgUrl);
+			if (typeof callback === "function") {
+				callback();
+			}
+		};
+	};
+
 	imgix._setElementImage = function(el, imgUrl) {
 		if (!el) {
 			return false;
@@ -1349,7 +1360,7 @@
 	}(this));
 
 	// start promise
-	/**@license MIT-promiscuous-©Ruben Verborgh*/
+	/** license MIT-promiscuous-©Ruben Verborgh*/
 	(function (func, obj, root) {
 		// Type checking utility function
 		function is(type, item) { return (typeof item)[0] == type; }
@@ -1383,11 +1394,11 @@
 			}
 			// If the value is a promise, take over its state
 			if (is(func, then)) {
-			function valueHandler(resolved) {
-				return function (value) { then && (then = 0, pendingHandler(is, resolved, value)); };
-			}
-			try { then.call(value, valueHandler(1), rejected = valueHandler(0)); }
-			catch (reason) { rejected(reason); }
+				var valueHandler = function(resolved) {
+					return function (value) { then && (then = 0, pendingHandler(is, resolved, value)); };
+				}
+				try { then.call(value, valueHandler(1), rejected = valueHandler(0)); }
+				catch (reason) { rejected(reason); }
 			}
 			// The value is not a promise; handle resolve/reject
 			else {
