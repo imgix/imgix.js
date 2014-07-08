@@ -133,7 +133,7 @@
 
 	imgix._setImgixClass = function(el) {
 		if (imgix._hasClass(el, IMGIX_USABLE)) {
-			return;
+			return imgix._getImgixClass(el);
 		}
 
 		var cls = imgix._getXPathClass(imgix._getElementTreeXPath(el));
@@ -504,7 +504,9 @@
 					whileLimit = 1000;
 
 				setTimeout(function() {
-					var promises = [];
+					var promises = [],
+						maxTries = 100;
+
 					for (var i = 1; i <= num; i++) {
 
 						(function(i) {
@@ -515,6 +517,7 @@
 
 							promises.push(
 								new ImgixPromise(function (resolve, reject) {
+									var attempts = 0;
 									var checkLoaded = function() {
 										var c = imgix._getCssPropertyById(tmps.id, 'color');
 										if (c != lastColor) {
@@ -522,7 +525,12 @@
 											resolve({"num": i, "color": c});
 											lastColor = c;
 										} else {
-											setTimeout(checkLoaded, 50);
+											if (++attempts < maxTries) {
+												setTimeout(checkLoaded, 50);
+											} else {
+												document.body.removeChild(tmps);
+												resolve({"num": i, "color": 'rgb(255, 255, 255)'});
+											}
 										}
 									};
 
