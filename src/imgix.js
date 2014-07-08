@@ -1,8 +1,10 @@
 "use strict";
 
 // TODO: promote some of the private functions to public...
-// TODO: jsdoc
 // TODO: README for installing dev, running tests, etc.
+// TODO: finish jsdocs
+// TODO: cleanup / organization
+
 // TODO: handle options... as obj
 // TODO: handle encoding...
 
@@ -75,6 +77,15 @@
 		return (el && el.tagName.toLowerCase() === 'img');
 	};
 
+	/**
+	 * Intelligently sets an image on an element after preloading the image.
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {Element} el the element to check
+	 * @param {string} url the url of the image to set
+	 * @param {function} callback called once image has been preloaded and set
+	 */
 	imgix._setElementImageAfterLoad = function(el, imgUrl, callback) {
 		var img = new Image();
 		img.src = imgUrl;
@@ -86,6 +97,15 @@
 		};
 	};
 
+	/**
+	 * Intelligently sets an image on an element.
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {Element} el the element to check
+	 * @param {string} url the url of the image to set
+	 * @returns {boolean} true on success
+	 */
 	imgix._setElementImage = function(el, imgUrl) {
 		if (!el) {
 			return false;
@@ -108,10 +128,25 @@
 		return false
 	};
 
+	/**
+	 * An empty 1x1 transparent image
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @returns {string} url of an empty image
+	 */
 	imgix._getEmptyImage = function() {
 		return 'https://assets.imgix.net/pixel.gif';
 	};
 
+	/**
+	 * Intelligently returns the image on the element
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {Element} el the element to check
+	 * @returns {string} url of the image on the elment
+	 */
 	imgix._getElementImage = function(el) {
 		if (imgix._isImageElement(el)) {
 			return el.src;
@@ -120,10 +155,27 @@
 		}
 	};
 
+	/**
+	 * Returns the matches for the url on the element's cssText
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {Element} el the element to check
+	 * @todoo use cssProperty instead?
+	 * @returns {string} url of the image on the elment
+	 */
 	imgix._getRawBackgroundImage = function(el) {
 		return el.style.cssText.match(/url\(([^\)]+)/);
 	};
 
+	/**
+	 * Returns the background image for an element
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {Element} el the element to check
+	 * @returns {string} url of the image on the elment
+	 */
 	imgix._getBackgroundImage = function(el) {
 		var raw = imgix._getRawBackgroundImage(el);
 		if (!raw) {
@@ -156,7 +208,7 @@
 	};
 
 	imgix._hasClass = function(elem, name) {
-		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1;//jquery
+		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1; // from jquery
 	}
 
 	imgix._setImgixClass = function(el) {
@@ -478,7 +530,6 @@
 	 * Represents an imgix url
 	 * @memberof imgix
 	 * @constructor
-	 * @class
 	 * @param {string} url An imgix url to start with (optional)
 	 * @param {object} imgParams imgix query string params (optional)
 	 * @param {object} token secure url token for signing images (optional)
