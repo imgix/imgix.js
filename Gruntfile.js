@@ -41,7 +41,7 @@ module.exports = function(grunt) {
 			unit: {
 				configFile: 'karma.conf.js'
 			}
-		}
+		},
 
 		// concat: {
 		// 	js: {
@@ -66,6 +66,18 @@ module.exports = function(grunt) {
 		} else {
 			grunt.task.run(['build', 'karma']);
 		}
+	});
+
+	grunt.registerTask('builddocs', 'build the docs', function() {
+		var docsPath = path.join(__dirname, 'docs');
+		if (fs.existsSync(docsPath)) {
+			grunt.file.delete(docsPath);
+		}
+
+		grunt.file.mkdir(docsPath);
+		// npm install git+https://github.com/jsdoc3/jsdoc.git
+		var cmd = ' ./node_modules/.bin/jsdoc src/imgix.js -d ./docs';
+		execRun(cmd);
 	});
 
 	grunt.registerTask('build', 'build everything', function() {
