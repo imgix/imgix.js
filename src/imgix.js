@@ -14,6 +14,84 @@
 
 (function() {
 
+	// https://github.com/websanova/js-url
+	var urlParser = (function() {
+		function isNumeric(arg) {
+		  return !isNaN(parseFloat(arg)) && isFinite(arg);
+		}
+
+		return function(arg, url) {
+			var _ls = url || window.location.toString();
+
+			if (!arg) { return _ls; }
+			else { arg = arg.toString(); }
+
+			if (_ls.substring(0,2) === '//') { _ls = 'http:' + _ls; }
+			else if (_ls.split('://').length === 1) { _ls = 'http://' + _ls; }
+
+			url = _ls.split('/');
+			var _l = {auth:''}, host = url[2].split('@');
+
+			if (host.length === 1) { host = host[0].split(':'); }
+			else { _l.auth = host[0]; host = host[1].split(':'); }
+
+			_l.protocol=url[0];
+			_l.hostname=host[0];
+			_l.port=(host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
+			_l.pathname=( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
+			var _p = _l.pathname;
+
+			if (_p.charAt(_p.length-1) === '/') { _p=_p.substring(0, _p.length-1); }
+			var _h = _l.hostname, _hs = _h.split('.'), _ps = _p.split('/');
+
+			if (arg === 'hostname') { return _h; }
+			else if (arg === 'domain') {
+				if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) { return _h; }
+				return _hs.slice(-2).join('.'); 
+			}
+			//else if (arg === 'tld') { return _hs.slice(-1).join('.'); }
+			else if (arg === 'sub') { return _hs.slice(0, _hs.length - 2).join('.'); }
+			else if (arg === 'port') { return _l.port; }
+			else if (arg === 'protocol') { return _l.protocol.split(':')[0]; }
+			else if (arg === 'auth') { return _l.auth; }
+			else if (arg === 'user') { return _l.auth.split(':')[0]; }
+			else if (arg === 'pass') { return _l.auth.split(':')[1] || ''; }
+			else if (arg === 'path') { return _l.pathname; }
+			else if (arg.charAt(0) === '.')
+			{
+				arg = arg.substring(1);
+				if(isNumeric(arg)) {arg = parseInt(arg, 10); return _hs[arg < 0 ? _hs.length + arg : arg-1] || ''; }
+			}
+			else if (isNumeric(arg)) { arg = parseInt(arg, 10); return _ps[arg < 0 ? _ps.length + arg : arg] || ''; }
+			else if (arg === 'file') { return _ps.slice(-1)[0]; }
+			else if (arg === 'filename') { return _ps.slice(-1)[0].split('.')[0]; }
+			else if (arg === 'fileext') { return _ps.slice(-1)[0].split('.')[1] || ''; }
+			else if (arg.charAt(0) === '?' || arg.charAt(0) === '#')
+			{
+				var params = _ls, param = null;
+
+				if(arg.charAt(0) === '?') { params = (params.split('?')[1] || '').split('#')[0]; }
+				else if(arg.charAt(0) === '#') { params = (params.split('#')[1] || ''); }
+
+				if(!arg.charAt(1)) { return params; }
+
+				arg = arg.substring(1);
+				params = params.split('&');
+
+				for(var i=0,ii=params.length; i<ii; i++)
+				{
+					param = params[i].split('=');
+					if(param[0] === arg) { return param[1] || ''; }
+				}
+
+				return null;
+			}
+
+			return '';
+		};
+	})();
+
+
 	// Establish the root object, `window` in the browser, or `exports` on the server.
 	var root = this;
 
@@ -1080,17 +1158,26 @@
 	};
 
 	imgix.parseUrl = function(url) {
-		var keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
-			result = {},
+		var 
+			pkeys = ['protocol', 'hostname', 'port', 'path', '?', '#', 'hostname'],
+			keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
+			result = {};
 			// https://gist.github.com/jlong/2428561
-			parser = document.createElement('a');
+			//parser = document.createElement('a');
 
-		parser.href = url;
+		// var parser = urlParser(null, url);
+
+		// parser['pathname'] = parser['path'];
+		// parser['search'] = parser['?'];
+		// parser['hash'] = parser['#'];
+		//parser.href = url;
 
 		// create clean object to return
 		for (var i = 0; i < keys.length; i++) {
-			result[keys[i]] = parser[keys[i]];
+			result[keys[i]] = urlParser(pkeys[i], url);
 		}
+
+		//console.log(result);
 
 		var qs = result.search;
 
@@ -1121,7 +1208,7 @@
 	};
 
 	imgix.buildUrl = function(parsed) {
-		var result = parsed.protocol + '//' + parsed.host + parsed.pathname;
+		var result = parsed.protocol + '://' + parsed.host +  parsed.pathname;
 		if (parsed.params.length > 0) {
 
 
@@ -1172,7 +1259,8 @@
 	imgix.signUrl = function(newUrl, token) {
 		if (token) {
 			var parts = imgix.parseUrl(newUrl),
-				sig = imgix.md5(token + parts.pathname + parts.search);
+				toSign = token + parts.pathname + '?' + parts.search,
+				sig = imgix.md5(token + parts.pathname + '?' + parts.search);
 
 			if (newUrl.indexOf('?') === -1) {
 				sig = imgix.md5(token + parts.pathname);

@@ -10,7 +10,8 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 		files: [
 		'config.js', // has token and other config
-		'imgix.min.js', // TO TEST
+		//'imgix.min.js', // TO TEST
+		'src/imgix.js',
 		'tests/test.js'
 	],
   });

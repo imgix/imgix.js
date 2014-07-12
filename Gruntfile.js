@@ -81,8 +81,8 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('build', 'build everything', function() {
-		//grunt.task.run(['uglify']);
-		grunt.task.run(['closure-minify']);
+		grunt.task.run(['uglify']);
+		//grunt.task.run(['closure-minify']);
 	});
 
 	// Default task.
