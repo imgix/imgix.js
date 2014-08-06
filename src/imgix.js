@@ -17,7 +17,7 @@
 	// https://github.com/websanova/js-url
 	var urlParser = (function() {
 		function isNumeric(arg) {
-		  return !isNaN(parseFloat(arg)) && isFinite(arg);
+			return !isNaN(parseFloat(arg)) && isFinite(arg);
 		}
 
 		return function(arg, url) {
@@ -35,7 +35,7 @@
 			if (host.length === 1) { host = host[0].split(':'); }
 			else { _l.auth = host[0]; host = host[1].split(':'); }
 
-			_l.protocol=url[0];
+			_l.protocol = url[0];
 			_l.hostname=host[0];
 			_l.port=(host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
 			_l.pathname=( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
@@ -203,7 +203,7 @@
 			}
 		}
 
-		return false
+		return false;
 	};
 
 	/**
@@ -261,7 +261,7 @@
 		} else {
 			return raw.length === 2 ? raw[1] : '';
 		}
-	}
+	};
 
 	//////////////////////////////////////////////////
 
@@ -269,7 +269,7 @@
 		imgix._scanDocument();
 
 		return document.querySelectorAll("." + IMGIX_USABLE);
-	}
+	};
 
 	imgix.hasImage = function(el) {
 		return el && (el.tagName.toLowerCase() === 'img' ||
@@ -287,7 +287,7 @@
 
 	imgix._hasClass = function(elem, name) {
 		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1; // from jquery
-	}
+	};
 
 	imgix._setImgixClass = function(el) {
 		if (imgix._hasClass(el, IMGIX_USABLE)) {
@@ -305,7 +305,7 @@
 		if (imgix._hasClass(el, IMGIX_USABLE)) {
 			return el.className.match(/imgix-el-[^\s]+/)[0];
 		}
-	}
+	};
 
 	imgix._getXPathClass = function(xpath) {
 		xpath = !!xpath ? xpath: (new Date().getTime().toString());
@@ -313,17 +313,18 @@
 	};
 
 	imgix._rgbToHex = function(value) {
-		var parts = value.split(","),
-			parts = parts.map(function(a) {
-				return imgix._componentToHex(parseInt(a.replace(/\D/g, '')));
-			});
+		var parts = value.split(",");
 
-		return value = parts.join('');
+		parts = parts.map(function(a) {
+			return imgix._componentToHex(parseInt(a.replace(/\D/g, '')));
+		});
+
+		return parts.join('');
 	};
 
 	imgix._componentToHex = function(c) {
 		var hex = c.toString(16);
-		return hex.length == 1 ? "0" + hex : hex;
+		return hex.length === 1 ? "0" + hex : hex;
 	};
 
 		// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
@@ -668,8 +669,7 @@
 			if (!imgix._findInjectedStyleSheet(cssUrl)) {
 				setTimeout(lookForLoadedCss, 100);
 			} else {
-				var lastColor = null,
-					whileLimit = 1000;
+				var lastColor = null;
 
 				setTimeout(function() {
 					var promises = [],
@@ -960,7 +960,7 @@
 			value = imgix.getFontLookup()[value];
 		}
 
-		if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value.length === 0) {
+		if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null ||  value.length === 0) {
 			this.removeParam(param);
 			return;
 		}

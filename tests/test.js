@@ -332,4 +332,10 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getQueryString()).toEqual('auto=format&dpr=1.3&fit=crop&h=360&q=80&w=940');
 	});
 
+	it('should remove the param from the url if null is set', function() {
+		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
+		i.setWidth(null);
+		expect(i.getQueryString()).toEqual('auto=format&fit=crop&h=360&q=80');
+	});
+
 });
