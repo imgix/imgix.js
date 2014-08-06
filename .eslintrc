@@ -1,0 +1,19 @@
+{
+  "env": {
+    "amd": false,
+    "browser": true,
+    "node": false
+  },
+
+  "globals": {
+    "console": true,
+	"$": true,
+	"module": true
+  },
+
+  "rules": {
+	"quotes": 0,
+	"no-underscore-dangle": 0,
+	"space-infix-ops": 0
+  }
+}

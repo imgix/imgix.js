@@ -1,0 +1,22 @@
+{
+  "env": {
+    "amd": false,
+    "browser": true,
+    "node": false
+  },
+
+  "globals": {
+    "console": true,
+	"$": true,
+	"module": true,
+	"it": true,
+	"describe": true,
+	"expect": true,
+	"imgix": true
+  },
+
+  "rules": {
+	"quotes": 0,
+	"dot-notation": 0
+  }
+}
