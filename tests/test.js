@@ -326,4 +326,10 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('should handle only qs in constructor', function() {
+		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
+		i.setDPR(1.3);
+		expect(i.getQueryString()).toEqual('auto=format&dpr=1.3&fit=crop&h=360&q=80&w=940');
+	});
+
 });

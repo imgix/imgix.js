@@ -1025,6 +1025,7 @@
 		"rot": "Rotate",
 		"flip": "Flip",
 		"or": "Orient",
+		"dpr": "DPR",
 
 		//enhance
 		"hue": "Hue",
@@ -1233,6 +1234,10 @@
 				if (parsed.paramValues[parsed.params[i]].length > 0) {
 					qs.push(parsed.params[i] + '=' + parsed.paramValues[parsed.params[i]]);
 				}
+			}
+
+			if (result.indexOf('?') !== -1) {
+				result = result.split('?')[0];
 			}
 
 			result += '?' + qs.join('&');
