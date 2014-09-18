@@ -183,7 +183,7 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for autoUpdateImg...", 5000);
 
 		runs(function() {
-			expect(returnColors).toEqual(["rgb(251, 150, 23)", "rgb(240, 136, 18)", "rgb(224, 62, 5)", "rgb(216, 115, 39)", "rgb(119, 145, 198)", "rgb(149, 150, 166)", "rgb(72, 91, 134)", "rgb(57, 72, 103)", "rgb(47, 56, 78)", "rgb(50, 52, 50)"]);
+			expect(returnColors).toEqual(['rgb(251, 150, 23)', 'rgb(243, 133, 17)', 'rgb(224, 62, 5)', 'rgb(213, 84, 17)', 'rgb(119, 145, 198)', 'rgb(149, 150, 166)', 'rgb(72, 91, 134)', 'rgb(57, 72, 102)', 'rgb(47, 56, 78)', 'rgb(50, 52, 50)']);
 		});
 	});
 
@@ -227,7 +227,7 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for autoUpdateImg...", 2000);
 
 		runs(function() {
-			expect(returnColors).toEqual( [ 'rgb(251, 150, 23)', 'rgb(212, 58, 6)', 'rgb(57, 72, 103)' ]);
+			expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)']);
 		});
 		
 	});
