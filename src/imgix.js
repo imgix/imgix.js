@@ -1,4 +1,3 @@
-"use strict";
 
 // TODO: promote some of the private functions to public...
 // TODO: README for installing dev, running tests, etc.
@@ -13,6 +12,70 @@
 // TODO:function setOption(option, value)
 
 (function() {
+	"use strict";
+
+	var debouncer = function (func, wait) {
+		var timeoutRef;
+		return function () {
+			var self = this,
+				args = arguments,
+				later = function () {
+					timeoutRef = null;
+					func.apply(self, args);
+				};
+
+			window.clearTimeout(timeoutRef);
+			timeoutRef = window.setTimeout(later, wait);
+		};
+	};
+
+	// Polyfill or document.querySelectorAll + document.querySelector
+	// should only matter for the poor souls on IE < 8
+	// https://gist.github.com/chrisjlee/8960575
+	if (!document.querySelectorAll) {
+		document.querySelectorAll = function (selectors) {
+			var style = document.createElement('style'), elements = [], element;
+			document.documentElement.firstChild.appendChild(style);
+			document._qsa = [];
+
+			style.styleSheet.cssText = selectors + '{x-qsa:expression(document._qsa && document._qsa.push(this))}';
+			window.scrollBy(0, 0);
+			style.parentNode.removeChild(style);
+
+			while (document._qsa.length) {
+				element = document._qsa.shift();
+				element.style.removeAttribute('x-qsa');
+				elements.push(element);
+			}
+			document._qsa = null;
+			return elements;
+		};
+	}
+
+	if (!document.querySelector) {
+		document.querySelector = function (selectors) {
+			var elements = document.querySelectorAll(selectors);
+			return (elements.length) ? elements[0] : null;
+		};
+	}
+
+	if (!Array.prototype.indexOf) {
+		Array.prototype.indexOf = function (needle) {
+			for (var i = 0; i < this.length; i++) {
+				if (this[i] === needle) {
+					return i;
+				}
+			}
+			return -1;
+		};
+	}
+
+	if (!Array.isArray) {
+	  Array.isArray = function(arg) {
+		return Object.prototype.toString.call(arg) === '[object Array]';
+	  };
+	}
+
 
 	// https://github.com/websanova/js-url
 	var urlParser = (function() {
@@ -112,8 +175,8 @@
 	}
 
 	var config = {
-		isDocMarked: null,
-	},
+			isDocMarked: null
+		},
 		IMGIX_USABLE = 'imgix-usable';
 
 	// TODO: promote some of these private methods _* to public
@@ -223,7 +286,7 @@
 	 * @static
 	 * @private
 	 * @param {Element} el the element to check
-	 * @returns {string} url of the image on the elment
+	 * @returns {string} url of the image on the element
 	 */
 	imgix._getElementImage = function(el) {
 		if (imgix._isImageElement(el)) {
@@ -239,8 +302,8 @@
 	 * @static
 	 * @private
 	 * @param {Element} el the element to check
-	 * @todoo use cssProperty instead?
-	 * @returns {string} url of the image on the elment
+	 * @todo use cssProperty instead?
+	 * @returns {string} url of the image on the element
 	 */
 	imgix._getRawBackgroundImage = function(el) {
 		return el.style.cssText.match(/url\(([^\)]+)/);
@@ -252,7 +315,7 @@
 	 * @static
 	 * @private
 	 * @param {Element} el the element to check
-	 * @returns {string} url of the image on the elment
+	 * @returns {string} url of the image on the element
 	 */
 	imgix._getBackgroundImage = function(el) {
 		var raw = imgix._getRawBackgroundImage(el);
@@ -1288,11 +1351,360 @@
 
 	imgix.safe_btoa_decode = function (str) {
 		return window.atob(str.replace(/\-+/g, '+').replace(/_+/g, '\/')); // http://
-	}
-
-	imgix.md5 = function(d) {
-		return md5(d);
 	};
+
+
+	// #############################################################
+	//
+	// START FLUID
+
+	var fluidDefaults = {
+		fluidClass : "imgix-fluid",
+		updateOnResize : true,
+		updateOnResizeDown : false,
+		updateOnPinch : false,
+		highDPRAutoScaleQuality: true,
+		highDPRAutoCSS: true,
+		onChangeParamOverride: null,
+		pixelStep : 10
+	};
+
+	imgix.FluidSet = function(options) {
+		if (isReallyObject(options)) {
+			this.options = mergeObject(fluidDefaults, options);
+		} else {
+			this.options = mergeObject(fluidDefaults, {});
+		}
+
+		this.windowResizeEventBound = false;
+		this.windowResizeTimeout = 200;
+		this.windowLastWidth = 0;
+		this.windowLastHeight = 0;
+
+		this.reload = debouncer(this.reloader, this.windowResizeTimeout);
+	};
+
+	imgix.FluidSet.prototype.updateSrc = function(elem) {
+		var details = this.getImgDetails(elem);
+		var newUrl = details.url;
+		var currentElemWidth = details.width;
+
+		elem.lastWidth = elem.lastWidth || 0;
+
+		if (this.options.updateOnResizeDown === false && elem.lastWidth >= currentElemWidth) {
+			return;
+		}
+
+		console.log("setting...", newUrl);
+		imgix._setElementImageAfterLoad(elem, newUrl);
+		elem.lastWidth = currentElemWidth;
+	};
+
+	imgix.FluidSet.prototype.getImgDetails = function(elem) {
+		if (!elem) {
+			return;
+		}
+
+		var dpr = getDPR(elem),
+			pixelStep = this.options.pixelStep,
+			zoomMultiplier = isMobileDevice() ? getInnerWidth() : 1,
+			elemSize = calculateElementSize(elem),
+			elemWidth = pixelRound(elemSize.width * zoomMultiplier, pixelStep),
+			elemHeight = pixelRound(elemSize.height * zoomMultiplier, pixelStep),
+			i = new imgix.URL(getImgSrc(elem));
+
+
+		if (dpr !== 1) {
+			i.setDPR(dpr);
+		}
+
+		if (elemHeight <= elemWidth) {
+			i.setWidth(elemWidth);
+		} else {
+			i.setHeight(elemHeight);
+		}
+
+		if (this.options.highDPRAutoScaleQuality && dpr > 1) {
+			i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 25), 75));
+		}
+
+		if (i.getFit() === 'crop') {
+			if (elemHeight > 0) {
+				i.setHeight(elemHeight);
+			}
+			if (elemWidth > 0) {
+				i.setWidth(elemWidth);
+			}
+		}
+
+		var overrides = {};
+		if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === "function") {
+			overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams());
+		}
+
+		for (var k in overrides) {
+			i.setParam(k, overrides[k]);
+		}
+
+		return {
+			url: i.getURL(),
+			width: elemWidth,
+			height: elemHeight
+		};
+	};
+
+	imgix.FluidSet.prototype.toString = function() {
+		return "[object FluidSet]";
+	};
+
+	imgix.FluidSet.prototype.reloader = function() {
+		imgix.fluid(this);
+
+		this.windowLastWidth = getWindowWidth();
+		this.windowLastHeight = getWindowHeight();
+	};
+
+	imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
+		var self = this;
+		if (elem.addEventListener && !elem.listenerAttached) {
+			elem.addEventListener("gestureend", function() {
+				self.updateSrc(this);
+			}, false);
+
+			elem.addEventListener("gesturechange", function() {
+				self.updateSrc(this);
+			}, false);
+
+			elem.listenerAttached = true;
+		}
+	};
+
+	imgix.FluidSet.prototype.attachWindowResizer = function() {
+		var self = this,
+			windowResize = function() {
+				if (self.windowLastWidth !== getWindowWidth() || self.windowLastHeight !== getWindowHeight()) {
+					self.reload();
+				}
+			};
+
+		if (window.addEventListener) {
+			window.addEventListener("resize", windowResize, false);
+		} else if (window.attachEvent) {
+			window.attachEvent("onresize", windowResize);
+		}
+
+		this.windowResizeEventBound = true;
+	};
+
+	var mergeObject = function (a, b) {
+		if (a && b) {
+			for (var key in b) {
+				if (b.hasOwnProperty(key)) {
+					a[key] = b[key];
+				}
+			}
+		}
+		return a;
+	};
+
+	var pixelRound = function (pixelSize, pixelStep) {
+		return Math.ceil(pixelSize / pixelStep) * pixelStep;
+	};
+
+	var isMobileDevice = function () {
+		return (/iPhone|iPod|iPad/i).test(navigator.userAgent);
+	};
+
+	var isNumber = function (value) {
+		return !isNaN(parseFloat(value)) && isFinite(value);
+	};
+
+	var getInnerWidth = function () {
+		var zoomMult = Math.round((screen.width / window.innerWidth) * 10) / 10;
+		return zoomMult <= 1 ? 1 : zoomMult;
+	};
+
+	var getDPR = function (elem) {
+		var dpiOverride = elem.getAttribute("data-dpi");
+		var devicePixelRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
+		var dpi = isNumber(dpiOverride) === true ? parseFloat(dpiOverride) : devicePixelRatio;
+		if (dpi % 1 !== 0) {
+			dpi = dpi.toFixed(1);
+		}
+		return dpi;
+	};
+
+	var getWindowWidth = function () {
+		return document.documentElement.clientWidth || document.body && document.body.clientWidth || 1024;
+	};
+
+	var getWindowHeight = function () {
+		return document.documentElement.clientHeight || document.body && document.body.clientHeight || 768;
+	};
+
+	var getImgSrc = function (elem) {
+		return elem.getAttribute("resrc") || elem.getAttribute("data-src") || elem.getAttribute("src");
+	};
+
+	var calculateElementSize = function (elem) {
+		var val = {
+			width: elem.offsetWidth,
+			height: elem.offsetHeight
+		};
+
+		if (elem.parentNode === null) {
+			val.width = getWindowWidth();
+			val.height = getWindowHeight();
+			return val;
+		}
+
+		if (val.width !== 0 || val.height !== 0) {
+			if (elem.alt && !elem.resrc) {
+				elem.resrc = true;
+				return calculateElementSize(elem.parentNode);
+			}
+			return val;
+
+		} else {
+			var found,
+				prop,
+				past = {},
+				visProp = { position : "absolute", visibility : "hidden", display : "block" };
+
+			for (prop in visProp) {
+				if (visProp.hasOwnProperty(prop)) {
+					past[prop] = elem.style[prop];
+					elem.style[prop] = visProp[prop];
+				}
+			}
+
+			found = val;
+
+			for (prop in visProp) {
+				if (visProp.hasOwnProperty(prop)) {
+					elem.style[prop] = past[prop];
+				}
+			}
+
+			if (found.width === 0 || found.height === 0) {
+				return calculateElementSize(elem.parentNode);
+			} else {
+				return found;
+			}
+		}
+	};
+
+	var isReallyObject = function(elem) {
+		return elem && typeof elem === "object" && (elem + '') === '[object Object]';
+	};
+
+	var isFluidSet = function(elem) {
+		return elem && typeof elem === "object" && (elem + '') === '[object FluidSet]';
+	};
+
+
+	imgix.fluid = function(elem) {
+		if (elem === null){
+			return;
+		}
+
+		var options,
+			fluidSet;
+
+		if (isReallyObject(elem)) {
+			options = mergeObject(fluidDefaults, elem);
+			fluidSet = new imgix.FluidSet(options);
+			elem = null;
+
+		} else if (isFluidSet(elem)) {
+			fluidSet = elem;
+			options = fluidSet.options;
+		} else {
+			options = mergeObject(fluidDefaults, {});
+			fluidSet = new imgix.FluidSet(options);
+		}
+
+		var fluidElements;
+		if (elem && !isFluidSet(elem)) {
+			fluidElements = Array.isArray(elem) ? elem : [elem];
+		} else {
+			fluidElements = document.querySelectorAll('.' + options.fluidClass);
+		}
+
+		for (var i = 0; i < fluidElements.length; i++) {
+			if (fluidElements[i] === null) {
+				continue;
+			}
+
+			if (options.updateOnPinch) {
+				fluidSet.attachGestureEvent(fluidElements[i]);
+			}
+
+			fluidSet.updateSrc(fluidElements[i]);
+		}
+
+		if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
+			fluidSet.attachWindowResizer();
+		}
+	};
+
+
+	// END FLUID
+	// #############################################################
+
+	/**
+	 * Cross-browser DOM ready helper
+	 * Dustin Diaz <dustindiaz.com> (MIT License)
+	 * https://github.com/ded/domready/tree/v0.3.0
+	 */
+	imgix.onready = function (ready) {
+		var fns = [];
+		var fn;
+		var f = false;
+		var doc = document;
+		var testEl = doc.documentElement;
+		var hack = testEl.doScroll;
+		var domContentLoaded = "DOMContentLoaded";
+		var addEventListener = "addEventListener";
+		var onreadystatechange = "onreadystatechange";
+		var readyState = "readyState";
+		var loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/;
+		var loaded = loadedRgx.test(doc[readyState]);
+		function flush(f) {
+			loaded = 1;
+			while (f = fns.shift()) {
+				f();
+			}
+		}
+		doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
+			doc.removeEventListener(domContentLoaded, fn, f);
+			flush();
+		}, f);
+		hack && doc.attachEvent(onreadystatechange, fn = function () {
+			if (/^c/.test(doc[readyState])) {
+				doc.detachEvent(onreadystatechange, fn);
+				flush();
+			}
+		});
+		return (ready = hack ?
+			function (fn) {
+				self !== top ?
+					loaded ? fn() : fns.push(fn) :
+					function () {
+						try {
+							testEl.doScroll("left");
+						} catch (e) {
+							return setTimeout(function () {
+							ready(fn);
+							}, 50);
+						}
+					fn();
+				}();
+			}:
+			function (fn) {
+				loaded ? fn() : fns.push(fn);
+			});
+	}();
 
 	// MD5 stuff...
 
@@ -1317,7 +1729,6 @@
 
 	/*jslint bitwise: true */
 	/*global unescape, define */
-
 	(function ($) {
 		'use strict';
 
@@ -1569,7 +1980,7 @@
 		} else {
 			$.md5 = md5;
 		}
-	}(this));
+	}(imgix));
 
 	// start promise
 	/** license MIT-promiscuous-©Ruben Verborgh*/

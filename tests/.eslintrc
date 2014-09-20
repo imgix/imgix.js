@@ -12,7 +12,9 @@
 	"it": true,
 	"describe": true,
 	"expect": true,
-	"imgix": true
+	"imgix": true,
+	"runs": true,
+	"waitsFor": true
   },
 
   "rules": {

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta name="viewport" content="width=device-width, user-scalable=yes">
+	<meta charset="UTF-8">
+	<title>CSS Background Example</title>
+	<style>
+		.imgix-fluid-bg {
+			position:absolute;
+			width:100%;
+			height:100%;
+			top:0;
+			left:0;
+			display:block;
+			background-position: 50%;
+			background-size: cover
+		}
+	</style>
+
+	<script src="/src/imgix.js"></script>
+
+	<script>
+		var opts = {
+			updateOnResizeDown : true,
+			updateOnPinch : true,
+			pixelRounding : 10,
+			onChangeParamOverride: function(w, h, params) {
+				var newText = (w + "x" + h) + " q:" + (params.q || 75) + " dpr:" + (params.dpr || 1);
+				return {"txt": encodeURIComponent(newText)};
+			}
+		};
+
+		imgix.onready(function() {
+			imgix.fluid(opts);
+		});
+
+	</script>
+</head>
+<body>
+
+
+	<!-- <div data-src="http://jackangers.imgix.net/chris.jpg?fit=crop&crop=faces&txt=hello&txtalign=middle,center&txtclr=ffffffff&txtsize=43" class="imgix-fluid imgix-fluid-bg"></div> -->
+
+	<div data-src="http://miguel.imgix.net/ex/katie.jpg?fit=crop&crop=faces&txt=hello&txtalign=middle,center&txtclr=ffffffff&txtsize=30" class="imgix-fluid imgix-fluid-bg"></div>
+</body>
+</html>

@@ -8,12 +8,17 @@
   "globals": {
     "console": true,
 	"$": true,
-	"module": true
+	"module": true,
+	"exports": true,
+	"imgix": true
   },
 
   "rules": {
+	"no-console": 0,
 	"quotes": 0,
 	"no-underscore-dangle": 0,
-	"space-infix-ops": 0
+	"space-infix-ops": 0,
+	"camelcase": 0,
+	"no-use-before-define": 0
   }
 }
