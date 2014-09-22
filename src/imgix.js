@@ -1385,19 +1385,22 @@
 	};
 
 	imgix.FluidSet.prototype.updateSrc = function(elem) {
-		var details = this.getImgDetails(elem);
-		var newUrl = details.url;
-		var currentElemWidth = details.width;
+		var details = this.getImgDetails(elem),
+			newUrl = details.url,
+			currentElemWidth = details.width,
+			currentElemHeight = details.height;
 
 		elem.lastWidth = elem.lastWidth || 0;
+		elem.lastHeight = elem.lastHeight || 0;
 
-		if (this.options.updateOnResizeDown === false && elem.lastWidth >= currentElemWidth) {
+		if (this.options.updateOnResizeDown === false && elem.lastWidth >= currentElemWidth && elem.lastHeight >= currentElemHeight) {
 			return;
 		}
 
 		console.log("setting...", newUrl);
 		imgix._setElementImageAfterLoad(elem, newUrl);
 		elem.lastWidth = currentElemWidth;
+		elem.lastHeight = currentElemHeight;
 	};
 
 	imgix.FluidSet.prototype.getImgDetails = function(elem) {
