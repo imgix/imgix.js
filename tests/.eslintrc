@@ -14,7 +14,8 @@
 	"expect": true,
 	"imgix": true,
 	"runs": true,
-	"waitsFor": true
+	"waitsFor": true,
+	"spyOn": true
   },
 
   "rules": {

@@ -29,6 +29,22 @@
 		};
 	};
 
+
+	// Console-polyfill. MIT license.
+	// https://github.com/paulmillr/console-polyfill
+	// Make it safe to do console.log() always.
+	(function(con) {
+		var prop, method;
+		var empty = {};
+		var dummy = function() {};
+		var properties = 'memory'.split(',');
+		var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+		 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+		 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+		while (prop = properties.pop()) con[prop] = con[prop] || empty;
+		while (method = methods.pop()) con[method] = con[method] || dummy;
+	})(this.console = this.console || {}); // Using `this` for web workers.
+
 	// mozilla's Function.bind polyfill
 	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
 	if (!Function.prototype.bind) {
@@ -710,6 +726,10 @@
 		return window.getComputedStyle(elem, null).getPropertyValue(property);
 	};
 
+	imgix._instanceOfImgixURL = function(x) {
+		return x && x.toString() === "[object imgixURL]";
+	};
+
 	/**
 	 * Represents an imgix url
 	 * @memberof imgix
@@ -985,6 +1005,10 @@
 		return this.getUrl();
 	};
 
+	imgix.URL.prototype.toString = function() {
+		return "[object imgixURL]";
+	};
+
 	/**
 	 * The generated imgix image url
 	 * @memberof imgix
@@ -1028,6 +1052,10 @@
 	};
 
 	imgix.URL.prototype.setParams = function(dict, doOverride) {
+		if (imgix._instanceOfImgixURL(dict)) {
+			console.warn("setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead");
+			return;
+		}
 		for (var k in dict) {
 			this.setParam(k, dict[k], doOverride, true);
 		}

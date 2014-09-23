@@ -183,7 +183,7 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for autoUpdateImg...", 5000);
 
 		runs(function() {
-			expect(returnColors).toEqual(['rgb(251, 150, 23)', 'rgb(243, 133, 17)', 'rgb(224, 62, 5)', 'rgb(213, 84, 17)', 'rgb(119, 145, 198)', 'rgb(149, 150, 166)', 'rgb(72, 91, 134)', 'rgb(57, 72, 102)', 'rgb(47, 56, 78)', 'rgb(50, 52, 50)']);
+			expect(returnColors).toEqual(['rgb(251, 150, 23)', 'rgb(243, 133, 17)', 'rgb(224, 62, 5)', 'rgb(213, 84, 17)', 'rgb(119, 145, 198)', 'rgb(149, 150, 166)', 'rgb(72, 91, 134)', 'rgb(57, 72, 102)', 'rgb(47, 56, 78)', 'rgb(50, 52, 50)'].reverse());
 		});
 	});
 
@@ -227,7 +227,7 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for autoUpdateImg...", 2000);
 
 		runs(function() {
-			expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)']);
+			expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)'].reverse());
 		});
 		
 	});
@@ -318,7 +318,7 @@ describe('imgix-javascript unit tests', function() {
 			imgix._setElementImageAfterLoad(el, newUrl);
 		});
 
-		waits(500); // give it time to load
+		waits(700); // give it time to load
 
 		runs(function() {
 			// ensure it actually loaded...
@@ -336,6 +336,13 @@ describe('imgix-javascript unit tests', function() {
 		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
 		i.setWidth(null);
 		expect(i.getQueryString()).toEqual('auto=format&fit=crop&h=360&q=80');
+	});
+
+	it('should warn on', function() {
+		spyOn(console, 'warn');
+		var i = new imgix.URL();
+		i.setParams(i);
+		expect(console.warn).toHaveBeenCalled();
 	});
 
 });
