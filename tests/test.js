@@ -338,11 +338,30 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getQueryString()).toEqual('auto=format&fit=crop&h=360&q=80');
 	});
 
-	it('should warn on', function() {
+	it('should warn when trying to set an imgix url instance as a param object', function() {
 		spyOn(console, 'warn');
 		var i = new imgix.URL();
 		i.setParams(i);
 		expect(console.warn).toHaveBeenCalled();
+	});
+
+	it('should warn when trying to set an invalid param', function() {
+		spyOn(console, 'warn');
+		var i = new imgix.URL();
+		i.setParams({"jasdlkfja": 1}); // that's an invalid param name
+		expect(console.warn).toHaveBeenCalled();
+	});
+
+	it('should auto encode params', function() {
+		var i = new imgix.URL();
+		i.setParams({"txt": "this has spaces"}); // that's an invalid param name
+		expect(i.getText()).toEqual("this%20has%20spaces");
+	});
+
+	it('should auto hexify rgb colors', function() {
+		var i = new imgix.URL();
+		i.setParams({"mono": "rgb(150, 150, 220)"});
+		expect(i.getMonochrome()).toEqual("9696dc");
 	});
 
 });

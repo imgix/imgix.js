@@ -573,7 +573,7 @@
 				'txtlinecolor': 'txtlineclr',
 				'ta': 'txtalign',
 				'intensity': 'int',
-				'colorize': 'col',
+				'monochrome': 'mono',
 				'f': 'fit',
 				'orient': 'or',
 				'm': 'watermark',
@@ -591,7 +591,7 @@
 			'px': "0",
 			'htn': "0",
 			'blur': "0",
-			'col': '',
+			'mono': '',
 			'blend': '',
 			'int': "100",
 
@@ -1072,14 +1072,13 @@
 		doOverride = !imgix.isDef(doOverride) ? true : doOverride;
 		noUpdate = !imgix.isDef(noUpdate) ? false : noUpdate;
 
-		if (param === 'mark' || param === 'mask') {
-			// if not encoded then decode...
-			if (decodeURIComponent(value) === value) {
-				value = encodeURIComponent(value);
-			}
-		} else if (param === 'col' || param === 'colorize' || param === 'blend') {
+		if (param === 'col' || param === 'colorize' || param === 'blend' || param === 'mono' || param === "monochrome") {
 			if (value.slice(0, 3) === 'rgb') {
 				value = imgix._rgbToHex(value);
+			}
+		} else {
+			if (decodeURIComponent(value) === value) {
+				value = encodeURIComponent(value);
 			}
 		}
 
@@ -1182,7 +1181,7 @@
 		"sepia": "Sepia",
 		"htn": "Halftone",
 		"blur": "Blur",
-		"col": "Colorize",
+		"mono": "Monochrome",
 		"px": "Pixelate",
 
 		"blend": "Blend",
