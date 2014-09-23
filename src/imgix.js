@@ -29,6 +29,33 @@
 		};
 	};
 
+	// mozilla's Function.bind polyfill
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+	if (!Function.prototype.bind) {
+	  Function.prototype.bind = function (oThis) {
+		if (typeof this !== "function") {
+		  // closest thing possible to the ECMAScript 5
+		  // internal IsCallable function
+		  throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+		}
+
+		var aArgs = Array.prototype.slice.call(arguments, 1),
+			fToBind = this,
+			fNOP = function () {},
+			fBound = function () {
+			  return fToBind.apply(this instanceof fNOP && oThis
+					 ? this
+					 : oThis,
+					 aArgs.concat(Array.prototype.slice.call(arguments)));
+			};
+
+		fNOP.prototype = this.prototype;
+		fBound.prototype = new fNOP();
+
+		return fBound;
+	  };
+	}
+
 	// Polyfill or document.querySelectorAll + document.querySelector
 	// should only matter for the poor souls on IE < 8
 	// https://gist.github.com/chrisjlee/8960575
@@ -661,11 +688,16 @@
 
 	imgix._getCssPropertyById = function(elmId, property) {
 		var elem = document.getElementById(elmId);
-		return window.getComputedStyle(elem,null).getPropertyValue(property);
+		return window.getComputedStyle(elem, null).getPropertyValue(property);
 	};
 
 	imgix._getCssProperty = function(el, property) {
 		return window.getComputedStyle(el, null).getPropertyValue(property);
+	};
+
+	imgix._getCssPropertyBySelector = function(sel, property) {
+		var elem = document.querySelector(sel);
+		return window.getComputedStyle(elem, null).getPropertyValue(property);
 	};
 
 	/**
@@ -1369,12 +1401,20 @@
 		pixelStep : 10
 	};
 
+	function getFluidDefaults() {
+		return fluidDefaults;
+	}
+
 	imgix.FluidSet = function(options) {
 		if (isReallyObject(options)) {
-			this.options = mergeObject(fluidDefaults, options);
+			this.options = mergeObject(getFluidDefaults(), options);
 		} else {
-			this.options = mergeObject(fluidDefaults, {});
+			this.options = mergeObject(getFluidDefaults(), {});
 		}
+
+		//Object.freeze(options);
+
+		this.namespace = "" + Math.random().toString(36).substring(7);
 
 		this.windowResizeEventBound = false;
 		this.windowResizeTimeout = 200;
@@ -1410,12 +1450,15 @@
 
 		var dpr = getDPR(elem),
 			pixelStep = this.options.pixelStep,
-			zoomMultiplier = isMobileDevice() ? getInnerWidth() : 1,
+			zoomMultiplier = isMobileDevice() ? getZoom() : 1,
 			elemSize = calculateElementSize(elem),
 			elemWidth = pixelRound(elemSize.width * zoomMultiplier, pixelStep),
 			elemHeight = pixelRound(elemSize.height * zoomMultiplier, pixelStep),
+			hasHardCodedHeight = elem.style.height && elem.style.height.length > 0,
 			i = new imgix.URL(getImgSrc(elem));
 
+		i.setHeight('');
+		i.setWidth('');
 
 		if (dpr !== 1) {
 			i.setDPR(dpr);
@@ -1432,7 +1475,8 @@
 		}
 
 		if (i.getFit() === 'crop') {
-			if (elemHeight > 0) {
+			//console.log(elem.style.height);
+			if (elemHeight > 0 && (!imgix._isImageElement(elem) || (imgix._isImageElement(elem) && hasHardCodedHeight))) {
 				i.setHeight(elemHeight);
 			}
 			if (elemWidth > 0) {
@@ -1443,6 +1487,8 @@
 		var overrides = {};
 		if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === "function") {
 			overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams());
+		} else {
+			//console.log("skipping...");
 		}
 
 		for (var k in overrides) {
@@ -1482,32 +1528,42 @@
 		}
 	};
 
+
+	imgix.FluidSet.prototype.resizeListener = function() {
+		if (this.windowLastWidth !== getWindowWidth() || this.windowLastHeight !== getWindowHeight()) {
+			this.reload();
+		}
+	};
+
+	var instances = {};
+
 	imgix.FluidSet.prototype.attachWindowResizer = function() {
-		var self = this,
-			windowResize = function() {
-				if (self.windowLastWidth !== getWindowWidth() || self.windowLastHeight !== getWindowHeight()) {
-					self.reload();
-				}
-			};
+		instances[this.namespace] = function() {
+			this.resizeListener();
+		}.bind(this);
 
 		if (window.addEventListener) {
-			window.addEventListener("resize", windowResize, false);
+			window.addEventListener("resize", instances[this.namespace], false);
 		} else if (window.attachEvent) {
-			window.attachEvent("onresize", windowResize);
+			window.attachEvent("onresize", instances[this.namespace]);
 		}
 
 		this.windowResizeEventBound = true;
 	};
 
-	var mergeObject = function (a, b) {
-		if (a && b) {
-			for (var key in b) {
-				if (b.hasOwnProperty(key)) {
-					a[key] = b[key];
+	var mergeObject = function() {
+		var obj = {},
+			i = 0,
+			il = arguments.length,
+			key;
+		for (; i < il; i++) {
+			for (key in arguments[i]) {
+				if (arguments[i].hasOwnProperty(key)) {
+					obj[key] = arguments[i][key];
 				}
 			}
 		}
-		return a;
+		return obj;
 	};
 
 	var pixelRound = function (pixelSize, pixelStep) {
@@ -1522,7 +1578,7 @@
 		return !isNaN(parseFloat(value)) && isFinite(value);
 	};
 
-	var getInnerWidth = function () {
+	var getZoom = function () {
 		var zoomMult = Math.round((screen.width / window.innerWidth) * 10) / 10;
 		return zoomMult <= 1 ? 1 : zoomMult;
 	};
@@ -1615,7 +1671,7 @@
 			fluidSet;
 
 		if (isReallyObject(elem)) {
-			options = mergeObject(fluidDefaults, elem);
+			options = mergeObject(getFluidDefaults(), elem);
 			fluidSet = new imgix.FluidSet(options);
 			elem = null;
 
@@ -1623,7 +1679,7 @@
 			fluidSet = elem;
 			options = fluidSet.options;
 		} else {
-			options = mergeObject(fluidDefaults, {});
+			options = mergeObject(getFluidDefaults(), {});
 			fluidSet = new imgix.FluidSet(options);
 		}
 
