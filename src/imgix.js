@@ -353,9 +353,19 @@
 		}
 	};
 
+
+	imgix._getColorBrightness = function(c) {
+		var parts = c.replace(/[^0-9,]+/g, '').split(","),
+			r = +parts[0],
+			g = +parts[1],
+			b = +parts[2];
+
+	   return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
+	};
+
 	//////////////////////////////////////////////////
 
-	imgix.getImages = function() {
+	imgix.getElementsWithImages = function() {
 		imgix._scanDocument();
 
 		return document.querySelectorAll("." + IMGIX_USABLE);
@@ -813,6 +823,12 @@
 
 						for (var x = 0; x < values.length; x++) {
 							resultColors.push(values[x].color);
+						}
+
+						if (resultColors && resultColors.length > 1) {
+							if (imgix._getColorBrightness(resultColors[resultColors.length - 1]) < imgix._getColorBrightness(resultColors[0])) {
+								resultColors.reverse();
+							}
 						}
 
 						cssColorCache[cssUrl] = resultColors;
