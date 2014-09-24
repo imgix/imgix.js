@@ -258,7 +258,7 @@
 	 * @returns {boolean} true if the element is an img tag
 	 */
 	imgix._isImageElement = function(el) {
-		return (el && el.tagName.toLowerCase() === 'img');
+		return (el && el.tagName && el.tagName.toLowerCase() === 'img');
 	};
 
 	/**
@@ -388,8 +388,7 @@
 	};
 
 	imgix.hasImage = function(el) {
-		return el && (el.tagName.toLowerCase() === 'img' ||
-			el.style.cssText.indexOf('background-image') !== -1);
+		return el && (imgix._isImageElement(el) || el.style.cssText.indexOf('background-image') !== -1);
 	};
 
 	imgix._scanDocument = function() {

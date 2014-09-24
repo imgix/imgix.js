@@ -1,9 +1,25 @@
 (function($, imgix) {
 
+	$.imgix = {
+		all: function() {
+			var imgs = imgix.getElementsWithImages(),
+				results = [];
+
+			for (var i = 0; i < imgs.length; i++) {
+				results.push(imgs[i]);
+			}
+
+			return $(results).imgix();
+		}
+	};
+
 	$.fn.imgix = function () {
 		var jq = this;
 		return {
 			setParam: function(param, value){
+				if (typeof param === "object") {
+					return this.setParams(param);
+				}
 				return jq.each(function(idx, e) {
 					if (e && imgix.hasImage(e)) {
 						var i = new imgix.URL(imgix._getElementImage(e));
