@@ -1,209 +1,177 @@
+/*
+ _                    _             _
+(_)                  (_)           (_)
+ _  _ __ ___    __ _  _ __  __      _  ___
+| || '_ ` _ \  / _` || |\ \/ /     | |/ __|
+| || | | | | || (_| || | >  <  _   | |\__ \
+|_||_| |_| |_| \__, ||_|/_/\_\(_)  | ||___/
+                __/ |             _/ |
+               |___/             |__/
 
-// TODO: promote some of the private functions to public...
-// TODO: README for installing dev, running tests, etc.
-// TODO: finish jsdocs
-// TODO: cleanup / organization
+v1.0.0
 
-// TODO: handle options... as obj
-// TODO: handle encoding...
+Questions/Issues? File an issue on github or email us at support@imgix.com
+*/
 
-// TODO: handle rentjuice-style signing too
-// TODO: param validator/ranges...
-// TODO:function setOption(option, value)
+/*
+We recommend using the minified version of this file (imgix.min.js) unless you're testing.
+
+// TODO: more copy...
+// TODO: link to imgix.com imgix.js home
+// TODO: link to 
+// TODO: link to jquery plugin
+
+*/
 
 (function() {
 	"use strict";
 
-	var debouncer = function (func, wait) {
-		var timeoutRef;
-		return function () {
-			var self = this,
-				args = arguments,
-				later = function () {
-					timeoutRef = null;
-					func.apply(self, args);
-				};
+	// polyfills.
+	function initPolyfills() {
 
-			window.clearTimeout(timeoutRef);
-			timeoutRef = window.setTimeout(later, wait);
-		};
-	};
-
-
-	// Object.freeze polyfill (doesn't actually do anything where unsupported)
-	if (!Object.freeze) {
-		Object.freeze = function freeze(object) {
-			return object;
-		};
-	}
-
-	// Console-polyfill. MIT license.
-	// https://github.com/paulmillr/console-polyfill
-	// Make it safe to do console.log() always.
-	(function(con) {
-		var prop, method;
-		var empty = {};
-		var dummy = function() {};
-		var properties = 'memory'.split(',');
-		var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
-		 'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
-		 'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-		while (prop = properties.pop()) con[prop] = con[prop] || empty;
-		while (method = methods.pop()) con[method] = con[method] || dummy;
-	})(this.console = this.console || {}); // Using `this` for web workers.
-
-	// mozilla's Function.bind polyfill
-	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-	if (!Function.prototype.bind) {
-	  Function.prototype.bind = function (oThis) {
-		if (typeof this !== "function") {
-		  // closest thing possible to the ECMAScript 5
-		  // internal IsCallable function
-		  throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-		}
-
-		var aArgs = Array.prototype.slice.call(arguments, 1),
-			fToBind = this,
-			fNOP = function () {},
-			fBound = function () {
-			  return fToBind.apply(this instanceof fNOP && oThis
-					 ? this
-					 : oThis,
-					 aArgs.concat(Array.prototype.slice.call(arguments)));
+		// Object.freeze polyfill (pure pass through)
+		if (!Object.freeze) {
+			Object.freeze = function freeze(object) {
+				return object;
 			};
-
-		fNOP.prototype = this.prototype;
-		fBound.prototype = new fNOP();
-
-		return fBound;
-	  };
-	}
-
-	// Polyfill or document.querySelectorAll + document.querySelector
-	// should only matter for the poor souls on IE < 8
-	// https://gist.github.com/chrisjlee/8960575
-	if (!document.querySelectorAll) {
-		document.querySelectorAll = function (selectors) {
-			var style = document.createElement('style'), elements = [], element;
-			document.documentElement.firstChild.appendChild(style);
-			document._qsa = [];
-
-			style.styleSheet.cssText = selectors + '{x-qsa:expression(document._qsa && document._qsa.push(this))}';
-			window.scrollBy(0, 0);
-			style.parentNode.removeChild(style);
-
-			while (document._qsa.length) {
-				element = document._qsa.shift();
-				element.style.removeAttribute('x-qsa');
-				elements.push(element);
-			}
-			document._qsa = null;
-			return elements;
-		};
-	}
-
-	if (!document.querySelector) {
-		document.querySelector = function (selectors) {
-			var elements = document.querySelectorAll(selectors);
-			return (elements.length) ? elements[0] : null;
-		};
-	}
-
-	if (!Array.prototype.indexOf) {
-		Array.prototype.indexOf = function (needle) {
-			for (var i = 0; i < this.length; i++) {
-				if (this[i] === needle) {
-					return i;
-				}
-			}
-			return -1;
-		};
-	}
-
-	if (!Array.isArray) {
-	  Array.isArray = function(arg) {
-		return Object.prototype.toString.call(arg) === '[object Array]';
-	  };
-	}
-
-
-	// https://github.com/websanova/js-url
-	var urlParser = (function() {
-		function isNumeric(arg) {
-			return !isNaN(parseFloat(arg)) && isFinite(arg);
 		}
 
-		return function(arg, url) {
-			var _ls = url || window.location.toString();
-
-			if (!arg) { return _ls; }
-			else { arg = arg.toString(); }
-
-			if (_ls.substring(0,2) === '//') { _ls = 'http:' + _ls; }
-			else if (_ls.split('://').length === 1) { _ls = 'http://' + _ls; }
-
-			url = _ls.split('/');
-			var _l = {auth:''}, host = url[2].split('@');
-
-			if (host.length === 1) { host = host[0].split(':'); }
-			else { _l.auth = host[0]; host = host[1].split(':'); }
-
-			_l.protocol = url[0];
-			_l.hostname=host[0];
-			_l.port=(host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
-			_l.pathname=( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
-			var _p = _l.pathname;
-
-			if (_p.charAt(_p.length-1) === '/') { _p=_p.substring(0, _p.length-1); }
-			var _h = _l.hostname, _hs = _h.split('.'), _ps = _p.split('/');
-
-			if (arg === 'hostname') { return _h; }
-			else if (arg === 'domain') {
-				if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) { return _h; }
-				return _hs.slice(-2).join('.'); 
+		// Console-polyfill. MIT license.
+		// https://github.com/paulmillr/console-polyfill
+		// Make it safe to do console.log() always.
+		(function(con) {
+			var prop, method;
+			var empty = {};
+			var dummy = function() {};
+			var properties = 'memory'.split(',');
+			var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+			'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+			'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+			while (prop = properties.pop()) {
+				con[prop] = con[prop] || empty;
 			}
-			//else if (arg === 'tld') { return _hs.slice(-1).join('.'); }
-			else if (arg === 'sub') { return _hs.slice(0, _hs.length - 2).join('.'); }
-			else if (arg === 'port') { return _l.port; }
-			else if (arg === 'protocol') { return _l.protocol.split(':')[0]; }
-			else if (arg === 'auth') { return _l.auth; }
-			else if (arg === 'user') { return _l.auth.split(':')[0]; }
-			else if (arg === 'pass') { return _l.auth.split(':')[1] || ''; }
-			else if (arg === 'path') { return _l.pathname; }
-			else if (arg.charAt(0) === '.')
-			{
-				arg = arg.substring(1);
-				if(isNumeric(arg)) {arg = parseInt(arg, 10); return _hs[arg < 0 ? _hs.length + arg : arg-1] || ''; }
+			while (method = methods.pop()) {
+				con[method] = con[method] || dummy;
 			}
-			else if (isNumeric(arg)) { arg = parseInt(arg, 10); return _ps[arg < 0 ? _ps.length + arg : arg] || ''; }
-			else if (arg === 'file') { return _ps.slice(-1)[0]; }
-			else if (arg === 'filename') { return _ps.slice(-1)[0].split('.')[0]; }
-			else if (arg === 'fileext') { return _ps.slice(-1)[0].split('.')[1] || ''; }
-			else if (arg.charAt(0) === '?' || arg.charAt(0) === '#')
-			{
-				var params = _ls, param = null;
+		})(window.console || {}); // Using `this` for web workers.
 
-				if(arg.charAt(0) === '?') { params = (params.split('?')[1] || '').split('#')[0]; }
-				else if(arg.charAt(0) === '#') { params = (params.split('#')[1] || ''); }
-
-				if(!arg.charAt(1)) { return params; }
-
-				arg = arg.substring(1);
-				params = params.split('&');
-
-				for(var i=0,ii=params.length; i<ii; i++)
-				{
-					param = params[i].split('=');
-					if(param[0] === arg) { return param[1] || ''; }
+		// mozilla's Function.bind polyfill
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+		if (!Function.prototype.bind) {
+			Function.prototype.bind = function (oThis) {
+				if (typeof this !== "function") {
+					// closest thing possible to the ECMAScript 5
+					// internal IsCallable function
+					throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
 				}
 
-				return null;
-			}
+				var aArgs = Array.prototype.slice.call(arguments, 1),
+					fToBind = this,
+					fNOP = function () {},
+					fBound = function () {
+						return fToBind.apply(this instanceof fNOP && oThis
+							? this
+							: oThis,
+							aArgs.concat(Array.prototype.slice.call(arguments)));
+					};
 
-			return '';
-		};
-	})();
+				fNOP.prototype = this.prototype;
+				fBound.prototype = new fNOP();
 
+				return fBound;
+			};
+		}
+
+		// Polyfill or document.querySelectorAll + document.querySelector
+		// should only matter for the poor souls on IE < 8
+		// https://gist.github.com/chrisjlee/8960575
+		if (!document.querySelectorAll) {
+			document.querySelectorAll = function (selectors) {
+				var style = document.createElement('style'), elements = [], element;
+				document.documentElement.firstChild.appendChild(style);
+				document._qsa = [];
+
+				style.styleSheet.cssText = selectors + '{x-qsa:expression(document._qsa && document._qsa.push(this))}';
+				window.scrollBy(0, 0);
+				style.parentNode.removeChild(style);
+
+				while (document._qsa.length) {
+					element = document._qsa.shift();
+					element.style.removeAttribute('x-qsa');
+					elements.push(element);
+				}
+				document._qsa = null;
+				return elements;
+			};
+		}
+
+		if (!document.querySelector) {
+			document.querySelector = function (selectors) {
+				var elements = document.querySelectorAll(selectors);
+				return (elements.length) ? elements[0] : null;
+			};
+		}
+
+		if (!Array.prototype.indexOf) {
+			Array.prototype.indexOf = function (needle) {
+				for (var i = 0; i < this.length; i++) {
+					if (this[i] === needle) {
+						return i;
+					}
+				}
+				return -1;
+			};
+		}
+
+		if (!Array.isArray) {
+			Array.isArray = function(arg) {
+				return Object.prototype.toString.call(arg) === '[object Array]';
+			};
+		}
+
+		if (!Object.keys) {
+			Object.keys = (function() {
+
+				var hasOwnProperty = Object.prototype.hasOwnProperty,
+					hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+					dontEnums = [
+						'toString',
+						'toLocaleString',
+						'valueOf',
+						'hasOwnProperty',
+						'isPrototypeOf',
+						'propertyIsEnumerable',
+						'constructor'
+					],
+					dontEnumsLength = dontEnums.length;
+
+				return function(obj) {
+					if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+					throw new TypeError('Object.keys called on non-object');
+					}
+
+					var result = [], prop, i;
+
+					for (prop in obj) {
+						if (hasOwnProperty.call(obj, prop)) {
+							result.push(prop);
+						}
+					}
+
+					if (hasDontEnumBug) {
+						for (i = 0; i < dontEnumsLength; i++) {
+							if (hasOwnProperty.call(obj, dontEnums[i])) {
+								result.push(dontEnums[i]);
+							}
+						}
+					}
+					return result;
+				};
+			}());
+		}
+	}
+
+	initPolyfills();
 
 	// Establish the root object, `window` in the browser, or `exports` on the server.
 	var root = this;
@@ -217,19 +185,218 @@
 	// expose imgix to browser or node
 	if (typeof exports !== 'undefined') {
 		if (typeof module !== 'undefined' && module.exports) {
-			exports = module.exports = _;
+			exports = module.exports = imgix;
 		}
 		exports.imgix = imgix;
 	} else {
 		root.imgix = imgix;
 	}
 
-	var config = {
-			isDocMarked: null
-		},
-		IMGIX_USABLE = 'imgix-usable';
+	var IMGIX_USABLE = 'imgix-usable';
 
-	// TODO: promote some of these private methods _* to public
+	imgix.helpers = {
+		debouncer: function (func, wait) {
+			var timeoutRef;
+			return function () {
+				var self = this,
+					args = arguments,
+					later = function () {
+						timeoutRef = null;
+						func.apply(self, args);
+					};
+
+				window.clearTimeout(timeoutRef);
+				timeoutRef = window.setTimeout(later, wait);
+			};
+		},
+
+		// FROM: https://github.com/websanova/js-url | unkown license.
+		urlParser: (function() {
+			function isNumeric(arg) {
+				return !isNaN(parseFloat(arg)) && isFinite(arg);
+			}
+
+			return function(arg, url) {
+				var _ls = url || window.location.toString();
+
+				if (!arg) { return _ls; }
+				else { arg = arg.toString(); }
+
+				if (_ls.substring(0,2) === '//') { _ls = 'http:' + _ls; }
+				else if (_ls.split('://').length === 1) { _ls = 'http://' + _ls; }
+
+				url = _ls.split('/');
+				var _l = {auth:''}, host = url[2].split('@');
+
+				if (host.length === 1) { host = host[0].split(':'); }
+				else { _l.auth = host[0]; host = host[1].split(':'); }
+
+				_l.protocol = url[0];
+				_l.hostname=host[0];
+				_l.port=(host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
+				_l.pathname=( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
+				var _p = _l.pathname;
+
+				if (_p.charAt(_p.length-1) === '/') { _p=_p.substring(0, _p.length-1); }
+				var _h = _l.hostname, _hs = _h.split('.'), _ps = _p.split('/');
+
+				if (arg === 'hostname') { return _h; }
+				else if (arg === 'domain') {
+					if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) { return _h; }
+					return _hs.slice(-2).join('.'); 
+				}
+				//else if (arg === 'tld') { return _hs.slice(-1).join('.'); }
+				else if (arg === 'sub') { return _hs.slice(0, _hs.length - 2).join('.'); }
+				else if (arg === 'port') { return _l.port; }
+				else if (arg === 'protocol') { return _l.protocol.split(':')[0]; }
+				else if (arg === 'auth') { return _l.auth; }
+				else if (arg === 'user') { return _l.auth.split(':')[0]; }
+				else if (arg === 'pass') { return _l.auth.split(':')[1] || ''; }
+				else if (arg === 'path') { return _l.pathname; }
+				else if (arg.charAt(0) === '.')
+				{
+					arg = arg.substring(1);
+					if(isNumeric(arg)) {arg = parseInt(arg, 10); return _hs[arg < 0 ? _hs.length + arg : arg-1] || ''; }
+				}
+				else if (isNumeric(arg)) { arg = parseInt(arg, 10); return _ps[arg < 0 ? _ps.length + arg : arg] || ''; }
+				else if (arg === 'file') { return _ps.slice(-1)[0]; }
+				else if (arg === 'filename') { return _ps.slice(-1)[0].split('.')[0]; }
+				else if (arg === 'fileext') { return _ps.slice(-1)[0].split('.')[1] || ''; }
+				else if (arg.charAt(0) === '?' || arg.charAt(0) === '#')
+				{
+					var params = _ls, param = null;
+
+					if(arg.charAt(0) === '?') { params = (params.split('?')[1] || '').split('#')[0]; }
+					else if(arg.charAt(0) === '#') { params = (params.split('#')[1] || ''); }
+
+					if(!arg.charAt(1)) { return params; }
+
+					arg = arg.substring(1);
+					params = params.split('&');
+
+					for(var i=0,ii=params.length; i<ii; i++)
+					{
+						param = params[i].split('=');
+						if(param[0] === arg) { return param[1] || ''; }
+					}
+
+					return null;
+				}
+
+				return '';
+			};
+		})(),
+
+		mergeObject: function() {
+			var obj = {},
+				i = 0,
+				il = arguments.length,
+				key;
+			for (; i < il; i++) {
+				for (key in arguments[i]) {
+					if (arguments[i].hasOwnProperty(key)) {
+						obj[key] = arguments[i][key];
+					}
+				}
+			}
+			return obj;
+		},
+
+		pixelRound: function (pixelSize, pixelStep) {
+			return Math.ceil(pixelSize / pixelStep) * pixelStep;
+		},
+
+		isMobileDevice: function () {
+			return (/iPhone|iPod|iPad/i).test(navigator.userAgent);
+		},
+
+		isNumber: function (value) {
+			return !isNaN(parseFloat(value)) && isFinite(value);
+		},
+
+		getZoom: function () {
+			var zoomMult = Math.round((screen.width / window.innerWidth) * 10) / 10;
+			return zoomMult <= 1 ? 1 : zoomMult;
+		},
+
+		getDPR: function (elem) {
+			var dpiOverride = elem.getAttribute("data-dpi");
+			var devicePixelRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
+			var dpi = this.isNumber(dpiOverride) === true ? parseFloat(dpiOverride) : devicePixelRatio;
+			if (dpi % 1 !== 0) {
+				dpi = dpi.toFixed(1);
+			}
+			return dpi;
+		},
+
+		getWindowWidth: function () {
+			return document.documentElement.clientWidth || document.body && document.body.clientWidth || 1024;
+		},
+
+		getWindowHeight: function () {
+			return document.documentElement.clientHeight || document.body && document.body.clientHeight || 768;
+		},
+
+		getImgSrc: function (elem) {
+			return elem.getAttribute("data-src") || elem.getAttribute("src");
+		},
+
+		calculateElementSize: function (elem) {
+			var val = {
+				width: elem.offsetWidth,
+				height: elem.offsetHeight
+			};
+
+			if (elem.parentNode === null) {
+				val.width = this.getWindowWidth();
+				val.height = this.getWindowHeight();
+				return val;
+			}
+
+			if (val.width !== 0 || val.height !== 0) {
+				if (elem.alt && !elem.fluid) {
+					elem.fluid = true;
+					return this.calculateElementSize(elem.parentNode);
+				}
+				return val;
+
+			} else {
+				var found,
+					prop,
+					past = {},
+					visProp = { position : "absolute", visibility : "hidden", display : "block" };
+
+				for (prop in visProp) {
+					if (visProp.hasOwnProperty(prop)) {
+						past[prop] = elem.style[prop];
+						elem.style[prop] = visProp[prop];
+					}
+				}
+
+				found = val;
+
+				for (prop in visProp) {
+					if (visProp.hasOwnProperty(prop)) {
+						elem.style[prop] = past[prop];
+					}
+				}
+
+				if (found.width === 0 || found.height === 0) {
+					return this.calculateElementSize(elem.parentNode);
+				} else {
+					return found;
+				}
+			}
+		},
+
+		isReallyObject: function(elem) {
+			return elem && typeof elem === "object" && (elem + '') === '[object Object]';
+		},
+
+		isFluidSet: function(elem) {
+			return elem && typeof elem === "object" && (elem + '') === '[object FluidSet]';
+		}
+	};
 
 	/**
 	 * Get html element by XPath
@@ -376,28 +543,56 @@
 		}
 	};
 
-
+	/**
+	 * Gives a brightness score for a given color (higher is brighter)
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {string} color in rgb(r, g, b) format
+	 * @todo work with hex colors too
+	 * @returns {Number} brightness score for the passed color
+	 */
 	imgix._getColorBrightness = function(c) {
 		var parts = c.replace(/[^0-9,]+/g, '').split(","),
 			r = +parts[0],
 			g = +parts[1],
 			b = +parts[2];
 
-	   return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
+		return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
 	};
 
-	//////////////////////////////////////////////////
-
+	/**
+	 * Gives all elements on the page that have images (or could img)
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {string} color in rgb(r, g, b) format
+	 * @returns {NodeList} html elements with images
+	 */
 	imgix.getElementsWithImages = function() {
 		imgix._scanDocument();
 
 		return document.querySelectorAll("." + IMGIX_USABLE);
 	};
 
+	/**
+	 * Does an element have an image attached
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @param {Element} element to check for images
+	 * @returns {boolean} true if passed element has an image
+	 */
 	imgix.hasImage = function(el) {
 		return el && (imgix._isImageElement(el) || el.style.cssText.indexOf('background-image') !== -1);
 	};
 
+	/**
+	 * Helper method that attaches IMGIX_CLASS to all elements with images on a page
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 */
 	imgix._scanDocument = function() {
 		var all = document.getElementsByTagName("*");
 		for (var i=0, max=all.length; i < max; i++) {
@@ -407,6 +602,13 @@
 		}
 	};
 
+	/**
+	 * Helper method that attaches IMGIX_CLASS to all elements with images on a page
+	 * @memberof imgix
+	 * @static
+	 * @private
+	 * @returns {boolean} true if element has that
+	 */
 	imgix._hasClass = function(elem, name) {
 		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1; // from jquery
 	};
@@ -449,7 +651,7 @@
 		return hex.length === 1 ? "0" + hex : hex;
 	};
 
-		// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
+	// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
 	imgix._getElementTreeXPath = function(element) {
 		var paths = [];
 
@@ -562,11 +764,11 @@
 	imgix.searchFonts = function(needle) {
 		needle = needle.toLowerCase();
 		return imgix.getFonts().filter(function(i) { return i.toLowerCase().indexOf(needle) !== -1 });
-	}
+	};
 
 	imgix.isFontAvailable = function(font) {
 		return imgix.isDef(imgix.getFontLookup()[font]);
-	}
+	};
 
 	imgix.getParamAliases = function() {
 			return {
@@ -1082,13 +1284,8 @@
 			if (value.slice(0, 3) === 'rgb') {
 				value = imgix._rgbToHex(value);
 			}
-		} else {
-			if (decodeURIComponent(value) === value) {
-				value = encodeURIComponent(value);
-			}
 		}
 
-		// console.log("setting " + param + " to " + value);
 		// TODO: handle aliases -- only need on build?
 		if (imgix.getDefaultParams().indexOf(param) === -1) {
 			console.warn("\"" + param + "\" is an invalid imgix param");
@@ -1100,8 +1297,11 @@
 			return;
 		}
 
-		if (param === 'txtfont' && imgix.isDef(imgix.isFontAvailable(value))) {
-			value = imgix.getFontLookup()[value];
+		if (param === 'txtfont' && imgix.isFontAvailable(value)) {
+			var tmp = imgix.getFontLookup()[value];
+			if (tmp) {
+				value = tmp;
+			}
 		}
 
 		if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null ||  value.length === 0) {
@@ -1112,6 +1312,11 @@
 		if (this.urlParts.params.indexOf(param) === -1) {
 			this.urlParts.params.push(param);
 		}
+
+		if (decodeURIComponent(value) === value) {
+			value = encodeURIComponent(value);
+		}
+
 
 		this.urlParts.paramValues[param] = String(value);
 
@@ -1319,7 +1524,7 @@
 
 		// create clean object to return
 		for (var i = 0; i < keys.length; i++) {
-			result[keys[i]] = urlParser(pkeys[i], url);
+			result[keys[i]] = imgix.helpers.urlParser(pkeys[i], url);
 		}
 
 		//console.log(result);
@@ -1455,10 +1660,10 @@
 	}
 
 	imgix.FluidSet = function(options) {
-		if (isReallyObject(options)) {
-			this.options = mergeObject(getFluidDefaults(), options);
+		if (imgix.helpers.isReallyObject(options)) {
+			this.options = imgix.helpers.mergeObject(getFluidDefaults(), options);
 		} else {
-			this.options = mergeObject(getFluidDefaults(), {});
+			this.options = imgix.helpers.mergeObject(getFluidDefaults(), {});
 		}
 
 		//Object.freeze(options);
@@ -1470,7 +1675,7 @@
 		this.windowLastWidth = 0;
 		this.windowLastHeight = 0;
 
-		this.reload = debouncer(this.reloader, this.windowResizeTimeout);
+		this.reload = imgix.helpers.debouncer(this.reloader, this.windowResizeTimeout);
 	};
 
 	imgix.FluidSet.prototype.updateSrc = function(elem) {
@@ -1486,7 +1691,6 @@
 			return;
 		}
 
-		console.log("setting...", newUrl);
 		imgix._setElementImageAfterLoad(elem, newUrl);
 		elem.lastWidth = currentElemWidth;
 		elem.lastHeight = currentElemHeight;
@@ -1497,14 +1701,14 @@
 			return;
 		}
 
-		var dpr = getDPR(elem),
+		var dpr = imgix.helpers.getDPR(elem),
 			pixelStep = this.options.pixelStep,
-			zoomMultiplier = isMobileDevice() ? getZoom() : 1,
-			elemSize = calculateElementSize(elem),
-			elemWidth = pixelRound(elemSize.width * zoomMultiplier, pixelStep),
-			elemHeight = pixelRound(elemSize.height * zoomMultiplier, pixelStep),
+			zoomMultiplier = imgix.helpers.isMobileDevice() ? imgix.helpers.getZoom() : 1,
+			elemSize = imgix.helpers.calculateElementSize(elem),
+			elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
+			elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
 			hasHardCodedHeight = elem.style.height && elem.style.height.length > 0,
-			i = new imgix.URL(getImgSrc(elem));
+			i = new imgix.URL(imgix.helpers.getImgSrc(elem));
 
 		i.setHeight('');
 		i.setWidth('');
@@ -1558,8 +1762,8 @@
 	imgix.FluidSet.prototype.reloader = function() {
 		imgix.fluid(this);
 
-		this.windowLastWidth = getWindowWidth();
-		this.windowLastHeight = getWindowHeight();
+		this.windowLastWidth = imgix.helpers.getWindowWidth();
+		this.windowLastHeight = imgix.helpers.getWindowHeight();
 	};
 
 	imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
@@ -1579,7 +1783,7 @@
 
 
 	imgix.FluidSet.prototype.resizeListener = function() {
-		if (this.windowLastWidth !== getWindowWidth() || this.windowLastHeight !== getWindowHeight()) {
+		if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
 			this.reload();
 		}
 	};
@@ -1600,115 +1804,6 @@
 		this.windowResizeEventBound = true;
 	};
 
-	var mergeObject = function() {
-		var obj = {},
-			i = 0,
-			il = arguments.length,
-			key;
-		for (; i < il; i++) {
-			for (key in arguments[i]) {
-				if (arguments[i].hasOwnProperty(key)) {
-					obj[key] = arguments[i][key];
-				}
-			}
-		}
-		return obj;
-	};
-
-	var pixelRound = function (pixelSize, pixelStep) {
-		return Math.ceil(pixelSize / pixelStep) * pixelStep;
-	};
-
-	var isMobileDevice = function () {
-		return (/iPhone|iPod|iPad/i).test(navigator.userAgent);
-	};
-
-	var isNumber = function (value) {
-		return !isNaN(parseFloat(value)) && isFinite(value);
-	};
-
-	var getZoom = function () {
-		var zoomMult = Math.round((screen.width / window.innerWidth) * 10) / 10;
-		return zoomMult <= 1 ? 1 : zoomMult;
-	};
-
-	var getDPR = function (elem) {
-		var dpiOverride = elem.getAttribute("data-dpi");
-		var devicePixelRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
-		var dpi = isNumber(dpiOverride) === true ? parseFloat(dpiOverride) : devicePixelRatio;
-		if (dpi % 1 !== 0) {
-			dpi = dpi.toFixed(1);
-		}
-		return dpi;
-	};
-
-	var getWindowWidth = function () {
-		return document.documentElement.clientWidth || document.body && document.body.clientWidth || 1024;
-	};
-
-	var getWindowHeight = function () {
-		return document.documentElement.clientHeight || document.body && document.body.clientHeight || 768;
-	};
-
-	var getImgSrc = function (elem) {
-		return elem.getAttribute("resrc") || elem.getAttribute("data-src") || elem.getAttribute("src");
-	};
-
-	var calculateElementSize = function (elem) {
-		var val = {
-			width: elem.offsetWidth,
-			height: elem.offsetHeight
-		};
-
-		if (elem.parentNode === null) {
-			val.width = getWindowWidth();
-			val.height = getWindowHeight();
-			return val;
-		}
-
-		if (val.width !== 0 || val.height !== 0) {
-			if (elem.alt && !elem.resrc) {
-				elem.resrc = true;
-				return calculateElementSize(elem.parentNode);
-			}
-			return val;
-
-		} else {
-			var found,
-				prop,
-				past = {},
-				visProp = { position : "absolute", visibility : "hidden", display : "block" };
-
-			for (prop in visProp) {
-				if (visProp.hasOwnProperty(prop)) {
-					past[prop] = elem.style[prop];
-					elem.style[prop] = visProp[prop];
-				}
-			}
-
-			found = val;
-
-			for (prop in visProp) {
-				if (visProp.hasOwnProperty(prop)) {
-					elem.style[prop] = past[prop];
-				}
-			}
-
-			if (found.width === 0 || found.height === 0) {
-				return calculateElementSize(elem.parentNode);
-			} else {
-				return found;
-			}
-		}
-	};
-
-	var isReallyObject = function(elem) {
-		return elem && typeof elem === "object" && (elem + '') === '[object Object]';
-	};
-
-	var isFluidSet = function(elem) {
-		return elem && typeof elem === "object" && (elem + '') === '[object FluidSet]';
-	};
 
 
 	imgix.fluid = function(elem) {
@@ -1719,21 +1814,21 @@
 		var options,
 			fluidSet;
 
-		if (isReallyObject(elem)) {
-			options = mergeObject(getFluidDefaults(), elem);
+		if (imgix.helpers.isReallyObject(elem)) {
+			options = imgix.helpers.mergeObject(getFluidDefaults(), elem);
 			fluidSet = new imgix.FluidSet(options);
 			elem = null;
 
-		} else if (isFluidSet(elem)) {
+		} else if (imgix.helpers.isFluidSet(elem)) {
 			fluidSet = elem;
 			options = fluidSet.options;
 		} else {
-			options = mergeObject(getFluidDefaults(), {});
+			options = imgix.helpers.mergeObject(getFluidDefaults(), {});
 			fluidSet = new imgix.FluidSet(options);
 		}
 
 		var fluidElements;
-		if (elem && !isFluidSet(elem)) {
+		if (elem && !imgix.helpers.isFluidSet(elem)) {
 			fluidElements = Array.isArray(elem) ? elem : [elem];
 		} else {
 			fluidElements = document.querySelectorAll('.' + options.fluidClass);

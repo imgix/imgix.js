@@ -365,4 +365,24 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getMonochrome()).toEqual("9696dc");
 	});
 
+	it('should round pixels correctly', function() {
+		expect(imgix.helpers.pixelRound(3, 5)).toEqual(5);
+		expect(imgix.helpers.pixelRound(23, 5)).toEqual(25);
+		expect(imgix.helpers.pixelRound(33, 10)).toEqual(40);
+	});
+
+	it('should detect plain objects', function() {
+		expect(imgix.helpers.isReallyObject({})).toEqual(true);
+		expect(imgix.helpers.isReallyObject(function() {})).toEqual(false);
+		expect(imgix.helpers.isReallyObject("a")).toEqual(false);
+		expect(imgix.helpers.isReallyObject(3)).toEqual(false);
+		expect(imgix.helpers.isReallyObject(new imgix.URL())).toEqual(false);
+	});
+
+	it('should detect FluidSet objects', function() {
+		expect(imgix.helpers.isFluidSet({})).toEqual(false);
+		expect(imgix.helpers.isFluidSet(new imgix.FluidSet())).toEqual(true);
+		expect(imgix.helpers.isFluidSet(new imgix.URL())).toEqual(false);
+	});
+
 });

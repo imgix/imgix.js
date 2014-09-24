@@ -19,6 +19,8 @@
 	"no-underscore-dangle": 0,
 	"space-infix-ops": 0,
 	"camelcase": 0,
-	"no-use-before-define": 0
+	"no-use-before-define": 0,
+	"no-extend-native": 0,
+	"new-cap": 0
   }
 }
