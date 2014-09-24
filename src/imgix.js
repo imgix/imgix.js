@@ -30,6 +30,13 @@
 	};
 
 
+	// Object.freeze polyfill (doesn't actually do anything where unsupported)
+	if (!Object.freeze) {
+		Object.freeze = function freeze(object) {
+			return object;
+		};
+	}
+
 	// Console-polyfill. MIT license.
 	// https://github.com/paulmillr/console-polyfill
 	// Make it safe to do console.log() always.

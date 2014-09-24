@@ -15,7 +15,7 @@
 
 	$.fn.imgix = function () {
 		var jq = this;
-		return {
+		var methods = {
 			setParam: function(param, value){
 				if (typeof param === "object") {
 					return this.setParams(param);
@@ -72,6 +72,36 @@
 				return results.length === 1 ? results[0] : results;
 			}
 		};
+
+		for (var param in imgix.URL.theGetSetFuncs) {
+			(function(tmp) {
+				methods['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) {
+					return jq.each(function(idx, e) {
+						if (e && imgix.hasImage(e)) {
+							var i = new imgix.URL(imgix._getElementImage(e));
+							i.setParam(tmp, v, doOverride);
+							imgix._setElementImageAfterLoad(e, i.getURL());
+						}
+					});
+				};
+
+				methods['get' + imgix.URL.theGetSetFuncs[tmp]] = function() {
+					var results = [];
+					jq.each(function(idx, e) {
+						if (e && imgix.hasImage(e)) {
+							var i = new imgix.URL(imgix._getElementImage(e));
+							//return i.getParam(tmp);
+							results.push(i.getParam(tmp));
+						}
+					});
+
+					return results.length === 1 ? results[0] : results;
+				};
+
+			})(param);
+		}
+
+		return methods;
 	};
 
 }(jQuery, window.imgix));
