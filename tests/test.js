@@ -354,8 +354,9 @@ describe('imgix-javascript unit tests', function() {
 
 	it('should auto encode params', function() {
 		var i = new imgix.URL();
-		i.setParams({"txt": "this has spaces"}); // that's an invalid param name
-		expect(i.getText()).toEqual("this%20has%20spaces");
+		i.setParams({"txt": "this has spaces!"}); // should be encoded...
+		expect(i.getText()).toEqual("this%20has%20spaces!");
+		expect(i.getURL()).toEqual("https://assets.imgix.net/pixel.gif?txt=this%20has%20spaces!");
 	});
 
 	it('should auto hexify rgb colors', function() {

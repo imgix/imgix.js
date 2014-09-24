@@ -1127,7 +1127,7 @@
 		return this.urlParts.paramValues[param];
 	};
 
-	imgix.URL.prototype.getParams = function(param) {
+	imgix.URL.prototype.getParams = function() {
 		if (this.urlParts.paramValues) {
 			return this.urlParts.paramValues;
 		}
