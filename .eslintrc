@@ -21,6 +21,7 @@
 	"camelcase": 0,
 	"no-use-before-define": 0,
 	"no-extend-native": 0,
-	"new-cap": 0
+	"new-cap": 0,
+	"no-loop-func": 0
   }
 }
