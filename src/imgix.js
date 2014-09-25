@@ -192,11 +192,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		root.imgix = imgix;
 	}
 
-	var IMGIX_USABLE = 'imgix-usable';
+	var IMGIX_USABLE_CLASS = 'imgix-usable';
 
 	/**
 	 * The helper namespace for lower-level functions 
-	 * @namespace imgix
+	 * @namespace imgix.helpers
 	 */
 	imgix.helpers = {
 		debouncer: function (func, wait) {
@@ -415,7 +415,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Get html element by auto-generated (via XPath) class name
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {string} xpath the xpath of the element
 	 * @returns {Element} element with the xpath
 	 */
@@ -428,7 +427,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Get image from an html element by auto-generated (via XPath) class name
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {string} xpath the xpath of the element to get
 	 * @returns {string} url of image on the element
 	 */
@@ -440,7 +438,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Reports if an element is an image tag
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @returns {boolean} true if the element is an img tag
 	 */
@@ -452,8 +449,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Intelligently sets an image on an element after the image has been cached.
 	 * @memberof imgix
 	 * @static
-	 * @private
-	 * @param {Element} el the element to check
+	 * @param {Element} el the element to place the image on
 	 * @param {string} url the url of the image to set
 	 * @param {function} callback called once image has been preloaded and set
 	 */
@@ -472,7 +468,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Intelligently sets an image on an element.
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @param {string} url the url of the image to set
 	 * @returns {boolean} true on success
@@ -503,7 +498,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * An empty 1x1 transparent image
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @returns {string} url of an empty image
 	 */
 	imgix.getEmptyImage = function() {
@@ -514,7 +508,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Intelligently returns the image on the element
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @returns {string} url of the image on the element
 	 */
@@ -530,7 +523,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Returns the matches for the url on the element's cssText
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @todo use cssProperty instead?
 	 * @returns {string} url of the image on the element
@@ -543,7 +535,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Returns the background image for an element
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @returns {string} url of the image on the element
 	 */
@@ -560,7 +551,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Gives a brightness score for a given color (higher is brighter)
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {string} color in rgb(r, g, b) format
 	 * @todo work with hex colors too
 	 * @returns {Number} brightness score for the passed color
@@ -578,21 +568,19 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Gives all elements on the page that have images (or could img)
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {string} color in rgb(r, g, b) format
 	 * @returns {NodeList} html elements with images
 	 */
 	imgix.getElementsWithImages = function() {
 		imgix.markElementsWithImages();
 
-		return document.querySelectorAll("." + IMGIX_USABLE);
+		return document.querySelectorAll("." + IMGIX_USABLE_CLASS);
 	};
 
 	/**
 	 * Does an element have an image attached
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} element to check for images
 	 * @returns {boolean} true if passed element has an image
 	 */
@@ -604,7 +592,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Helper method that attaches IMGIX_CLASS to all elements with images on a page
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 */
 	imgix.markElementsWithImages = function() {
 		var all = document.getElementsByTagName("*");
@@ -616,39 +603,61 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	};
 
 	/**
-	 * Helper method that attaches IMGIX_CLASS to all elements with images on a page
+	 * Checks if an element has a class applied (via jquery)
 	 * @memberof imgix
 	 * @static
-	 * @private
-	 * @returns {boolean} true if element has that
+	 * @param {Element} element to check for class
+	 * @param {string} name of class to look for
+	 * @returns {boolean} true if element has the class
 	 */
 	imgix.hasClass = function(elem, name) {
-		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1; // from jquery
+		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1;
 	};
 
+	/**
+	 * Helper method that "marks" an element as "imgix usable" by adding special classes
+	 * @memberof imgix
+	 * @static
+	 * @param {Element} el the element to place the class on
+	 * @returns {string} auto-generated class name (via xpath)
+	 */
 	imgix.setImgixClass = function(el) {
-		if (imgix.hasClass(el, IMGIX_USABLE)) {
+		if (imgix.hasClass(el, IMGIX_USABLE_CLASS)) {
 			return imgix.getImgixClass(el);
 		}
 
 		var cls = imgix.getXPathClass(imgix.getElementTreeXPath(el));
 
 		el.classList.add(cls);
-		el.classList.add(IMGIX_USABLE);
-		return cls;
+		el.classList.add(IMGIX_USABLE_CLASS);
+
+		return imgix.getImgixClass(el);
 	};
 
+	/**
+	 * Helper method that returns generated (via xpath) class name for "marked" image elements
+	 * @memberof imgix
+	 * @static
+	 * @returns {string} class
+	 */
 	imgix.getImgixClass = function(el) {
-		if (imgix.hasClass(el, IMGIX_USABLE)) {
+		if (imgix.hasClass(el, IMGIX_USABLE_CLASS)) {
 			return el.className.match(/imgix-el-[^\s]+/)[0];
 		}
 	};
 
 	imgix.getXPathClass = function(xpath) {
-		xpath = !!xpath ? xpath: (new Date().getTime().toString());
+		xpath = !!xpath ? xpath : (new Date().getTime().toString());
 		return 'imgix-el-' + imgix.md5(xpath);
 	};
 
+	/**
+	 * Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
+	 * @memberof imgix
+	 * @static
+	 * @param {string} color in rgb(255, 255, 255) format
+	 * @returns {string} passed color converted to hex
+	 */
 	imgix.rgbToHex = function(value) {
 		var parts = value.split(",");
 
@@ -776,7 +785,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 	imgix.searchFonts = function(needle) {
 		needle = needle.toLowerCase();
-		return imgix.getFonts().filter(function(i) { return i.toLowerCase().indexOf(needle) !== -1 });
+		return imgix.getFonts().filter(function(i) { return i.toLowerCase().indexOf(needle) !== -1; });
 	};
 
 	imgix.isFontAvailable = function(font) {
@@ -1238,11 +1247,16 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		return url;
 	};
 
+	/**
+	 * Remove an imgix param
+	 * @memberof imgix
+	 * @returns {string} the url
+	 */
 	imgix.URL.prototype.removeParam = function(param) {
 		if (this.urlParts.paramValues.hasOwnProperty(param)) {
 			delete this.urlParts.paramValues[param];
 			this.urlParts.params = Object.keys(this.urlParts.paramValues);
-		};
+		}
 	};
 
 	imgix.URL.prototype.clearThenSetParams = function(params) {
@@ -1254,7 +1268,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		runUpdate = !imgix.isDef(runUpdate) ? true : runUpdate;
 
 		for (var k in this.urlParts.paramValues) {
-			this.removeParam(k)
+			this.removeParam(k);
 		}
 
 		if (runUpdate) {
@@ -1808,7 +1822,12 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	};
 
 
-
+	/**
+	 * Enables fluid images for any element(s) with the "imgix-fluid" class
+	 * @memberof imgix
+	 * @static
+	 * @param {object} config options for fluid
+	 */
 	imgix.fluid = function(elem) {
 		if (elem === null){
 			return;
@@ -1862,6 +1881,13 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * Cross-browser DOM ready helper
 	 * Dustin Diaz <dustindiaz.com> (MIT License)
 	 * https://github.com/ded/domready/tree/v0.3.0
+	 */
+
+	/**
+	 * Runs a function when the DOM is ready (similar to jQuery.ready)
+	 * @memberof imgix
+	 * @static
+	 * @param {object} config options for fluid
 	 */
 	imgix.onready = function (ready) {
 		var fns = [];
