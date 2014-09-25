@@ -18,8 +18,13 @@
 			}
 
 			return $(results).imgix();
+		},
+
+		fluid: function(opts) {
+			imgix.fluid(opts);
 		}
 	};
+
 
 	$.fn.imgix = function () {
 		var jq = this;
