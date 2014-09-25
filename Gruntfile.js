@@ -1,6 +1,5 @@
-"use strict";
 module.exports = function(grunt) {
-
+	"use strict";
 	var path = require('path'),
 		fs = require('fs'),
 		path = require('path'),
@@ -41,18 +40,10 @@ module.exports = function(grunt) {
 			unit: {
 				configFile: 'karma.conf.js'
 			}
-		},
-
-		// concat: {
-		// 	js: {
-		// 		src: [],
-		// 		dest: releaseJsFile
-		// 	}
-		// }
+		}
 	});
 
 	grunt.registerTask('closure-minify', 'minify', function() {
-		// --compilation_level ADVANCED_OPTIMIZATIONS is actually 30% bigger!
 		var cmd = "java -jar ./bin/closure_compiler.jar  --language_in=ECMASCRIPT5 --js " + jsFile + " --js_output_file " + minJsFile,
 			done = this.async();
 
