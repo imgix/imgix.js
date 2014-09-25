@@ -82,6 +82,14 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getUrl()).toContain("rot=30");
 	});
 
+	it('should remove params correctly', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=200&sepia=20');
+		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?sepia=20&w=200'); //normalized 
+
+		i.removeParam('sepia');
+		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?w=200');
+	});
+
 	it('sets params in constructor', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png', {w: 200, sepia: 50});
 
@@ -117,6 +125,7 @@ describe('imgix-javascript unit tests', function() {
 
 		i.clearParams();
 		expect(i.params, []);
+		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png');
 	});
 
 	it('clearThenSetParams', function() {
