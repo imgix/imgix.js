@@ -194,6 +194,10 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 	var IMGIX_USABLE = 'imgix-usable';
 
+	/**
+	 * The helper namespace for lower-level functions 
+	 * @namespace imgix
+	 */
 	imgix.helpers = {
 		debouncer: function (func, wait) {
 			var timeoutRef;
@@ -210,7 +214,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			};
 		},
 
-		// FROM: https://github.com/websanova/js-url | unkown license.
+		// FROM: https://github.com/websanova/js-url | unknown license.
 		urlParser: (function() {
 			function isNumeric(arg) {
 				return !isNaN(parseFloat(arg)) && isFinite(arg);
@@ -364,7 +368,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 				var found,
 					prop,
 					past = {},
-					visProp = { position : "absolute", visibility : "hidden", display : "block" };
+					visProp = {position : "absolute", visibility : "hidden", display : "block"};
 
 				for (prop in visProp) {
 					if (visProp.hasOwnProperty(prop)) {
@@ -395,32 +399,41 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 		isFluidSet: function(elem) {
 			return elem && typeof elem === "object" && (elem + '') === '[object FluidSet]';
+		},
+
+		extractInt: function(str) {
+			if (str === undefined) {
+				return 0;
+			} else if (typeof str === "number") {
+				return str;
+			}
+			return parseInt(str.replace(/\D/g, ''), 10) || 0;
 		}
 	};
 
 	/**
-	 * Get html element by XPath
+	 * Get html element by auto-generated (via XPath) class name
 	 * @memberof imgix
 	 * @static
 	 * @private
 	 * @param {string} xpath the xpath of the element
 	 * @returns {Element} element with the xpath
 	 */
-	imgix._getElementByXPath = function(xpath) {
-		return document.querySelector('.' + imgix._getXPathClass(xpath));
+	imgix.getElementByXPathClassName = function(xpath) {
+		return document.querySelector('.' + imgix.getXPathClass(xpath));
 	};
 
 
 	/**
-	 * Get html element by XPath
+	 * Get image from an html element by auto-generated (via XPath) class name
 	 * @memberof imgix
 	 * @static
 	 * @private
 	 * @param {string} xpath the xpath of the element to get
-	 * @returns {Element} element with the xpath
+	 * @returns {string} url of image on the element
 	 */
-	imgix._getElementImageByXPath = function(xpath) {
-		return imgix._getElementImage(imgix._getElementByXPath(xpath));
+	imgix.getElementImageByXPathClassName = function(xpath) {
+		return imgix.getElementImage(imgix.getElementByXPathClassName(xpath));
 	};
 
 	/**
@@ -431,12 +444,12 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @param {Element} el the element to check
 	 * @returns {boolean} true if the element is an img tag
 	 */
-	imgix._isImageElement = function(el) {
+	imgix.isImageElement = function(el) {
 		return (el && el.tagName && el.tagName.toLowerCase() === 'img');
 	};
 
 	/**
-	 * Intelligently sets an image on an element after preloading the image.
+	 * Intelligently sets an image on an element after the image has been cached.
 	 * @memberof imgix
 	 * @static
 	 * @private
@@ -444,11 +457,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @param {string} url the url of the image to set
 	 * @param {function} callback called once image has been preloaded and set
 	 */
-	imgix._setElementImageAfterLoad = function(el, imgUrl, callback) {
+	imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
 		var img = new Image();
 		img.src = imgUrl;
 		img.onload = function() {
-			imgix._setElementImage(el, imgUrl);
+			imgix.setElementImage(el, imgUrl);
 			if (typeof callback === "function") {
 				callback();
 			}
@@ -464,16 +477,16 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @param {string} url the url of the image to set
 	 * @returns {boolean} true on success
 	 */
-	imgix._setElementImage = function(el, imgUrl) {
+	imgix.setElementImage = function(el, imgUrl) {
 		if (!el) {
 			return false;
 		}
 
-		if (imgix._isImageElement(el)) {
+		if (imgix.isImageElement(el)) {
 			el.src = imgUrl;
 			return true;
 		} else {
-			var curBg = imgix._getBackgroundImage(el);
+			var curBg = imgix.getBackgroundImage(el);
 			if (curBg) {
 				el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
 				return true;
@@ -493,7 +506,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @private
 	 * @returns {string} url of an empty image
 	 */
-	imgix._getEmptyImage = function() {
+	imgix.getEmptyImage = function() {
 		return 'https://assets.imgix.net/pixel.gif';
 	};
 
@@ -505,11 +518,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @param {Element} el the element to check
 	 * @returns {string} url of the image on the element
 	 */
-	imgix._getElementImage = function(el) {
-		if (imgix._isImageElement(el)) {
+	imgix.getElementImage = function(el) {
+		if (imgix.isImageElement(el)) {
 			return el.src;
 		} else {
-			return imgix._getBackgroundImage(el);
+			return imgix.getBackgroundImage(el);
 		}
 	};
 
@@ -522,7 +535,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @todo use cssProperty instead?
 	 * @returns {string} url of the image on the element
 	 */
-	imgix._getRawBackgroundImage = function(el) {
+	imgix.getRawBackgroundImage = function(el) {
 		return el.style.cssText.match(/url\(([^\)]+)/);
 	};
 
@@ -534,8 +547,8 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @param {Element} el the element to check
 	 * @returns {string} url of the image on the element
 	 */
-	imgix._getBackgroundImage = function(el) {
-		var raw = imgix._getRawBackgroundImage(el);
+	imgix.getBackgroundImage = function(el) {
+		var raw = imgix.getRawBackgroundImage(el);
 		if (!raw) {
 			return '';
 		} else {
@@ -552,7 +565,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @todo work with hex colors too
 	 * @returns {Number} brightness score for the passed color
 	 */
-	imgix._getColorBrightness = function(c) {
+	imgix.getColorBrightness = function(c) {
 		var parts = c.replace(/[^0-9,]+/g, '').split(","),
 			r = +parts[0],
 			g = +parts[1],
@@ -570,7 +583,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @returns {NodeList} html elements with images
 	 */
 	imgix.getElementsWithImages = function() {
-		imgix._scanDocument();
+		imgix.markElementsWithImages();
 
 		return document.querySelectorAll("." + IMGIX_USABLE);
 	};
@@ -584,7 +597,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @returns {boolean} true if passed element has an image
 	 */
 	imgix.hasImage = function(el) {
-		return el && (imgix._isImageElement(el) || el.style.cssText.indexOf('background-image') !== -1);
+		return el && (imgix.isImageElement(el) || el.style.cssText.indexOf('background-image') !== -1);
 	};
 
 	/**
@@ -593,11 +606,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @static
 	 * @private
 	 */
-	imgix._scanDocument = function() {
+	imgix.markElementsWithImages = function() {
 		var all = document.getElementsByTagName("*");
 		for (var i=0, max=all.length; i < max; i++) {
 			if (imgix.hasImage(all[i])) {
-				imgix._setImgixClass(all[i]);
+				imgix.setImgixClass(all[i]);
 			}
 		}
 	};
@@ -609,50 +622,50 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @private
 	 * @returns {boolean} true if element has that
 	 */
-	imgix._hasClass = function(elem, name) {
+	imgix.hasClass = function(elem, name) {
 		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1; // from jquery
 	};
 
-	imgix._setImgixClass = function(el) {
-		if (imgix._hasClass(el, IMGIX_USABLE)) {
-			return imgix._getImgixClass(el);
+	imgix.setImgixClass = function(el) {
+		if (imgix.hasClass(el, IMGIX_USABLE)) {
+			return imgix.getImgixClass(el);
 		}
 
-		var cls = imgix._getXPathClass(imgix._getElementTreeXPath(el));
+		var cls = imgix.getXPathClass(imgix.getElementTreeXPath(el));
 
 		el.classList.add(cls);
 		el.classList.add(IMGIX_USABLE);
 		return cls;
 	};
 
-	imgix._getImgixClass = function(el) {
-		if (imgix._hasClass(el, IMGIX_USABLE)) {
+	imgix.getImgixClass = function(el) {
+		if (imgix.hasClass(el, IMGIX_USABLE)) {
 			return el.className.match(/imgix-el-[^\s]+/)[0];
 		}
 	};
 
-	imgix._getXPathClass = function(xpath) {
+	imgix.getXPathClass = function(xpath) {
 		xpath = !!xpath ? xpath: (new Date().getTime().toString());
 		return 'imgix-el-' + imgix.md5(xpath);
 	};
 
-	imgix._rgbToHex = function(value) {
+	imgix.rgbToHex = function(value) {
 		var parts = value.split(",");
 
 		parts = parts.map(function(a) {
-			return imgix._componentToHex(parseInt(a.replace(/\D/g, '')));
+			return imgix.componentToHex(parseInt(a.replace(/\D/g, '')));
 		});
 
 		return parts.join('');
 	};
 
-	imgix._componentToHex = function(c) {
+	imgix.componentToHex = function(c) {
 		var hex = c.toString(16);
 		return hex.length === 1 ? "0" + hex : hex;
 	};
 
 	// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
-	imgix._getElementTreeXPath = function(element) {
+	imgix.getElementTreeXPath = function(element) {
 		var paths = [];
 
 		// Use nodeName (instead of localName) so namespace prefix is included (if any).
@@ -868,11 +881,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		return Object.keys(imgix.getDefaultParamValues());
 	};
 
-	imgix._makeCssClass = function(url) {
+	imgix.makeCssClass = function(url) {
 		return "tmp_" + imgix.md5(url);
 	};
 
-	imgix._injectStyleSheet = function(url) {
+	imgix.injectStyleSheet = function(url) {
 		var ss = document.createElement("link");
 		ss.type = "text/css";
 		ss.rel = "stylesheet";
@@ -881,7 +894,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		document.getElementsByTagName("head")[0].appendChild(ss);
 	};
 
-	imgix._findInjectedStyleSheet = function(url) {
+	imgix.findInjectedStyleSheet = function(url) {
 		if (document.styleSheets) {
 			for (var i = 0; i < document.styleSheets.length; i++) {
 				if (document.styleSheets[i].href === url) {
@@ -893,16 +906,16 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		return false;
 	};
 
-	imgix._getElementImageSize = function(el) {
+	imgix.getElementImageSize = function(el) {
 		var w = 0,
 			h = 0;
 
-		if (imgix._isImageElement(el)) {
+		if (imgix.isImageElement(el)) {
 			w = el.naturalWidth;
 			h = el.naturalHeight;
 		} else {
-			w = imgix._extractInt(imgix._getCssProperty(el, "width"));
-			h = imgix._extractInt(imgix._getCssProperty(el, "height"));
+			w = imgix.helpers.extractInt(imgix.getCssProperty(el, "width"));
+			h = imgix.helpers.extractInt(imgix.getCssProperty(el, "height"));
 		}
 
 		return {
@@ -911,30 +924,21 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		};
 	};
 
-	imgix._extractInt = function(str) {
-		if (str === undefined) {
-			return 0;
-		} else if (typeof str === "number") {
-			return str;
-		}
-		return parseInt(str.replace(/\D/g, ''), 10) || 0;
-	};
-
-	imgix._getCssPropertyById = function(elmId, property) {
+	imgix.getCssPropertyById = function(elmId, property) {
 		var elem = document.getElementById(elmId);
 		return window.getComputedStyle(elem, null).getPropertyValue(property);
 	};
 
-	imgix._getCssProperty = function(el, property) {
+	imgix.getCssProperty = function(el, property) {
 		return window.getComputedStyle(el, null).getPropertyValue(property);
 	};
 
-	imgix._getCssPropertyBySelector = function(sel, property) {
+	imgix.getCssPropertyBySelector = function(sel, property) {
 		var elem = document.querySelector(sel);
 		return window.getComputedStyle(elem, null).getPropertyValue(property);
 	};
 
-	imgix._instanceOfImgixURL = function(x) {
+	imgix.instanceOfImgixURL = function(x) {
 		return x && x.toString() === "[object imgixURL]";
 	};
 
@@ -965,7 +969,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		return new imgix.URL('');
 	};
 
-	imgix._updateVersion = {};
+	imgix.updateVersion = {};
 
 	var cssColorCache = {};
 	/**
@@ -976,8 +980,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 */
 	imgix.URL.prototype.getColors = function(num, callback) {
 		var clone = new imgix.URL(this.getUrl()),
-			resultColors = [],
-			paletteClass = imgix._makeCssClass(this.getUrl());
+			paletteClass = imgix.makeCssClass(this.getUrl());
 
 		if (typeof num === "function") {
 			if (typeof callback === "number") {
@@ -996,10 +999,10 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 		var cssUrl = clone.getUrl();
 
-		imgix._injectStyleSheet(cssUrl);
+		imgix.injectStyleSheet(cssUrl);
 
 		var lookForLoadedCss = function() {
-			if (!imgix._findInjectedStyleSheet(cssUrl)) {
+			if (!imgix.findInjectedStyleSheet(cssUrl)) {
 				setTimeout(lookForLoadedCss, 100);
 			} else {
 				var lastColor = null;
@@ -1013,15 +1016,15 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 						(function(i) {
 							var tmps = document.createElement("span");
 							tmps.id = paletteClass + '-' + i;
-							tmps.className = paletteClass + '-fg-' + i
+							tmps.className = paletteClass + '-fg-' + i;
 							document.body.appendChild(tmps);
 
 							promises.push(
 								new ImgixPromise(function (resolve, reject) {
 									var attempts = 0;
 									var checkLoaded = function() {
-										var c = imgix._getCssPropertyById(tmps.id, 'color');
-										if (c != lastColor) {
+										var c = imgix.getCssPropertyById(tmps.id, 'color');
+										if (c !== lastColor) {
 											document.body.removeChild(tmps);
 											resolve({"num": i, "color": c});
 											lastColor = c;
@@ -1054,7 +1057,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 						}
 
 						if (resultColors && resultColors.length > 1) {
-							if (imgix._getColorBrightness(resultColors[resultColors.length - 1]) < imgix._getColorBrightness(resultColors[0])) {
+							if (imgix.getColorBrightness(resultColors[resultColors.length - 1]) < imgix.getColorBrightness(resultColors[0])) {
 								resultColors.reverse();
 							}
 						}
@@ -1091,15 +1094,15 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			curSel = this._autoUpdateSel,
 			imgToEls = {};
 
-		if (!imgix.isDef(imgix._updateVersion[curSel])) {
-			imgix._updateVersion[curSel] = 1;
+		if (!imgix.isDef(imgix.updateVersion[curSel])) {
+			imgix.updateVersion[curSel] = 1;
 		} else {
-			imgix._updateVersion[curSel]++;
+			imgix.updateVersion[curSel]++;
 		}
 
 
 		function isVersionFresh(v) {
-			return curSel === self._autoUpdateSel && v === imgix._updateVersion[curSel];
+			return curSel === self._autoUpdateSel && v === imgix.updateVersion[curSel];
 		}
 
 		function setImage(el, imgUrl) {
@@ -1107,7 +1110,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 				imgToEls[imgUrl] = [];
 				(function() {
 					var img = document.createElement('img'),
-						curV = imgix._updateVersion[curSel],
+						curV = imgix.updateVersion[curSel],
 						startTime = (new Date()).getTime();
 
 					img.src = imgUrl;
@@ -1118,11 +1121,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 						}
 
 						for (var i = 0; i < imgToEls[imgUrl].length; i++) {
-							imgix._setElementImage(imgToEls[imgUrl][i], imgUrl);
+							imgix.setElementImage(imgToEls[imgUrl][i], imgUrl);
 							loadedImages++;
 
 							if (typeof self._autoUpdateCallback === "function") {
-								var cls = '.' + imgix._setImgixClass(imgToEls[imgUrl][i]),
+								var cls = '.' + imgix.setImgixClass(imgToEls[imgUrl][i]),
 									obj = {
 										element: document.querySelector(cls),
 										className: cls, // string class '.imgix-el-{md5}'
@@ -1144,7 +1147,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		}
 
 		function applyImg(el) {
-			var elImg = imgix._getElementImage(el),
+			var elImg = imgix.getElementImage(el),
 				elBaseUrl = elImg;
 
 			if (elImg && elImg.indexOf('?') !== -1) {
@@ -1200,7 +1203,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 	imgix.URL.prototype.setUrl = function(url) {
 		if (!url || typeof url !== "string" || url.length === 0) {
-			url = imgix._getEmptyImage();
+			url = imgix.getEmptyImage();
 		}
 		this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
 	};
@@ -1229,7 +1232,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		}
 
 		if (!url || url.length === 0) {
-			return imgix._getEmptyImage();
+			return imgix.getEmptyImage();
 		}
 
 		return url;
@@ -1260,7 +1263,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	};
 
 	imgix.URL.prototype.setParams = function(dict, doOverride) {
-		if (imgix._instanceOfImgixURL(dict)) {
+		if (imgix.instanceOfImgixURL(dict)) {
 			console.warn("setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead");
 			return;
 		}
@@ -1282,7 +1285,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 		if (param === 'col' || param === 'colorize' || param === 'blend' || param === 'mono' || param === "monochrome") {
 			if (value.slice(0, 3) === 'rgb') {
-				value = imgix._rgbToHex(value);
+				value = imgix.rgbToHex(value);
 			}
 		}
 
@@ -1691,7 +1694,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			return;
 		}
 
-		imgix._setElementImageAfterLoad(elem, newUrl);
+		imgix.setElementImageAfterLoad(elem, newUrl);
 		elem.lastWidth = currentElemWidth;
 		elem.lastHeight = currentElemHeight;
 	};
@@ -1729,7 +1732,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 		if (i.getFit() === 'crop') {
 			//console.log(elem.style.height);
-			if (elemHeight > 0 && (!imgix._isImageElement(elem) || (imgix._isImageElement(elem) && hasHardCodedHeight))) {
+			if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && hasHardCodedHeight))) {
 				i.setHeight(elemHeight);
 			}
 			if (elemWidth > 0) {
@@ -2185,7 +2188,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		}
 	}(imgix));
 
-	// start promise
+	// start promise polyfill, but used as is.
 	/** license MIT-promiscuous-©Ruben Verborgh*/
 	(function (func, obj, root) {
 		// Type checking utility function

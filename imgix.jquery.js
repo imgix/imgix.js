@@ -35,9 +35,9 @@
 				}
 				return jq.each(function(idx, e) {
 					if (e && imgix.hasImage(e)) {
-						var i = new imgix.URL(imgix._getElementImage(e));
+						var i = new imgix.URL(imgix.getElementImage(e));
 						i.setParam(param, value);
-						imgix._setElementImageAfterLoad(e, i.getURL());
+						imgix.setElementImageAfterLoad(e, i.getURL());
 					}
 				});
 			},
@@ -45,9 +45,9 @@
 			setParams: function(values) {
 				return jq.each(function(idx, e) {
 					if (e && imgix.hasImage(e)) {
-						var i = new imgix.URL(imgix._getElementImage(e));
+						var i = new imgix.URL(imgix.getElementImage(e));
 						i.setParams(values);
-						imgix._setElementImageAfterLoad(e, i.getURL());
+						imgix.setElementImageAfterLoad(e, i.getURL());
 					}
 				});
 			},
@@ -55,7 +55,7 @@
 			getColors: function(num, callback) {
 				return jq.each(function(idx, e) {
 					if (e && imgix.hasImage(e)) {
-						var i = new imgix.URL(imgix._getElementImage(e));
+						var i = new imgix.URL(imgix.getElementImage(e));
 						i.getColors(num, callback);
 					}
 				});
@@ -65,7 +65,7 @@
 				var results = [];
 				jq.each(function(idx, e) {
 					if (e && imgix.hasImage(e)) {
-						var i = new imgix.URL(imgix._getElementImage(e));
+						var i = new imgix.URL(imgix.getElementImage(e));
 						results.push(i.getParam(param));
 					}
 				});
@@ -77,7 +77,7 @@
 				var results = [];
 				jq.each(function(idx, e) {
 					if (e && imgix.hasImage(e)) {
-						var i = new imgix.URL(imgix._getElementImage(e));
+						var i = new imgix.URL(imgix.getElementImage(e));
 						results.push(i.getParams());
 					}
 				});
@@ -93,9 +93,9 @@
 				methods['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) {
 					return jq.each(function(idx, e) {
 						if (e && imgix.hasImage(e)) {
-							var i = new imgix.URL(imgix._getElementImage(e));
+							var i = new imgix.URL(imgix.getElementImage(e));
 							i.setParam(tmp, v, doOverride);
-							imgix._setElementImageAfterLoad(e, i.getURL());
+							imgix.setElementImageAfterLoad(e, i.getURL());
 						}
 					});
 				};
@@ -104,7 +104,7 @@
 					var results = [];
 					jq.each(function(idx, e) {
 						if (e && imgix.hasImage(e)) {
-							var i = new imgix.URL(imgix._getElementImage(e));
+							var i = new imgix.URL(imgix.getElementImage(e));
 							results.push(i.getParam(tmp));
 						}
 					});

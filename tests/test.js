@@ -248,7 +248,7 @@ describe('imgix-javascript unit tests', function() {
 	});
 
 	it('converts rgb to hex colors correctly', function() {
-		expect(imgix._rgbToHex('rgb(251, 150, 23)').toLowerCase()).toEqual('fb9617');
+		expect(imgix.rgbToHex('rgb(251, 150, 23)').toLowerCase()).toEqual('fb9617');
 	});
 
 	it('converts rgb to hex colors correctly on setBlend', function() {
@@ -268,20 +268,18 @@ describe('imgix-javascript unit tests', function() {
 		var el = document.querySelector('#' + tmpId);
 
 		expect(el).toBeDefined();
-		expect(imgix._isImageElement(el)).toEqual(true);
-		expect(imgix._getElementTreeXPath(el)).toEqual('/html/body/img');
-		expect(imgix._getElementImage(el)).toEqual('http://static-a.imgix.net/macaw.png');
+		expect(imgix.isImageElement(el)).toEqual(true);
+		expect(imgix.getElementTreeXPath(el)).toEqual('/html/body/img');
+		expect(imgix.getElementImage(el)).toEqual('http://static-a.imgix.net/macaw.png');
 
 		document.body.removeChild(img);
 	});
 
 	it('extracts ints correctly', function() {
-		expect(imgix._extractInt("234px")).toEqual(234);
+		expect(imgix.helpers.extractInt("234px")).toEqual(234);
 	});
 
 	it('puts a dummy transparent image when nothing set', function() {
-		expect(imgix._extractInt("234px")).toEqual(234);
-
 		var i = new imgix.URL('');
 
 		var img = document.createElement('img'),
@@ -295,14 +293,14 @@ describe('imgix-javascript unit tests', function() {
 
 
 		expect(el).toBeDefined();
-		expect(imgix._isImageElement(el)).toEqual(true);
-		expect(el.src).toEqual(imgix._getEmptyImage());
+		expect(imgix.isImageElement(el)).toEqual(true);
+		expect(el.src).toEqual(imgix.getEmptyImage());
 
 		document.body.removeChild(img);
 	});
 
 	it('correctly sets the image after the load', function() {
-		var el, newUrl;
+		var el, newUrl, loadedFlag = false;
 		runs(function() {
 			var img = document.createElement('img'),
 				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
@@ -315,14 +313,18 @@ describe('imgix-javascript unit tests', function() {
 			expect(el).toBeDefined();
 
 			newUrl = 'http://static-a.imgix.net/macaw.png?blur=1000';
-			imgix._setElementImageAfterLoad(el, newUrl);
+			imgix.setElementImageAfterLoad(el, newUrl, function() {
+				loadedFlag = true;
+			});
 		});
 
-		waits(700); // give it time to load
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 5000);
 
 		runs(function() {
 			// ensure it actually loaded...
-			expect(imgix._getElementImage(el)).toEqual(newUrl);
+			expect(imgix.getElementImage(el)).toEqual(newUrl);
 		});
 	});
 
