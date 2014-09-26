@@ -396,4 +396,22 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.helpers.isFluidSet(new imgix.URL())).toEqual(false);
 	});
 
+	it('should convert between hex and rgb', function() {
+		expect(imgix.hexToRGB('#ffffff')).toEqual('rgb(255, 255, 255)');
+		expect(imgix.hexToRGB('#fff')).toEqual('rgb(255, 255, 255)');
+		expect(imgix.rgbToHex('rgb(255, 255, 255)')).toEqual('ffffff');
+
+		expect(imgix.hexToRGB('#1b64c8')).toEqual('rgb(27, 100, 200)');
+		expect(imgix.rgbToHex('rgb(27, 100, 200)')).toEqual('1b64c8');
+	});
+
+	it('should get a brightness score', function() {
+		expect(imgix.getColorBrightness('#ffffff')).toEqual(255);
+		expect(imgix.getColorBrightness('#ccc')).toEqual(204);
+
+		expect(imgix.getColorBrightness('#ccc')).toEqual(imgix.getColorBrightness('#cccccc'));
+
+		expect(imgix.getColorBrightness('#fcc')).toEqual(imgix.getColorBrightness('rgb(255, 204, 204'));
+	});
+
 });

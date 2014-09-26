@@ -904,10 +904,9 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @returns {Number} brightness score for the passed color
 	 */
 	imgix.getColorBrightness = function(c) {
-
 		if (c) {
 			if (c.slice(0, 1) === '#') {
-				c = c.slice(1, c.length);
+				c = imgix.hexToRGB(c);
 			}
 		} else {
 			return 0;
@@ -948,6 +947,8 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			r = parseInt(hex.slice(0, 2), 16);
 			g = parseInt(hex.slice(2, 4), 16);
 			b = parseInt(hex.slice(4, 6), 16);
+		} else {
+			console.warn("invalid hex color:", hex);
 		}
 
 		return 'rgb(' + r + ', ' + g + ', ' + b + ')';
