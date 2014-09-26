@@ -82,8 +82,74 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			};
 		}
 
+		// filter polyfill: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+		if (!Array.prototype.filter) {
+			Array.prototype.filter = function(fun/*, thisArg*/) {
+				if (this === void 0 || this === null) {
+					throw new TypeError();
+				}
+
+				var t = Object(this);
+				var len = t.length >>> 0;
+				if (typeof fun !== 'function') {
+					throw new TypeError();
+				}
+
+				var res = [];
+				var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+				for (var i = 0; i < len; i++) {
+					if (i in t) {
+						var val = t[i];
+						if (fun.call(thisArg, val, i, t)) {
+							res.push(val);
+						}
+					}
+				}
+
+				return res;
+			};
+		}
+
+		// map polyfill: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+		if (!Array.prototype.map) {
+			Array.prototype.map = function(callback, thisArg) {
+
+				var T, A, k;
+
+				if (this == null) {
+					throw new TypeError(" this is null or not defined");
+				}
+
+				var O = Object(this);
+
+				var len = O.length >>> 0;
+
+				if (typeof callback !== "function") {
+					throw new TypeError(callback + " is not a function");
+				}
+
+				if (arguments.length > 1) {
+					T = thisArg;
+				}
+
+				A = new Array(len);
+				k = 0;
+				while (k < len) {
+					var kValue, mappedValue;
+					if (k in O) {
+						kValue = O[k];
+						mappedValue = callback.call(T, kValue, k, O);
+						A[k] = mappedValue;
+					}
+					k++;
+				}
+
+				return A;
+			};
+		}
+
 		// Polyfill or document.querySelectorAll + document.querySelector
-		// should only matter for the poor souls on IE < 8
+		// should only matter for the poor souls on IE <= 8
 		// https://gist.github.com/chrisjlee/8960575
 		if (!document.querySelectorAll) {
 			document.querySelectorAll = function (selectors) {
@@ -169,6 +235,268 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 				};
 			}());
 		}
+
+		// polyfill for getComputedStyle (main for ie8)
+		!('getComputedStyle' in window) && (window.getComputedStyle = (function () {
+			function getPixelSize(element, style, property, fontSize) {
+				var
+				sizeWithSuffix = style[property],
+				size = parseFloat(sizeWithSuffix),
+				suffix = sizeWithSuffix.split(/\d/)[0],
+				rootSize;
+
+				fontSize = fontSize != null ? fontSize : /%|em/.test(suffix) && element.parentElement ? getPixelSize(element.parentElement, element.parentElement.currentStyle, 'fontSize', null) : 16;
+				rootSize = property == 'fontSize' ? fontSize : /width/i.test(property) ? element.clientWidth : element.clientHeight;
+
+				return (suffix == 'em') ? size * fontSize : (suffix == 'in') ? size * 96 : (suffix == 'pt') ? size * 96 / 72 : (suffix == '%') ? size / 100 * rootSize : size;
+			}
+
+			function setShortStyleProperty(style, property) {
+				var
+				borderSuffix = property == 'border' ? 'Width' : '',
+				t = property + 'Top' + borderSuffix,
+				r = property + 'Right' + borderSuffix,
+				b = property + 'Bottom' + borderSuffix,
+				l = property + 'Left' + borderSuffix;
+
+				style[property] = (style[t] == style[r] == style[b] == style[l] ? [style[t]]
+				: style[t] == style[b] && style[l] == style[r] ? [style[t], style[r]]
+				: style[l] == style[r] ? [style[t], style[r], style[b]]
+				: [style[t], style[r], style[b], style[l]]).join(' ');
+			}
+
+			function CSSStyleDeclaration(element) {
+				var
+				currentStyle = element.currentStyle,
+				style = this,
+				fontSize = getPixelSize(element, currentStyle, 'fontSize', null);
+
+				for (property in currentStyle) {
+					if (/width|height|margin.|padding.|border.+W/.test(property) && style[property] !== 'auto') {
+						style[property] = getPixelSize(element, currentStyle, property, fontSize) + 'px';
+					} else if (property === 'styleFloat') {
+						style['float'] = currentStyle[property];
+					} else {
+						style[property] = currentStyle[property];
+					}
+				}
+
+				setShortStyleProperty(style, 'margin');
+				setShortStyleProperty(style, 'padding');
+				setShortStyleProperty(style, 'border');
+
+				style.fontSize = fontSize + 'px';
+
+				return style;
+			}
+
+			CSSStyleDeclaration.prototype = {
+				constructor: CSSStyleDeclaration,
+				getPropertyPriority: function () {},
+				getPropertyValue: function ( prop ) {
+					return this[prop] || '';
+				},
+				item: function () {},
+				removeProperty: function () {},
+				setProperty: function () {},
+				getPropertyCSSValue: function () {}
+			};
+
+			function getComputedStyle(element) {
+				return new CSSStyleDeclaration(element);
+			}
+
+			return getComputedStyle;
+		})(window));
+
+		// PROMISE
+
+		(function() {
+			var root;
+
+			if (typeof window === 'object' && window) {
+				root = window;
+			} else {
+				root = global;
+			}
+
+			if (typeof module !== 'undefined' && module.exports) {
+				module.exports = root.Promise ? root.Promise : Promise;
+			} else if (!root.Promise) {
+				root.Promise = Promise;
+			}
+
+			// Use polyfill for setImmediate for performance gains
+			var asap = root.setImmediate || function(fn) { setTimeout(fn, 1); };
+
+			// Polyfill for Function.prototype.bind
+			function bind(fn, thisArg) {
+				return function() {
+					fn.apply(thisArg, arguments);
+				}
+			}
+
+			var isArray = Array.isArray || function(value) { return Object.prototype.toString.call(value) === "[object Array]" };
+
+			function Promise(fn) {
+				if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
+				if (typeof fn !== 'function') throw new TypeError('not a function');
+				this._state = null;
+				this._value = null;
+				this._deferreds = []
+
+				doResolve(fn, bind(resolve, this), bind(reject, this))
+			}
+
+			function handle(deferred) {
+				var me = this;
+				if (this._state === null) {
+					this._deferreds.push(deferred);
+					return
+				}
+				asap(function() {
+					var cb = me._state ? deferred.onFulfilled : deferred.onRejected
+					if (cb === null) {
+						(me._state ? deferred.resolve : deferred.reject)(me._value);
+						return;
+					}
+					var ret;
+					try {
+						ret = cb(me._value);
+					}
+					catch (e) {
+						deferred.reject(e);
+						return;
+					}
+					deferred.resolve(ret);
+				})
+			}
+
+			function resolve(newValue) {
+				try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+					if (newValue === this) throw new TypeError('A promise cannot be resolved with itself.');
+					if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
+						var then = newValue.then;
+						if (typeof then === 'function') {
+							doResolve(bind(then, newValue), bind(resolve, this), bind(reject, this));
+							return;
+						}
+					}
+					this._state = true;
+					this._value = newValue;
+					finale.call(this);
+				} catch (e) { reject.call(this, e); }
+			}
+
+			function reject(newValue) {
+				this._state = false;
+				this._value = newValue;
+				finale.call(this);
+			}
+
+			function finale() {
+				for (var i = 0, len = this._deferreds.length; i < len; i++) {
+					handle.call(this, this._deferreds[i]);
+				}
+				this._deferreds = null;
+			}
+
+			function Handler(onFulfilled, onRejected, resolve, reject){
+				this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+				this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+				this.resolve = resolve;
+				this.reject = reject;
+			}
+
+			/**
+			 * Take a potentially misbehaving resolver function and make sure
+			 * onFulfilled and onRejected are only called once.
+			 *
+			 * Makes no guarantees about asynchrony.
+			 */
+			function doResolve(fn, onFulfilled, onRejected) {
+				var done = false;
+				try {
+					fn(function (value) {
+						if (done) return;
+						done = true;
+						onFulfilled(value);
+					}, function (reason) {
+						if (done) return;
+						done = true;
+						onRejected(reason);
+					})
+				} catch (ex) {
+					if (done) return;
+					done = true;
+					onRejected(ex);
+				}
+			}
+
+			Promise.prototype['catch'] = function (onRejected) {
+				return this.then(null, onRejected);
+			};
+
+			Promise.prototype.then = function(onFulfilled, onRejected) {
+				var me = this;
+				return new Promise(function(resolve, reject) {
+					handle.call(me, new Handler(onFulfilled, onRejected, resolve, reject));
+				})
+			};
+
+			Promise.all = function () {
+				var args = Array.prototype.slice.call(arguments.length === 1 && isArray(arguments[0]) ? arguments[0] : arguments);
+
+				return new Promise(function (resolve, reject) {
+					if (args.length === 0) return resolve([]);
+					var remaining = args.length;
+					function res(i, val) {
+						try {
+							if (val && (typeof val === 'object' || typeof val === 'function')) {
+								var then = val.then;
+								if (typeof then === 'function') {
+									then.call(val, function (val) { res(i, val) }, reject);
+									return;
+								}
+							}
+							args[i] = val;
+							if (--remaining === 0) {
+								resolve(args);
+							}
+						} catch (ex) {
+							reject(ex);
+						}
+					}
+					for (var i = 0; i < args.length; i++) {
+						res(i, args[i]);
+					}
+				});
+			};
+
+			Promise.resolve = function (value) {
+				if (value && typeof value === 'object' && value.constructor === Promise) {
+					return value;
+				}
+
+				return new Promise(function (resolve) {
+					resolve(value);
+				});
+			};
+
+			Promise.reject = function (value) {
+				return new Promise(function (resolve, reject) {
+					reject(value);
+				});
+			};
+
+			Promise.race = function (values) {
+				return new Promise(function (resolve, reject) {
+					for(var i = 0, len = values.length; i < len; i++) {
+						values[i].then(resolve, reject);
+					}
+				});
+			};
+		})();
 	}
 
 	initPolyfills();
@@ -408,6 +736,22 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 				return str;
 			}
 			return parseInt(str.replace(/\D/g, ''), 10) || 0;
+		},
+
+		camelize: function(str) {
+			return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ""; });
+		},
+
+		getElementCssProperty: function(elem, prop) {
+			if (window.getComputedStyle) {
+				return window.getComputedStyle(elem, null).getPropertyValue(prop);
+			} else {
+				if (elem && elem.style && prop) {
+					return elem.style[this.camelize(prop)];
+				}
+			}
+
+			return '';
 		}
 	};
 
@@ -486,7 +830,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 				el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
 				return true;
 			} else {
-				el.style.backgroundImage = 'url(' + imgUrl + ')';
+				if(document.addEventListener){
+					el.style.backgroundImage = 'url(' + imgUrl + ')';
+				} else {
+					el.style.cssText = 'background-image:url(' + imgUrl + ')';
+				}
 				return true;
 			}
 		}
@@ -556,12 +904,53 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @returns {Number} brightness score for the passed color
 	 */
 	imgix.getColorBrightness = function(c) {
+
+		if (c) {
+			if (c.slice(0, 1) === '#') {
+				c = c.slice(1, c.length);
+			}
+		} else {
+			return 0;
+		}
+
 		var parts = c.replace(/[^0-9,]+/g, '').split(","),
 			r = +parts[0],
 			g = +parts[1],
 			b = +parts[2];
 
 		return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
+	};
+
+
+	imgix.hexToRGB = function(hex) {
+
+		if (hex) {
+			if (hex.slice(0, 1) === '#') {
+				hex = hex.slice(1, hex.length);
+			} else if (hex.slice(0, 3) === 'rgb') {
+				return hex;
+			}
+		}
+
+		var r = 0,
+			g = 0,
+			b = 0;
+
+		function dupe(x) {
+			return '' + x + x;
+		}
+
+		if (hex.length === 3) {
+			r = parseInt(dupe(hex.slice(0, 1)), 16);
+			g = parseInt(dupe(hex.slice(1, 2)), 16);
+			b = parseInt(dupe(hex.slice(2, 3)), 16);
+		} else if (hex.length === 6) {
+			r = parseInt(hex.slice(0, 2), 16);
+			g = parseInt(hex.slice(2, 4), 16);
+			b = parseInt(hex.slice(4, 6), 16);
+		}
+
+		return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 	};
 
 	/**
@@ -585,7 +974,8 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	 * @returns {boolean} true if passed element has an image
 	 */
 	imgix.hasImage = function(el) {
-		return el && (imgix.isImageElement(el) || el.style.cssText.indexOf('background-image') !== -1);
+		var toCheck = el.style.cssText ? el.style.cssText.toLowerCase() : el.style.cssText;
+		return el && (imgix.isImageElement(el) || toCheck.indexOf('background-image') !== -1);
 	};
 
 	/**
@@ -935,16 +1325,16 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 	imgix.getCssPropertyById = function(elmId, property) {
 		var elem = document.getElementById(elmId);
-		return window.getComputedStyle(elem, null).getPropertyValue(property);
+		return imgix.helpers.getElementCssProperty(elem, property);
 	};
 
 	imgix.getCssProperty = function(el, property) {
-		return window.getComputedStyle(el, null).getPropertyValue(property);
+		return imgix.helpers.getElementCssProperty(el, property);
 	};
 
 	imgix.getCssPropertyBySelector = function(sel, property) {
 		var elem = document.querySelector(sel);
-		return window.getComputedStyle(elem, null).getPropertyValue(property);
+		return imgix.helpers.getElementCssProperty(elem, property);
 	};
 
 	imgix.instanceOfImgixURL = function(x) {
@@ -1029,7 +1419,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 							document.body.appendChild(tmps);
 
 							promises.push(
-								new ImgixPromise(function (resolve, reject) {
+								new Promise(function (resolve, reject) {
 									var attempts = 0;
 									var checkLoaded = function() {
 										var c = imgix.getCssPropertyById(tmps.id, 'color');
@@ -1054,7 +1444,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 
 					} // end loop
 
-					ImgixPromise.all(promises).then(function(values) {
+					Promise.all(promises).then(function(values) {
 						var resultColors = [];
 
 						values = values.sort(function(a, b) {
@@ -1062,7 +1452,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 						});
 
 						for (var x = 0; x < values.length; x++) {
-							resultColors.push(values[x].color);
+							resultColors.push(imgix.hexToRGB(values[x].color));
 						}
 
 						if (resultColors && resultColors.length > 1) {
@@ -2213,139 +2603,5 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			$.md5 = md5;
 		}
 	}(imgix));
-
-	// start promise polyfill, but used as is.
-	/** license MIT-promiscuous-©Ruben Verborgh*/
-	(function (func, obj, root) {
-		// Type checking utility function
-		function is(type, item) { return (typeof item)[0] == type; }
-
-		// Creates a promise, calling callback(resolve, reject), ignoring other parameters.
-		function ImgixPromise(callback, handler) {
-		// The `handler` variable points to the function that will
-		// 1) handle a .then(resolved, rejected) call
-		// 2) handle a resolve or reject call (if the first argument === `is`)
-		// Before 2), `handler` holds a queue of callbacks.
-		// After 2), `handler` is a finalized .then handler.
-		handler = function pendingHandler(resolved, rejected, value, queue, then, i) {
-			queue = pendingHandler.q;
-
-			// Case 1) handle a .then(resolved, rejected) call
-			if (resolved != is) {
-			return ImgixPromise(function (resolve, reject) {
-				queue.push({ p: this, r: resolve, j: reject, 1: resolved, 0: rejected });
-			});
-			}
-
-			// Case 2) handle a resolve or reject call
-			// (`resolved` === `is` acts as a sentinel)
-			// The actual function signature is
-			// .re[ject|solve](<is>, success, value)
-
-			// Check if the value is a promise and try to obtain its `then` method
-			if (value && (is(func, value) | is(obj, value))) {
-			try { then = value.then; }
-			catch (reason) { rejected = 0; value = reason; }
-			}
-			// If the value is a promise, take over its state
-			if (is(func, then)) {
-				var valueHandler = function(resolved) {
-					return function (value) { then && (then = 0, pendingHandler(is, resolved, value)); };
-				}
-				try { then.call(value, valueHandler(1), rejected = valueHandler(0)); }
-				catch (reason) { rejected(reason); }
-			}
-			// The value is not a promise; handle resolve/reject
-			else {
-			// Replace this handler with a finalized resolved/rejected handler
-			handler = function (Resolved, Rejected) {
-				// If the Resolved or Rejected parameter is not a function,
-				// return the original promise (now stored in the `callback` variable)
-				if (!is(func, (Resolved = rejected ? Resolved : Rejected)))
-				return callback;
-				// Otherwise, return a finalized promise, transforming the value with the function
-				return ImgixPromise(function (resolve, reject) { finalize(this, resolve, reject, value, Resolved); });
-			};
-			// Resolve/reject pending callbacks
-			i = 0;
-			while (i < queue.length) {
-				then = queue[i++];
-				// If no callback, just resolve/reject the promise
-				if (!is(func, resolved = then[rejected]))
-				(rejected ? then.r : then.j)(value);
-				// Otherwise, resolve/reject the promise with the result of the callback
-				else
-				finalize(then.p, then.r, then.j, value, resolved);
-			}
-			}
-		};
-		// The queue of pending callbacks; garbage-collected when handler is resolved/rejected
-		handler.q = [];
-
-		// Create and return the promise (reusing the callback variable)
-		callback.call(callback = { then:	function (resolved, rejected) { return handler(resolved, rejected); },
-									 catch: function (rejected)			{ return handler(0,			 rejected); } },
-						function (value)	{ handler(is, 1,	value); },
-						function (reason) { handler(is, 0, reason); });
-		return callback;
-		}
-
-		// Finalizes the promise by resolving/rejecting it with the transformed value
-		function finalize(promise, resolve, reject, value, transform) {
-			window.setTimeout(function () {
-				try {
-				// Transform the value through and check whether it's a promise
-				value = transform(value);
-				transform = value && (is(obj, value) | is(func, value)) && value.then;
-				// Return the result if it's not a promise
-				if (!is(func, transform))
-					resolve(value);
-				// If it's a promise, make sure it's not circular
-				else if (value == promise)
-					reject(TypeError());
-				// Take over the promise's state
-				else
-					transform.call(value, resolve, reject);
-				}
-				catch (error) { reject(error); }
-			}, 0);
-		}
-
-		// Creates a resolved promise
-		ImgixPromise.resolve = ResolvedImgixPromise;
-		function ResolvedImgixPromise(value) { return ImgixPromise(function (resolve) { resolve(value); }); }
-
-		// Creates a rejected promise
-		ImgixPromise.reject = function (reason) { return ImgixPromise(function (resolve, reject) { reject(reason); }); };
-
-		// Transforms an array of promises into a promise for an array
-		ImgixPromise.all = function (promises) {
-			return ImgixPromise(function (resolve, reject, count, values) {
-				// Array of collected values
-				values = [];
-				// Resolve immediately if there are no promises
-				count = promises.length || resolve(values);
-				// Transform all elements (`map` is shorter than `forEach`)
-				promises.map(function (promise, index) {
-				ResolvedImgixPromise(promise).then(
-					// Store the value and resolve if it was the last
-					function (value) {
-					values[index] = value;
-					--count || resolve(values);
-					},
-					// Reject if one element fails
-					reject);
-				});
-			});
-		};
-
-
-	if (typeof exports !== 'undefined') {
-		exports.ImgixPromise = ImgixPromise;
-	} else {
-		window.ImgixPromise = ImgixPromise;
-	}
-	})('f', 'o', this);
-
 
 }).call(this);
