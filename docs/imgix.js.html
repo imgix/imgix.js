@@ -25,21 +25,180 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>"use strict";
+            <pre class="prettyprint source linenums"><code>/*
+ _                    _             _
+(_)                  (_)           (_)
+ _  _ __ ___    __ _  _ __  __      _  ___
+| || '_ ` _ \  / _` || |\ \/ /     | |/ __|
+| || | | | | || (_| || | >  &lt;  _   | |\__ \
+|_||_| |_| |_| \__, ||_|/_/\_\(_)  | ||___/
+                __/ |             _/ |
+               |___/             |__/
 
-// TODO: promote some of the private functions to public...
-// TODO: README for installing dev, running tests, etc.
-// TODO: finish jsdocs
-// TODO: cleanup / organization
+v1.0.0
 
-// TODO: handle options... as obj
-// TODO: handle encoding...
+Questions/Issues? File an issue on github or email us at support@imgix.com
+*/
 
-// TODO: handle rentjuice-style signing too
-// TODO: param validator/ranges...
-// TODO:function setOption(option, value)
+/*
+We recommend using the minified version of this file (imgix.min.js) unless you're testing.
+
+// TODO: more copy...
+// TODO: link to imgix.com imgix.js home
+// TODO: link to 
+// TODO: link to jquery plugin
+
+*/
 
 (function() {
+	"use strict";
+
+	// polyfills.
+	function initPolyfills() {
+
+		// Object.freeze polyfill (pure pass through)
+		if (!Object.freeze) {
+			Object.freeze = function freeze(object) {
+				return object;
+			};
+		}
+
+		// Console-polyfill. MIT license.
+		// https://github.com/paulmillr/console-polyfill
+		// Make it safe to do console.log() always.
+		(function(con) {
+			var prop, method;
+			var empty = {};
+			var dummy = function() {};
+			var properties = 'memory'.split(',');
+			var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+			'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+			'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+			while (prop = properties.pop()) {
+				con[prop] = con[prop] || empty;
+			}
+			while (method = methods.pop()) {
+				con[method] = con[method] || dummy;
+			}
+		})(window.console || {}); // Using `this` for web workers.
+
+		// mozilla's Function.bind polyfill
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+		if (!Function.prototype.bind) {
+			Function.prototype.bind = function (oThis) {
+				if (typeof this !== "function") {
+					// closest thing possible to the ECMAScript 5
+					// internal IsCallable function
+					throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+				}
+
+				var aArgs = Array.prototype.slice.call(arguments, 1),
+					fToBind = this,
+					fNOP = function () {},
+					fBound = function () {
+						return fToBind.apply(this instanceof fNOP &amp;&amp; oThis
+							? this
+							: oThis,
+							aArgs.concat(Array.prototype.slice.call(arguments)));
+					};
+
+				fNOP.prototype = this.prototype;
+				fBound.prototype = new fNOP();
+
+				return fBound;
+			};
+		}
+
+		// Polyfill or document.querySelectorAll + document.querySelector
+		// should only matter for the poor souls on IE &lt; 8
+		// https://gist.github.com/chrisjlee/8960575
+		if (!document.querySelectorAll) {
+			document.querySelectorAll = function (selectors) {
+				var style = document.createElement('style'), elements = [], element;
+				document.documentElement.firstChild.appendChild(style);
+				document._qsa = [];
+
+				style.styleSheet.cssText = selectors + '{x-qsa:expression(document._qsa &amp;&amp; document._qsa.push(this))}';
+				window.scrollBy(0, 0);
+				style.parentNode.removeChild(style);
+
+				while (document._qsa.length) {
+					element = document._qsa.shift();
+					element.style.removeAttribute('x-qsa');
+					elements.push(element);
+				}
+				document._qsa = null;
+				return elements;
+			};
+		}
+
+		if (!document.querySelector) {
+			document.querySelector = function (selectors) {
+				var elements = document.querySelectorAll(selectors);
+				return (elements.length) ? elements[0] : null;
+			};
+		}
+
+		if (!Array.prototype.indexOf) {
+			Array.prototype.indexOf = function (needle) {
+				for (var i = 0; i &lt; this.length; i++) {
+					if (this[i] === needle) {
+						return i;
+					}
+				}
+				return -1;
+			};
+		}
+
+		if (!Array.isArray) {
+			Array.isArray = function(arg) {
+				return Object.prototype.toString.call(arg) === '[object Array]';
+			};
+		}
+
+		if (!Object.keys) {
+			Object.keys = (function() {
+
+				var hasOwnProperty = Object.prototype.hasOwnProperty,
+					hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
+					dontEnums = [
+						'toString',
+						'toLocaleString',
+						'valueOf',
+						'hasOwnProperty',
+						'isPrototypeOf',
+						'propertyIsEnumerable',
+						'constructor'
+					],
+					dontEnumsLength = dontEnums.length;
+
+				return function(obj) {
+					if (typeof obj !== 'object' &amp;&amp; (typeof obj !== 'function' || obj === null)) {
+					throw new TypeError('Object.keys called on non-object');
+					}
+
+					var result = [], prop, i;
+
+					for (prop in obj) {
+						if (hasOwnProperty.call(obj, prop)) {
+							result.push(prop);
+						}
+					}
+
+					if (hasDontEnumBug) {
+						for (i = 0; i &lt; dontEnumsLength; i++) {
+							if (hasOwnProperty.call(obj, dontEnums[i])) {
+								result.push(dontEnums[i]);
+							}
+						}
+					}
+					return result;
+				};
+			}());
+		}
+	}
+
+	initPolyfills();
 
 	// Establish the root object, `window` in the browser, or `exports` on the server.
 	var root = this;
@@ -53,71 +212,279 @@
 	// expose imgix to browser or node
 	if (typeof exports !== 'undefined') {
 		if (typeof module !== 'undefined' &amp;&amp; module.exports) {
-			exports = module.exports = _;
+			exports = module.exports = imgix;
 		}
 		exports.imgix = imgix;
 	} else {
 		root.imgix = imgix;
 	}
 
-	var config = {
-		isDocMarked: null,
-	},
-		IMGIX_USABLE = 'imgix-usable';
-
-	// TODO: promote some of these private methods _* to public
+	var IMGIX_USABLE = 'imgix-usable';
 
 	/**
-	 * Get html element by XPath
+	 * The helper namespace for lower-level functions 
+	 * @namespace imgix.helpers
+	 */
+	imgix.helpers = {
+		debouncer: function (func, wait) {
+			var timeoutRef;
+			return function () {
+				var self = this,
+					args = arguments,
+					later = function () {
+						timeoutRef = null;
+						func.apply(self, args);
+					};
+
+				window.clearTimeout(timeoutRef);
+				timeoutRef = window.setTimeout(later, wait);
+			};
+		},
+
+		// FROM: https://github.com/websanova/js-url | unknown license.
+		urlParser: (function() {
+			function isNumeric(arg) {
+				return !isNaN(parseFloat(arg)) &amp;&amp; isFinite(arg);
+			}
+
+			return function(arg, url) {
+				var _ls = url || window.location.toString();
+
+				if (!arg) { return _ls; }
+				else { arg = arg.toString(); }
+
+				if (_ls.substring(0,2) === '//') { _ls = 'http:' + _ls; }
+				else if (_ls.split('://').length === 1) { _ls = 'http://' + _ls; }
+
+				url = _ls.split('/');
+				var _l = {auth:''}, host = url[2].split('@');
+
+				if (host.length === 1) { host = host[0].split(':'); }
+				else { _l.auth = host[0]; host = host[1].split(':'); }
+
+				_l.protocol = url[0];
+				_l.hostname=host[0];
+				_l.port=(host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
+				_l.pathname=( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
+				var _p = _l.pathname;
+
+				if (_p.charAt(_p.length-1) === '/') { _p=_p.substring(0, _p.length-1); }
+				var _h = _l.hostname, _hs = _h.split('.'), _ps = _p.split('/');
+
+				if (arg === 'hostname') { return _h; }
+				else if (arg === 'domain') {
+					if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) { return _h; }
+					return _hs.slice(-2).join('.'); 
+				}
+				//else if (arg === 'tld') { return _hs.slice(-1).join('.'); }
+				else if (arg === 'sub') { return _hs.slice(0, _hs.length - 2).join('.'); }
+				else if (arg === 'port') { return _l.port; }
+				else if (arg === 'protocol') { return _l.protocol.split(':')[0]; }
+				else if (arg === 'auth') { return _l.auth; }
+				else if (arg === 'user') { return _l.auth.split(':')[0]; }
+				else if (arg === 'pass') { return _l.auth.split(':')[1] || ''; }
+				else if (arg === 'path') { return _l.pathname; }
+				else if (arg.charAt(0) === '.')
+				{
+					arg = arg.substring(1);
+					if(isNumeric(arg)) {arg = parseInt(arg, 10); return _hs[arg &lt; 0 ? _hs.length + arg : arg-1] || ''; }
+				}
+				else if (isNumeric(arg)) { arg = parseInt(arg, 10); return _ps[arg &lt; 0 ? _ps.length + arg : arg] || ''; }
+				else if (arg === 'file') { return _ps.slice(-1)[0]; }
+				else if (arg === 'filename') { return _ps.slice(-1)[0].split('.')[0]; }
+				else if (arg === 'fileext') { return _ps.slice(-1)[0].split('.')[1] || ''; }
+				else if (arg.charAt(0) === '?' || arg.charAt(0) === '#')
+				{
+					var params = _ls, param = null;
+
+					if(arg.charAt(0) === '?') { params = (params.split('?')[1] || '').split('#')[0]; }
+					else if(arg.charAt(0) === '#') { params = (params.split('#')[1] || ''); }
+
+					if(!arg.charAt(1)) { return params; }
+
+					arg = arg.substring(1);
+					params = params.split('&amp;');
+
+					for(var i=0,ii=params.length; i&lt;ii; i++)
+					{
+						param = params[i].split('=');
+						if(param[0] === arg) { return param[1] || ''; }
+					}
+
+					return null;
+				}
+
+				return '';
+			};
+		})(),
+
+		mergeObject: function() {
+			var obj = {},
+				i = 0,
+				il = arguments.length,
+				key;
+			for (; i &lt; il; i++) {
+				for (key in arguments[i]) {
+					if (arguments[i].hasOwnProperty(key)) {
+						obj[key] = arguments[i][key];
+					}
+				}
+			}
+			return obj;
+		},
+
+		pixelRound: function (pixelSize, pixelStep) {
+			return Math.ceil(pixelSize / pixelStep) * pixelStep;
+		},
+
+		isMobileDevice: function () {
+			return (/iPhone|iPod|iPad/i).test(navigator.userAgent);
+		},
+
+		isNumber: function (value) {
+			return !isNaN(parseFloat(value)) &amp;&amp; isFinite(value);
+		},
+
+		getZoom: function () {
+			var zoomMult = Math.round((screen.width / window.innerWidth) * 10) / 10;
+			return zoomMult &lt;= 1 ? 1 : zoomMult;
+		},
+
+		getDPR: function (elem) {
+			var dpiOverride = elem.getAttribute("data-dpi");
+			var devicePixelRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
+			var dpi = this.isNumber(dpiOverride) === true ? parseFloat(dpiOverride) : devicePixelRatio;
+			if (dpi % 1 !== 0) {
+				dpi = dpi.toFixed(1);
+			}
+			return dpi;
+		},
+
+		getWindowWidth: function () {
+			return document.documentElement.clientWidth || document.body &amp;&amp; document.body.clientWidth || 1024;
+		},
+
+		getWindowHeight: function () {
+			return document.documentElement.clientHeight || document.body &amp;&amp; document.body.clientHeight || 768;
+		},
+
+		getImgSrc: function (elem) {
+			return elem.getAttribute("data-src") || elem.getAttribute("src");
+		},
+
+		calculateElementSize: function (elem) {
+			var val = {
+				width: elem.offsetWidth,
+				height: elem.offsetHeight
+			};
+
+			if (elem.parentNode === null) {
+				val.width = this.getWindowWidth();
+				val.height = this.getWindowHeight();
+				return val;
+			}
+
+			if (val.width !== 0 || val.height !== 0) {
+				if (elem.alt &amp;&amp; !elem.fluid) {
+					elem.fluid = true;
+					return this.calculateElementSize(elem.parentNode);
+				}
+				return val;
+
+			} else {
+				var found,
+					prop,
+					past = {},
+					visProp = {position : "absolute", visibility : "hidden", display : "block"};
+
+				for (prop in visProp) {
+					if (visProp.hasOwnProperty(prop)) {
+						past[prop] = elem.style[prop];
+						elem.style[prop] = visProp[prop];
+					}
+				}
+
+				found = val;
+
+				for (prop in visProp) {
+					if (visProp.hasOwnProperty(prop)) {
+						elem.style[prop] = past[prop];
+					}
+				}
+
+				if (found.width === 0 || found.height === 0) {
+					return this.calculateElementSize(elem.parentNode);
+				} else {
+					return found;
+				}
+			}
+		},
+
+		isReallyObject: function(elem) {
+			return elem &amp;&amp; typeof elem === "object" &amp;&amp; (elem + '') === '[object Object]';
+		},
+
+		isFluidSet: function(elem) {
+			return elem &amp;&amp; typeof elem === "object" &amp;&amp; (elem + '') === '[object FluidSet]';
+		},
+
+		extractInt: function(str) {
+			if (str === undefined) {
+				return 0;
+			} else if (typeof str === "number") {
+				return str;
+			}
+			return parseInt(str.replace(/\D/g, ''), 10) || 0;
+		}
+	};
+
+	/**
+	 * Get html element by auto-generated (via XPath) class name
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {string} xpath the xpath of the element
 	 * @returns {Element} element with the xpath
 	 */
-	imgix._getElementByXPath = function(xpath) {
-		return document.querySelector('.' + imgix._getXPathClass(xpath));
+	imgix.getElementByXPathClassName = function(xpath) {
+		return document.querySelector('.' + imgix.getXPathClass(xpath));
 	};
 
 
 	/**
-	 * Get html element by XPath
+	 * Get image from an html element by auto-generated (via XPath) class name
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {string} xpath the xpath of the element to get
-	 * @returns {Element} element with the xpath
+	 * @returns {string} url of image on the element
 	 */
-	imgix._getElementImageByXPath = function(xpath) {
-		return imgix._getElementImage(imgix._getElementByXPath(xpath));
+	imgix.getElementImageByXPathClassName = function(xpath) {
+		return imgix.getElementImage(imgix.getElementByXPathClassName(xpath));
 	};
 
 	/**
 	 * Reports if an element is an image tag
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @returns {boolean} true if the element is an img tag
 	 */
-	imgix._isImageElement = function(el) {
-		return (el &amp;&amp; el.tagName.toLowerCase() === 'img');
+	imgix.isImageElement = function(el) {
+		return (el &amp;&amp; el.tagName &amp;&amp; el.tagName.toLowerCase() === 'img');
 	};
 
 	/**
-	 * Intelligently sets an image on an element after preloading the image.
+	 * Intelligently sets an image on an element after the image has been cached.
 	 * @memberof imgix
 	 * @static
-	 * @private
-	 * @param {Element} el the element to check
+	 * @param {Element} el the element to place the image on
 	 * @param {string} url the url of the image to set
 	 * @param {function} callback called once image has been preloaded and set
 	 */
-	imgix._setElementImageAfterLoad = function(el, imgUrl, callback) {
+	imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
 		var img = new Image();
 		img.src = imgUrl;
 		img.onload = function() {
-			imgix._setElementImage(el, imgUrl);
+			imgix.setElementImage(el, imgUrl);
 			if (typeof callback === "function") {
 				callback();
 			}
@@ -128,21 +495,20 @@
 	 * Intelligently sets an image on an element.
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
 	 * @param {string} url the url of the image to set
 	 * @returns {boolean} true on success
 	 */
-	imgix._setElementImage = function(el, imgUrl) {
+	imgix.setElementImage = function(el, imgUrl) {
 		if (!el) {
 			return false;
 		}
 
-		if (imgix._isImageElement(el)) {
+		if (imgix.isImageElement(el)) {
 			el.src = imgUrl;
 			return true;
 		} else {
-			var curBg = imgix._getBackgroundImage(el);
+			var curBg = imgix.getBackgroundImage(el);
 			if (curBg) {
 				el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
 				return true;
@@ -152,17 +518,16 @@
 			}
 		}
 
-		return false
+		return false;
 	};
 
 	/**
 	 * An empty 1x1 transparent image
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @returns {string} url of an empty image
 	 */
-	imgix._getEmptyImage = function() {
+	imgix.getEmptyImage = function() {
 		return 'https://assets.imgix.net/pixel.gif';
 	};
 
@@ -170,15 +535,14 @@
 	 * Intelligently returns the image on the element
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
-	 * @returns {string} url of the image on the elment
+	 * @returns {string} url of the image on the element
 	 */
-	imgix._getElementImage = function(el) {
-		if (imgix._isImageElement(el)) {
+	imgix.getElementImage = function(el) {
+		if (imgix.isImageElement(el)) {
 			return el.src;
 		} else {
-			return imgix._getBackgroundImage(el);
+			return imgix.getBackgroundImage(el);
 		}
 	};
 
@@ -186,12 +550,11 @@
 	 * Returns the matches for the url on the element's cssText
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
-	 * @todoo use cssProperty instead?
-	 * @returns {string} url of the image on the elment
+	 * @todo use cssProperty instead?
+	 * @returns {string} url of the image on the element
 	 */
-	imgix._getRawBackgroundImage = function(el) {
+	imgix.getRawBackgroundImage = function(el) {
 		return el.style.cssText.match(/url\(([^\)]+)/);
 	};
 
@@ -199,84 +562,146 @@
 	 * Returns the background image for an element
 	 * @memberof imgix
 	 * @static
-	 * @private
 	 * @param {Element} el the element to check
-	 * @returns {string} url of the image on the elment
+	 * @returns {string} url of the image on the element
 	 */
-	imgix._getBackgroundImage = function(el) {
-		var raw = imgix._getRawBackgroundImage(el);
+	imgix.getBackgroundImage = function(el) {
+		var raw = imgix.getRawBackgroundImage(el);
 		if (!raw) {
 			return '';
 		} else {
 			return raw.length === 2 ? raw[1] : '';
 		}
-	}
-
-	//////////////////////////////////////////////////
-
-	imgix.getImages = function() {
-		imgix._scanDocument();
-
-		return document.querySelectorAll("." + IMGIX_USABLE);
-	}
-
-	imgix.hasImage = function(el) {
-		return el &amp;&amp; (el.tagName.toLowerCase() === 'img' ||
-			el.style.cssText.indexOf('background-image') !== -1);
 	};
 
-	imgix._scanDocument = function() {
+	/**
+	 * Gives a brightness score for a given color (higher is brighter)
+	 * @memberof imgix
+	 * @static
+	 * @param {string} color in rgb(r, g, b) format
+	 * @todo work with hex colors too
+	 * @returns {Number} brightness score for the passed color
+	 */
+	imgix.getColorBrightness = function(c) {
+		var parts = c.replace(/[^0-9,]+/g, '').split(","),
+			r = +parts[0],
+			g = +parts[1],
+			b = +parts[2];
+
+		return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
+	};
+
+	/**
+	 * Gives all elements on the page that have images (or could img)
+	 * @memberof imgix
+	 * @static
+	 * @param {string} color in rgb(r, g, b) format
+	 * @returns {NodeList} html elements with images
+	 */
+	imgix.getElementsWithImages = function() {
+		imgix.markElementsWithImages();
+
+		return document.querySelectorAll("." + IMGIX_USABLE);
+	};
+
+	/**
+	 * Does an element have an image attached
+	 * @memberof imgix
+	 * @static
+	 * @param {Element} element to check for images
+	 * @returns {boolean} true if passed element has an image
+	 */
+	imgix.hasImage = function(el) {
+		return el &amp;&amp; (imgix.isImageElement(el) || el.style.cssText.indexOf('background-image') !== -1);
+	};
+
+	/**
+	 * Helper method that attaches IMGIX_CLASS to all elements with images on a page
+	 * @memberof imgix
+	 * @static
+	 */
+	imgix.markElementsWithImages = function() {
 		var all = document.getElementsByTagName("*");
 		for (var i=0, max=all.length; i &lt; max; i++) {
 			if (imgix.hasImage(all[i])) {
-				imgix._setImgixClass(all[i]);
+				imgix.setImgixClass(all[i]);
 			}
 		}
 	};
 
-	imgix._hasClass = function(elem, name) {
-		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1; // from jquery
-	}
+	/**
+	 * Checks if an element has a class applied (via jquery)
+	 * @memberof imgix
+	 * @static
+	 * @param {Element} element to check for class
+	 * @param {string} name of class to look for
+	 * @returns {boolean} true if element has the class
+	 */
+	imgix.hasClass = function(elem, name) {
+		return (" " + elem.className + " ").indexOf(" " + name + " ") > -1;
+	};
 
-	imgix._setImgixClass = function(el) {
-		if (imgix._hasClass(el, IMGIX_USABLE)) {
-			return imgix._getImgixClass(el);
+	/**
+	 * Helper method that "marks" an element by adding special classes
+	 * @memberof imgix
+	 * @static
+	 * @param {Element} el the element to place the class on
+	 * @returns {string} auto-generated class name (via xpath)
+	 */
+	imgix.setImgixClass = function(el) {
+		if (imgix.hasClass(el, IMGIX_USABLE)) {
+			return imgix.getImgixClass(el);
 		}
 
-		var cls = imgix._getXPathClass(imgix._getElementTreeXPath(el));
+		var cls = imgix.getXPathClass(imgix.getElementTreeXPath(el));
 
 		el.classList.add(cls);
 		el.classList.add(IMGIX_USABLE);
-		return cls;
+
+		return imgix.getImgixClass(el);
 	};
 
-	imgix._getImgixClass = function(el) {
-		if (imgix._hasClass(el, IMGIX_USABLE)) {
+	/**
+	 * Helper method that returns generated (via xpath) class name for "marked" image elements
+	 * @memberof imgix
+	 * @static
+	 * @returns {string} class
+	 */
+	imgix.getImgixClass = function(el) {
+		if (imgix.hasClass(el, IMGIX_USABLE)) {
 			return el.className.match(/imgix-el-[^\s]+/)[0];
 		}
-	}
+	};
 
-	imgix._getXPathClass = function(xpath) {
+	imgix.getXPathClass = function(xpath) {
 		xpath = !!xpath ? xpath: (new Date().getTime().toString());
 		return 'imgix-el-' + imgix.md5(xpath);
 	};
 
-	imgix._rgbToHex = function(value) {
-		var parts = value.split(","),
-			parts = parts.map(function(a) {
-				return imgix._componentToHex(parseInt(a.replace(/\D/g, '')));
-			});
+	/**
+	 * Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
+	 * @memberof imgix
+	 * @static
+	 * @param {string} color in rgb(255, 255, 255) format
+	 * @returns {string} passed color converted to hex
+	 */
+	imgix.rgbToHex = function(value) {
+		var parts = value.split(",");
 
-		return value = parts.join('');
+		parts = parts.map(function(a) {
+			return imgix.componentToHex(parseInt(a.replace(/\D/g, '')));
+		});
+
+		return parts.join('');
 	};
 
-	imgix._componentToHex = function(c) {
+	imgix.componentToHex = function(c) {
 		var hex = c.toString(16);
-		return hex.length == 1 ? "0" + hex : hex;
+		return hex.length === 1 ? "0" + hex : hex;
 	};
 
-		// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
-	imgix._getElementTreeXPath = function(element) {
+	// Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
+	imgix.getElementTreeXPath = function(element) {
 		var paths = [];
 
 		// Use nodeName (instead of localName) so namespace prefix is included (if any).
@@ -388,11 +813,11 @@
 	imgix.searchFonts = function(needle) {
 		needle = needle.toLowerCase();
 		return imgix.getFonts().filter(function(i) { return i.toLowerCase().indexOf(needle) !== -1 });
-	}
+	};
 
 	imgix.isFontAvailable = function(font) {
 		return imgix.isDef(imgix.getFontLookup()[font]);
-	}
+	};
 
 	imgix.getParamAliases = function() {
 			return {
@@ -405,7 +830,7 @@
 				'txtlinecolor': 'txtlineclr',
 				'ta': 'txtalign',
 				'intensity': 'int',
-				'colorize': 'col',
+				'monochrome': 'mono',
 				'f': 'fit',
 				'orient': 'or',
 				'm': 'watermark',
@@ -423,7 +848,7 @@
 			'px': "0",
 			'htn': "0",
 			'blur': "0",
-			'col': '',
+			'mono': '',
 			'blend': '',
 			'int': "100",
 
@@ -492,11 +917,11 @@
 		return Object.keys(imgix.getDefaultParamValues());
 	};
 
-	imgix._makeCssClass = function(url) {
+	imgix.makeCssClass = function(url) {
 		return "tmp_" + imgix.md5(url);
 	};
 
-	imgix._injectStyleSheet = function(url) {
+	imgix.injectStyleSheet = function(url) {
 		var ss = document.createElement("link");
 		ss.type = "text/css";
 		ss.rel = "stylesheet";
@@ -505,7 +930,7 @@
 		document.getElementsByTagName("head")[0].appendChild(ss);
 	};
 
-	imgix._findInjectedStyleSheet = function(url) {
+	imgix.findInjectedStyleSheet = function(url) {
 		if (document.styleSheets) {
 			for (var i = 0; i &lt; document.styleSheets.length; i++) {
 				if (document.styleSheets[i].href === url) {
@@ -517,16 +942,16 @@
 		return false;
 	};
 
-	imgix._getElementImageSize = function(el) {
+	imgix.getElementImageSize = function(el) {
 		var w = 0,
 			h = 0;
 
-		if (imgix._isImageElement(el)) {
+		if (imgix.isImageElement(el)) {
 			w = el.naturalWidth;
 			h = el.naturalHeight;
 		} else {
-			w = imgix._extractInt(imgix._getCssProperty(el, "width"));
-			h = imgix._extractInt(imgix._getCssProperty(el, "height"));
+			w = imgix.helpers.extractInt(imgix.getCssProperty(el, "width"));
+			h = imgix.helpers.extractInt(imgix.getCssProperty(el, "height"));
 		}
 
 		return {
@@ -535,22 +960,22 @@
 		};
 	};
 
-	imgix._extractInt = function(str) {
-		if (str === undefined) {
-			return 0;
-		} else if (typeof str === "number") {
-			return str;
-		}
-		return parseInt(str.replace(/\D/g, ''), 10) || 0;
-	};
-
-	imgix._getCssPropertyById = function(elmId, property) {
+	imgix.getCssPropertyById = function(elmId, property) {
 		var elem = document.getElementById(elmId);
-		return window.getComputedStyle(elem,null).getPropertyValue(property);
+		return window.getComputedStyle(elem, null).getPropertyValue(property);
 	};
 
-	imgix._getCssProperty = function(el, property) {
+	imgix.getCssProperty = function(el, property) {
 		return window.getComputedStyle(el, null).getPropertyValue(property);
+	};
+
+	imgix.getCssPropertyBySelector = function(sel, property) {
+		var elem = document.querySelector(sel);
+		return window.getComputedStyle(elem, null).getPropertyValue(property);
+	};
+
+	imgix.instanceOfImgixURL = function(x) {
+		return x &amp;&amp; x.toString() === "[object imgixURL]";
 	};
 
 	/**
@@ -580,7 +1005,7 @@
 		return new imgix.URL('');
 	};
 
-	imgix._updateVersion = {};
+	imgix.updateVersion = {};
 
 	var cssColorCache = {};
 	/**
@@ -591,8 +1016,7 @@
 	 */
 	imgix.URL.prototype.getColors = function(num, callback) {
 		var clone = new imgix.URL(this.getUrl()),
-			resultColors = [],
-			paletteClass = imgix._makeCssClass(this.getUrl());
+			paletteClass = imgix.makeCssClass(this.getUrl());
 
 		if (typeof num === "function") {
 			if (typeof callback === "number") {
@@ -611,14 +1035,13 @@
 
 		var cssUrl = clone.getUrl();
 
-		imgix._injectStyleSheet(cssUrl);
+		imgix.injectStyleSheet(cssUrl);
 
 		var lookForLoadedCss = function() {
-			if (!imgix._findInjectedStyleSheet(cssUrl)) {
+			if (!imgix.findInjectedStyleSheet(cssUrl)) {
 				setTimeout(lookForLoadedCss, 100);
 			} else {
-				var lastColor = null,
-					whileLimit = 1000;
+				var lastColor = null;
 
 				setTimeout(function() {
 					var promises = [],
@@ -629,15 +1052,15 @@
 						(function(i) {
 							var tmps = document.createElement("span");
 							tmps.id = paletteClass + '-' + i;
-							tmps.className = paletteClass + '-fg-' + i
+							tmps.className = paletteClass + '-fg-' + i;
 							document.body.appendChild(tmps);
 
 							promises.push(
 								new ImgixPromise(function (resolve, reject) {
 									var attempts = 0;
 									var checkLoaded = function() {
-										var c = imgix._getCssPropertyById(tmps.id, 'color');
-										if (c != lastColor) {
+										var c = imgix.getCssPropertyById(tmps.id, 'color');
+										if (c !== lastColor) {
 											document.body.removeChild(tmps);
 											resolve({"num": i, "color": c});
 											lastColor = c;
@@ -667,6 +1090,12 @@
 
 						for (var x = 0; x &lt; values.length; x++) {
 							resultColors.push(values[x].color);
+						}
+
+						if (resultColors &amp;&amp; resultColors.length > 1) {
+							if (imgix.getColorBrightness(resultColors[resultColors.length - 1]) &lt; imgix.getColorBrightness(resultColors[0])) {
+								resultColors.reverse();
+							}
 						}
 
 						cssColorCache[cssUrl] = resultColors;
@@ -701,15 +1130,15 @@
 			curSel = this._autoUpdateSel,
 			imgToEls = {};
 
-		if (!imgix.isDef(imgix._updateVersion[curSel])) {
-			imgix._updateVersion[curSel] = 1;
+		if (!imgix.isDef(imgix.updateVersion[curSel])) {
+			imgix.updateVersion[curSel] = 1;
 		} else {
-			imgix._updateVersion[curSel]++;
+			imgix.updateVersion[curSel]++;
 		}
 
 
 		function isVersionFresh(v) {
-			return curSel === self._autoUpdateSel &amp;&amp; v === imgix._updateVersion[curSel];
+			return curSel === self._autoUpdateSel &amp;&amp; v === imgix.updateVersion[curSel];
 		}
 
 		function setImage(el, imgUrl) {
@@ -717,7 +1146,7 @@
 				imgToEls[imgUrl] = [];
 				(function() {
 					var img = document.createElement('img'),
-						curV = imgix._updateVersion[curSel],
+						curV = imgix.updateVersion[curSel],
 						startTime = (new Date()).getTime();
 
 					img.src = imgUrl;
@@ -728,11 +1157,11 @@
 						}
 
 						for (var i = 0; i &lt; imgToEls[imgUrl].length; i++) {
-							imgix._setElementImage(imgToEls[imgUrl][i], imgUrl);
+							imgix.setElementImage(imgToEls[imgUrl][i], imgUrl);
 							loadedImages++;
 
 							if (typeof self._autoUpdateCallback === "function") {
-								var cls = '.' + imgix._setImgixClass(imgToEls[imgUrl][i]),
+								var cls = '.' + imgix.setImgixClass(imgToEls[imgUrl][i]),
 									obj = {
 										element: document.querySelector(cls),
 										className: cls, // string class '.imgix-el-{md5}'
@@ -754,7 +1183,7 @@
 		}
 
 		function applyImg(el) {
-			var elImg = imgix._getElementImage(el),
+			var elImg = imgix.getElementImage(el),
 				elBaseUrl = elImg;
 
 			if (elImg &amp;&amp; elImg.indexOf('?') !== -1) {
@@ -810,7 +1239,7 @@
 
 	imgix.URL.prototype.setUrl = function(url) {
 		if (!url || typeof url !== "string" || url.length === 0) {
-			url = imgix._getEmptyImage();
+			url = imgix.getEmptyImage();
 		}
 		this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
 	};
@@ -821,6 +1250,10 @@
 
 	imgix.URL.prototype.getURL = function() {
 		return this.getUrl();
+	};
+
+	imgix.URL.prototype.toString = function() {
+		return "[object imgixURL]";
 	};
 
 	/**
@@ -835,7 +1268,7 @@
 		}
 
 		if (!url || url.length === 0) {
-			return imgix._getEmptyImage();
+			return imgix.getEmptyImage();
 		}
 
 		return url;
@@ -866,6 +1299,10 @@
 	};
 
 	imgix.URL.prototype.setParams = function(dict, doOverride) {
+		if (imgix.instanceOfImgixURL(dict)) {
+			console.warn("setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead");
+			return;
+		}
 		for (var k in dict) {
 			this.setParam(k, dict[k], doOverride, true);
 		}
@@ -882,18 +1319,12 @@
 		doOverride = !imgix.isDef(doOverride) ? true : doOverride;
 		noUpdate = !imgix.isDef(noUpdate) ? false : noUpdate;
 
-		if (param === 'mark' || param === 'mask') {
-			// if not encoded then decode...
-			if (decodeURIComponent(value) === value) {
-				value = encodeURIComponent(value);
-			}
-		} else if (param === 'col' || param === 'colorize' || param === 'blend') {
+		if (param === 'col' || param === 'colorize' || param === 'blend' || param === 'mono' || param === "monochrome") {
 			if (value.slice(0, 3) === 'rgb') {
-				value = imgix._rgbToHex(value);
+				value = imgix.rgbToHex(value);
 			}
 		}
 
-		// console.log("setting " + param + " to " + value);
 		// TODO: handle aliases -- only need on build?
 		if (imgix.getDefaultParams().indexOf(param) === -1) {
 			console.warn("\"" + param + "\" is an invalid imgix param");
@@ -905,11 +1336,14 @@
 			return;
 		}
 
-		if (param === 'txtfont' &amp;&amp; imgix.isDef(imgix.isFontAvailable(value))) {
-			value = imgix.getFontLookup()[value];
+		if (param === 'txtfont' &amp;&amp; imgix.isFontAvailable(value)) {
+			var tmp = imgix.getFontLookup()[value];
+			if (tmp) {
+				value = tmp;
+			}
 		}
 
-		if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value.length === 0) {
+		if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null ||  value.length === 0) {
 			this.removeParam(param);
 			return;
 		}
@@ -917,6 +1351,11 @@
 		if (this.urlParts.params.indexOf(param) === -1) {
 			this.urlParts.params.push(param);
 		}
+
+		if (decodeURIComponent(value) === value) {
+			value = encodeURIComponent(value);
+		}
+
 
 		this.urlParts.paramValues[param] = String(value);
 
@@ -938,7 +1377,7 @@
 		return this.urlParts.paramValues[param];
 	};
 
-	imgix.URL.prototype.getParams = function(param) {
+	imgix.URL.prototype.getParams = function() {
 		if (this.urlParts.paramValues) {
 			return this.urlParts.paramValues;
 		}
@@ -974,6 +1413,7 @@
 		"rot": "Rotate",
 		"flip": "Flip",
 		"or": "Orient",
+		"dpr": "DPR",
 
 		//enhance
 		"hue": "Hue",
@@ -991,7 +1431,7 @@
 		"sepia": "Sepia",
 		"htn": "Halftone",
 		"blur": "Blur",
-		"col": "Colorize",
+		"mono": "Monochrome",
 		"px": "Pixelate",
 
 		"blend": "Blend",
@@ -1107,17 +1547,26 @@
 	};
 
 	imgix.parseUrl = function(url) {
-		var keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
-			result = {},
+		var 
+			pkeys = ['protocol', 'hostname', 'port', 'path', '?', '#', 'hostname'],
+			keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
+			result = {};
 			// https://gist.github.com/jlong/2428561
-			parser = document.createElement('a');
+			//parser = document.createElement('a');
 
-		parser.href = url;
+		// var parser = urlParser(null, url);
+
+		// parser['pathname'] = parser['path'];
+		// parser['search'] = parser['?'];
+		// parser['hash'] = parser['#'];
+		//parser.href = url;
 
 		// create clean object to return
 		for (var i = 0; i &lt; keys.length; i++) {
-			result[keys[i]] = parser[keys[i]];
+			result[keys[i]] = imgix.helpers.urlParser(pkeys[i], url);
 		}
+
+		//console.log(result);
 
 		var qs = result.search;
 
@@ -1148,7 +1597,7 @@
 	};
 
 	imgix.buildUrl = function(parsed) {
-		var result = parsed.protocol + '//' + parsed.host + parsed.pathname;
+		var result = parsed.protocol + '://' + parsed.host +  parsed.pathname;
 		if (parsed.params.length > 0) {
 
 
@@ -1175,6 +1624,10 @@
 				}
 			}
 
+			if (result.indexOf('?') !== -1) {
+				result = result.split('?')[0];
+			}
+
 			result += '?' + qs.join('&amp;');
 		}
 
@@ -1199,7 +1652,8 @@
 	imgix.signUrl = function(newUrl, token) {
 		if (token) {
 			var parts = imgix.parseUrl(newUrl),
-				sig = imgix.md5(token + parts.pathname + parts.search);
+				toSign = token + parts.pathname + '?' + parts.search,
+				sig = imgix.md5(token + parts.pathname + '?' + parts.search);
 
 			if (newUrl.indexOf('?') === -1) {
 				sig = imgix.md5(token + parts.pathname);
@@ -1222,11 +1676,289 @@
 
 	imgix.safe_btoa_decode = function (str) {
 		return window.atob(str.replace(/\-+/g, '+').replace(/_+/g, '\/')); // http://
+	};
+
+
+	// #############################################################
+	//
+	// START FLUID
+
+	var fluidDefaults = {
+		fluidClass : "imgix-fluid",
+		updateOnResize : true,
+		updateOnResizeDown : false,
+		updateOnPinch : false,
+		highDPRAutoScaleQuality: true,
+		highDPRAutoCSS: true,
+		onChangeParamOverride: null,
+		pixelStep : 10
+	};
+
+	function getFluidDefaults() {
+		return fluidDefaults;
 	}
 
-	imgix.md5 = function(d) {
-		return md5(d);
+	imgix.FluidSet = function(options) {
+		if (imgix.helpers.isReallyObject(options)) {
+			this.options = imgix.helpers.mergeObject(getFluidDefaults(), options);
+		} else {
+			this.options = imgix.helpers.mergeObject(getFluidDefaults(), {});
+		}
+
+		//Object.freeze(options);
+
+		this.namespace = "" + Math.random().toString(36).substring(7);
+
+		this.windowResizeEventBound = false;
+		this.windowResizeTimeout = 200;
+		this.windowLastWidth = 0;
+		this.windowLastHeight = 0;
+
+		this.reload = imgix.helpers.debouncer(this.reloader, this.windowResizeTimeout);
 	};
+
+	imgix.FluidSet.prototype.updateSrc = function(elem) {
+		var details = this.getImgDetails(elem),
+			newUrl = details.url,
+			currentElemWidth = details.width,
+			currentElemHeight = details.height;
+
+		elem.lastWidth = elem.lastWidth || 0;
+		elem.lastHeight = elem.lastHeight || 0;
+
+		if (this.options.updateOnResizeDown === false &amp;&amp; elem.lastWidth >= currentElemWidth &amp;&amp; elem.lastHeight >= currentElemHeight) {
+			return;
+		}
+
+		imgix.setElementImageAfterLoad(elem, newUrl);
+		elem.lastWidth = currentElemWidth;
+		elem.lastHeight = currentElemHeight;
+	};
+
+	imgix.FluidSet.prototype.getImgDetails = function(elem) {
+		if (!elem) {
+			return;
+		}
+
+		var dpr = imgix.helpers.getDPR(elem),
+			pixelStep = this.options.pixelStep,
+			zoomMultiplier = imgix.helpers.isMobileDevice() ? imgix.helpers.getZoom() : 1,
+			elemSize = imgix.helpers.calculateElementSize(elem),
+			elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
+			elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
+			hasHardCodedHeight = elem.style.height &amp;&amp; elem.style.height.length > 0,
+			i = new imgix.URL(imgix.helpers.getImgSrc(elem));
+
+		i.setHeight('');
+		i.setWidth('');
+
+		if (dpr !== 1) {
+			i.setDPR(dpr);
+		}
+
+		if (elemHeight &lt;= elemWidth) {
+			i.setWidth(elemWidth);
+		} else {
+			i.setHeight(elemHeight);
+		}
+
+		if (this.options.highDPRAutoScaleQuality &amp;&amp; dpr > 1) {
+			i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 25), 75));
+		}
+
+		if (i.getFit() === 'crop') {
+			//console.log(elem.style.height);
+			if (elemHeight > 0 &amp;&amp; (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) &amp;&amp; hasHardCodedHeight))) {
+				i.setHeight(elemHeight);
+			}
+			if (elemWidth > 0) {
+				i.setWidth(elemWidth);
+			}
+		}
+
+		var overrides = {};
+		if (this.options.onChangeParamOverride !== null &amp;&amp; typeof this.options.onChangeParamOverride === "function") {
+			overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams());
+		} else {
+			//console.log("skipping...");
+		}
+
+		for (var k in overrides) {
+			i.setParam(k, overrides[k]);
+		}
+
+		return {
+			url: i.getURL(),
+			width: elemWidth,
+			height: elemHeight
+		};
+	};
+
+	imgix.FluidSet.prototype.toString = function() {
+		return "[object FluidSet]";
+	};
+
+	imgix.FluidSet.prototype.reloader = function() {
+		imgix.fluid(this);
+
+		this.windowLastWidth = imgix.helpers.getWindowWidth();
+		this.windowLastHeight = imgix.helpers.getWindowHeight();
+	};
+
+	imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
+		var self = this;
+		if (elem.addEventListener &amp;&amp; !elem.listenerAttached) {
+			elem.addEventListener("gestureend", function() {
+				self.updateSrc(this);
+			}, false);
+
+			elem.addEventListener("gesturechange", function() {
+				self.updateSrc(this);
+			}, false);
+
+			elem.listenerAttached = true;
+		}
+	};
+
+
+	imgix.FluidSet.prototype.resizeListener = function() {
+		if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
+			this.reload();
+		}
+	};
+
+	var instances = {};
+
+	imgix.FluidSet.prototype.attachWindowResizer = function() {
+		instances[this.namespace] = function() {
+			this.resizeListener();
+		}.bind(this);
+
+		if (window.addEventListener) {
+			window.addEventListener("resize", instances[this.namespace], false);
+		} else if (window.attachEvent) {
+			window.attachEvent("onresize", instances[this.namespace]);
+		}
+
+		this.windowResizeEventBound = true;
+	};
+
+
+	/**
+	 * Enables fluid images for any element(s) with the "imgix-fluid" class
+	 * @memberof imgix
+	 * @static
+	 * @param {object} config options for fluid
+	 */
+	imgix.fluid = function(elem) {
+		if (elem === null){
+			return;
+		}
+
+		var options,
+			fluidSet;
+
+		if (imgix.helpers.isReallyObject(elem)) {
+			options = imgix.helpers.mergeObject(getFluidDefaults(), elem);
+			fluidSet = new imgix.FluidSet(options);
+			elem = null;
+
+		} else if (imgix.helpers.isFluidSet(elem)) {
+			fluidSet = elem;
+			options = fluidSet.options;
+		} else {
+			options = imgix.helpers.mergeObject(getFluidDefaults(), {});
+			fluidSet = new imgix.FluidSet(options);
+		}
+
+		var fluidElements;
+		if (elem &amp;&amp; !imgix.helpers.isFluidSet(elem)) {
+			fluidElements = Array.isArray(elem) ? elem : [elem];
+		} else {
+			fluidElements = document.querySelectorAll('.' + options.fluidClass);
+		}
+
+		for (var i = 0; i &lt; fluidElements.length; i++) {
+			if (fluidElements[i] === null) {
+				continue;
+			}
+
+			if (options.updateOnPinch) {
+				fluidSet.attachGestureEvent(fluidElements[i]);
+			}
+
+			fluidSet.updateSrc(fluidElements[i]);
+		}
+
+		if (options.updateOnResize &amp;&amp; !fluidSet.windowResizeEventBound) {
+			fluidSet.attachWindowResizer();
+		}
+	};
+
+
+	// END FLUID
+	// #############################################################
+
+	/**
+	 * Cross-browser DOM ready helper
+	 * Dustin Diaz &lt;dustindiaz.com> (MIT License)
+	 * https://github.com/ded/domready/tree/v0.3.0
+	 */
+
+	/**
+	 * Runs a function when the DOM is ready (similar to jQuery.ready)
+	 * @memberof imgix
+	 * @static
+	 * @param {object} config options for fluid
+	 */
+	imgix.onready = function (ready) {
+		var fns = [];
+		var fn;
+		var f = false;
+		var doc = document;
+		var testEl = doc.documentElement;
+		var hack = testEl.doScroll;
+		var domContentLoaded = "DOMContentLoaded";
+		var addEventListener = "addEventListener";
+		var onreadystatechange = "onreadystatechange";
+		var readyState = "readyState";
+		var loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/;
+		var loaded = loadedRgx.test(doc[readyState]);
+		function flush(f) {
+			loaded = 1;
+			while (f = fns.shift()) {
+				f();
+			}
+		}
+		doc[addEventListener] &amp;&amp; doc[addEventListener](domContentLoaded, fn = function () {
+			doc.removeEventListener(domContentLoaded, fn, f);
+			flush();
+		}, f);
+		hack &amp;&amp; doc.attachEvent(onreadystatechange, fn = function () {
+			if (/^c/.test(doc[readyState])) {
+				doc.detachEvent(onreadystatechange, fn);
+				flush();
+			}
+		});
+		return (ready = hack ?
+			function (fn) {
+				self !== top ?
+					loaded ? fn() : fns.push(fn) :
+					function () {
+						try {
+							testEl.doScroll("left");
+						} catch (e) {
+							return setTimeout(function () {
+							ready(fn);
+							}, 50);
+						}
+					fn();
+				}();
+			}:
+			function (fn) {
+				loaded ? fn() : fns.push(fn);
+			});
+	}();
 
 	// MD5 stuff...
 
@@ -1251,7 +1983,6 @@
 
 	/*jslint bitwise: true */
 	/*global unescape, define */
-
 	(function ($) {
 		'use strict';
 
@@ -1503,9 +2234,9 @@
 		} else {
 			$.md5 = md5;
 		}
-	}(this));
+	}(imgix));
 
-	// start promise
+	// start promise polyfill, but used as is.
 	/** license MIT-promiscuous-©Ruben Verborgh*/
 	(function (func, obj, root) {
 		// Type checking utility function
@@ -1650,13 +2381,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="imgix.URL.html">URL</a></li></ul><h3>Namespaces</h3><ul><li><a href="imgix.html">imgix</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="imgix.URL.html">URL</a></li></ul><h3>Namespaces</h3><ul><li><a href="imgix.html">imgix</a></li><li><a href="imgix.helpers.html">helpers</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Tue Jul 08 2014 16:38:19 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Thu Sep 25 2014 15:35:57 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

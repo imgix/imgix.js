@@ -68,7 +68,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line20">line 20</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line179">line 179</a>
     </li></ul></dd>
     
 
@@ -100,7 +100,76 @@
      
 
     
+        <h3 class="subsection-title">Namespaces</h3>
 
+        <dl>
+            <dt><a href="imgix.helpers.html">helpers</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="onready"><span class="type-signature">(static) </span>onready<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Runs a function when the DOM is ready (similar to jQuery.ready)
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line1887">line 1887</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+</dd>
+
+        </dl>
     
 
     
@@ -110,7 +179,130 @@
             
 <dt>
     
-        <h4 class="name" id="_getBackgroundImage"><span class="type-signature">(private, static) </span>_getBackgroundImage<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
+        <h4 class="name" id="fluid"><span class="type-signature">(static) </span>fluid<span class="signature">(config)</span><span class="type-signature"></span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Enables fluid images for any element(s) with the "imgix-fluid" class
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">options for fluid</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line1826">line 1826</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="getBackgroundImage"><span class="type-signature">(static) </span>getBackgroundImage<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
         
     
@@ -202,7 +394,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line179">line 179</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line541">line 541</a>
     </li></ul></dd>
     
 
@@ -229,7 +421,7 @@
     
             
 <div class="param-desc">
-    url of the image on the elment
+    url of the image on the element
 </div>
 
 
@@ -255,7 +447,7 @@
             
 <dt>
     
-        <h4 class="name" id="_getElementByXPath"><span class="type-signature">(private, static) </span>_getElementByXPath<span class="signature">(xpath)</span><span class="type-signature"> &rarr; {Element}</span></h4>
+        <h4 class="name" id="getColorBrightness"><span class="type-signature">(static) </span>getColorBrightness<span class="signature">(color)</span><span class="type-signature"> &rarr; {Number}</span></h4>
 
         
     
@@ -264,7 +456,159 @@
 
     
     <div class="description">
-        Get html element by XPath
+        Gives a brightness score for a given color (higher is brighter)
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">in rgb(r, g, b) format</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line558">line 558</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>work with hex colors too</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    brightness score for the passed color
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="getElementByXPathClassName"><span class="type-signature">(static) </span>getElementByXPathClassName<span class="signature">(xpath)</span><span class="type-signature"> &rarr; {Element}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Get html element by auto-generated (via XPath) class name
     </div>
     
 
@@ -347,7 +691,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line51">line 51</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line421">line 421</a>
     </li></ul></dd>
     
 
@@ -400,7 +744,7 @@
             
 <dt>
     
-        <h4 class="name" id="_getElementImage"><span class="type-signature">(private, static) </span>_getElementImage<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
+        <h4 class="name" id="getElementImage"><span class="type-signature">(static) </span>getElementImage<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
         
     
@@ -492,7 +836,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line150">line 150</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line514">line 514</a>
     </li></ul></dd>
     
 
@@ -519,7 +863,7 @@
     
             
 <div class="param-desc">
-    url of the image on the elment
+    url of the image on the element
 </div>
 
 
@@ -545,7 +889,7 @@
             
 <dt>
     
-        <h4 class="name" id="_getElementImageByXPath"><span class="type-signature">(private, static) </span>_getElementImageByXPath<span class="signature">(xpath)</span><span class="type-signature"> &rarr; {Element}</span></h4>
+        <h4 class="name" id="getElementImageByXPathClassName"><span class="type-signature">(static) </span>getElementImageByXPathClassName<span class="signature">(xpath)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
         
     
@@ -554,7 +898,7 @@
 
     
     <div class="description">
-        Get html element by XPath
+        Get image from an html element by auto-generated (via XPath) class name
     </div>
     
 
@@ -637,7 +981,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line64">line 64</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line433">line 433</a>
     </li></ul></dd>
     
 
@@ -664,7 +1008,7 @@
     
             
 <div class="param-desc">
-    element with the xpath
+    url of image on the element
 </div>
 
 
@@ -675,7 +1019,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Element</span>
+<span class="param-type">string</span>
 
 
     </dd>
@@ -690,7 +1034,152 @@
             
 <dt>
     
-        <h4 class="name" id="_getEmptyImage"><span class="type-signature">(private, static) </span>_getEmptyImage<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+        <h4 class="name" id="getElementsWithImages"><span class="type-signature">(static) </span>getElementsWithImages<span class="signature">(color)</span><span class="type-signature"> &rarr; {NodeList}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gives all elements on the page that have images (or could img)
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">in rgb(r, g, b) format</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line574">line 574</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    html elements with images
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">NodeList</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="getEmptyImage"><span class="type-signature">(static) </span>getEmptyImage<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
 
         
     
@@ -734,7 +1223,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line138">line 138</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line503">line 503</a>
     </li></ul></dd>
     
 
@@ -787,7 +1276,104 @@
             
 <dt>
     
-        <h4 class="name" id="_getRawBackgroundImage"><span class="type-signature">(private, static) </span>_getRawBackgroundImage<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
+        <h4 class="name" id="getImgixClass"><span class="type-signature">(static) </span>getImgixClass<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Helper method that returns generated (via xpath) class name for "marked" image elements
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line643">line 643</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    class
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="getRawBackgroundImage"><span class="type-signature">(static) </span>getRawBackgroundImage<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
         
     
@@ -879,7 +1465,182 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line167">line 167</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line530">line 530</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>use cssProperty instead?</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    url of the image on the element
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="hasClass"><span class="type-signature">(static) </span>hasClass<span class="signature">(element, name)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Checks if an element has a class applied (via jquery)
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">to check for class</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">of class to look for</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line613">line 613</a>
     </li></ul></dd>
     
 
@@ -906,7 +1667,7 @@
     
             
 <div class="param-desc">
-    url of the image on the elment
+    true if element has the class
 </div>
 
 
@@ -917,7 +1678,7 @@
     </dt>
     <dd>
         
-<span class="param-type">string</span>
+<span class="param-type">boolean</span>
 
 
     </dd>
@@ -932,7 +1693,152 @@
             
 <dt>
     
-        <h4 class="name" id="_isImageElement"><span class="type-signature">(private, static) </span>_isImageElement<span class="signature">(el)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+        <h4 class="name" id="hasImage"><span class="type-signature">(static) </span>hasImage<span class="signature">(element)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Does an element have an image attached
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>element</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">to check for images</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line587">line 587</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    true if passed element has an image
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">boolean</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="isImageElement"><span class="type-signature">(static) </span>isImageElement<span class="signature">(el)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
         
     
@@ -1024,7 +1930,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line76">line 76</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line444">line 444</a>
     </li></ul></dd>
     
 
@@ -1077,7 +1983,227 @@
             
 <dt>
     
-        <h4 class="name" id="_setElementImage"><span class="type-signature">(private, static) </span>_setElementImage<span class="signature">(el, url)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+        <h4 class="name" id="markElementsWithImages"><span class="type-signature">(static) </span>markElementsWithImages<span class="signature">()</span><span class="type-signature"></span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Helper method that attaches IMGIX_CLASS to all elements with images on a page
+    </div>
+    
+
+    
+
+    
+
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line596">line 596</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="rgbToHex"><span class="type-signature">(static) </span>rgbToHex<span class="signature">(color)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">in rgb(255, 255, 255) format</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line661">line 661</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    passed color converted to hex
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
+        
+            
+<dt>
+    
+        <h4 class="name" id="setElementImage"><span class="type-signature">(static) </span>setElementImage<span class="signature">(el, url)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 
         
     
@@ -1192,7 +2318,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line109">line 109</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line475">line 475</a>
     </li></ul></dd>
     
 
@@ -1245,7 +2371,7 @@
             
 <dt>
     
-        <h4 class="name" id="_setElementImageAfterLoad"><span class="type-signature">(private, static) </span>_setElementImageAfterLoad<span class="signature">(el, url, callback)</span><span class="type-signature"></span></h4>
+        <h4 class="name" id="setElementImageAfterLoad"><span class="type-signature">(static) </span>setElementImageAfterLoad<span class="signature">(el, url, callback)</span><span class="type-signature"></span></h4>
 
         
     
@@ -1254,7 +2380,7 @@
 
     
     <div class="description">
-        Intelligently sets an image on an element after preloading the image.
+        Intelligently sets an image on an element after the image has been cached.
     </div>
     
 
@@ -1304,7 +2430,7 @@
 
             
 
-            <td class="description last">the element to check</td>
+            <td class="description last">the element to place the image on</td>
         </tr>
 
     
@@ -1383,7 +2509,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line89">line 89</a>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line456">line 456</a>
     </li></ul></dd>
     
 
@@ -1410,6 +2536,151 @@
     
 </dd>
 
+        
+            
+<dt>
+    
+        <h4 class="name" id="setImgixClass"><span class="type-signature">(static) </span>setImgixClass<span class="signature">(el)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+        
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Helper method that "marks" an element by adding special classes
+    </div>
+    
+
+    
+
+    
+
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>el</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Element</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">the element to place the class on</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+    
+
+    
+<dl class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="imgix.js.html">imgix.js</a>, <a href="imgix.js.html#line624">line 624</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    auto-generated class name (via xpath)
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+        
+
+    
+</dd>
+
         </dl>
     
 
@@ -1426,13 +2697,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="imgix.URL.html">URL</a></li></ul><h3>Namespaces</h3><ul><li><a href="imgix.html">imgix</a></li></ul><h3><a href="global.html">Global</a></h3>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="imgix.URL.html">URL</a></li></ul><h3>Namespaces</h3><ul><li><a href="imgix.html">imgix</a></li><li><a href="imgix.helpers.html">helpers</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Tue Jul 08 2014 16:38:19 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-dev</a> on Thu Sep 25 2014 15:35:57 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>
