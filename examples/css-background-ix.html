@@ -25,7 +25,7 @@
 			updateOnResizeDown : true,
 			updateOnPinch : true,
 			pixelRounding : 10,
-			autoInsertCSSBestPractices: true,
+			//autoInsertCSSBestPractices: true,
 			onChangeParamOverride: function(w, h, params) {
 				var newText = (w + "x" + h) + " q:" + (params.q || 75) + " dpr:" + (params.dpr || 1);
 				return {"txt": encodeURIComponent(newText)};

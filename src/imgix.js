@@ -1270,7 +1270,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			'auto': '',
 			'mask': '',
 			'bg': ''
-		}
+		};
 	};
 
 	imgix.getDefaultParamValue = function(param) {
@@ -2053,15 +2053,19 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 	// START FLUID
 
 	var fluidDefaults = {
-		fluidClass : "imgix-fluid",
-		updateOnResize : true,
+		fluidClass: "imgix-fluid",
+		updateOnResize: true,
 		updateOnResizeDown : false,
 		updateOnPinchZoom: false,
 		highDPRAutoScaleQuality: true,
 		highDPRAutoCSS: true,
 		onChangeParamOverride: null,
 		autoInsertCSSBestPractices: false,
-		pixelStep : 10
+
+		fitImgTagToContainerWidth: true,
+		fitImgTagToContainerHeight: false,
+
+		pixelStep: 10
 	};
 
 	function getFluidDefaults() {
@@ -2113,7 +2117,8 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		var dpr = imgix.helpers.getDPR(elem),
 			pixelStep = this.options.pixelStep,
 			zoomMultiplier = imgix.helpers.isMobileDevice() ? imgix.helpers.getZoom() : 1,
-			elemSize = imgix.helpers.calculateElementSize(elem),
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
+			//elemSize = imgix.helpers.calculateElementSize(elem),
 			elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
 			elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
 			i = new imgix.URL(imgix.helpers.getImgSrc(elem));
@@ -2125,22 +2130,28 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			i.setDPR(dpr);
 		}
 
-		if (elemHeight <= elemWidth) {
-			i.setWidth(elemWidth);
-		} else {
-			i.setHeight(elemHeight);
-		}
-
 		if (this.options.highDPRAutoScaleQuality && dpr > 1) {
 			i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 25), 75));
 		}
 
+		if (this.options.fitImgTagToContainerHeight && this.options.fitImgTagToContainerWidth) {
+			i.setFit('crop');
+		}
+
 		if (i.getFit() === 'crop') {
-			if (elemHeight > 0) {
+			//console.log("is auto", isAuto, " ||| ", elem);
+			if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerHeight))) {
 				i.setHeight(elemHeight);
 			}
-			if (elemWidth > 0) {
+
+			if (elemWidth > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerWidth))) {
 				i.setWidth(elemWidth);
+			}
+		} else {
+			if (elemHeight <= elemWidth) {
+				i.setWidth(elemWidth);
+			} else {
+				i.setHeight(elemHeight);
 			}
 		}
 

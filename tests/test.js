@@ -242,8 +242,8 @@ describe('imgix-javascript unit tests', function() {
 
 		runs(function() {
 
-			//expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(207, 169, 183)', 'rgb(57, 72, 102)'].reverse());
-			expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)'].reverse());
+			expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(207, 169, 183)', 'rgb(57, 72, 102)'].reverse());
+			//expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)'].reverse());
 		});
 		
 	});
