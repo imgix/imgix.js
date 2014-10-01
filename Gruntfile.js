@@ -83,12 +83,15 @@ module.exports = function(grunt) {
 		},
 
 		jsdoc2md: {
-            oneOutputFile: {
-                src: "dist/imgix.js",
-                dest: "docs.md"
-            }
-		}
+			oneOutputFile: {
+				src: "dist/imgix.js",
+				dest: "docs.md",
+				options: {
+					index: false
+				}
+			}
 
+		}
 	});
 
 
@@ -101,20 +104,16 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.registerTask('builddocs', 'build the docs', function() {
-		grunt.task.run(['build', 'jsdoc2md']);
+	grunt.registerTask('doc-cleanup', 'clean up output', function() {
+		var contents = fs.readFileSync('docs.md', 'UTF-8');
+
+		contents = contents.split('<a name="imgix"></a>')[1];
+
+		fs.writeFileSync('docs.md', contents);
 	});
 
-	grunt.registerTask('builddocs2', 'build the docs', function() {
-		var docsPath = path.join(__dirname, 'docs');
-		if (fs.existsSync(docsPath)) {
-			grunt.file.delete(docsPath);
-		}
-
-		grunt.file.mkdir(docsPath);
-		// npm install git+https://github.com/jsdoc3/jsdoc.git
-		var cmd = ' ./node_modules/.bin/jsdoc --private dist/imgix.js -d ./docs';
-		execRun(cmd);
+	grunt.registerTask('builddocs', 'build the docs', function() {
+		grunt.task.run(['build', 'jsdoc2md', 'doc-cleanup']);
 	});
 
 	grunt.registerTask('build', 'build everything', function() {

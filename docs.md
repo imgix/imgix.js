@@ -1,41 +1,4 @@
-#Index
 
-**Namespaces**
-
-* [imgix](#imgix)
-  * [imgix.onready](#imgix.onready)
-  * [imgix.getElementByXPathClassName(xpath)](#imgix.getElementByXPathClassName)
-  * [imgix.getElementImageByXPathClassName(xpath)](#imgix.getElementImageByXPathClassName)
-  * [imgix.isImageElement(el)](#imgix.isImageElement)
-  * [imgix.setElementImageAfterLoad(el, url, callback)](#imgix.setElementImageAfterLoad)
-  * [imgix.setElementImage(el, url)](#imgix.setElementImage)
-  * [imgix.getEmptyImage()](#imgix.getEmptyImage)
-  * [imgix.getElementImage(el)](#imgix.getElementImage)
-  * [imgix.getRawBackgroundImage(el)](#imgix.getRawBackgroundImage)
-  * [imgix.getBackgroundImage(el)](#imgix.getBackgroundImage)
-  * [imgix.getColorBrightness(color)](#imgix.getColorBrightness)
-  * [imgix.getElementsWithImages(color)](#imgix.getElementsWithImages)
-  * [imgix.hasImage(element)](#imgix.hasImage)
-  * [imgix.markElementsWithImages()](#imgix.markElementsWithImages)
-  * [imgix.hasClass(element, name)](#imgix.hasClass)
-  * [imgix.setImgixClass(el)](#imgix.setImgixClass)
-  * [imgix.getImgixClass()](#imgix.getImgixClass)
-  * [imgix.rgbToHex(color)](#imgix.rgbToHex)
-  * [imgix.fluid(config)](#imgix.fluid)
-  * [imgix.helpers](#imgix.helpers)
-  * [class: imgix.URL](#imgix.URL)
-    * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
-    * [uRL.getColors(num, callback)](#imgix.URL#getColors)
-    * [uRL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
-    * [uRL.getUrl()](#imgix.URL#getUrl)
-    * [uRL.removeParam()](#imgix.URL#removeParam)
-
-**Typedefs**
-
-* [callback: colorsCallback](#colorsCallback)
-* [callback: autoUpdateElementCallback](#autoUpdateElementCallback)
- 
-<a name="imgix"></a>
 #imgix
 The root namespace for all imgix client code.
 

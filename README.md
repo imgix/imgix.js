@@ -1,19 +1,22 @@
 imgix-javascript
 ================
 
-The Javascript client library for imgix. Easily create complex and responsive images. Learn more on our [imgix.js landing page](http://www.imgix.com/imgix-js).
+The Javascript client library for imgix.
 
-Dependencies
-------------
-
-The library itself has no dependencies. If you want to build from source, run tests, or contribute then you'll need `node` / `npm`.
-
+* [imgix.js home page](http://www.imgix.com/imgix-js) (overview and examples)
+* [imgix.js API Docs](docs.md)
+* [imgix API](http://www.imgix.com/docs)
 
 Getting Started
 ---------------
 
 If you don't already have an imgix account then signup at [imgix.com](http://www.imgix.com). Once your imgix source is created then simply add `imgix.min.js` (and if you're using jquery you can optionally add `imgix.jquery.js`) from the `dist` directory.
 
+
+Dependencies
+------------
+
+The library itself has no dependencies. If you want to build from source, run tests, or contribute then you'll need `node` / `npm`.
 
 Browser Support
 ---------------
@@ -24,10 +27,4 @@ Browser Support
     $ grunt build --no-polyfills
 
 Now you'll have a much smaller version of `imgix.js` and `imgix.min.js` in the `dist/` directory.
-
-
-Documentation
--------------
-
-TODO link to jsdocs...
 
