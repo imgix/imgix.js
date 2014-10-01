@@ -74,19 +74,18 @@ module.exports = function(grunt) {
 		karma: {
 			unit: {
 				configFile: 'karma.conf.js'
+			},
+
+			// also run tests with the minified version of the js
+			unitmin: {
+				configFile: 'karma-min.conf.js'
 			}
 		}
 	});
 
-	grunt.registerTask('closure-minify', 'minify', function() {
-		var cmd = "java -jar ./bin/closure_compiler.jar  --language_in=ECMASCRIPT5 --js " + jsFile + " --js_output_file " + minJsFile,
-			done = this.async();
-
-		execRun(cmd, done);
-	});
 
 	grunt.registerTask('test', 'run tests', function() {
-		var configPath = path.join(__dirname, 'config.js');
+		var configPath = path.join(__dirname, '/tests/config.js');
 		if (!fs.existsSync(configPath)) {
 			throw grunt.util.error("\n\nconfig.js does not exist. Required for tests! (signing)\n");
 		} else {
@@ -102,7 +101,7 @@ module.exports = function(grunt) {
 
 		grunt.file.mkdir(docsPath);
 		// npm install git+https://github.com/jsdoc3/jsdoc.git
-		var cmd = ' ./node_modules/.bin/jsdoc --private src/imgix.js -d ./docs';
+		var cmd = ' ./node_modules/.bin/jsdoc --private dist/imgix.js -d ./docs';
 		execRun(cmd);
 	});
 
