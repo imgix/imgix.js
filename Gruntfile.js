@@ -80,7 +80,15 @@ module.exports = function(grunt) {
 			unitmin: {
 				configFile: 'karma-min.conf.js'
 			}
+		},
+
+		jsdoc2md: {
+            oneOutputFile: {
+                src: "dist/imgix.js",
+                dest: "docs.md"
+            }
 		}
+
 	});
 
 
@@ -94,6 +102,10 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('builddocs', 'build the docs', function() {
+		grunt.task.run(['build', 'jsdoc2md']);
+	});
+
+	grunt.registerTask('builddocs2', 'build the docs', function() {
 		var docsPath = path.join(__dirname, 'docs');
 		if (fs.existsSync(docsPath)) {
 			grunt.file.delete(docsPath);
@@ -117,6 +129,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', 'build');
 
 	// load all our build dependencies 
+	grunt.loadNpmTasks("grunt-jsdoc-to-markdown");
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-uglify');

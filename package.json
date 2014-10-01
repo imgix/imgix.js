@@ -18,12 +18,12 @@
   "bugs": {
     "url": "https://github.com/zebrafishlabs/imgix-javascript/issues"
   },
-
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.4",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-jsdoc-to-markdown": "^0.4.2",
     "grunt-karma": "~0.6.2",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
     "karma": "~0.10.2",
@@ -34,5 +34,4 @@
     "karma-requirejs": "~0.2.0",
     "karma-script-launcher": "~0.1.0"
   }
-
 }
