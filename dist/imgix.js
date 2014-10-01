@@ -1,4 +1,5 @@
-/*! imgix-javascript - v0.0.0 - 2014-10-01 */(function() {
+/*! imgix-javascript - v1.0.0 - 2014-10-01 */
+(function() {
 
 
 	// polyfills.
@@ -477,8 +478,6 @@
 	initPolyfills();
 
 "use strict";
-
-
 
 // Establish the root object, `window` in the browser, or `exports` on the server.
 var root = this;

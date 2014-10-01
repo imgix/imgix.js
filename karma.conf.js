@@ -3,15 +3,14 @@
 module.exports = function(config) {
   config.set({
 	basePath: '',
-	browsers: ['PhantomJS', 'Firefox', 'Chrome'],
-	//browsers: ['Firefox'],
+	browsers: ['Firefox', 'Chrome', 'PhantomJS'],
 	reporters: ['progress'],
 	singleRun: true,
     frameworks: ['jasmine'],
 		files: [
 		'config.js', // has token and other config
-		//'imgix.min.js', // TO TEST
-		'src/imgix.js',
+		//'dist/imgix.min.js', // TO TEST
+		'dist/imgix.js',
 		'tests/test.js'
 	]
   });

@@ -6,8 +6,12 @@ module.exports = function(grunt) {
 		exec = require('child_process').exec,
 		srcPath = function(p) { return path.normalize(__dirname + "/src/" + p); },
 		rootPath = function(p) { return path.normalize(__dirname + "/" + p); },
-		minJsFile = rootPath('imgix.min.js'),
-		jsFile = srcPath('imgix.js');
+		distPath = function(p) { return path.normalize(__dirname + "/dist/" + p); },
+
+		noPolyfills = grunt.option("no-polyfills") || false,
+
+		minJsFile = distPath('imgix.min.js'),
+		jsFile = distPath('imgix.js');
 
 	function execRun(cmd, done) {
 		exec(cmd, function(err, stdout, stderr) {
@@ -33,6 +37,37 @@ module.exports = function(grunt) {
 					src: jsFile,
 					dest: minJsFile
 				}]
+			}
+		},
+
+		concat: {
+			options: {
+				stripBanners: true,
+				banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+				'<%= grunt.template.today("yyyy-mm-dd") %> */' + "\n"
+			},
+			js: {
+				src: [
+					srcPath('prefix.js'),
+					srcPath('polyfills.js'),
+					srcPath('core.js'),
+					srcPath('suffix.js')
+				],
+				dest: jsFile
+			},
+
+			nopolyjs: {
+				src: [
+					srcPath('prefix.js'),
+					//srcPath('polyfills.js'),
+					srcPath('core.js'),
+					srcPath('suffix.js')
+				],
+				dest: jsFile
+			},
+
+			missing: {
+				nonull: true
 			}
 		},
 
@@ -72,8 +107,11 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('build', 'build everything', function() {
-		grunt.task.run(['uglify']);
-		//grunt.task.run(['closure-minify']);
+		if (noPolyfills) {
+			grunt.task.run(['concat:nopolyjs', 'uglify']);
+		} else {
+			grunt.task.run(['concat:js', 'uglify']);
+		}
 	});
 
 	// Default task.
