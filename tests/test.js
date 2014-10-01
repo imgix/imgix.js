@@ -32,6 +32,11 @@ describe('imgix-javascript unit tests', function() {
 	var flag, objVal;
 	it('test auto update...', function() {
 
+		if (!window.addEventListener) {
+			console.log("Skipped test due to old browser");
+			return;
+		}
+
 		// create and inject and element to test with
 		var img = document.createElement('img'),
 			tmpId = 'test' + parseInt((Math.random() * 100000), 10);
@@ -48,7 +53,7 @@ describe('imgix-javascript unit tests', function() {
 			var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=200');
 			i.autoUpdateImg('#' + tmpId, function(obj) {
 				objVal = obj;
-				flag = true
+				flag = true;
 			});
 
 			i.setRotate(30);
@@ -236,6 +241,8 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for autoUpdateImg...", 2000);
 
 		runs(function() {
+
+			//expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(207, 169, 183)', 'rgb(57, 72, 102)'].reverse());
 			expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)'].reverse());
 		});
 		
@@ -267,6 +274,12 @@ describe('imgix-javascript unit tests', function() {
 	});
 
 	it('extracts xpath correctly', function() {
+
+		if (!window.addEventListener) {
+			console.log("Skipped test due to old browser");
+			return;
+		}
+
 		var img = document.createElement('img'),
 			tmpId = 'test' + parseInt((Math.random() * 100000), 10);
 		img.id = tmpId;
@@ -321,7 +334,7 @@ describe('imgix-javascript unit tests', function() {
 			el = document.querySelector('#' + tmpId);
 			expect(el).toBeDefined();
 
-			newUrl = 'http://static-a.imgix.net/macaw.png?blur=1000';
+			newUrl = 'http://static-a.imgix.net/macaw.png?blur=' + parseInt((Math.random() * 1000), 10);
 			imgix.setElementImageAfterLoad(el, newUrl, function() {
 				loadedFlag = true;
 			});
@@ -329,7 +342,7 @@ describe('imgix-javascript unit tests', function() {
 
 		waitsFor(function() {
 			return loadedFlag;
-		}, "Waiting for image to load..", 5000);
+		}, "Waiting for image to load..", 10000);
 
 		runs(function() {
 			// ensure it actually loaded...

@@ -13,6 +13,6 @@ module.exports = function(config) {
 		//'imgix.min.js', // TO TEST
 		'src/imgix.js',
 		'tests/test.js'
-	],
+	]
   });
 };

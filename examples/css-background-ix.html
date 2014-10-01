@@ -12,8 +12,9 @@
 			top:0;
 			left:0;
 			display:block;
-			background-position: 50%;
+/*			background-position: 50%;
 			background-size: cover
+*/
 		}
 	</style>
 
@@ -24,6 +25,7 @@
 			updateOnResizeDown : true,
 			updateOnPinch : true,
 			pixelRounding : 10,
+			autoInsertCSSBestPractices: true,
 			onChangeParamOverride: function(w, h, params) {
 				var newText = (w + "x" + h) + " q:" + (params.q || 75) + " dpr:" + (params.dpr || 1);
 				return {"txt": encodeURIComponent(newText)};

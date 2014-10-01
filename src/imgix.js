@@ -1535,7 +1535,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 										loadTime: (new Date()).getTime() - startTime,
 										total: totalImages // int
 									};
-								//self._autoUpdateCallback(cls, loadedImages === totalImages);
+
 								self._autoUpdateCallback(obj);
 							}
 						}
@@ -2056,10 +2056,11 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		fluidClass : "imgix-fluid",
 		updateOnResize : true,
 		updateOnResizeDown : false,
-		updateOnPinch : false,
+		updateOnPinchZoom: false,
 		highDPRAutoScaleQuality: true,
 		highDPRAutoCSS: true,
 		onChangeParamOverride: null,
+		autoInsertCSSBestPractices: false,
 		pixelStep : 10
 	};
 
@@ -2115,7 +2116,6 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 			elemSize = imgix.helpers.calculateElementSize(elem),
 			elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
 			elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
-			hasHardCodedHeight = elem.style.height && elem.style.height.length > 0,
 			i = new imgix.URL(imgix.helpers.getImgSrc(elem));
 
 		i.setHeight('');
@@ -2136,13 +2136,18 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 		}
 
 		if (i.getFit() === 'crop') {
-			//console.log(elem.style.height);
-			if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && hasHardCodedHeight))) {
+			if (elemHeight > 0) {
 				i.setHeight(elemHeight);
 			}
 			if (elemWidth > 0) {
 				i.setWidth(elemWidth);
 			}
+		}
+
+		if (!imgix.isImageElement(elem) && this.options.autoInsertCSSBestPractices && elem.style) {
+			elem.style.backgroundRepeat = 'no-repeat';
+			elem.style.backgroundSize = 'cover';
+			elem.style.backgroundPosition = '50% 50%';
 		}
 
 		var overrides = {};
@@ -2252,7 +2257,7 @@ We recommend using the minified version of this file (imgix.min.js) unless you'r
 				continue;
 			}
 
-			if (options.updateOnPinch) {
+			if (options.updateOnPinchZoom) {
 				fluidSet.attachGestureEvent(fluidElements[i]);
 			}
 
