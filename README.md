@@ -4,8 +4,8 @@ imgix-javascript
 The Javascript client library for imgix.
 
 * [imgix.js home page](http://www.imgix.com/imgix-js) (overview and examples)
-* [imgix.js API Docs](docs.md)
-* [imgix API](http://www.imgix.com/docs)
+* [imgix.js API Documentation](docs.md)
+* [imgix API Documentation](http://www.imgix.com/docs)
 
 Getting Started
 ---------------

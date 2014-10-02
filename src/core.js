@@ -750,6 +750,7 @@ imgix.getDefaultParamValues = function() {
 		'txtpad': "10",
 		'txtline': "0",
 		'txtlineclr': 'ffffff',
+		'txtfit': '',
 
 		// RESIZE
 		'rect': '',
@@ -875,6 +876,16 @@ imgix.URL = function(url, imgParams, token, isRj) {
 	}
 
 	this.paramAliases = {};
+};
+
+
+/**
+ * Set the token for signing images. If a token is set it will always sign the generated urls
+ * @memberof imgix
+ * @param {string} secure url token from your imgix source
+ */
+imgix.URL.prototype.setToken = function(token) {
+	this.token = token;
 };
 
 imgix.createParamString = function() {
@@ -1327,6 +1338,7 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 	"txtpad": "TextPad",
 	"txtline": "TextLine",
 	"txtlineclr": "TextLineColor",
+	"txtfit": "TextFit",
 
 	//general
 	"fm": "Format",
