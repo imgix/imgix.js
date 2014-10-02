@@ -115,6 +115,8 @@ module.exports = function(grunt) {
 
 		contents = "![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=200&h=200)\n\n" + contents;
 
+		contents = "<!--- THIS IS AUTO GENERATED FROM JSDOCS. DO NOT EDIT DIRECTLY. ---> \n\n" + contents;
+
 		fs.writeFileSync('docs.md', contents);
 	});
 
