@@ -350,6 +350,68 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('should attachImageTo with element', function() {
+		var el, newUrl, loadedFlag = false;
+		runs(function() {
+			var img = document.createElement('img'),
+				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = '';
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+			ix.attachImageTo(el, function() {
+				loadedFlag = true;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			expect(imgix.getElementImage(el)).toEqual(newUrl);
+		});
+	});
+
+	it('should attachImageTo with element selector', function() {
+		var el, newUrl, loadedFlag = false;
+		runs(function() {
+			var img = document.createElement('img'),
+				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = '';
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+			ix.attachImageTo('#' + tmpId, function() {
+				loadedFlag = true;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			expect(imgix.getElementImage(el)).toEqual(newUrl);
+		});
+	});
+
 	it('should handle only qs in constructor', function() {
 		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
 		i.setDPR(1.3);

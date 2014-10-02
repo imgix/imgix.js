@@ -1,4 +1,4 @@
-/*! imgix-javascript - v1.0.0 - 2014-10-01 */
+/*! imgix-javascript - v1.0.0 - 2014-10-02 */
 (function() {
 
 
@@ -1344,6 +1344,21 @@ imgix.URL = function(url, imgParams, token, isRj) {
 	this.paramAliases = {};
 };
 
+/**
+ * Attach the image url (.getUrl() value) to the passed html element (or selector for that element)
+ * @memberof imgix
+ * @param {string} html elment or css selector for the element
+ * @param {function} optional callback to be called when image is set on the element
+ */
+imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
+	//this.token = token;
+	if (typeof elemOrSel === "string") {
+		imgix.setElementImageAfterLoad(document.querySelector(elemOrSel), this.getUrl(), callback);
+	} else {
+		imgix.setElementImageAfterLoad(elemOrSel, this.getUrl(), callback);
+	}
+};
+
 
 /**
  * Set the token for signing images. If a token is set it will always sign the generated urls
@@ -2121,7 +2136,7 @@ imgix.FluidSet.prototype.getImgDetails = function(elem) {
 	}
 
 	if (this.options.highDPRAutoScaleQuality && dpr > 1) {
-		i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 25), 75));
+		i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
 	}
 
 	if (this.options.fitImgTagToContainerHeight && this.options.fitImgTagToContainerWidth) {

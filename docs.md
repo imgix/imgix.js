@@ -27,6 +27,8 @@ The root namespace for all imgix client code.
   * [imgix.helpers](#imgix.helpers)
   * [class: imgix.URL](#imgix.URL)
     * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
+    * [uRL.attachImageTo(html, optional)](#imgix.URL#attachImageTo)
+    * [uRL.setToken(secure)](#imgix.URL#setToken)
     * [uRL.getColors(num, callback)](#imgix.URL#getColors)
     * [uRL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
     * [uRL.getUrl()](#imgix.URL#getUrl)
@@ -205,6 +207,8 @@ The helper namespace for lower-level functions
 
 * [class: imgix.URL](#imgix.URL)
   * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
+  * [uRL.attachImageTo(html, optional)](#imgix.URL#attachImageTo)
+  * [uRL.setToken(secure)](#imgix.URL#setToken)
   * [uRL.getColors(num, callback)](#imgix.URL#getColors)
   * [uRL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
   * [uRL.getUrl()](#imgix.URL#getUrl)
@@ -219,6 +223,23 @@ Represents an imgix url
 - url `string` - An imgix url to start with (optional)  
 - imgParams `object` - imgix query string params (optional)  
 - token `object` - secure url token for signing images (optional)  
+
+<a name="imgix.URL#attachImageTo"></a>
+###uRL.attachImageTo(html, optional)
+Attach the image url (.getUrl() value) to the passed html element (or selector for that element)
+
+**Params**
+
+- html `string` - elment or css selector for the element  
+- optional `function` - callback to be called when image is set on the element  
+
+<a name="imgix.URL#setToken"></a>
+###uRL.setToken(secure)
+Set the token for signing images. If a token is set it will always sign the generated urls
+
+**Params**
+
+- secure `string` - url token from your imgix source  
 
 <a name="imgix.URL#getColors"></a>
 ###uRL.getColors(num, callback)
