@@ -2292,26 +2292,26 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 #####Option Descriptions
 
-`fluidClass` *string* all elements with this class will have responsive images<br>
+`fluidClass` _string_ all elements with this class will have responsive images<br>
 
-`updateOnResize` *boolean* should it request a new bigger image when container grows<br>
+`updateOnResize` _boolean_ should it request a new bigger image when container grows<br>
 
-`updateOnResizeDown` *boolean* should it request a new smaller image when container shrinks<br>
+`updateOnResizeDown` _boolean_ should it request a new smaller image when container shrinks<br>
 
-`updateOnPinchZoom` *boolean* should it request a new image when pinching on a mobile
+`updateOnPinchZoom` _boolean_ should it request a new image when pinching on a mobile
  device<br>
 
-`highDPRAutoScaleQuality` *boolean* should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
+`highDPRAutoScaleQuality` _boolean_ should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
-`onChangeParamOverride` *function* if defined the follwing are passed (*number* h, *number* w, *object* params). When an object of params is returned they are applied to the image<br>
+`onChangeParamOverride` _function_ if defined the follwing are passed (_number_ h, _number_ w, _object_ params). When an object of params is returned they are applied to the image<br>
 
-`autoInsertCSSBestPractices` *boolean* should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
+`autoInsertCSSBestPractices` _boolean_ should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
 
-`fitImgTagToContainerWidth` *boolean* should it fit <img> elements to their container's width<br>
+`fitImgTagToContainerWidth` _boolean_ should it fit img tag elements to their container's width. Does not apply to background images.<br>
 
-`fitImgTagToContainerHeight` *boolean* should it fit <img> elements to their container's height<br>
+`fitImgTagToContainerHeight` _boolean_ should it fit img tag elements to their container's height. Does not apply to background images.<br>
 
-`pixelStep` *number* image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
+`pixelStep` _number_ image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
 
  <b>Default values</b> (passed config will extend these values)
 
