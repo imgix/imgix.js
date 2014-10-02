@@ -271,6 +271,7 @@ imgix.helpers = {
  * Get html element by auto-generated (via XPath) class name
  * @memberof imgix
  * @static
+ * @private
  * @param {string} xpath the xpath of the element
  * @returns {Element} element with the xpath
  */
@@ -283,6 +284,7 @@ imgix.getElementByXPathClassName = function(xpath) {
  * Get image from an html element by auto-generated (via XPath) class name
  * @memberof imgix
  * @static
+ * @private
  * @param {string} xpath the xpath of the element to get
  * @returns {string} url of image on the element
  */
@@ -695,11 +697,10 @@ imgix.getFontLookup = function() {
 };
 
 /**
- * Returns a font lookup. Pretty Name => name to use with imgix
- * Example: "American Typewriter Bold" => "American Typewriter,bold",
+ * Get a list of all the fonts supported by imgix
  * @memberof imgix
  * @static
- * @returns {objct} passed color converted to hex
+ * @returns {array} An array of strings of the supported font names
  */
 imgix.getFonts = function() {
 	return Object.keys(imgix.getFontLookup());

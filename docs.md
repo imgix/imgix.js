@@ -6,8 +6,6 @@ The root namespace for all imgix client code.
 
 * [imgix](#imgix)
   * [imgix.onready](#imgix.onready)
-  * [imgix.getElementByXPathClassName(xpath)](#imgix.getElementByXPathClassName)
-  * [imgix.getElementImageByXPathClassName(xpath)](#imgix.getElementImageByXPathClassName)
   * [imgix.isImageElement(el)](#imgix.isImageElement)
   * [imgix.setElementImageAfterLoad(el, url, callback)](#imgix.setElementImageAfterLoad)
   * [imgix.setElementImage(el, url)](#imgix.setElementImage)
@@ -53,24 +51,6 @@ Runs a function when the DOM is ready (similar to jQuery.ready)
 
 - config `object` - options for fluid  
 
-<a name="imgix.getElementByXPathClassName"></a>
-##imgix.getElementByXPathClassName(xpath)
-Get html element by auto-generated (via XPath) class name
-
-**Params**
-
-- xpath `string` - the xpath of the element  
-
-**Returns**: `Element` - element with the xpath  
-<a name="imgix.getElementImageByXPathClassName"></a>
-##imgix.getElementImageByXPathClassName(xpath)
-Get image from an html element by auto-generated (via XPath) class name
-
-**Params**
-
-- xpath `string` - the xpath of the element to get  
-
-**Returns**: `string` - url of image on the element  
 <a name="imgix.isImageElement"></a>
 ##imgix.isImageElement(el)
 Reports if an element is an image tag
@@ -213,10 +193,9 @@ Example: "American Typewriter Bold" => "American Typewriter,bold",
 **Returns**: `objct` - passed color converted to hex  
 <a name="imgix.getFonts"></a>
 ##imgix.getFonts()
-Returns a font lookup. Pretty Name => name to use with imgix
-Example: "American Typewriter Bold" => "American Typewriter,bold",
+Get a list of all the fonts supported by imgix
 
-**Returns**: `objct` - passed color converted to hex  
+**Returns**: `array` - An array of strings of the supported font names  
 <a name="imgix.fluid"></a>
 ##imgix.fluid(config)
 Enables fluid images for any element(s) with the "imgix-fluid" class
