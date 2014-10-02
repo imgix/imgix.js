@@ -109,6 +109,8 @@ module.exports = function(grunt) {
 
 		contents = contents.split('<a name="imgix"></a>')[1];
 
+		contents = contents.replace(/uRL/g, 'URL');
+
 		fs.writeFileSync('docs.md', contents);
 	});
 

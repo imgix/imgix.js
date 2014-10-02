@@ -16,23 +16,34 @@ The root namespace for all imgix client code.
   * [imgix.getRawBackgroundImage(el)](#imgix.getRawBackgroundImage)
   * [imgix.getBackgroundImage(el)](#imgix.getBackgroundImage)
   * [imgix.getColorBrightness(color)](#imgix.getColorBrightness)
-  * [imgix.getElementsWithImages(color)](#imgix.getElementsWithImages)
-  * [imgix.hasImage(element)](#imgix.hasImage)
+  * [imgix.hexToRGB(color)](#imgix.hexToRGB)
+  * [imgix.getElementsWithImages()](#imgix.getElementsWithImages)
+  * [imgix.hasImage(el)](#imgix.hasImage)
   * [imgix.markElementsWithImages()](#imgix.markElementsWithImages)
-  * [imgix.hasClass(element, name)](#imgix.hasClass)
+  * [imgix.hasClass(elem, name)](#imgix.hasClass)
   * [imgix.setImgixClass(el)](#imgix.setImgixClass)
-  * [imgix.getImgixClass()](#imgix.getImgixClass)
+  * [imgix.getImgixClass(el)](#imgix.getImgixClass)
   * [imgix.rgbToHex(color)](#imgix.rgbToHex)
+  * [imgix.getFontLookup()](#imgix.getFontLookup)
+  * [imgix.getFonts()](#imgix.getFonts)
   * [imgix.fluid(config)](#imgix.fluid)
   * [imgix.helpers](#imgix.helpers)
   * [class: imgix.URL](#imgix.URL)
     * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
-    * [uRL.attachImageTo(html, optional)](#imgix.URL#attachImageTo)
-    * [uRL.setToken(secure)](#imgix.URL#setToken)
-    * [uRL.getColors(num, callback)](#imgix.URL#getColors)
-    * [uRL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
-    * [uRL.getUrl()](#imgix.URL#getUrl)
-    * [uRL.removeParam()](#imgix.URL#removeParam)
+    * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
+    * [URL.setToken(token)](#imgix.URL#setToken)
+    * [URL.getColors(num, callback)](#imgix.URL#getColors)
+    * [URL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
+    * [URL.getUrl()](#imgix.URL#getUrl)
+    * [URL.removeParam(param)](#imgix.URL#removeParam)
+    * [URL.clearThenSetParams(params)](#imgix.URL#clearThenSetParams)
+    * [URL.clearParams(runUpdate)](#imgix.URL#clearParams)
+    * [URL.setParams(dict, doOverride)](#imgix.URL#setParams)
+    * [URL.setParam(param, value, doOverride, noUpdate)](#imgix.URL#setParam)
+    * [URL.getParam(param)](#imgix.URL#getParam)
+    * [URL.getParams()](#imgix.URL#getParams)
+    * [URL.getBaseUrl()](#imgix.URL#getBaseUrl)
+    * [URL.getQueryString()](#imgix.URL#getQueryString)
 
 <a name="imgix.onready"></a>
 ##imgix.onready
@@ -127,25 +138,30 @@ Gives a brightness score for a given color (higher is brighter)
 
 **Params**
 
-- color `string` - in rgb(r, g, b) format  
+- color `string` - a color in rgb(r, g, b) format  
 
 **Returns**: `Number` - brightness score for the passed color  
-<a name="imgix.getElementsWithImages"></a>
-##imgix.getElementsWithImages(color)
-Gives all elements on the page that have images (or could img)
+<a name="imgix.hexToRGB"></a>
+##imgix.hexToRGB(color)
+Converts a hex color to rgb (#ff00ff -> rgb(255, 0, 255)
 
 **Params**
 
-- color `string` - in rgb(r, g, b) format  
+- color `string` - a color in hex format (#ff00ff)  
+
+**Returns**: `string` - color in rgb format rgb(255, 0, 255)  
+<a name="imgix.getElementsWithImages"></a>
+##imgix.getElementsWithImages()
+Gives all elements on the page that have images (or could img). Does NOT support IE8
 
 **Returns**: `NodeList` - html elements with images  
 <a name="imgix.hasImage"></a>
-##imgix.hasImage(element)
+##imgix.hasImage(el)
 Does an element have an image attached
 
 **Params**
 
-- element `Element` - to check for images  
+- el `Element` - element to check for images  
 
 **Returns**: `boolean` - true if passed element has an image  
 <a name="imgix.markElementsWithImages"></a>
@@ -153,13 +169,13 @@ Does an element have an image attached
 Helper method that attaches IMGIX_CLASS to all elements with images on a page
 
 <a name="imgix.hasClass"></a>
-##imgix.hasClass(element, name)
+##imgix.hasClass(elem, name)
 Checks if an element has a class applied (via jquery)
 
 **Params**
 
-- element `Element` - to check for class  
-- name `string` - of class to look for  
+- elem `Element` - element to check for class  
+- name `string` - class name to look for  
 
 **Returns**: `boolean` - true if element has the class  
 <a name="imgix.setImgixClass"></a>
@@ -172,10 +188,14 @@ Helper method that "marks" an element as "imgix usable" by adding special classe
 
 **Returns**: `string` - auto-generated class name (via xpath)  
 <a name="imgix.getImgixClass"></a>
-##imgix.getImgixClass()
+##imgix.getImgixClass(el)
 Helper method that returns generated (via xpath) class name for "marked" image elements
 
-**Returns**: `string` - class  
+**Params**
+
+- el `Element` - the element to get the class for  
+
+**Returns**: `string` - class name  
 <a name="imgix.rgbToHex"></a>
 ##imgix.rgbToHex(color)
 Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
@@ -185,6 +205,18 @@ Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
 - color `string` - in rgb(255, 255, 255) format  
 
 **Returns**: `string` - passed color converted to hex  
+<a name="imgix.getFontLookup"></a>
+##imgix.getFontLookup()
+Returns a font lookup. Pretty Name => name to use with imgix
+Example: "American Typewriter Bold" => "American Typewriter,bold",
+
+**Returns**: `objct` - passed color converted to hex  
+<a name="imgix.getFonts"></a>
+##imgix.getFonts()
+Returns a font lookup. Pretty Name => name to use with imgix
+Example: "American Typewriter Bold" => "American Typewriter,bold",
+
+**Returns**: `objct` - passed color converted to hex  
 <a name="imgix.fluid"></a>
 ##imgix.fluid(config)
 Enables fluid images for any element(s) with the "imgix-fluid" class
@@ -207,12 +239,20 @@ The helper namespace for lower-level functions
 
 * [class: imgix.URL](#imgix.URL)
   * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
-  * [uRL.attachImageTo(html, optional)](#imgix.URL#attachImageTo)
-  * [uRL.setToken(secure)](#imgix.URL#setToken)
-  * [uRL.getColors(num, callback)](#imgix.URL#getColors)
-  * [uRL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
-  * [uRL.getUrl()](#imgix.URL#getUrl)
-  * [uRL.removeParam()](#imgix.URL#removeParam)
+  * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
+  * [URL.setToken(token)](#imgix.URL#setToken)
+  * [URL.getColors(num, callback)](#imgix.URL#getColors)
+  * [URL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
+  * [URL.getUrl()](#imgix.URL#getUrl)
+  * [URL.removeParam(param)](#imgix.URL#removeParam)
+  * [URL.clearThenSetParams(params)](#imgix.URL#clearThenSetParams)
+  * [URL.clearParams(runUpdate)](#imgix.URL#clearParams)
+  * [URL.setParams(dict, doOverride)](#imgix.URL#setParams)
+  * [URL.setParam(param, value, doOverride, noUpdate)](#imgix.URL#setParam)
+  * [URL.getParam(param)](#imgix.URL#getParam)
+  * [URL.getParams()](#imgix.URL#getParams)
+  * [URL.getBaseUrl()](#imgix.URL#getBaseUrl)
+  * [URL.getQueryString()](#imgix.URL#getQueryString)
 
 <a name="new_imgix.URL"></a>
 ###new imgix.URL(url, imgParams, token)
@@ -225,24 +265,24 @@ Represents an imgix url
 - token `object` - secure url token for signing images (optional)  
 
 <a name="imgix.URL#attachImageTo"></a>
-###uRL.attachImageTo(html, optional)
+###URL.attachImageTo(elemOrSel, callback)
 Attach the image url (.getUrl() value) to the passed html element (or selector for that element)
 
 **Params**
 
-- html `string` - elment or css selector for the element  
-- optional `function` - callback to be called when image is set on the element  
+- elemOrSel `string` - html elment or css selector for the element  
+- callback `function` - optional callback to be called when image is set on the element  
 
 <a name="imgix.URL#setToken"></a>
-###uRL.setToken(secure)
+###URL.setToken(token)
 Set the token for signing images. If a token is set it will always sign the generated urls
 
 **Params**
 
-- secure `string` - url token from your imgix source  
+- token `string` - secure url token from your imgix source  
 
 <a name="imgix.URL#getColors"></a>
-###uRL.getColors(num, callback)
+###URL.getColors(num, callback)
 Get an array of the colors in the image
 
 **Params**
@@ -251,7 +291,7 @@ Get an array of the colors in the image
 - callback <code>[colorsCallback](#colorsCallback)</code> - handles the response of colors  
 
 <a name="imgix.URL#autoUpdateImg"></a>
-###uRL.autoUpdateImg(sel, callback)
+###URL.autoUpdateImg(sel, callback)
 When/if the url changes it will auto re-set the image on the element of the css selector passed
 
 **Params**
@@ -260,15 +300,78 @@ When/if the url changes it will auto re-set the image on the element of the css 
 - callback <code>[autoUpdateElementCallback](#autoUpdateElementCallback)</code> - fires whenever the img element is updated  
 
 <a name="imgix.URL#getUrl"></a>
-###uRL.getUrl()
+###URL.getUrl()
 The generated imgix image url
 
-**Returns**: `string` - the url  
+**Returns**: `string` - the generated url  
 <a name="imgix.URL#removeParam"></a>
-###uRL.removeParam()
+###URL.removeParam(param)
 Remove an imgix param
 
-**Returns**: `string` - the url  
+**Params**
+
+- param `string` - the imgix param to remove (e.g. txtfont)  
+
+<a name="imgix.URL#clearThenSetParams"></a>
+###URL.clearThenSetParams(params)
+Remove an imgix param
+
+**Params**
+
+- params `object` - object of params to set  
+
+<a name="imgix.URL#clearParams"></a>
+###URL.clearParams(runUpdate)
+Clear all imgix params attached to the image
+
+**Params**
+
+- runUpdate `boolean` - (optional) iff using autoUpdateImg should callback be called (defaults to true)  
+
+<a name="imgix.URL#setParams"></a>
+###URL.setParams(dict, doOverride)
+Set multiple params using using an object (e.g. {txt: "hello", txtclr: "f00"})
+
+**Params**
+
+- dict `object` - an object of imgix params and their values  
+- doOverride `boolean` - should the value(s) be overridden if they already exist (defaults to true)  
+
+<a name="imgix.URL#setParam"></a>
+###URL.setParam(param, value, doOverride, noUpdate)
+Set a single imgix param value
+
+**Params**
+
+- param `string` - the imgix param to set (e.g. txtclr)  
+- value `string` - the value to set for the param  
+- doOverride `boolean` - (optional) should the value(s) be overridden if they already exist (defaults to true)  
+- noUpdate `boolean` - (optional) iff using autoUpdateImg should callback be called (defaults to false)  
+
+<a name="imgix.URL#getParam"></a>
+###URL.getParam(param)
+Get the value of an imgix param in the query string
+
+**Params**
+
+- param `string` - the imgix param that you want the value of (e.g. txtclr)  
+
+**Returns**: `string` - the value of the param in the current url  
+<a name="imgix.URL#getParams"></a>
+###URL.getParams()
+Get an object of all the params and their values on the current image
+
+**Returns**: `object` - an object of params and their values (e.g. {txt: "hello", txtclr: "f00"})  
+<a name="imgix.URL#getBaseUrl"></a>
+###URL.getBaseUrl()
+Get the base url. This is getUrl() without the query string
+
+**Returns**: `string` - the base url  
+<a name="imgix.URL#getQueryString"></a>
+###URL.getQueryString()
+Get the query string only. This is getUrl() with ONLY the query string (e.g. ?txt=hello&txtclr=f00)
+
+**Returns**: `string` - the query string for the url  
 <a name="colorsCallback"></a>
 #callback: colorsCallback
 This callback has the colors...

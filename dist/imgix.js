@@ -877,8 +877,7 @@ imgix.getBackgroundImage = function(el) {
  * Gives a brightness score for a given color (higher is brighter)
  * @memberof imgix
  * @static
- * @param {string} color in rgb(r, g, b) format
- * @todo work with hex colors too
+ * @param {string} color a color in rgb(r, g, b) format
  * @returns {Number} brightness score for the passed color
  */
 imgix.getColorBrightness = function(c) {
@@ -898,7 +897,13 @@ imgix.getColorBrightness = function(c) {
 	return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
 };
 
-
+/**
+ * Converts a hex color to rgb (#ff00ff -> rgb(255, 0, 255)
+ * @memberof imgix
+ * @static
+ * @param {string} color a color in hex format (#ff00ff)
+ * @returns {string} color in rgb format rgb(255, 0, 255)
+ */
 imgix.hexToRGB = function(hex) {
 
 	if (hex) {
@@ -933,10 +938,9 @@ imgix.hexToRGB = function(hex) {
 };
 
 /**
- * Gives all elements on the page that have images (or could img)
+ * Gives all elements on the page that have images (or could img). Does NOT support IE8
  * @memberof imgix
  * @static
- * @param {string} color in rgb(r, g, b) format
  * @returns {NodeList} html elements with images
  */
 imgix.getElementsWithImages = function() {
@@ -949,7 +953,7 @@ imgix.getElementsWithImages = function() {
  * Does an element have an image attached
  * @memberof imgix
  * @static
- * @param {Element} element to check for images
+ * @param {Element} el element to check for images
  * @returns {boolean} true if passed element has an image
  */
 imgix.hasImage = function(el) {
@@ -975,8 +979,8 @@ imgix.markElementsWithImages = function() {
  * Checks if an element has a class applied (via jquery)
  * @memberof imgix
  * @static
- * @param {Element} element to check for class
- * @param {string} name of class to look for
+ * @param {Element} elem element to check for class
+ * @param {string} name class name to look for
  * @returns {boolean} true if element has the class
  */
 imgix.hasClass = function(elem, name) {
@@ -1007,7 +1011,8 @@ imgix.setImgixClass = function(el) {
  * Helper method that returns generated (via xpath) class name for "marked" image elements
  * @memberof imgix
  * @static
- * @returns {string} class
+ * @param {Element} el the element to get the class for
+ * @returns {string} class name
  */
 imgix.getImgixClass = function(el) {
 	if (imgix.hasClass(el, IMGIX_USABLE_CLASS)) {
@@ -1066,6 +1071,13 @@ imgix.getElementTreeXPath = function(element) {
 	return paths.length ? "/" + paths.join("/") : null;
 };
 
+/**
+ * Returns a font lookup. Pretty Name => name to use with imgix
+ * Example: "American Typewriter Bold" => "American Typewriter,bold",
+ * @memberof imgix
+ * @static
+ * @returns {objct} passed color converted to hex
+ */
 imgix.getFontLookup = function() {
 	return {
 		"American Typewriter": "American Typewriter",
@@ -1148,6 +1160,13 @@ imgix.getFontLookup = function() {
 	};
 };
 
+/**
+ * Returns a font lookup. Pretty Name => name to use with imgix
+ * Example: "American Typewriter Bold" => "American Typewriter,bold",
+ * @memberof imgix
+ * @static
+ * @returns {objct} passed color converted to hex
+ */
 imgix.getFonts = function() {
 	return Object.keys(imgix.getFontLookup());
 };
@@ -1347,8 +1366,8 @@ imgix.URL = function(url, imgParams, token, isRj) {
 /**
  * Attach the image url (.getUrl() value) to the passed html element (or selector for that element)
  * @memberof imgix
- * @param {string} html elment or css selector for the element
- * @param {function} optional callback to be called when image is set on the element
+ * @param {string} elemOrSel html elment or css selector for the element
+ * @param {function} callback optional callback to be called when image is set on the element
  */
 imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
 	//this.token = token;
@@ -1363,7 +1382,7 @@ imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
 /**
  * Set the token for signing images. If a token is set it will always sign the generated urls
  * @memberof imgix
- * @param {string} secure url token from your imgix source
+ * @param {string} token secure url token from your imgix source
  */
 imgix.URL.prototype.setToken = function(token) {
 	this.token = token;
@@ -1627,7 +1646,7 @@ imgix.URL.prototype.toString = function() {
 /**
  * The generated imgix image url
  * @memberof imgix
- * @returns {string} the url
+ * @returns {string} the generated url
  */
 imgix.URL.prototype.getUrl = function() {
 	var url = this.isRj ? imgix.buildRjUrl(this.urlParts) : imgix.buildUrl(this.urlParts);
@@ -1645,7 +1664,7 @@ imgix.URL.prototype.getUrl = function() {
 /**
  * Remove an imgix param
  * @memberof imgix
- * @returns {string} the url
+ * @param {string} param the imgix param to remove (e.g. txtfont)
  */
 imgix.URL.prototype.removeParam = function(param) {
 	if (this.urlParts.paramValues.hasOwnProperty(param)) {
@@ -1654,11 +1673,21 @@ imgix.URL.prototype.removeParam = function(param) {
 	}
 };
 
+/**
+ * Remove an imgix param
+ * @memberof imgix
+ * @param {object} params object of params to set
+ */
 imgix.URL.prototype.clearThenSetParams = function(params) {
 	this.clearParams(false); //do not trigger update yet
 	this.setParams(params);
 };
 
+/**
+ * Clear all imgix params attached to the image
+ * @memberof imgix
+ * @param {boolean} runUpdate (optional) iff using autoUpdateImg should callback be called (defaults to true)
+ */
 imgix.URL.prototype.clearParams = function(runUpdate) {
 	runUpdate = !imgix.isDef(runUpdate) ? true : runUpdate;
 
@@ -1671,6 +1700,13 @@ imgix.URL.prototype.clearParams = function(runUpdate) {
 	}
 };
 
+
+/**
+ * Set multiple params using using an object (e.g. {txt: "hello", txtclr: "f00"})
+ * @memberof imgix
+ * @param {object} dict an object of imgix params and their values
+ * @param {boolean} doOverride should the value(s) be overridden if they already exist (defaults to true)
+ */
 imgix.URL.prototype.setParams = function(dict, doOverride) {
 	if (imgix.instanceOfImgixURL(dict)) {
 		console.warn("setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead");
@@ -1684,8 +1720,15 @@ imgix.URL.prototype.setParams = function(dict, doOverride) {
 };
 
 // TODO: handle public/private status of this -- won't handle aliases if set...
-// TODO: error check type...see validator TODO
-// TODO: raise error if param does not exist or can not convert type to expected type.
+/**
+ * Set a single imgix param value
+ * @memberof imgix
+
+ * @param {string} param the imgix param to set (e.g. txtclr)
+ * @param {string} value the value to set for the param 
+ * @param {boolean} doOverride (optional) should the value(s) be overridden if they already exist (defaults to true)
+ * @param {boolean} noUpdate (optional) iff using autoUpdateImg should callback be called (defaults to false)
+ */
 imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	param = param.toLowerCase();
 
@@ -1737,8 +1780,14 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	}
 };
 
+/**
+ * Get the value of an imgix param in the query string
+ * @memberof imgix
+ * @param {string} param the imgix param that you want the value of (e.g. txtclr)
+ * @returns {string} the value of the param in the current url
+*/
 imgix.URL.prototype.getParam = function(param) {
-	if (param === 'mark' || param === 'mask') {
+	if (param === 'mark' || param === 'mask' || param === 'txt') {
 		var result = this.urlParts.paramValues[param];
 		// if encoded then decode...
 		if (decodeURIComponent(result) !== result) {
@@ -1750,6 +1799,11 @@ imgix.URL.prototype.getParam = function(param) {
 	return this.urlParts.paramValues[param];
 };
 
+/**
+ * Get an object of all the params and their values on the current image
+ * @memberof imgix
+ * @returns {object} an object of params and their values (e.g. {txt: "hello", txtclr: "f00"})
+*/
 imgix.URL.prototype.getParams = function() {
 	if (this.urlParts.paramValues) {
 		return this.urlParts.paramValues;
@@ -1758,15 +1812,25 @@ imgix.URL.prototype.getParams = function() {
 	return {};
 };
 
+/**
+ * Get the base url. This is getUrl() without the query string
+ * @memberof imgix
+ * @returns {string} the base url
+*/
 imgix.URL.prototype.getBaseUrl = function() {
 	var url = this.getUrl();
 	if (url.indexOf('?') !== -1) {
 		url = this.getUrl().split('?')[0];
 	}
 
-	return url != window.location.href ? url : '';
+	return url !== window.location.href ? url : '';
 };
 
+/**
+ * Get the query string only. This is getUrl() with ONLY the query string (e.g. ?txt=hello&txtclr=f00)
+ * @memberof imgix
+ * @returns {string} the query string for the url
+*/
 imgix.URL.prototype.getQueryString = function() {
 	var url = this.getUrl();
 	if (url.indexOf('?') !== -1) {
@@ -1925,22 +1989,11 @@ imgix.parseUrl = function(url) {
 		pkeys = ['protocol', 'hostname', 'port', 'path', '?', '#', 'hostname'],
 		keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
 		result = {};
-		// https://gist.github.com/jlong/2428561
-		//parser = document.createElement('a');
-
-	// var parser = urlParser(null, url);
-
-	// parser['pathname'] = parser['path'];
-	// parser['search'] = parser['?'];
-	// parser['hash'] = parser['#'];
-	//parser.href = url;
 
 	// create clean object to return
 	for (var i = 0; i < keys.length; i++) {
 		result[keys[i]] = imgix.helpers.urlParser(pkeys[i], url);
 	}
-
-	//console.log(result);
 
 	var qs = result.search;
 
@@ -1965,7 +2018,6 @@ imgix.parseUrl = function(url) {
 			}
 		}
 	}
-
 
 	return result;
 };
