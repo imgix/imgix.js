@@ -2290,16 +2290,26 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
  * Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class
 
 
-<i>fluidClass</i> {string} all elements with this class will have responsive images
-<i>updateOnResize</i> {boolean} should it request a new bigger image when container grows
-<i>updateOnResizeDown</i> {boolean} should it request a new smaller image when container shrinks
-<i>updateOnPinchZoom</i> {boolean} should it request a new image when pinching on a mobile device
-<i>highDPRAutoScaleQuality</i> {boolean} should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.
-<i>onChangeParamOverride</i> {function} if defined the follwing are passed ({number} h, {number} w, {object} params). When an object of params is returned they are applied to the image
-<i>autoInsertCSSBestPractices</i> {boolean} should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image
-<i>fitImgTagToContainerWidth</i> {boolean} should it fit <img> elements to their container's width
-<i>fitImgTagToContainerHeight</i> {boolean} should it fit <img> elements to their container's height
-<i>pixelStep</i> {number} image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)
+<i>fluidClass</i> {string} all elements with this class will have responsive images<br>
+
+<i>updateOnResize</i> {boolean} should it request a new bigger image when container grows<br>
+
+<i>updateOnResizeDown</i> {boolean} should it request a new smaller image when container shrinks<br>
+
+<i>updateOnPinchZoom</i> {boolean} should it request a new image when pinching on a mobile
+ device<br>
+
+<i>highDPRAutoScaleQuality</i> {boolean} should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
+
+<i>onChangeParamOverride</i> {function} if defined the follwing are passed ({number} h, {number} w, {object} params). When an object of params is returned they are applied to the image<br>
+
+<i>autoInsertCSSBestPractices</i> {boolean} should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
+
+<i>fitImgTagToContainerWidth</i> {boolean} should it fit <img> elements to their container's width<br>
+
+<i>fitImgTagToContainerHeight</i> {boolean} should it fit <img> elements to their container's height<br>
+
+<i>pixelStep</i> {number} image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
 
 Default values (passed config will extend these values)
 {
