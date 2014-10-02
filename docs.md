@@ -1,5 +1,7 @@
+![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=200&h=200)
 
-#imgix
+
+#imgix.js Documentation
 The root namespace for all imgix client code.
 
 **Members**
@@ -293,7 +295,7 @@ Remove an imgix param
 
 <a name="imgix.URL#clearThenSetParams"></a>
 ###URL.clearThenSetParams(params)
-Remove an imgix param
+Remove an imgix param then immediately set new params. This only triggers one update if used with autoUpdateImg.
 
 **Params**
 

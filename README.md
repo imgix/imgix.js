@@ -1,3 +1,5 @@
+![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=200&h=200)
+
 imgix-javascript
 ================
 
@@ -10,13 +12,67 @@ The Javascript client library for imgix.
 Getting Started
 ---------------
 
-If you don't already have an imgix account then signup at [imgix.com](http://www.imgix.com). Once your imgix source is created then simply add `imgix.min.js` (and if you're using jquery you can optionally add `imgix.jquery.js`) from the `dist` directory.
+If you don't already have an imgix account then signup at [imgix.com](http://www.imgix.com).
+
+Once your imgix source is created then simply add `imgix.min.js` (and if you're using jquery you can optionally add `imgix.jquery.js`) from the `dist` directory.
 
 
-Dependencies
-------------
+Examples
+--------
 
-The library itself has no dependencies. If you want to build from source, run tests, or contribute then you'll need `node` / `npm`.
+Check out the [imgix.js home page](http://www.imgix.com/imgix-js) for a big picture overview of everything you can do. Below are some simple examples.
+
+####Build URLs
+
+A simple example of creating an imgix URL with param setters.
+
+    var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
+    ix.setSepia(50);
+    ix.setRotate(20);
+    ix.getURL(); // equals http://assets.imgix.net/examples/butterfly.jpg?sepia=50&rot=20
+
+####Build URLs and Attach to an Element
+
+An example of creating an imgix URL with an object of imgix params/values via `setParams` then setting that image on an element.
+
+    var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
+    ix.setParams({w: 500, px: 20});
+    ix.attachTo('.butterfly-target');
+
+
+####Color Palette Extraction
+
+An example of extracting the colors from an image and then setting the darkest image as the background color of the page.
+
+    var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
+    ix.getColors(function(colors) {
+        document.body.style.backgroundColor = colors[0];
+    })
+
+####Auto Update Element on imgix.URL change
+
+An example of auto re-setting an element's image whenever the `imgix.URL` instance changes. Here we're rotating an image by 5 degrees every 5 seconds.
+
+    var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
+    ix.autoUpdateImg('.butterfly-target');
+	var rotation = 0;
+    window.setInterval(function() {
+        rotatation += 5;
+        ix.setRotate(rotation);
+    }, 5000);
+
+Documentation
+-------------
+
+The [imgix.js API Documentation](docs.md) outlines all public `imgix.js` code. At this time the most useful parts are [imgix.URL](docs.md#imgix.URL) and [imgix.fluid](docs.md#imgix.fluid)
+
+jQuery Plugin
+-------------
+
+If you're already using jQuery then you can also include `imgix.jquery.js` to easily make changes to existing images. For instance, if you wanted to add a text watermark to all your gallery images
+
+    $('.gallery').imgix().setParams({txt: 'Copyright Chester 2014', txtclr: 'f00', txtsize:20});
+
 
 Browser Support
 ---------------
@@ -28,3 +84,16 @@ Browser Support
 
 Now you'll have a much smaller version of `imgix.js` and `imgix.min.js` in the `dist/` directory.
 
+
+Dependencies
+------------
+
+The library itself has no dependencies. If you want to build from source, run tests, or contribute then you'll need `node` / `npm` and `grunt`.
+
+Installing Build Dependencies:
+
+    $ npm install
+
+Running Tests:
+
+    $ grunt test

@@ -111,6 +111,10 @@ module.exports = function(grunt) {
 
 		contents = contents.replace(/uRL/g, 'URL');
 
+		contents = contents.replace('#imgix', '#imgix.js Documentation'); // only first
+
+		contents = "![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=200&h=200)\n\n" + contents;
+
 		fs.writeFileSync('docs.md', contents);
 	});
 

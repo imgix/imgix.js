@@ -1675,7 +1675,7 @@ imgix.URL.prototype.removeParam = function(param) {
 };
 
 /**
- * Remove an imgix param
+ * Remove an imgix param then immediately set new params. This only triggers one update if used with autoUpdateImg.
  * @memberof imgix
  * @param {object} params object of params to set
  */
@@ -1788,7 +1788,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
  * @returns {string} the value of the param in the current url
 */
 imgix.URL.prototype.getParam = function(param) {
-	if (param === 'mark' || param === 'mask' || param === 'txt') {
+	if (param === 'mark' || param === 'mask') {
 		var result = this.urlParts.paramValues[param];
 		// if encoded then decode...
 		if (decodeURIComponent(result) !== result) {
