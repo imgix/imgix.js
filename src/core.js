@@ -1824,40 +1824,43 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
  * Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class
 
 
-`fluidClass` {string} all elements with this class will have responsive images<br>
+#####Option Descriptions
 
-`updateOnResize` {boolean} should it request a new bigger image when container grows<br>
+`fluidClass` *string* all elements with this class will have responsive images<br>
 
-`updateOnResizeDown` {boolean} should it request a new smaller image when container shrinks<br>
+`updateOnResize` *boolean* should it request a new bigger image when container grows<br>
 
-`updateOnPinchZoom` {boolean} should it request a new image when pinching on a mobile
+`updateOnResizeDown` *boolean* should it request a new smaller image when container shrinks<br>
+
+`updateOnPinchZoom` *boolean* should it request a new image when pinching on a mobile
  device<br>
 
-`highDPRAutoScaleQuality` {boolean} should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
+`highDPRAutoScaleQuality` *boolean* should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
-`onChangeParamOverride` {function} if defined the follwing are passed ({number} h, {number} w, {object} params). When an object of params is returned they are applied to the image<br>
+`onChangeParamOverride` *function* if defined the follwing are passed (*number* h, *number* w, *object* params). When an object of params is returned they are applied to the image<br>
 
-`autoInsertCSSBestPractices` {boolean} should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
+`autoInsertCSSBestPractices` *boolean* should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
 
-`fitImgTagToContainerWidth` {boolean} should it fit <img> elements to their container's width<br>
+`fitImgTagToContainerWidth` *boolean* should it fit <img> elements to their container's width<br>
 
-`fitImgTagToContainerHeight` {boolean} should it fit <img> elements to their container's height<br>
+`fitImgTagToContainerHeight` *boolean* should it fit <img> elements to their container's height<br>
 
-`pixelStep` {number} image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
+`pixelStep` *number* image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
 
-Default values (passed config will extend these values)
-{
-	fluidClass: "imgix-fluid",
-	updateOnResize: true,
-	updateOnResizeDown : false,
-	updateOnPinchZoom: false,
-	highDPRAutoScaleQuality: true,
-	onChangeParamOverride: null,
-	autoInsertCSSBestPractices: false,
-	fitImgTagToContainerWidth: true,
-	fitImgTagToContainerHeight: false,
-	pixelStep: 10
-}
+ <b>Default values</b> (passed config will extend these values)
+
+	{
+		fluidClass: "imgix-fluid",
+		updateOnResize: true,
+		updateOnResizeDown : false,
+		updateOnPinchZoom: false,
+		highDPRAutoScaleQuality: true,
+		onChangeParamOverride: null,
+		autoInsertCSSBestPractices: false,
+		fitImgTagToContainerWidth: true,
+		fitImgTagToContainerHeight: false,
+		pixelStep: 10
+	}
 
 
  * @memberof imgix
