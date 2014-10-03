@@ -163,11 +163,13 @@ imgix.helpers = {
 		return zoomMult <= 1 ? 1 : zoomMult;
 	},
 
-	getDPR: function (elem) {
+	getDPR: function () {
 		var dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
 		if (dpr % 1 !== 0) {
-			dpr = dpr.toFixed(1);
+			var tmpStr = '' + dpr;
+			tmpStr = tmpStr.split('.')[1];
+			dpr = (tmpStr.length > 1 && tmpStr.slice(1, 2) !== "0") ? dpr.toFixed(2) : dpr.toFixed(1);
 		}
 
 		return dpr;
