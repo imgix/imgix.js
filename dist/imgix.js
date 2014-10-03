@@ -969,6 +969,7 @@ imgix.hasImage = function(el) {
 /**
  * Helper method that attaches IMGIX_CLASS to all elements with images on a page
  * @memberof imgix
+ * @private
  * @static
  */
 imgix.markElementsWithImages = function() {
@@ -996,6 +997,7 @@ imgix.hasClass = function(elem, name) {
  * Helper method that "marks" an element as "imgix usable" by adding special classes
  * @memberof imgix
  * @static
+ * @private
  * @param {Element} el the element to place the class on
  * @returns {string} auto-generated class name (via xpath)
  */
@@ -1016,6 +1018,7 @@ imgix.setImgixClass = function(el) {
  * Helper method that returns generated (via xpath) class name for "marked" image elements
  * @memberof imgix
  * @static
+ * @private
  * @param {Element} el the element to get the class for
  * @returns {string} class name
  */

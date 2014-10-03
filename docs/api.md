@@ -20,10 +20,7 @@ The root namespace for all imgix client code.
   * [imgix.hexToRGB(color)](#imgix.hexToRGB)
   * [imgix.getElementsWithImages()](#imgix.getElementsWithImages)
   * [imgix.hasImage(el)](#imgix.hasImage)
-  * [imgix.markElementsWithImages()](#imgix.markElementsWithImages)
   * [imgix.hasClass(elem, name)](#imgix.hasClass)
-  * [imgix.setImgixClass(el)](#imgix.setImgixClass)
-  * [imgix.getImgixClass(el)](#imgix.getImgixClass)
   * [imgix.rgbToHex(color)](#imgix.rgbToHex)
   * [imgix.getFontLookup()](#imgix.getFontLookup)
   * [imgix.getFonts()](#imgix.getFonts)
@@ -138,10 +135,6 @@ Does an element have an image attached
 - el `Element` - element to check for images  
 
 **Returns**: `boolean` - true if passed element has an image  
-<a name="imgix.markElementsWithImages"></a>
-##imgix.markElementsWithImages()
-Helper method that attaches IMGIX_CLASS to all elements with images on a page
-
 <a name="imgix.hasClass"></a>
 ##imgix.hasClass(elem, name)
 Checks if an element has a class applied (via jquery)
@@ -152,24 +145,6 @@ Checks if an element has a class applied (via jquery)
 - name `string` - class name to look for  
 
 **Returns**: `boolean` - true if element has the class  
-<a name="imgix.setImgixClass"></a>
-##imgix.setImgixClass(el)
-Helper method that "marks" an element as "imgix usable" by adding special classes
-
-**Params**
-
-- el `Element` - the element to place the class on  
-
-**Returns**: `string` - auto-generated class name (via xpath)  
-<a name="imgix.getImgixClass"></a>
-##imgix.getImgixClass(el)
-Helper method that returns generated (via xpath) class name for "marked" image elements
-
-**Params**
-
-- el `Element` - the element to get the class for  
-
-**Returns**: `string` - class name  
 <a name="imgix.rgbToHex"></a>
 ##imgix.rgbToHex(color)
 Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
