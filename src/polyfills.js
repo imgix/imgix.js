@@ -472,4 +472,6 @@
 		})();
 	}
 
-	initPolyfills();
+	if (typeof window !== 'undefined') {
+		initPolyfills();
+	}

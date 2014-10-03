@@ -33,6 +33,7 @@
     "karma-opera-launcher": "^0.1.0",
     "karma-phantomjs-launcher": "~0.1.0",
     "karma-requirejs": "~0.2.0",
-    "karma-script-launcher": "~0.1.0"
+    "karma-script-launcher": "~0.1.0",
+    "underscore": "^1.7.0"
   }
 }

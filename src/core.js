@@ -1046,7 +1046,7 @@ imgix.URL.prototype.getColors = function(num, callback) {
 	}
 };
 /**
- * This callback has the colors...
+ * This callback receives the colors in the image.
  * @callback colorsCallback
  * @param {array} colors an array of colors
  */
@@ -1447,13 +1447,20 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 	'bg': 'Background'
 });
 
+
+/** 
+	Apply the speia imgix param to the image url. Same as doing .setParam('sepia', val);
+	@param val the value to set for sepia
+	@name imgix.URL#setSepia
+	@function 
+*/ 
+
 // Dynamically create our param getter and setters
 for (var param in imgix.URL.theGetSetFuncs) {
-	(function() {
-		var tmp = param;
+	(function(tmp) {
 		imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { this.setParam(tmp, v, doOverride); };
-		imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function(v) { return this.getParam(tmp); };
-	})();
+		imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function() { return this.getParam(tmp); };
+	})(param);
 }
 
 // STATIC
@@ -1920,67 +1927,69 @@ imgix.fluid = function(elem) {
 // END FLUID
 // #############################################################
 
-/**
- * Cross-browser DOM ready helper
- * Dustin Diaz <dustindiaz.com> (MIT License)
- * https://github.com/ded/domready/tree/v0.3.0
- */
 
-/**
- * Runs a function when the DOM is ready (similar to jQuery.ready)
- * @memberof imgix
- * @static
- * @param {object} config options for fluid
- */
-imgix.onready = function (ready) {
-	var fns = [];
-	var fn;
-	var f = false;
-	var doc = document;
-	var testEl = doc.documentElement;
-	var hack = testEl.doScroll;
-	var domContentLoaded = "DOMContentLoaded";
-	var addEventListener = "addEventListener";
-	var onreadystatechange = "onreadystatechange";
-	var readyState = "readyState";
-	var loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/;
-	var loaded = loadedRgx.test(doc[readyState]);
-	function flush(f) {
-		loaded = 1;
-		while (f = fns.shift()) {
-			f();
+if (typeof window !== 'undefined') {
+	/**
+	 * Cross-browser DOM ready helper
+	 * Dustin Diaz <dustindiaz.com> (MIT License)
+	 * https://github.com/ded/domready/tree/v0.3.0
+	 */
+
+	/**
+	 * Runs a function when the DOM is ready (similar to jQuery.ready)
+	 * @memberof imgix
+	 * @static
+	 * @param {object} config options for fluid
+	 */
+	imgix.onready = function (ready) {
+		var fns = [];
+		var fn;
+		var f = false;
+		var doc = document;
+		var testEl = doc.documentElement;
+		var hack = testEl.doScroll;
+		var domContentLoaded = "DOMContentLoaded";
+		var addEventListener = "addEventListener";
+		var onreadystatechange = "onreadystatechange";
+		var readyState = "readyState";
+		var loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/;
+		var loaded = loadedRgx.test(doc[readyState]);
+		function flush(f) {
+			loaded = 1;
+			while (f = fns.shift()) {
+				f();
+			}
 		}
-	}
-	doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
-		doc.removeEventListener(domContentLoaded, fn, f);
-		flush();
-	}, f);
-	hack && doc.attachEvent(onreadystatechange, fn = function () {
-		if (/^c/.test(doc[readyState])) {
-			doc.detachEvent(onreadystatechange, fn);
+		doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
+			doc.removeEventListener(domContentLoaded, fn, f);
 			flush();
-		}
-	});
-	return (ready = hack ?
-		function (fn) {
-			self !== top ?
-				loaded ? fn() : fns.push(fn) :
-				function () {
-					try {
-						testEl.doScroll("left");
-					} catch (e) {
-						return setTimeout(function () {
-						ready(fn);
-						}, 50);
-					}
-				fn();
-			}();
-		}:
-		function (fn) {
-			loaded ? fn() : fns.push(fn);
+		}, f);
+		hack && doc.attachEvent(onreadystatechange, fn = function () {
+			if (/^c/.test(doc[readyState])) {
+				doc.detachEvent(onreadystatechange, fn);
+				flush();
+			}
 		});
-}();
-
+		return (ready = hack ?
+			function (fn) {
+				self !== top ?
+					loaded ? fn() : fns.push(fn) :
+					function () {
+						try {
+							testEl.doScroll("left");
+						} catch (e) {
+							return setTimeout(function () {
+							ready(fn);
+							}, 50);
+						}
+					fn();
+				}();
+			}:
+			function (fn) {
+				loaded ? fn() : fns.push(fn);
+			});
+	}();
+}
 // MD5 stuff...
 
 /*

@@ -10,7 +10,8 @@
 	"$": true,
 	"module": true,
 	"exports": true,
-	"imgix": true
+	"imgix": true,
+	"require": true
   },
 
   "rules": {

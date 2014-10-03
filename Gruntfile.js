@@ -2,19 +2,28 @@ module.exports = function(grunt) {
 	"use strict";
 	var path = require('path'),
 		fs = require('fs'),
+		_ = require('underscore'),
 		path = require('path'),
 		exec = require('child_process').exec,
 		srcPath = function(p) { return path.normalize(__dirname + "/src/" + p); },
 		rootPath = function(p) { return path.normalize(__dirname + "/" + p); },
+
+		buildPath = function(p) { return path.normalize(__dirname + "/build/" + p); },
 		distPath = function(p) { return path.normalize(__dirname + "/dist/" + p); },
 
 		noPolyfills = grunt.option("no-polyfills") || false,
 
+		buildDir = rootPath('build'),
 		docsApiFile = 'docs/api.md',
 		minJsFile = distPath('imgix.min.js'),
 		jsFile = distPath('imgix.js'),
 		minjQueryJsFile = distPath('imgix.jquery.min.js'),
 		jsjQueryFile = distPath('imgix.jquery.js');
+
+	function fileCopy(src, dest) {
+		dest = grunt.file.isFile(dest) ? dest : path.join(dest, path.basename(src));
+		grunt.file.copy(src, dest);
+	}
 
 	function execRun(cmd, done) {
 		exec(cmd, function(err, stdout, stderr) {
@@ -60,7 +69,7 @@ module.exports = function(grunt) {
 				src: [
 					srcPath('prefix.js'),
 					srcPath('polyfills.js'),
-					srcPath('core.js'),
+					buildPath('core.js'),
 					srcPath('suffix.js')
 				],
 				dest: jsFile
@@ -69,8 +78,7 @@ module.exports = function(grunt) {
 			nopolyjs: {
 				src: [
 					srcPath('prefix.js'),
-					//srcPath('polyfills.js'),
-					srcPath('core.js'),
+					buildPath('core.js'),
 					srcPath('suffix.js')
 				],
 				dest: jsFile
@@ -104,6 +112,12 @@ module.exports = function(grunt) {
 		}
 	});
 
+	grunt.registerTask('prebuild', ['copy-core', 'build-dynamic-method-docs']);
+
+	grunt.registerTask('copy-core', '', function() {
+		grunt.file.mkdir(buildDir);
+		fileCopy(srcPath('core.js'), buildDir);
+	});
 
 	grunt.registerTask('test', 'run tests', function() {
 		var configPath = path.join(__dirname, '/tests/config.js');
@@ -130,15 +144,41 @@ module.exports = function(grunt) {
 		fs.writeFileSync(docsApiFile, contents);
 	});
 
+	grunt.registerTask('build-dynamic-method-docs', 'build jsdocs for the dynamically built methods', function() {
+
+		var imgix = require('./dist/imgix.js').imgix,
+			compiledSet = _.template("/**\n\tApply the \"<%= param %>\" imgix param to the image url. Same as doing .setParam('<%= param %>', val)\n\t@param val the value to set for <%= param %>\n\t@name imgix.URL#set<%= pretty %>\n\t@function\n*/"),
+
+			compiledGet = _.template("/**\n\tGet the value of the \"<%= param %>\" imgix param currently on the image url. Same as doing .getParam('<%= param %>')\n\t@name imgix.URL#get<%= pretty %>\n\t@function\n*/"),
+
+			newDocs = [];
+
+		for (var param in imgix.URL.theGetSetFuncs) {
+			(function(tmp) {
+				var pretty = imgix.URL.theGetSetFuncs[tmp];
+
+				newDocs.push(compiledSet({pretty: pretty, param: tmp}));
+				newDocs.push(compiledGet({pretty: pretty, param: tmp}));
+			})(param);
+		}
+
+		var coreContents = fs.readFileSync(buildPath('core.js'), 'UTF-8');
+
+		coreContents += "\n\n" + newDocs.join("\n\n");
+
+		fs.writeFileSync(buildPath('core.js'), coreContents);
+
+	});
+
 	grunt.registerTask('builddocs', 'build the docs', function() {
 		grunt.task.run(['build', 'jsdoc2md', 'doc-cleanup']);
 	});
 
 	grunt.registerTask('build', 'build everything', function() {
 		if (noPolyfills) {
-			grunt.task.run(['concat:nopolyjs', 'uglify']);
+			grunt.task.run(['prebuild', 'concat:nopolyjs', 'uglify']);
 		} else {
-			grunt.task.run(['concat:js', 'uglify']);
+			grunt.task.run(['prebuild', 'concat:js', 'uglify']);
 		}
 	});
 
