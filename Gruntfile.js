@@ -12,7 +12,9 @@ module.exports = function(grunt) {
 
 		docsApiFile = 'docs/api.md',
 		minJsFile = distPath('imgix.min.js'),
-		jsFile = distPath('imgix.js');
+		jsFile = distPath('imgix.js'),
+		minjQueryJsFile = distPath('imgix.jquery.min.js'),
+		jsjQueryFile = distPath('imgix.jquery.js');
 
 	function execRun(cmd, done) {
 		exec(cmd, function(err, stdout, stderr) {
@@ -33,10 +35,17 @@ module.exports = function(grunt) {
 		},
 
 		uglify: {
-			my_target: {
+			imgixjs: {
 				files: [{
 					src: jsFile,
 					dest: minJsFile
+				}]
+			},
+
+			jqueryplugin: {
+				files: [{
+					src: jsjQueryFile,
+					dest: minjQueryJsFile
 				}]
 			}
 		},
