@@ -71,13 +71,20 @@ An example of auto re-setting an element's image whenever the `imgix.URL` instan
 Documentation
 -------------
 
-The [imgix.js API Documentation](docs/api.md) outlines all public `imgix.js` code. At this time the most useful parts are [imgix.URL](docs/api.md#imgix.URL) and [imgix.fluid](docs/api.md#imgix.fluid)
+The [imgix.js API Documentation](docs/api.md) outlines all public `imgix.js` code.
+
+
+Most usage will be centered around:
+
+* [imgix.URL](docs/api.md#imgix.URL) - for imgix image URL creation and manipulation.
+* [imgix.fluid](docs/api.md#imgix.fluid) - fast and easy responsive images.
+
 
 <a name="jquery"></a>
 jQuery Plugin
 -------------
 
-If you're already using jQuery then you can also include `imgix.jquery.js` to easily make changes to existing images. For instance, if you wanted to add a text watermark to all your gallery images
+If you're already using jQuery then you can also include `imgix.jquery.js` to easily make changes to existing images. For instance, if you wanted to add a text watermark to all your gallery images:
 
     $('.gallery').imgix().setParams({txt: 'Copyright Chester 2014', txtclr: 'f00', txtsize:20});
 
@@ -89,7 +96,7 @@ Legacy Browser Support
 
 ####IE8 Tips
 
-Ensure you set doctype so you do not invoke "quarks" mode.
+Ensure you set a doctype so you do not invoke "quirks" mode.
 
     <!DOCTYPE html>
 
