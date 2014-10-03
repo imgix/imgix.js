@@ -4,7 +4,7 @@
 
 
 #imgix.js Documentation
-The root namespace for all imgix client code.
+`imgix` is the root namespace for all imgix client code.
 
 **Members**
 
@@ -149,7 +149,7 @@ Runs a function when the DOM is ready (similar to jQuery.ready)
 
 **Params**
 
-- config `object` - options for fluid  
+- ready `function` - the function to run when the DOM is ready.  
 
 <a name="imgix.isImageElement"></a>
 ##imgix.isImageElement(el)

@@ -500,7 +500,7 @@
 var root = this;
 
 /**
- * The root namespace for all imgix client code. 
+ *  `imgix` is the root namespace for all imgix client code.
  * @namespace imgix
  */
 var imgix = {};
@@ -2422,7 +2422,7 @@ if (typeof window !== 'undefined') {
 	 * Runs a function when the DOM is ready (similar to jQuery.ready)
 	 * @memberof imgix
 	 * @static
-	 * @param {object} config options for fluid
+	 * @param {function} ready the function to run when the DOM is ready.
 	 */
 	imgix.onready = function (ready) {
 		var fns = [];
