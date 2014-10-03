@@ -1,5 +1,5 @@
 {
-  "name": "imgix-javascript",
+  "name": "imgix.js",
   "version": "1.0.0",
   "description": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?> <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \t\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">",
   "main": "na",
@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/zebrafishlabs/imgix-javascript.git"
+    "url": "git://github.com/imgix/imgix.js.git"
   },
   "author": "",
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/zebrafishlabs/imgix-javascript/issues"
+    "url": "https://github.com/imgix/imgix.js/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

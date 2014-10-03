@@ -489,4 +489,21 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.getColorBrightness('#fcc')).toEqual(imgix.getColorBrightness('rgb(255, 204, 204'));
 	});
 
+	it('imgix.onready should be called', function() {
+		var loadedFlag = false;
+		runs(function() {
+			imgix.onready(function() {
+				loadedFlag = true;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 3000);
+
+		runs(function() {
+			expect(loadedFlag).toEqual(true);
+		});
+	});
+
 });

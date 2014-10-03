@@ -1,7 +1,7 @@
 ![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=200&h=200)
 
-imgix-javascript
-================
+imgix.js
+========
 
 The Javascript client library for [imgix](http://www.imgix.com).
 
@@ -111,7 +111,7 @@ Polyfills
 If you're using `imgix.js` as part of a larger webapp that already supports IE8 (or you do not care about supporting it) then you can build `imgix.js` without these polyfills.
 
 
-    $ cd imgix-javascript
+    $ cd imgix.js/
     $ npm install # if you haven't already
     $ grunt build --no-polyfills
 
