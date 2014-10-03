@@ -2745,21 +2745,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "crop" imgix param currently on the image url. Same as doing .getParam('crop')
-	@name imgix.URL#getCrop
-	@function
-*/
-
-/**
 	Apply the "fit" imgix param to the image url. Same as doing .setParam('fit', val)
 	@param val the value to set for fit
 	@name imgix.URL#setFit
-	@function
-*/
-
-/**
-	Get the value of the "fit" imgix param currently on the image url. Same as doing .getParam('fit')
-	@name imgix.URL#getFit
 	@function
 */
 
@@ -2771,21 +2759,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "h" imgix param currently on the image url. Same as doing .getParam('h')
-	@name imgix.URL#getHeight
-	@function
-*/
-
-/**
 	Apply the "w" imgix param to the image url. Same as doing .setParam('w', val)
 	@param val the value to set for w
 	@name imgix.URL#setWidth
-	@function
-*/
-
-/**
-	Get the value of the "w" imgix param currently on the image url. Same as doing .getParam('w')
-	@name imgix.URL#getWidth
 	@function
 */
 
@@ -2797,21 +2773,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "rot" imgix param currently on the image url. Same as doing .getParam('rot')
-	@name imgix.URL#getRotate
-	@function
-*/
-
-/**
 	Apply the "flip" imgix param to the image url. Same as doing .setParam('flip', val)
 	@param val the value to set for flip
 	@name imgix.URL#setFlip
-	@function
-*/
-
-/**
-	Get the value of the "flip" imgix param currently on the image url. Same as doing .getParam('flip')
-	@name imgix.URL#getFlip
 	@function
 */
 
@@ -2823,21 +2787,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "or" imgix param currently on the image url. Same as doing .getParam('or')
-	@name imgix.URL#getOrient
-	@function
-*/
-
-/**
 	Apply the "dpr" imgix param to the image url. Same as doing .setParam('dpr', val)
 	@param val the value to set for dpr
 	@name imgix.URL#setDPR
-	@function
-*/
-
-/**
-	Get the value of the "dpr" imgix param currently on the image url. Same as doing .getParam('dpr')
-	@name imgix.URL#getDPR
 	@function
 */
 
@@ -2849,21 +2801,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "hue" imgix param currently on the image url. Same as doing .getParam('hue')
-	@name imgix.URL#getHue
-	@function
-*/
-
-/**
 	Apply the "sat" imgix param to the image url. Same as doing .setParam('sat', val)
 	@param val the value to set for sat
 	@name imgix.URL#setSaturation
-	@function
-*/
-
-/**
-	Get the value of the "sat" imgix param currently on the image url. Same as doing .getParam('sat')
-	@name imgix.URL#getSaturation
 	@function
 */
 
@@ -2875,21 +2815,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "bri" imgix param currently on the image url. Same as doing .getParam('bri')
-	@name imgix.URL#getBrightness
-	@function
-*/
-
-/**
 	Apply the "con" imgix param to the image url. Same as doing .setParam('con', val)
 	@param val the value to set for con
 	@name imgix.URL#setContrast
-	@function
-*/
-
-/**
-	Get the value of the "con" imgix param currently on the image url. Same as doing .getParam('con')
-	@name imgix.URL#getContrast
 	@function
 */
 
@@ -2901,21 +2829,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "exp" imgix param currently on the image url. Same as doing .getParam('exp')
-	@name imgix.URL#getExposure
-	@function
-*/
-
-/**
 	Apply the "high" imgix param to the image url. Same as doing .setParam('high', val)
 	@param val the value to set for high
 	@name imgix.URL#setHighlight
-	@function
-*/
-
-/**
-	Get the value of the "high" imgix param currently on the image url. Same as doing .getParam('high')
-	@name imgix.URL#getHighlight
 	@function
 */
 
@@ -2927,21 +2843,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "shad" imgix param currently on the image url. Same as doing .getParam('shad')
-	@name imgix.URL#getShadow
-	@function
-*/
-
-/**
 	Apply the "gam" imgix param to the image url. Same as doing .setParam('gam', val)
 	@param val the value to set for gam
 	@name imgix.URL#setGamma
-	@function
-*/
-
-/**
-	Get the value of the "gam" imgix param currently on the image url. Same as doing .getParam('gam')
-	@name imgix.URL#getGamma
 	@function
 */
 
@@ -2953,21 +2857,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "vib" imgix param currently on the image url. Same as doing .getParam('vib')
-	@name imgix.URL#getVibrance
-	@function
-*/
-
-/**
 	Apply the "sharp" imgix param to the image url. Same as doing .setParam('sharp', val)
 	@param val the value to set for sharp
 	@name imgix.URL#setSharpness
-	@function
-*/
-
-/**
-	Get the value of the "sharp" imgix param currently on the image url. Same as doing .getParam('sharp')
-	@name imgix.URL#getSharpness
 	@function
 */
 
@@ -2979,21 +2871,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "sepia" imgix param currently on the image url. Same as doing .getParam('sepia')
-	@name imgix.URL#getSepia
-	@function
-*/
-
-/**
 	Apply the "htn" imgix param to the image url. Same as doing .setParam('htn', val)
 	@param val the value to set for htn
 	@name imgix.URL#setHalftone
-	@function
-*/
-
-/**
-	Get the value of the "htn" imgix param currently on the image url. Same as doing .getParam('htn')
-	@name imgix.URL#getHalftone
 	@function
 */
 
@@ -3005,21 +2885,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "blur" imgix param currently on the image url. Same as doing .getParam('blur')
-	@name imgix.URL#getBlur
-	@function
-*/
-
-/**
 	Apply the "mono" imgix param to the image url. Same as doing .setParam('mono', val)
 	@param val the value to set for mono
 	@name imgix.URL#setMonochrome
-	@function
-*/
-
-/**
-	Get the value of the "mono" imgix param currently on the image url. Same as doing .getParam('mono')
-	@name imgix.URL#getMonochrome
 	@function
 */
 
@@ -3031,21 +2899,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "px" imgix param currently on the image url. Same as doing .getParam('px')
-	@name imgix.URL#getPixelate
-	@function
-*/
-
-/**
 	Apply the "blend" imgix param to the image url. Same as doing .setParam('blend', val)
 	@param val the value to set for blend
 	@name imgix.URL#setBlend
-	@function
-*/
-
-/**
-	Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
-	@name imgix.URL#getBlend
 	@function
 */
 
@@ -3057,21 +2913,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "txt" imgix param currently on the image url. Same as doing .getParam('txt')
-	@name imgix.URL#getText
-	@function
-*/
-
-/**
 	Apply the "txtfont" imgix param to the image url. Same as doing .setParam('txtfont', val)
 	@param val the value to set for txtfont
 	@name imgix.URL#setTextFont
-	@function
-*/
-
-/**
-	Get the value of the "txtfont" imgix param currently on the image url. Same as doing .getParam('txtfont')
-	@name imgix.URL#getTextFont
 	@function
 */
 
@@ -3083,21 +2927,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "txtsize" imgix param currently on the image url. Same as doing .getParam('txtsize')
-	@name imgix.URL#getTextSize
-	@function
-*/
-
-/**
 	Apply the "txtclr" imgix param to the image url. Same as doing .setParam('txtclr', val)
 	@param val the value to set for txtclr
 	@name imgix.URL#setTextColor
-	@function
-*/
-
-/**
-	Get the value of the "txtclr" imgix param currently on the image url. Same as doing .getParam('txtclr')
-	@name imgix.URL#getTextColor
 	@function
 */
 
@@ -3109,21 +2941,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "txtalign" imgix param currently on the image url. Same as doing .getParam('txtalign')
-	@name imgix.URL#getTextAlign
-	@function
-*/
-
-/**
 	Apply the "txtshad" imgix param to the image url. Same as doing .setParam('txtshad', val)
 	@param val the value to set for txtshad
 	@name imgix.URL#setTextShadow
-	@function
-*/
-
-/**
-	Get the value of the "txtshad" imgix param currently on the image url. Same as doing .getParam('txtshad')
-	@name imgix.URL#getTextShadow
 	@function
 */
 
@@ -3135,21 +2955,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "txtpad" imgix param currently on the image url. Same as doing .getParam('txtpad')
-	@name imgix.URL#getTextPad
-	@function
-*/
-
-/**
 	Apply the "txtline" imgix param to the image url. Same as doing .setParam('txtline', val)
 	@param val the value to set for txtline
 	@name imgix.URL#setTextLine
-	@function
-*/
-
-/**
-	Get the value of the "txtline" imgix param currently on the image url. Same as doing .getParam('txtline')
-	@name imgix.URL#getTextLine
 	@function
 */
 
@@ -3161,21 +2969,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "txtlineclr" imgix param currently on the image url. Same as doing .getParam('txtlineclr')
-	@name imgix.URL#getTextLineColor
-	@function
-*/
-
-/**
 	Apply the "txtfit" imgix param to the image url. Same as doing .setParam('txtfit', val)
 	@param val the value to set for txtfit
 	@name imgix.URL#setTextFit
-	@function
-*/
-
-/**
-	Get the value of the "txtfit" imgix param currently on the image url. Same as doing .getParam('txtfit')
-	@name imgix.URL#getTextFit
 	@function
 */
 
@@ -3187,21 +2983,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "fm" imgix param currently on the image url. Same as doing .getParam('fm')
-	@name imgix.URL#getFormat
-	@function
-*/
-
-/**
 	Apply the "q" imgix param to the image url. Same as doing .setParam('q', val)
 	@param val the value to set for q
 	@name imgix.URL#setQuality
-	@function
-*/
-
-/**
-	Get the value of the "q" imgix param currently on the image url. Same as doing .getParam('q')
-	@name imgix.URL#getQuality
 	@function
 */
 
@@ -3213,21 +2997,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "mark" imgix param currently on the image url. Same as doing .getParam('mark')
-	@name imgix.URL#getWatermark
-	@function
-*/
-
-/**
 	Apply the "markw" imgix param to the image url. Same as doing .setParam('markw', val)
 	@param val the value to set for markw
 	@name imgix.URL#setWatermarkWidth
-	@function
-*/
-
-/**
-	Get the value of the "markw" imgix param currently on the image url. Same as doing .getParam('markw')
-	@name imgix.URL#getWatermarkWidth
 	@function
 */
 
@@ -3239,21 +3011,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "markh" imgix param currently on the image url. Same as doing .getParam('markh')
-	@name imgix.URL#getWatermarkHeight
-	@function
-*/
-
-/**
 	Apply the "markfit" imgix param to the image url. Same as doing .setParam('markfit', val)
 	@param val the value to set for markfit
 	@name imgix.URL#setWatermarkFit
-	@function
-*/
-
-/**
-	Get the value of the "markfit" imgix param currently on the image url. Same as doing .getParam('markfit')
-	@name imgix.URL#getWatermarkFit
 	@function
 */
 
@@ -3265,21 +3025,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "markscale" imgix param currently on the image url. Same as doing .getParam('markscale')
-	@name imgix.URL#getWatermarkScale
-	@function
-*/
-
-/**
 	Apply the "markalign" imgix param to the image url. Same as doing .setParam('markalign', val)
 	@param val the value to set for markalign
 	@name imgix.URL#setWatermarkAlign
-	@function
-*/
-
-/**
-	Get the value of the "markalign" imgix param currently on the image url. Same as doing .getParam('markalign')
-	@name imgix.URL#getWatermarkAlign
 	@function
 */
 
@@ -3291,21 +3039,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "markalpha" imgix param currently on the image url. Same as doing .getParam('markalpha')
-	@name imgix.URL#getWatermarkAlpha
-	@function
-*/
-
-/**
 	Apply the "markpad" imgix param to the image url. Same as doing .setParam('markpad', val)
 	@param val the value to set for markpad
 	@name imgix.URL#setWatermarkPadding
-	@function
-*/
-
-/**
-	Get the value of the "markpad" imgix param currently on the image url. Same as doing .getParam('markpad')
-	@name imgix.URL#getWatermarkPadding
 	@function
 */
 
@@ -3317,21 +3053,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "palette" imgix param currently on the image url. Same as doing .getParam('palette')
-	@name imgix.URL#getPalette
-	@function
-*/
-
-/**
 	Apply the "class" imgix param to the image url. Same as doing .setParam('class', val)
 	@param val the value to set for class
 	@name imgix.URL#setPaletteClass
-	@function
-*/
-
-/**
-	Get the value of the "class" imgix param currently on the image url. Same as doing .getParam('class')
-	@name imgix.URL#getPaletteClass
 	@function
 */
 
@@ -3343,21 +3067,9 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "colors" imgix param currently on the image url. Same as doing .getParam('colors')
-	@name imgix.URL#getPaletteColorNumber
-	@function
-*/
-
-/**
 	Apply the "auto" imgix param to the image url. Same as doing .setParam('auto', val)
 	@param val the value to set for auto
 	@name imgix.URL#setAuto
-	@function
-*/
-
-/**
-	Get the value of the "auto" imgix param currently on the image url. Same as doing .getParam('auto')
-	@name imgix.URL#getAuto
 	@function
 */
 
@@ -3369,15 +3081,301 @@ if (typeof window !== 'undefined') {
 */
 
 /**
-	Get the value of the "mask" imgix param currently on the image url. Same as doing .getParam('mask')
-	@name imgix.URL#getMask
+	Apply the "bg" imgix param to the image url. Same as doing .setParam('bg', val)
+	@param val the value to set for bg
+	@name imgix.URL#setBackground
+	@function
+*//**
+	Get the value of the "crop" imgix param currently on the image url. Same as doing .getParam('crop')
+	@name imgix.URL#getCrop
 	@function
 */
 
 /**
-	Apply the "bg" imgix param to the image url. Same as doing .setParam('bg', val)
-	@param val the value to set for bg
-	@name imgix.URL#setBackground
+	Get the value of the "fit" imgix param currently on the image url. Same as doing .getParam('fit')
+	@name imgix.URL#getFit
+	@function
+*/
+
+/**
+	Get the value of the "h" imgix param currently on the image url. Same as doing .getParam('h')
+	@name imgix.URL#getHeight
+	@function
+*/
+
+/**
+	Get the value of the "w" imgix param currently on the image url. Same as doing .getParam('w')
+	@name imgix.URL#getWidth
+	@function
+*/
+
+/**
+	Get the value of the "rot" imgix param currently on the image url. Same as doing .getParam('rot')
+	@name imgix.URL#getRotate
+	@function
+*/
+
+/**
+	Get the value of the "flip" imgix param currently on the image url. Same as doing .getParam('flip')
+	@name imgix.URL#getFlip
+	@function
+*/
+
+/**
+	Get the value of the "or" imgix param currently on the image url. Same as doing .getParam('or')
+	@name imgix.URL#getOrient
+	@function
+*/
+
+/**
+	Get the value of the "dpr" imgix param currently on the image url. Same as doing .getParam('dpr')
+	@name imgix.URL#getDPR
+	@function
+*/
+
+/**
+	Get the value of the "hue" imgix param currently on the image url. Same as doing .getParam('hue')
+	@name imgix.URL#getHue
+	@function
+*/
+
+/**
+	Get the value of the "sat" imgix param currently on the image url. Same as doing .getParam('sat')
+	@name imgix.URL#getSaturation
+	@function
+*/
+
+/**
+	Get the value of the "bri" imgix param currently on the image url. Same as doing .getParam('bri')
+	@name imgix.URL#getBrightness
+	@function
+*/
+
+/**
+	Get the value of the "con" imgix param currently on the image url. Same as doing .getParam('con')
+	@name imgix.URL#getContrast
+	@function
+*/
+
+/**
+	Get the value of the "exp" imgix param currently on the image url. Same as doing .getParam('exp')
+	@name imgix.URL#getExposure
+	@function
+*/
+
+/**
+	Get the value of the "high" imgix param currently on the image url. Same as doing .getParam('high')
+	@name imgix.URL#getHighlight
+	@function
+*/
+
+/**
+	Get the value of the "shad" imgix param currently on the image url. Same as doing .getParam('shad')
+	@name imgix.URL#getShadow
+	@function
+*/
+
+/**
+	Get the value of the "gam" imgix param currently on the image url. Same as doing .getParam('gam')
+	@name imgix.URL#getGamma
+	@function
+*/
+
+/**
+	Get the value of the "vib" imgix param currently on the image url. Same as doing .getParam('vib')
+	@name imgix.URL#getVibrance
+	@function
+*/
+
+/**
+	Get the value of the "sharp" imgix param currently on the image url. Same as doing .getParam('sharp')
+	@name imgix.URL#getSharpness
+	@function
+*/
+
+/**
+	Get the value of the "sepia" imgix param currently on the image url. Same as doing .getParam('sepia')
+	@name imgix.URL#getSepia
+	@function
+*/
+
+/**
+	Get the value of the "htn" imgix param currently on the image url. Same as doing .getParam('htn')
+	@name imgix.URL#getHalftone
+	@function
+*/
+
+/**
+	Get the value of the "blur" imgix param currently on the image url. Same as doing .getParam('blur')
+	@name imgix.URL#getBlur
+	@function
+*/
+
+/**
+	Get the value of the "mono" imgix param currently on the image url. Same as doing .getParam('mono')
+	@name imgix.URL#getMonochrome
+	@function
+*/
+
+/**
+	Get the value of the "px" imgix param currently on the image url. Same as doing .getParam('px')
+	@name imgix.URL#getPixelate
+	@function
+*/
+
+/**
+	Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
+	@name imgix.URL#getBlend
+	@function
+*/
+
+/**
+	Get the value of the "txt" imgix param currently on the image url. Same as doing .getParam('txt')
+	@name imgix.URL#getText
+	@function
+*/
+
+/**
+	Get the value of the "txtfont" imgix param currently on the image url. Same as doing .getParam('txtfont')
+	@name imgix.URL#getTextFont
+	@function
+*/
+
+/**
+	Get the value of the "txtsize" imgix param currently on the image url. Same as doing .getParam('txtsize')
+	@name imgix.URL#getTextSize
+	@function
+*/
+
+/**
+	Get the value of the "txtclr" imgix param currently on the image url. Same as doing .getParam('txtclr')
+	@name imgix.URL#getTextColor
+	@function
+*/
+
+/**
+	Get the value of the "txtalign" imgix param currently on the image url. Same as doing .getParam('txtalign')
+	@name imgix.URL#getTextAlign
+	@function
+*/
+
+/**
+	Get the value of the "txtshad" imgix param currently on the image url. Same as doing .getParam('txtshad')
+	@name imgix.URL#getTextShadow
+	@function
+*/
+
+/**
+	Get the value of the "txtpad" imgix param currently on the image url. Same as doing .getParam('txtpad')
+	@name imgix.URL#getTextPad
+	@function
+*/
+
+/**
+	Get the value of the "txtline" imgix param currently on the image url. Same as doing .getParam('txtline')
+	@name imgix.URL#getTextLine
+	@function
+*/
+
+/**
+	Get the value of the "txtlineclr" imgix param currently on the image url. Same as doing .getParam('txtlineclr')
+	@name imgix.URL#getTextLineColor
+	@function
+*/
+
+/**
+	Get the value of the "txtfit" imgix param currently on the image url. Same as doing .getParam('txtfit')
+	@name imgix.URL#getTextFit
+	@function
+*/
+
+/**
+	Get the value of the "fm" imgix param currently on the image url. Same as doing .getParam('fm')
+	@name imgix.URL#getFormat
+	@function
+*/
+
+/**
+	Get the value of the "q" imgix param currently on the image url. Same as doing .getParam('q')
+	@name imgix.URL#getQuality
+	@function
+*/
+
+/**
+	Get the value of the "mark" imgix param currently on the image url. Same as doing .getParam('mark')
+	@name imgix.URL#getWatermark
+	@function
+*/
+
+/**
+	Get the value of the "markw" imgix param currently on the image url. Same as doing .getParam('markw')
+	@name imgix.URL#getWatermarkWidth
+	@function
+*/
+
+/**
+	Get the value of the "markh" imgix param currently on the image url. Same as doing .getParam('markh')
+	@name imgix.URL#getWatermarkHeight
+	@function
+*/
+
+/**
+	Get the value of the "markfit" imgix param currently on the image url. Same as doing .getParam('markfit')
+	@name imgix.URL#getWatermarkFit
+	@function
+*/
+
+/**
+	Get the value of the "markscale" imgix param currently on the image url. Same as doing .getParam('markscale')
+	@name imgix.URL#getWatermarkScale
+	@function
+*/
+
+/**
+	Get the value of the "markalign" imgix param currently on the image url. Same as doing .getParam('markalign')
+	@name imgix.URL#getWatermarkAlign
+	@function
+*/
+
+/**
+	Get the value of the "markalpha" imgix param currently on the image url. Same as doing .getParam('markalpha')
+	@name imgix.URL#getWatermarkAlpha
+	@function
+*/
+
+/**
+	Get the value of the "markpad" imgix param currently on the image url. Same as doing .getParam('markpad')
+	@name imgix.URL#getWatermarkPadding
+	@function
+*/
+
+/**
+	Get the value of the "palette" imgix param currently on the image url. Same as doing .getParam('palette')
+	@name imgix.URL#getPalette
+	@function
+*/
+
+/**
+	Get the value of the "class" imgix param currently on the image url. Same as doing .getParam('class')
+	@name imgix.URL#getPaletteClass
+	@function
+*/
+
+/**
+	Get the value of the "colors" imgix param currently on the image url. Same as doing .getParam('colors')
+	@name imgix.URL#getPaletteColorNumber
+	@function
+*/
+
+/**
+	Get the value of the "auto" imgix param currently on the image url. Same as doing .getParam('auto')
+	@name imgix.URL#getAuto
+	@function
+*/
+
+/**
+	Get the value of the "mask" imgix param currently on the image url. Same as doing .getParam('mask')
+	@name imgix.URL#getMask
 	@function
 */
 

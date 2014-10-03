@@ -151,20 +151,21 @@ module.exports = function(grunt) {
 
 			compiledGet = _.template("/**\n\tGet the value of the \"<%= param %>\" imgix param currently on the image url. Same as doing .getParam('<%= param %>')\n\t@name imgix.URL#get<%= pretty %>\n\t@function\n*/"),
 
-			newDocs = [];
+			getDocs = [],
+			setDocs = [];
 
 		for (var param in imgix.URL.theGetSetFuncs) {
 			(function(tmp) {
 				var pretty = imgix.URL.theGetSetFuncs[tmp];
 
-				newDocs.push(compiledSet({pretty: pretty, param: tmp}));
-				newDocs.push(compiledGet({pretty: pretty, param: tmp}));
+				setDocs.push(compiledSet({pretty: pretty, param: tmp}));
+				getDocs.push(compiledGet({pretty: pretty, param: tmp}));
 			})(param);
 		}
 
 		var coreContents = fs.readFileSync(buildPath('core.js'), 'UTF-8');
 
-		coreContents += "\n\n" + newDocs.join("\n\n");
+		coreContents += "\n\n" + setDocs.join("\n\n") + getDocs.join("\n\n");
 
 		fs.writeFileSync(buildPath('core.js'), coreContents);
 
