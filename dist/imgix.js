@@ -1,5 +1,4 @@
-/*! imgix.js http://www.imgix.com imgix-javascript - v1.0.0 - 2014-10-03 */
-/*
+/*! http://www.imgix.com imgix-javascript - v1.0.0 - 2014-10-03 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -13,8 +12,9 @@
 
 (function() {
 
-// THIS FILE WAS GENERATED. DO NOT EDIT DIRECTLY. They will be overrwritten
+// THIS FILE WAS GENERATED. DO NOT EDIT DIRECTLY. They will be overwritten
 // Edit files in /src and then run: grunt build
+// Please use the minified version of this file in production.
 
 
 	// Define and run polyfills first. Don't want/need these? grunt build --no-polyfills

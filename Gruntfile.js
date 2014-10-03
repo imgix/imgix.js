@@ -62,8 +62,10 @@ module.exports = function(grunt) {
 		concat: {
 			options: {
 				stripBanners: false,
-				banner: '/*! imgix.js http://www.imgix.com <%= pkg.name %> - v<%= pkg.version %> - ' +
-				'<%= grunt.template.today("yyyy-mm-dd") %> */' + "\n"
+				banner: '/*! http://www.imgix.com <%= pkg.name %> - v<%= pkg.version %> - ' +
+				'<%= grunt.template.today("yyyy-mm-dd") %> ' + "\n"
+
+				// NOTE: the rest of this banner is in the prefix.js
 			},
 			js: {
 				src: [
