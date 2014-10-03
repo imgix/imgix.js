@@ -53,7 +53,7 @@ An example of extracting the colors from an image and then setting the darkest i
     var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
     ix.getColors(function(colors) {
         document.body.style.backgroundColor = colors[0];
-    })
+    });
 
 ####Auto Update Element on imgix.URL change
 
@@ -123,10 +123,16 @@ Dependencies
 
 The library itself has no dependencies. Although if you want to build from source, run tests, or contribute then you'll need `node` / `npm` and `grunt`.
 
-Installing Build Dependencies:
+####Installing Build Dependencies:
 
     $ npm install
 
-Running Tests:
+####Running Tests:
 
     $ grunt test
+
+####Building docs (auto generated from jsdocs in the source):
+
+    $ grunt builddocs
+
+This writes the docs to `docs/api.md` to easy viewing on GitHub.
