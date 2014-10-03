@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 
 		noPolyfills = grunt.option("no-polyfills") || false,
 
+		docsApiFile = 'docs/api.md',
 		minJsFile = distPath('imgix.min.js'),
 		jsFile = distPath('imgix.js');
 
@@ -85,7 +86,7 @@ module.exports = function(grunt) {
 		jsdoc2md: {
 			oneOutputFile: {
 				src: "dist/imgix.js",
-				dest: "docs/api.md",
+				dest: docsApiFile,
 				options: {
 					index: false
 				}
@@ -105,7 +106,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('doc-cleanup', 'clean up output', function() {
-		var contents = fs.readFileSync('docs/api.md', 'UTF-8');
+		var contents = fs.readFileSync(docsApiFile, 'UTF-8');
 
 		contents = contents.split('<a name="imgix"></a>')[1];
 
@@ -117,7 +118,7 @@ module.exports = function(grunt) {
 
 		contents = "<!--- THIS IS AUTO GENERATED FROM JSDOCS. DO NOT EDIT DIRECTLY. ---> \n\n" + contents;
 
-		fs.writeFileSync('docs/api.md', contents);
+		fs.writeFileSync(docsApiFile, contents);
 	});
 
 	grunt.registerTask('builddocs', 'build the docs', function() {
