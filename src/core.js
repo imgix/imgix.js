@@ -387,6 +387,7 @@ imgix.getElementImage = function(el) {
  * Returns the matches for the url on the element's cssText
  * @memberof imgix
  * @static
+ * @private
  * @param {Element} el the element to check
  * @todo use cssProperty instead?
  * @returns {string} url of the image on the element
@@ -614,7 +615,7 @@ imgix.getElementTreeXPath = function(element) {
  * Example: "American Typewriter Bold" => "American Typewriter,bold",
  * @memberof imgix
  * @static
- * @returns {objct} passed color converted to hex
+ * @returns {object} passed color converted to hex
  */
 imgix.getFontLookup = function() {
 	return {

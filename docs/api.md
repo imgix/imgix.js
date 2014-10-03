@@ -15,7 +15,6 @@ The root namespace for all imgix client code.
   * [imgix.setElementImage(el, url)](#imgix.setElementImage)
   * [imgix.getEmptyImage()](#imgix.getEmptyImage)
   * [imgix.getElementImage(el)](#imgix.getElementImage)
-  * [imgix.getRawBackgroundImage(el)](#imgix.getRawBackgroundImage)
   * [imgix.getBackgroundImage(el)](#imgix.getBackgroundImage)
   * [imgix.getColorBrightness(color)](#imgix.getColorBrightness)
   * [imgix.hexToRGB(color)](#imgix.hexToRGB)
@@ -92,15 +91,6 @@ An empty 1x1 transparent image
 <a name="imgix.getElementImage"></a>
 ##imgix.getElementImage(el)
 Intelligently returns the image on the element
-
-**Params**
-
-- el `Element` - the element to check  
-
-**Returns**: `string` - url of the image on the element  
-<a name="imgix.getRawBackgroundImage"></a>
-##imgix.getRawBackgroundImage(el)
-Returns the matches for the url on the element's cssText
 
 **Params**
 
@@ -194,7 +184,7 @@ Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
 Returns a font lookup. Pretty Name => name to use with imgix
 Example: "American Typewriter Bold" => "American Typewriter,bold",
 
-**Returns**: `objct` - passed color converted to hex  
+**Returns**: `object` - passed color converted to hex  
 <a name="imgix.getFonts"></a>
 ##imgix.getFonts()
 Get a list of all the fonts supported by imgix

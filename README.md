@@ -3,12 +3,17 @@
 imgix-javascript
 ================
 
-The Javascript client library for imgix.
+The Javascript client library for [imgix](http://www.imgix.com).
 
-* [imgix.js home page](http://www.imgix.com/imgix-js) (overview and examples)
-* [imgix.js API Documentation](docs/api.md)
-* [imgix API Documentation](http://www.imgix.com/docs)
+* [Getting Started](#getting-started)
+* [Examples](#examples)
+* [Documentation](#docs)
+* [jQuery Plugin](#jquery)
+* [Browser Support](#browser-support)
+* [Polyfills](#polyfills)
+* [Dependencies](#dependencies)
 
+<a name="getting-started"></a>
 Getting Started
 ---------------
 
@@ -17,6 +22,7 @@ If you don't already have an imgix account then signup at [imgix.com](http://www
 Once your imgix source is created then simply add `imgix.min.js` (and if you're using jquery you can optionally add `imgix.jquery.js`) from the `dist` directory.
 
 
+<a name="examples"></a>
 Examples
 --------
 
@@ -61,11 +67,13 @@ An example of auto re-setting an element's image whenever the `imgix.URL` instan
         ix.setRotate(rotation);
     }, 5000);
 
+<a name="docs"></a>
 Documentation
 -------------
 
 The [imgix.js API Documentation](docs/api.md) outlines all public `imgix.js` code. At this time the most useful parts are [imgix.URL](docs/api.md#imgix.URL) and [imgix.fluid](docs/api.md#imgix.fluid)
 
+<a name="jquery"></a>
 jQuery Plugin
 -------------
 
@@ -73,10 +81,28 @@ If you're already using jQuery then you can also include `imgix.jquery.js` to ea
 
     $('.gallery').imgix().setParams({txt: 'Copyright Chester 2014', txtclr: 'f00', txtsize:20});
 
+<a name="browser-support"></a>
+Legacy Browser Support
+----------------------
 
-Browser Support
----------------
-`imgix.js` should support all browsers back to and including Internet Explorer 8. This requires a number of polyfills to be included in its source. If you're using `imgix.js` as part of a larger webapp that already supports IE8 (or you do not care about supporting it) then you can build `imgix.js` without these polyfills.
+`imgix.js` should support all browsers back to and including Internet Explorer 8. This requires a number of polyfills to be included in its source. If you're already providing IE8 polyfills see the section below about building `imgix.js` without them. 
+
+####IE8 Tips
+
+Ensure you set doctype so you do not invoke "quarks" mode.
+
+    <!DOCTYPE html>
+
+Ensure you add an `IE=edge` `meta` tag in your `<head>`
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<a name="polyfills"></a>
+Polyfills
+---------
+
+If you're using `imgix.js` as part of a larger webapp that already supports IE8 (or you do not care about supporting it) then you can build `imgix.js` without these polyfills.
+
 
     $ cd imgix-javascript
     $ npm install # if you haven't already
@@ -84,11 +110,11 @@ Browser Support
 
 Now you'll have a much smaller version of `imgix.js` and `imgix.min.js` in the `dist/` directory.
 
-
+<a name="dependencies"></a>
 Dependencies
 ------------
 
-The library itself has no dependencies. If you want to build from source, run tests, or contribute then you'll need `node` / `npm` and `grunt`.
+The library itself has no dependencies. Although if you want to build from source, run tests, or contribute then you'll need `node` / `npm` and `grunt`.
 
 Installing Build Dependencies:
 
