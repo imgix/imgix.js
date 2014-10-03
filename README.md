@@ -92,7 +92,7 @@ If you're already using jQuery then you can also include `imgix.jquery.js` to ea
 Legacy Browser Support
 ----------------------
 
-`imgix.js` should support all browsers back to and including Internet Explorer 8. This requires a number of polyfills to be included in its source. If you're already providing IE8 polyfills see the section below about building `imgix.js` without them. 
+`imgix.js` should support all browsers back to and including Internet Explorer 8. This requires a number of polyfills to be included in its source. If you're already providing IE8 polyfills see the [section below](#polyfills) about building `imgix.js` without them. 
 
 ####IE8 Tips
 
@@ -135,4 +135,4 @@ The library itself has no dependencies. Although if you want to build from sourc
 
     $ grunt builddocs
 
-This writes the docs to `docs/api.md` to easy viewing on GitHub.
+This writes the docs to `docs/api.md` for easy viewing on GitHub.
