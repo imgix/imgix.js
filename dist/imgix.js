@@ -630,13 +630,13 @@ imgix.helpers = {
 	},
 
 	getDPR: function (elem) {
-		var dpiOverride = elem.getAttribute("data-dpi");
-		var devicePixelRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
-		var dpi = this.isNumber(dpiOverride) === true ? parseFloat(dpiOverride) : devicePixelRatio;
-		if (dpi % 1 !== 0) {
-			dpi = dpi.toFixed(1);
+		var dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
+
+		if (dpr % 1 !== 0) {
+			dpr = dpr.toFixed(1);
 		}
-		return dpi;
+
+		return dpr;
 	},
 
 	getWindowWidth: function () {
@@ -1578,15 +1578,11 @@ imgix.URL.prototype._handleAutoUpdate = function() {
 			elBaseUrl = elImg.split('?')[0];
 		}
 
-
 		if (self.getBaseUrl()) {
-			//console.log('set style 1');
 			setImage(el, self.getUrl());
 		} else if (elBaseUrl && self.getQueryString()) {
-			//console.log('set style 2');
 			setImage(el, elBaseUrl + '?' + self.getQueryString());
 		} else {
-			//console.log('no params to apply');
 			loadedImages++;
 		}
 	}
