@@ -6,7 +6,7 @@ imgix-javascript
 The Javascript client library for imgix.
 
 * [imgix.js home page](http://www.imgix.com/imgix-js) (overview and examples)
-* [imgix.js API Documentation](docs.md)
+* [imgix.js API Documentation](docs/api.md)
 * [imgix API Documentation](http://www.imgix.com/docs)
 
 Getting Started
@@ -64,7 +64,7 @@ An example of auto re-setting an element's image whenever the `imgix.URL` instan
 Documentation
 -------------
 
-The [imgix.js API Documentation](docs.md) outlines all public `imgix.js` code. At this time the most useful parts are [imgix.URL](docs.md#imgix.URL) and [imgix.fluid](docs.md#imgix.fluid)
+The [imgix.js API Documentation](docs/api.md) outlines all public `imgix.js` code. At this time the most useful parts are [imgix.URL](docs/api.md#imgix.URL) and [imgix.fluid](docs/api.md#imgix.fluid)
 
 jQuery Plugin
 -------------
