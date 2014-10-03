@@ -1,4 +1,4 @@
-/*! imgix-javascript - v1.0.0 - 2014-10-02 */
+/*! imgix.js http://www.imgix.com imgix-javascript - v1.0.0 - 2014-10-03 */
 (function() {
 
 

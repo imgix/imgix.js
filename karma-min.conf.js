@@ -3,7 +3,7 @@
 module.exports = function(config) {
 	config.set({
 		basePath: '',
-		browsers: ['Firefox', 'Chrome', 'PhantomJS'],
+		browsers: ['Firefox', 'Chrome', 'PhantomJS', 'Opera'],
 		reporters: ['progress'],
 		singleRun: true,
 		frameworks: ['jasmine'],

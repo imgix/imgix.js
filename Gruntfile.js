@@ -43,7 +43,7 @@ module.exports = function(grunt) {
 		concat: {
 			options: {
 				stripBanners: true,
-				banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+				banner: '/*! imgix.js http://www.imgix.com <%= pkg.name %> - v<%= pkg.version %> - ' +
 				'<%= grunt.template.today("yyyy-mm-dd") %> */' + "\n"
 			},
 			js: {
