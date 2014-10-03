@@ -1,5 +1,5 @@
 
-	// polyfills.
+	// Define and run polyfills first. Don't want/need these? grunt build --no-polyfills
 	function initPolyfills() {
 
 		// Object.freeze polyfill (pure pass through)

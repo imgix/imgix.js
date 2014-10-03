@@ -1,8 +1,23 @@
 /*! imgix.js http://www.imgix.com imgix-javascript - v1.0.0 - 2014-10-03 */
+/*
+ _                    _             _
+(_)                  (_)           (_)
+ _  _ __ ___    __ _  _ __  __      _  ___
+| || '_ ` _ \  / _` || |\ \/ /     | |/ __|
+| || | | | | || (_| || | >  <  _   | |\__ \
+|_||_| |_| |_| \__, ||_|/_/\_\(_)  | ||___/
+                __/ |             _/ |
+               |___/             |__/
+
+*/
+
 (function() {
 
+// THIS FILE WAS GENERATED. DO NOT EDIT DIRECTLY. They will be overrwritten
+// Edit files in /src and then run: grunt build
 
-	// polyfills.
+
+	// Define and run polyfills first. Don't want/need these? grunt build --no-polyfills
 	function initPolyfills() {
 
 		// Object.freeze polyfill (pure pass through)
@@ -2733,6 +2748,9 @@ if (typeof window !== 'undefined') {
 		$.md5 = md5;
 	}
 }(imgix));
+
+
+// DOCS BELOW ARE AUTO GENERATED. DO NOT EDIT BY HAND
 
 
 

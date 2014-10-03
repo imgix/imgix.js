@@ -1,16 +1,3 @@
-/*
- _                    _             _
-(_)                  (_)           (_)
- _  _ __ ___    __ _  _ __  __      _  ___
-| || '_ ` _ \  / _` || |\ \/ /     | |/ __|
-| || | | | | || (_| || | >  <  _   | |\__ \
-|_||_| |_| |_| \__, ||_|/_/\_\(_)  | ||___/
-                __/ |             _/ |
-               |___/             |__/
-
-*/
-
-
 "use strict";
 
 // Establish the root object, `window` in the browser, or `exports` on the server.
@@ -2265,5 +2252,8 @@ if (typeof window !== 'undefined') {
 		$.md5 = md5;
 	}
 }(imgix));
+
+
+// DOCS BELOW ARE AUTO GENERATED. DO NOT EDIT BY HAND
 
 

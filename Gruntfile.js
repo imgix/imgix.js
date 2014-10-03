@@ -61,7 +61,7 @@ module.exports = function(grunt) {
 
 		concat: {
 			options: {
-				stripBanners: true,
+				stripBanners: false,
 				banner: '/*! imgix.js http://www.imgix.com <%= pkg.name %> - v<%= pkg.version %> - ' +
 				'<%= grunt.template.today("yyyy-mm-dd") %> */' + "\n"
 			},
@@ -115,6 +115,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('prebuild', ['copy-core', 'build-dynamic-method-docs']);
 
 	grunt.registerTask('copy-core', '', function() {
+		if (grunt.file.exists(buildDir)) {
+			grunt.file.delete(buildDir);
+		}
 		grunt.file.mkdir(buildDir);
 		fileCopy(srcPath('core.js'), buildDir);
 	});
@@ -146,6 +149,10 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('build-dynamic-method-docs', 'build jsdocs for the dynamically built methods', function() {
 
+		if (!grunt.file.exists(distPath('imgix.js'))) {
+			console.log("dist/imgix.js does not exist. build again for auto generating docs");
+			return;
+		}
 		var imgix = require('./dist/imgix.js').imgix,
 			compiledSet = _.template("/**\n\tApply the \"<%= param %>\" imgix param to the image url. Same as doing .setParam('<%= param %>', val)\n\t@param val the value to set for <%= param %>\n\t@name imgix.URL#set<%= pretty %>\n\t@function\n*/"),
 
