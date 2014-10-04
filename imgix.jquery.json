@@ -1,0 +1,54 @@
+{
+    "name": "imgix",
+    "version": "1.0.0",
+    "title": "imgix jQuery Plugin",
+    "description": "imgix.js is a javascript library that allows you to to work with the imgix service and API to easily make images on your site or app responsive to device size and pixel density. imgix.js also allows API features such as text formatting, color palatte extraction, effects, adjustments and watermarking to be applied more intuitively.",
+    "keywords": [
+        "jquery",
+        "file",
+        "widget",
+        "image",
+		"imgix",
+        "transformations",
+        "manipulation",
+        "effects",
+        "thumbnail",
+        "multiple",
+        "preview",
+        "cross-domain",
+        "cross-site",
+        "picture",
+        "pictures",
+        "thumbnails",
+        "CDN",
+    	"cloudinary",
+		"images"
+    ],
+    "homepage": "http://github.com/imgix/imgix.js",
+    "demo": "http://www.imgix.com/imgix-js",
+    "docs": "https://github.com/imgix/imgix.js/blob/master/docs/api.md",
+    "author": {
+        "name": "imgix",
+        "url": "http://www.imgix.com"
+    },
+    "maintainers": [
+        {
+            "name": "imgix",
+            "url": "http://www.imgix.com"
+        }
+    ],
+    "repository": {
+        "type": "git",        
+        "url": "git://github.com/imgix/imgix.js.git"
+    },
+    "bugs": "https://github.com/imgix/imgix.js/issues",
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/MIT"
+        }
+    ],
+    "dependencies": {
+        "jquery": ">=1.6"
+    }
+}
