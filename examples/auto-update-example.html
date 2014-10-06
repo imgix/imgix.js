@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width">
+	<style>
+		/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+		html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+		
+		/* Images */
+		html,body{
+			width:100%;
+			height:100%;
+		}
+		.container{
+			width:100%;
+			max-width:1800px;
+			margin:0 auto;
+			overflow: hidden;
+			margin-bottom:2em;
+			width:320px;
+		}
+		.demo-image {
+			width:100%;
+			height:320px;
+			display:block;
+			background-position: 50%;
+			background-size: cover;
+			margin:.25em auto 0;
+		}
+		.content{
+			width:100%;
+			margin:1em auto 0;
+			padding:2em;
+			box-sizing:border-box;
+			-moz-box-sizing:border-box;
+			border-radius: 2px;
+		}
+
+		h1,p{
+			text-align: center;
+			font-size: 2em;
+		}
+
+		@media only screen and (max-width: 640px) {
+			.container{
+				width:100%;
+			}
+
+			.demo-image {
+				width:100%;
+				height:auto;
+				padding-bottom:100%;
+			}
+		}
+
+	</style>
+</head>
+<body>
+	
+	<div class="container" id="demo1">
+		<!-- Butterfly Image -->
+		<div  class="demo-image">
+		</div>
+		<p>Every 2 seconds rotate 15 degrees</p>
+	</div>
+	
+	<script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+
+		imgix.onready(function() {
+			var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
+			ix.autoUpdateImg('.demo-image');
+			var rotation = 0;
+			window.setInterval(function() {
+				rotation += 15;
+				ix.setRotate(rotation);
+			}, 2000);
+		});
+
+	</script>
+</body>
+</html>

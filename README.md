@@ -57,15 +57,15 @@ An example of extracting the colors from an image and then setting the darkest i
 
 ####Auto Update Element on imgix.URL change
 
-An example of auto re-setting an element's image whenever the `imgix.URL` instance changes. Here we're rotating an image by 5 degrees every 5 seconds.
+An example of auto re-setting an element's image whenever the `imgix.URL` instance changes. Here we're rotating an image by 15 degrees every 2 seconds.
 
     var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
     ix.autoUpdateImg('.butterfly-target');
 	var rotation = 0;
     window.setInterval(function() {
-        rotatation += 5;
+        rotation += 15;
         ix.setRotate(rotation);
-    }, 5000);
+    }, 2000);
 
 <a name="docs"></a>
 Documentation
