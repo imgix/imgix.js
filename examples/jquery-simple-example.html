@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=yes">
+</head>
+<body>
+
+	<section class="container">
+		<img src="http://jackangers.imgix.net/chester.png" class="gallery" id="chester">
+
+		<img src="http://jackangers.imgix.net/chester.png" class="gallery" id="chester2">
+
+		<div class="gallery" style="background-image: url(http://assets.imgix.net/examples/butterfly.jpg?crop=faces&amp;fit=crop&amp;h=640&amp;w=640);height:500px;width:500px;">
+		</div>
+	</section>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+	<script src="http://www.imgix.com/static/js/imgix.jquery.js"></script>
+
+	<script type="text/javascript">
+		jQuery(function() {
+			$('.gallery').imgix().setParams({txt: 'Copyright Chester 2014', txtclr: 'fff', txtsize:20, txtalign: 'center,middle'});
+		})
+	</script>
+
+</body>
+
+</html>
