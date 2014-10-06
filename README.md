@@ -65,8 +65,8 @@ This is the smallest full example of using imgix to provide a fluid image.
 		<script>
 			imgix.onready(function() {
 				imgix.fluid({
-					updateOnResizeDown : true,
-					pixelRounding : 5,
+					updateOnResizeDown: true,
+					pixelRounding: 5,
 					autoInsertCSSBestPractices: true,
 				});
 			});

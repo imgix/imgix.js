@@ -45,8 +45,8 @@
     "bugs": "https://github.com/imgix/imgix.js/issues",
     "licenses": [
         {
-            "type": "MIT",
-            "url": "http://www.opensource.org/licenses/MIT"
+            "type": "BSD-2",
+            "url": "http://opensource.org/licenses/BSD-2-Clause"
         }
     ],
     "dependencies": {
