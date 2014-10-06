@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width">
+	<style>
+		/* Eric Meyer's Reset CSS v2.0 - http://cssreset.com */
+		html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{border:0;font-size:100%;font:inherit;vertical-align:baseline;margin:0;padding:0}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:none}table{border-collapse:collapse;border-spacing:0}
+
+		html,body{
+			width:100%;
+			height:100%;
+		}
+		.container{
+			width:100%;
+			max-width:1800px;
+			margin:0 auto;
+			overflow: hidden;
+		}
+
+		/* Image containers */
+		.feature-image{
+			width:23%;
+			padding-bottom: 23%;
+			margin:.5em 1%;
+			display:block;
+			float:left;
+		}
+		.header-image{
+			height:500px;
+		}
+
+		@media (max-width:1024px){
+			.feature-image {
+				width:48%;
+				padding-bottom: 65%;
+				margin: .5em 1%;
+			}
+		}
+		@media (max-width:480px){
+			.header-image, .feature-image {
+				height:auto;
+				width:100%;
+				padding-bottom: 75%;
+				margin: .25em 0;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container" id="example1">
+		<!-- Header Image -->
+		<div class="imgix-fluid-bg header-image" data-src="http://assets.imgix.net/examples/butterfly.jpg?fit=crop&crop=faces"></div>
+		<!-- Feature Images -->
+		<div class="imgix-fluid-bg feature-image" data-src="http://assets.imgix.net/examples/ape.jpg?fit=crop&crop=faces"></div>
+		<div class="imgix-fluid-bg feature-image" data-src="http://assets.imgix.net/examples/salamander.jpg?fit=crop&crop=faces"></div>
+		<div class="imgix-fluid-bg feature-image" data-src="http://assets.imgix.net/examples/snake.jpg?fit=crop&crop=faces"></div>
+		<div class="imgix-fluid-bg feature-image" data-src="http://assets.imgix.net/examples/iguana.jpg?fit=crop&crop=faces"></div>
+	</div>
+
+<script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var bgOptions = {
+			fluidClass:'imgix-fluid-bg',
+			updateOnResizeDown : true,
+			updateOnPinchZoom : true,
+			pixelRounding : 10,
+			autoInsertCSSBestPractices: true,
+			onChangeParamOverride: function(w, h) {
+				var dpr = Math.ceil(window.devicePixelRatio*10) /10;
+						return {"txt": "w:" + w + " h:" +h + " dpr:" + dpr,
+								"txtalign": "center,bottom",
+								"txtsize": 20,
+								"txtfont":"Helvetica%20Neue,bold",
+								"txtclr":"ffffffff",
+								"txtpad":20,
+								"txtfit":'max',
+								"exp":-5
+								}
+			}
+	};
+	imgix.onready(function() {
+		imgix.fluid(bgOptions);
+	});
+</script>
+</body>
+</html>
