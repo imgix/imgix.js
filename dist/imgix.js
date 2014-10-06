@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.4 - 2014-10-03 
+/*! http://www.imgix.com imgix.js - v1.0.5 - 2014-10-06 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1572,10 +1572,8 @@ imgix.URL.prototype._handleAutoUpdate = function() {
 						loadedImages++;
 
 						if (typeof self._autoUpdateCallback === "function") {
-							var cls = '.' + imgix.setImgixClass(imgToEls[imgUrl][i]),
-								obj = {
-									element: document.querySelector(cls),
-									className: cls, // string class '.imgix-el-{md5}'
+							var obj = {
+									element: imgToEls[imgUrl][i],
 									isComplete: loadedImages === totalImages, // boolean
 									percentComplete: (loadedImages / totalImages) * 100, // float
 									totalComplete: loadedImages, // int

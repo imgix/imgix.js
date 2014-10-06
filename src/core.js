@@ -1076,10 +1076,8 @@ imgix.URL.prototype._handleAutoUpdate = function() {
 						loadedImages++;
 
 						if (typeof self._autoUpdateCallback === "function") {
-							var cls = '.' + imgix.setImgixClass(imgToEls[imgUrl][i]),
-								obj = {
-									element: document.querySelector(cls),
-									className: cls, // string class '.imgix-el-{md5}'
+							var obj = {
+									element: imgToEls[imgUrl][i],
 									isComplete: loadedImages === totalImages, // boolean
 									percentComplete: (loadedImages / totalImages) * 100, // float
 									totalComplete: loadedImages, // int
