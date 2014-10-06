@@ -44,6 +44,13 @@ module.exports = function(grunt) {
 		},
 
 		uglify: {
+			options: {
+				stripBanners: false,
+				banner: '/*! http://www.imgix.com <%= pkg.name %> - v<%= pkg.version %> - ' +
+				'<%= grunt.template.today("yyyy-mm-dd") %> ' + "*/\n\n"
+
+			},
+
 			imgixjs: {
 				files: [{
 					src: jsFile,
@@ -65,7 +72,7 @@ module.exports = function(grunt) {
 				banner: '/*! http://www.imgix.com <%= pkg.name %> - v<%= pkg.version %> - ' +
 				'<%= grunt.template.today("yyyy-mm-dd") %> ' + "\n"
 
-				// NOTE: the rest of this banner is in the prefix.js
+				// NOTE: the rest of this banner is in the prefix.js for the ascii art
 			},
 			js: {
 				src: [
