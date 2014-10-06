@@ -19,14 +19,63 @@ Getting Started
 
 If you don't already have an imgix account then signup at [imgix.com](http://www.imgix.com).
 
-Once your imgix source is created then simply add `imgix.min.js` (and if you're using jquery you can optionally add `imgix.jquery.js`) from the `dist` directory.
+Once your imgix source is created then simply add `imgix.min.js` to your page:
 
+    <script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+
+
+`imgix.js` is dependency-free so it includes its own DOM `onready` method. Although if you're using additional libraries that include similar functionality than you can continue to use those.
+
+    <script type="text/javascript">
+        imgix.onready(function() {
+            // ready to go
+        });
+    </script>
+
+
+Please read the [examples](#examples) section below.
 
 <a name="examples"></a>
 Examples
 --------
 
-Check out the [imgix.js home page](http://www.imgix.com/imgix-js) for a big picture overview of everything you can do. Below are some simple examples.
+Check out the [imgix.js home page](http://www.imgix.com/imgix-js) for a big picture overview of everything you can do. Additionally there are __full__ examples in the [examples/](examples/) directory.
+
+
+####Single fluid image (full)
+
+This is the smallest full example of using imgix to provide a fluid image.
+
+
+	<html>
+	<head>
+		<style>
+			.imgix-fluid-bg {
+				position:absolute;
+				width:100%;
+				height:100%;
+				top:0;
+				left:0;
+				display:block;
+			}
+		</style>
+
+		<!-- include imgix.js -->
+		<script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+		<script>
+			imgix.onready(function() {
+				imgix.fluid({
+					updateOnResizeDown : true,
+					pixelRounding : 5,
+					autoInsertCSSBestPractices: true,
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div data-src="http://miguel.imgix.net/ex/katie.jpg?fit=crop&crop=faces" class="imgix-fluid imgix-fluid-bg"></div>
+	</body>
+	</html>
 
 ####Build URLs
 
@@ -61,7 +110,7 @@ An example of auto re-setting an element's image whenever the `imgix.URL` instan
 
     var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
     ix.autoUpdateImg('.butterfly-target');
-	var rotation = 0;
+    var rotation = 0;
     window.setInterval(function() {
         rotation += 15;
         ix.setRotate(rotation);
@@ -84,7 +133,11 @@ Most usage will be centered around:
 jQuery Plugin
 -------------
 
-If you're already using jQuery then you can also include `imgix.jquery.js` to easily make changes to existing images. For instance, if you wanted to add a text watermark to all your gallery images:
+If you're already using jQuery then you can also include `imgix.jquery.js` to easily make changes to existing images. 
+
+    <script src="http://www.imgix.com/static/js/imgix.jquery.js" type="text/javascript"></script>
+
+For example, if you wanted to add a text watermark to all your gallery images:
 
     $('.gallery').imgix().setParams({txt: 'Copyright Chester 2014', txtclr: 'f00', txtsize:20});
 
