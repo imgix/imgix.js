@@ -67,13 +67,13 @@ This is the smallest full example of using imgix to provide a fluid image.
 				imgix.fluid({
 					updateOnResizeDown: true,
 					pixelRounding: 5,
-					autoInsertCSSBestPractices: true,
+					autoInsertCSSBestPractices: true
 				});
 			});
 		</script>
 	</head>
 	<body>
-		<div data-src="http://miguel.imgix.net/ex/katie.jpg?fit=crop&crop=faces" class="imgix-fluid imgix-fluid-bg"></div>
+		<div data-src="http://assets.imgix.net/katie.jpg?fit=crop&crop=faces" class="imgix-fluid imgix-fluid-bg"></div>
 	</body>
 	</html>
 
