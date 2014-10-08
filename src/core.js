@@ -900,7 +900,12 @@ imgix.URL = function(url, imgParams, token, isRj) {
 imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
 	//this.token = token;
 	if (typeof elemOrSel === "string") {
-		imgix.setElementImageAfterLoad(document.querySelector(elemOrSel), this.getUrl(), callback);
+		var results = document.querySelectorAll(elemOrSel);
+		if (results && results.length > 0) {
+			for (var i = 0; i < results.length; i++) {
+				imgix.setElementImageAfterLoad(results[i], this.getUrl(), callback);
+			}
+		}
 	} else {
 		imgix.setElementImageAfterLoad(elemOrSel, this.getUrl(), callback);
 	}

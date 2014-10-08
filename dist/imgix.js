@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.7 - 2014-10-06 
+/*! http://www.imgix.com imgix.js - v1.0.7 - 2014-10-08 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1396,7 +1396,12 @@ imgix.URL = function(url, imgParams, token, isRj) {
 imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
 	//this.token = token;
 	if (typeof elemOrSel === "string") {
-		imgix.setElementImageAfterLoad(document.querySelector(elemOrSel), this.getUrl(), callback);
+		var results = document.querySelectorAll(elemOrSel);
+		if (results && results.length > 0) {
+			for (var i = 0; i < results.length; i++) {
+				imgix.setElementImageAfterLoad(results[i], this.getUrl(), callback);
+			}
+		}
 	} else {
 		imgix.setElementImageAfterLoad(elemOrSel, this.getUrl(), callback);
 	}

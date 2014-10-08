@@ -416,6 +416,52 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('should attachImageTo with element selector multiple', function() {
+		var el, el2, newUrl, loadedCount = 0;
+		runs(function() {
+			var img = document.createElement('img'),
+				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+
+			img.id = tmpId;
+			img.className = 'tester';
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			var img2 = document.createElement('img'),
+				tmpId2 = 'test' + parseInt((Math.random() * 100000), 10);
+
+			img2.id = tmpId2;
+			img2.className = 'tester';
+			img2.src = 'http://static-a.img2ix.net/macaw.png';
+			document.body.appendChild(img2);
+
+			el2 = document.querySelector('#' + tmpId2);
+			expect(el2).toBeDefined();
+
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+			ix.attachImageTo('.tester', function() {
+				loadedCount++;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedCount === 2;
+		}, "Waiting for images to load..", 10000);
+
+
+		runs(function() {
+			// ensure it actually loaded on both images...
+			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			expect(imgix.getElementImage(el2)).toEqual(newUrl);
+		});
+	});
+
 	it('should handle only qs in constructor', function() {
 		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
 		i.setDPR(1.3);
