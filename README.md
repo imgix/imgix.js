@@ -73,7 +73,7 @@ This is the smallest full example of using imgix to provide a fluid image.
 		</script>
 	</head>
 	<body>
-		<div data-src="http://assets.imgix.net/katie.jpg?fit=crop&crop=faces" class="imgix-fluid imgix-fluid-bg"></div>
+		<div data-src="http://assets.imgix.net/coffee.jpg?fit=crop&crop=faces" class="imgix-fluid imgix-fluid-bg"></div>
 	</body>
 	</html>
 
