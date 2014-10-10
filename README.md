@@ -92,7 +92,7 @@ An example of creating an imgix URL with an object of imgix params/values via `s
 
     var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
     ix.setParams({w: 500, px: 20});
-    ix.attachTo('.butterfly-target');
+    ix.attachImageTo('.butterfly-target');
 
 
 ####Color Palette Extraction
