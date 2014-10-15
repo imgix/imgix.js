@@ -24,9 +24,9 @@
 
 	<script>
 		var opts = {
-			updateOnResizeDown : true,
-			updateOnPinch : true,
-			pixelRounding : 10,
+			updateOnResizeDown: true,
+			updateOnPinchZoom: true,
+			pixelRounding: 10,
 			onChangeParamOverride: function(w, h, params) {
 				var newText = (w + "x" + h) + " q:" + (params.q || 75) + " dpr:" + (params.dpr || 1);
 				return {"txt": encodeURIComponent(newText)};

@@ -23,9 +23,9 @@
 
 		// define imgix.fluid options
 		var opts = {
-			updateOnResizeDown : true,
-			updateOnPinch : true,
-			pixelRounding : 10,
+			updateOnResizeDown: true,
+			updateOnPinchZoom: true,
+			pixelRounding: 10,
 			autoInsertCSSBestPractices: true,
 			onChangeParamOverride: function(w, h, params) {
 				// just before a new image is requested we tell it create a text mark on the image itself with some debug info (width, height, quality, and DPR).
