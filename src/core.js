@@ -738,7 +738,6 @@ imgix.getDefaultParamValues = function() {
 		'htn': "0",
 		'blur': "0",
 		'mono': '',
-		'blend': '',
 		'int': "100",
 
 		// ENHANCE
@@ -752,6 +751,14 @@ imgix.getDefaultParamValues = function() {
 		'gam': "0",
 		'vib': "0",
 		'sharp': "0",
+
+		// BLEND
+		'blend': '',
+		'bw': '',
+		'bh': '',
+		'bp': '',
+		'bf': '',
+		'ba': '',
 
 		// TEXT
 		'txt': '',
@@ -1271,12 +1278,12 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	// TODO: handle aliases -- only need on build?
 	if (imgix.getDefaultParams().indexOf(param) === -1) {
 		console.warn("\"" + param + "\" is an invalid imgix param");
-		return;
+		return this;
 	}
 
 	if (!doOverride && this.urlParts.paramValues[param]) {
 		// we are not overriding because they didn't want to
-		return;
+		return this;
 	}
 
 	if (param === 'txtfont' && imgix.isFontAvailable(value)) {
@@ -1288,7 +1295,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 
 	if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null ||	 value.length === 0) {
 		this.removeParam(param);
-		return;
+		return this;
 	}
 
 	if (this.urlParts.params.indexOf(param) === -1) {
@@ -1305,6 +1312,8 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	if (!noUpdate) {
 		this._handleAutoUpdate();
 	}
+
+	return this;
 };
 
 /**
@@ -1398,7 +1407,13 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 	"mono": "Monochrome",
 	"px": "Pixelate",
 
+	//blend
 	"blend": "Blend",
+	'bw': "BlendWidth",
+	'bh': "BlendHeight",
+	'bp': "BlendPadding",
+	'bf': "BlendFit",
+	'ba': "BlendAlpha",
 
 	//text
 	"txt": "Text",
@@ -1448,7 +1463,7 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 // Dynamically create our param getter and setters
 for (var param in imgix.URL.theGetSetFuncs) {
 	(function(tmp) {
-		imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { this.setParam(tmp, v, doOverride); };
+		imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { return this.setParam(tmp, v, doOverride); };
 		imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function() { return this.getParam(tmp); };
 	})(param);
 }
