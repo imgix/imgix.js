@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.10 - 2014-10-17 
+/*! http://www.imgix.com imgix.js - v1.0.10 - 2014-10-20 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -2165,7 +2165,7 @@ var fluidDefaults = {
 
 	fitImgTagToContainerWidth: true,
 	fitImgTagToContainerHeight: false,
-
+	token: null,
 	pixelStep: 10
 };
 
@@ -2223,6 +2223,10 @@ imgix.FluidSet.prototype.getImgDetails = function(elem) {
 		elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
 		elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
 		i = new imgix.URL(imgix.helpers.getImgSrc(elem));
+
+	if (this.options.token !== null) {
+		i.setToken(this.options.token);
+	}
 
 	i.setHeight('');
 	i.setWidth('');
@@ -2357,6 +2361,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `pixelStep` __number__ image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
 
+`token` __string__ the secure URL token to use to sign an image. when this is set URLs are automatically signed using this token<br>
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -2369,7 +2375,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		autoInsertCSSBestPractices: false,
 		fitImgTagToContainerWidth: true,
 		fitImgTagToContainerHeight: false,
-		pixelStep: 10
+		pixelStep: 10,
+		token: null
 	}
 
 

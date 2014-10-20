@@ -303,6 +303,8 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `pixelStep` __number__ image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
 
+`token` __string__ the secure URL token to use to sign an image. when this is set URLs are automatically signed using this token<br>
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -315,7 +317,8 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 		autoInsertCSSBestPractices: false,
 		fitImgTagToContainerWidth: true,
 		fitImgTagToContainerHeight: false,
-		pixelStep: 10
+		pixelStep: 10,
+		token: null
 	}
 
 **Params**
@@ -665,11 +668,11 @@ Apply the "px" imgix param to the image url. Same as doing .setParam('px', val)
 
 <a name="imgix.URL#setBlend"></a>
 ###URL.setBlend(val)
-Apply the "b" imgix param to the image url. Same as doing .setParam('b', val)
+Apply the "blend" imgix param to the image url. Same as doing .setParam('blend', val)
 
 **Params**
 
-- val  - the value to set for b  
+- val  - the value to set for blend  
 
 <a name="imgix.URL#setBlendWidth"></a>
 ###URL.setBlendWidth(val)
@@ -1009,7 +1012,7 @@ Get the value of the "px" imgix param currently on the image url. Same as doing 
 
 <a name="imgix.URL#getBlend"></a>
 ###URL.getBlend()
-Get the value of the "b" imgix param currently on the image url. Same as doing .getParam('b')
+Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
 
 <a name="imgix.URL#getBlendWidth"></a>
 ###URL.getBlendWidth()
