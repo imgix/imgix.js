@@ -889,6 +889,11 @@ imgix.URL = function(url, imgParams, token, isRj) {
 	this._autoUpdateSel = null;
 	this._autoUpdateCallback = null;
 	this.isRj = !imgix.isDef(isRj) ? false : isRj;
+
+	if (url && url.slice(0, 2) === '//' && window && window.location) {
+		url = window.location.protocol + url;
+	}
+
 	this.setUrl(url);
 
 	if (typeof imgParams === "object") {

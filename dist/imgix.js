@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.11 - 2014-10-20 
+/*! http://www.imgix.com imgix.js - v1.0.12 - 2014-10-20 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1385,6 +1385,11 @@ imgix.URL = function(url, imgParams, token, isRj) {
 	this._autoUpdateSel = null;
 	this._autoUpdateCallback = null;
 	this.isRj = !imgix.isDef(isRj) ? false : isRj;
+
+	if (url && url.slice(0, 2) === '//' && window && window.location) {
+		url = window.location.protocol + url;
+	}
+
 	this.setUrl(url);
 
 	if (typeof imgParams === "object") {
