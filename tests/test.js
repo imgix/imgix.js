@@ -556,4 +556,25 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('should support blend params', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+		i.setBlend('fff');
+		expect(i.getBlend()).toEqual('fff');
+		expect(i.getURL()).toContain('blend=fff');
+
+		i.setBlendWidth('50');
+		expect(i.getBlendWidth()).toEqual('50');
+		expect(i.getURL()).toContain('bw=50');
+
+		i.setBlendHeight('50');
+		expect(i.getBlendHeight()).toEqual('50');
+		expect(i.getURL()).toContain('bh=50');
+	});
+
+	it('should chain imgix.URL setX calls', function() {
+		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
+		i.setSepia(50).setWidth(50).setHeight(100);
+		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?h=100&sepia=50&w=50');
+	});
+
 });

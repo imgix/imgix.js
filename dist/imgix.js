@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.9 - 2014-10-10 
+/*! http://www.imgix.com imgix.js - v1.0.10 - 2014-10-17 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1234,7 +1234,6 @@ imgix.getDefaultParamValues = function() {
 		'htn': "0",
 		'blur': "0",
 		'mono': '',
-		'blend': '',
 		'int': "100",
 
 		// ENHANCE
@@ -1248,6 +1247,14 @@ imgix.getDefaultParamValues = function() {
 		'gam': "0",
 		'vib': "0",
 		'sharp': "0",
+
+		// BLEND
+		'blend': '',
+		'bw': '',
+		'bh': '',
+		'bp': '',
+		'bf': '',
+		'ba': '',
 
 		// TEXT
 		'txt': '',
@@ -1767,12 +1774,12 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	// TODO: handle aliases -- only need on build?
 	if (imgix.getDefaultParams().indexOf(param) === -1) {
 		console.warn("\"" + param + "\" is an invalid imgix param");
-		return;
+		return this;
 	}
 
 	if (!doOverride && this.urlParts.paramValues[param]) {
 		// we are not overriding because they didn't want to
-		return;
+		return this;
 	}
 
 	if (param === 'txtfont' && imgix.isFontAvailable(value)) {
@@ -1784,7 +1791,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 
 	if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null ||	 value.length === 0) {
 		this.removeParam(param);
-		return;
+		return this;
 	}
 
 	if (this.urlParts.params.indexOf(param) === -1) {
@@ -1801,6 +1808,8 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	if (!noUpdate) {
 		this._handleAutoUpdate();
 	}
+
+	return this;
 };
 
 /**
@@ -1894,7 +1903,13 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 	"mono": "Monochrome",
 	"px": "Pixelate",
 
+	//blend
 	"blend": "Blend",
+	'bw': "BlendWidth",
+	'bh': "BlendHeight",
+	'bp': "BlendPadding",
+	'bf': "BlendFit",
+	'ba': "BlendAlpha",
 
 	//text
 	"txt": "Text",
@@ -1944,7 +1959,7 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 // Dynamically create our param getter and setters
 for (var param in imgix.URL.theGetSetFuncs) {
 	(function(tmp) {
-		imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { this.setParam(tmp, v, doOverride); };
+		imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { return this.setParam(tmp, v, doOverride); };
 		imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function() { return this.getParam(tmp); };
 	})(param);
 }
@@ -2927,6 +2942,41 @@ if (typeof window !== 'undefined') {
 */
 
 /**
+	Apply the "bw" imgix param to the image url. Same as doing .setParam('bw', val)
+	@param val the value to set for bw
+	@name imgix.URL#setBlendWidth
+	@function
+*/
+
+/**
+	Apply the "bh" imgix param to the image url. Same as doing .setParam('bh', val)
+	@param val the value to set for bh
+	@name imgix.URL#setBlendHeight
+	@function
+*/
+
+/**
+	Apply the "bp" imgix param to the image url. Same as doing .setParam('bp', val)
+	@param val the value to set for bp
+	@name imgix.URL#setBlendPadding
+	@function
+*/
+
+/**
+	Apply the "bf" imgix param to the image url. Same as doing .setParam('bf', val)
+	@param val the value to set for bf
+	@name imgix.URL#setBlendFit
+	@function
+*/
+
+/**
+	Apply the "ba" imgix param to the image url. Same as doing .setParam('ba', val)
+	@param val the value to set for ba
+	@name imgix.URL#setBlendAlpha
+	@function
+*/
+
+/**
 	Apply the "txt" imgix param to the image url. Same as doing .setParam('txt', val)
 	@param val the value to set for txt
 	@name imgix.URL#setText
@@ -3247,6 +3297,36 @@ if (typeof window !== 'undefined') {
 /**
 	Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
 	@name imgix.URL#getBlend
+	@function
+*/
+
+/**
+	Get the value of the "bw" imgix param currently on the image url. Same as doing .getParam('bw')
+	@name imgix.URL#getBlendWidth
+	@function
+*/
+
+/**
+	Get the value of the "bh" imgix param currently on the image url. Same as doing .getParam('bh')
+	@name imgix.URL#getBlendHeight
+	@function
+*/
+
+/**
+	Get the value of the "bp" imgix param currently on the image url. Same as doing .getParam('bp')
+	@name imgix.URL#getBlendPadding
+	@function
+*/
+
+/**
+	Get the value of the "bf" imgix param currently on the image url. Same as doing .getParam('bf')
+	@name imgix.URL#getBlendFit
+	@function
+*/
+
+/**
+	Get the value of the "ba" imgix param currently on the image url. Same as doing .getParam('ba')
+	@name imgix.URL#getBlendAlpha
 	@function
 */
 
