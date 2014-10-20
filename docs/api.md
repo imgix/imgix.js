@@ -305,6 +305,8 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `token` __string__ the secure URL token to use to sign an image. when this is set URLs are automatically signed using this token<br>
 
+`ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -318,7 +320,8 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 		fitImgTagToContainerWidth: true,
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
-		token: null
+		token: null,
+		ignoreDPR: false
 	}
 
 **Params**

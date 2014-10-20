@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.10 - 2014-10-20 
+/*! http://www.imgix.com imgix.js - v1.0.11 - 2014-10-20 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -2166,6 +2166,7 @@ var fluidDefaults = {
 	fitImgTagToContainerWidth: true,
 	fitImgTagToContainerHeight: false,
 	token: null,
+	ignoreDPR: false,
 	pixelStep: 10
 };
 
@@ -2231,7 +2232,7 @@ imgix.FluidSet.prototype.getImgDetails = function(elem) {
 	i.setHeight('');
 	i.setWidth('');
 
-	if (dpr !== 1) {
+	if (dpr !== 1 && !this.options.ignoreDPR) {
 		i.setDPR(dpr);
 	}
 
@@ -2363,6 +2364,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `token` __string__ the secure URL token to use to sign an image. when this is set URLs are automatically signed using this token<br>
 
+`ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -2376,7 +2379,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		fitImgTagToContainerWidth: true,
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
-		token: null
+		token: null,
+		ignoreDPR: false
 	}
 
 

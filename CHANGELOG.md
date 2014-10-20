@@ -1,3 +1,17 @@
+# new imgix.js 1.0.11
+
+## Features
+
+`imgix.fluid` now supports an `ignoreDPR` option that when set to `true` __never__ sets the `dpr` imgix param (even on retina screens). This option defaults to `false` for backwards compatibility 
+
+## Bug Fixes
+
+N/A
+
+## Breaking Changes
+
+N/A
+
 # new imgix.js 1.0.10
 
 ## Features
@@ -30,7 +44,7 @@ For example:
 
 ## Bug Fixes
 
-`imgix.fluid` now supports a `token` option for signing images. 
+`imgix.fluid` now supports a `token` option for signing images.
 
     var opts = {
         token: "TOKEN_HERE"
@@ -39,6 +53,7 @@ For example:
     imgix.onready(function() {
         imgix.fluid(opts);
     });
+
 ## Breaking Changes
 
 N/A
