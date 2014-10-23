@@ -18,17 +18,16 @@
 
 	<!-- include imgix.js -->
 	<script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
-
 	<script>
 
 		// define imgix.fluid options
 		var opts = {
 			updateOnResizeDown: true,
 			updateOnPinchZoom: true,
-			pixelRounding: 10,
+			pixelStep: 10,
 			autoInsertCSSBestPractices: true,
 			onChangeParamOverride: function(w, h, params) {
-				// just before a new image is requested we tell it create a text mark on the image itself with some debug info (width, height, quality, and DPR).
+				// just before a new image is requested we tell it to create a text mark on the image itself with some debug info (width, height, quality, and DPR).
 
 				var newText = (w + "x" + h) + " q:" + (params.q || 75) + " dpr:" + (params.dpr || 1);
 				return {"txt": encodeURIComponent(newText)};
