@@ -1,6 +1,6 @@
 ![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=200&h=200)
 
-imgix.js 
+imgix.js
 ========
 
 [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js)
@@ -19,14 +19,14 @@ The Javascript client library for [imgix](http://www.imgix.com).
 Getting Started
 ---------------
 
-If you don't already have an imgix account then signup at [imgix.com](http://www.imgix.com).
+If you don't already have an imgix account then sign up at [imgix.com](http://www.imgix.com).
 
 Once your imgix source is created then simply add `imgix.min.js` to your page:
 
     <script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
 
 
-`imgix.js` is dependency-free so it includes its own DOM `onready` method. Although if you're using additional libraries that include similar functionality than you can continue to use those.
+`imgix.js` is dependency-free so it includes its own DOM `onready` method. Although if you're using additional libraries that include similar functionality then you can continue to use those.
 
     <script type="text/javascript">
         imgix.onready(function() {
@@ -135,7 +135,7 @@ Most usage will be centered around:
 jQuery Plugin
 -------------
 
-If you're already using jQuery then you can also include `imgix.jquery.js` to easily make changes to existing images. 
+If you're already using jQuery then you can _also_ include `imgix.jquery.js` to easily make changes to existing images.
 
     <script src="http://www.imgix.com/static/js/imgix.jquery.js" type="text/javascript"></script>
 
@@ -147,7 +147,7 @@ For example, if you wanted to add a text watermark to all your gallery images:
 Legacy Browser Support
 ----------------------
 
-`imgix.js` should support all browsers back to and including Internet Explorer 8. This requires a number of polyfills to be included in its source. If you're already providing IE8 polyfills see the [section below](#polyfills) about building `imgix.js` without them. 
+`imgix.js` should support all browsers back to and including Internet Explorer 8. This requires a number of polyfills to be included in its source. If you're already providing IE8 polyfills see the [section below](#polyfills) about building `imgix.js` without them.
 
 ####IE8 Tips
 
