@@ -62,21 +62,22 @@
 <script type="text/javascript">
 	var bgOptions = {
 			fluidClass:'imgix-fluid-bg',
-			updateOnResizeDown : true,
-			updateOnPinchZoom : true,
-			pixelStep : 10,
+			updateOnResizeDown: true,
+			updateOnPinchZoom: true,
+			pixelStep: 10,
 			autoInsertCSSBestPractices: true,
 			onChangeParamOverride: function(w, h) {
 				var dpr = Math.ceil(window.devicePixelRatio*10) /10;
-						return {"txt": "w:" + w + " h:" +h + " dpr:" + dpr,
-								"txtalign": "center,bottom",
-								"txtsize": 20,
-								"txtfont":"Helvetica%20Neue,bold",
-								"txtclr":"ffffffff",
-								"txtpad":20,
-								"txtfit":'max',
-								"exp":-5
-								}
+				return {
+					"txt": "w:" + w + " h:" +h + " dpr:" + dpr,
+					"txtalign": "center,bottom",
+					"txtsize": 20,
+					"txtfont": "Helvetica%20Neue,bold",
+					"txtclr": "ffffffff",
+					"txtpad": 20,
+					"txtfit": 'max',
+					"exp": -5
+				};
 			}
 	};
 	imgix.onready(function() {
