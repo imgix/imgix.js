@@ -1906,6 +1906,16 @@ imgix.fluid = function(elem) {
 		fluidSet;
 
 	if (imgix.helpers.isReallyObject(elem)) {
+
+		var passedKeys = Object.keys(elem),
+			goodKeys = Object.keys(getFluidDefaults());
+
+		for (var i = 0; i < passedKeys.length; i++) {
+			if (goodKeys.indexOf(passedKeys[i]) === -1) {
+				console.warn("\"" + passedKeys[i] + "\" is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.");
+			}
+		}
+
 		options = imgix.helpers.mergeObject(getFluidDefaults(), elem);
 		fluidSet = new imgix.FluidSet(options);
 		elem = null;

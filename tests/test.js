@@ -474,6 +474,30 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getQueryString()).toEqual('auto=format&fit=crop&h=360&q=80');
 	});
 
+	it('should warn when trying to set an invalid imgix.fluid config key', function() {
+		spyOn(console, 'warn');
+		imgix.fluid({obviouslyBad: true});
+		expect(console.warn).toHaveBeenCalled();
+	});
+
+	it('should warn when trying to set MULTIPLE invalid imgix.fluid config keys', function() {
+		spyOn(console, 'warn');
+		imgix.fluid({obviouslyBad: true, thisIsNotValid: false});
+		expect(console.warn).toHaveBeenCalled();
+	});
+
+	it('should NOT warn when setting NO imgix.fluid config keys', function() {
+		spyOn(console, 'warn');
+		imgix.fluid();
+		expect(console.warn).not.toHaveBeenCalled();
+	});
+
+	it('should NOT warn when setting MULTIPLE valid imgix.fluid config keys', function() {
+		spyOn(console, 'warn');
+		imgix.fluid({pixelStep: 25, token: "asdf"});
+		expect(console.warn).not.toHaveBeenCalled();
+	});
+
 	it('should warn when trying to set an imgix url instance as a param object', function() {
 		spyOn(console, 'warn');
 		var i = new imgix.URL();
