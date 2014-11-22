@@ -754,11 +754,15 @@ imgix.getDefaultParamValues = function() {
 
 		// BLEND
 		'blend': '',
+		'bm': '',
 		'bw': '',
 		'bh': '',
-		'bp': '',
-		'bf': '',
-		'ba': '',
+		'bp': 0,
+		'bf': 'clip',
+		'ba': 'middle,center',
+		'balph': 100,
+		'bc': '',
+		'bs': '',
 
 		// TEXT
 		'txt': '',
@@ -802,7 +806,8 @@ imgix.getDefaultParamValues = function() {
 		'class': '',
 		'auto': '',
 		'mask': '',
-		'bg': ''
+		'bg': '',
+		'invert': ''
 	};
 };
 
@@ -1414,11 +1419,15 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 
 	//blend
 	"blend": "Blend",
-	'bw': "BlendWidth",
-	'bh': "BlendHeight",
-	'bp': "BlendPadding",
-	'bf': "BlendFit",
-	'ba': "BlendAlpha",
+	"bw": "BlendWidth",
+	"bh": "BlendHeight",
+	"bp": "BlendPadding",
+	"bf": "BlendFit",
+	"ba": "BlendAlign",
+	"balph": "BlendAlpha",
+	"bm": "BlendMode",
+	"bc": "BlendCrop",
+	"bs": "BlendSize",
 
 	//text
 	"txt": "Text",
@@ -1454,7 +1463,8 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 	//
 	'auto': 'Auto',
 	'mask': 'Mask',
-	'bg': 'Background'
+	'bg': 'Background',
+	'invert': 'Invert'
 });
 
 
