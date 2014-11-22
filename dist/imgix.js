@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.12 - 2014-10-20 
+/*! http://www.imgix.com imgix.js - v1.0.13 - 2014-11-21 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1250,11 +1250,15 @@ imgix.getDefaultParamValues = function() {
 
 		// BLEND
 		'blend': '',
+		'bm': '',
 		'bw': '',
 		'bh': '',
-		'bp': '',
-		'bf': '',
-		'ba': '',
+		'bp': 0,
+		'bf': 'clip',
+		'ba': 'middle,center',
+		'balph': 100,
+		'bc': '',
+		'bs': '',
 
 		// TEXT
 		'txt': '',
@@ -1298,7 +1302,8 @@ imgix.getDefaultParamValues = function() {
 		'class': '',
 		'auto': '',
 		'mask': '',
-		'bg': ''
+		'bg': '',
+		'invert': ''
 	};
 };
 
@@ -1910,11 +1915,15 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 
 	//blend
 	"blend": "Blend",
-	'bw': "BlendWidth",
-	'bh': "BlendHeight",
-	'bp': "BlendPadding",
-	'bf': "BlendFit",
-	'ba': "BlendAlpha",
+	"bw": "BlendWidth",
+	"bh": "BlendHeight",
+	"bp": "BlendPadding",
+	"bf": "BlendFit",
+	"ba": "BlendAlign",
+	"balph": "BlendAlpha",
+	"bm": "BlendMode",
+	"bc": "BlendCrop",
+	"bs": "BlendSize",
 
 	//text
 	"txt": "Text",
@@ -1950,7 +1959,8 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 	//
 	'auto': 'Auto',
 	'mask': 'Mask',
-	'bg': 'Background'
+	'bg': 'Background',
+	'invert': 'Invert'
 });
 
 
@@ -2402,6 +2412,16 @@ imgix.fluid = function(elem) {
 		fluidSet;
 
 	if (imgix.helpers.isReallyObject(elem)) {
+
+		var passedKeys = Object.keys(elem),
+			goodKeys = Object.keys(getFluidDefaults());
+
+		for (var i = 0; i < passedKeys.length; i++) {
+			if (goodKeys.indexOf(passedKeys[i]) === -1) {
+				console.warn("\"" + passedKeys[i] + "\" is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.");
+			}
+		}
+
 		options = imgix.helpers.mergeObject(getFluidDefaults(), elem);
 		fluidSet = new imgix.FluidSet(options);
 		elem = null;
@@ -2988,7 +3008,35 @@ if (typeof window !== 'undefined') {
 /**
 	Apply the "ba" imgix param to the image url. Same as doing .setParam('ba', val)
 	@param val the value to set for ba
+	@name imgix.URL#setBlendAlign
+	@function
+*/
+
+/**
+	Apply the "balph" imgix param to the image url. Same as doing .setParam('balph', val)
+	@param val the value to set for balph
 	@name imgix.URL#setBlendAlpha
+	@function
+*/
+
+/**
+	Apply the "bm" imgix param to the image url. Same as doing .setParam('bm', val)
+	@param val the value to set for bm
+	@name imgix.URL#setBlendMode
+	@function
+*/
+
+/**
+	Apply the "bc" imgix param to the image url. Same as doing .setParam('bc', val)
+	@param val the value to set for bc
+	@name imgix.URL#setBlendCrop
+	@function
+*/
+
+/**
+	Apply the "bs" imgix param to the image url. Same as doing .setParam('bs', val)
+	@param val the value to set for bs
+	@name imgix.URL#setBlendSize
 	@function
 */
 
@@ -3172,6 +3220,13 @@ if (typeof window !== 'undefined') {
 	@param val the value to set for bg
 	@name imgix.URL#setBackground
 	@function
+*/
+
+/**
+	Apply the "invert" imgix param to the image url. Same as doing .setParam('invert', val)
+	@param val the value to set for invert
+	@name imgix.URL#setInvert
+	@function
 *//**
 	Get the value of the "crop" imgix param currently on the image url. Same as doing .getParam('crop')
 	@name imgix.URL#getCrop
@@ -3342,7 +3397,31 @@ if (typeof window !== 'undefined') {
 
 /**
 	Get the value of the "ba" imgix param currently on the image url. Same as doing .getParam('ba')
+	@name imgix.URL#getBlendAlign
+	@function
+*/
+
+/**
+	Get the value of the "balph" imgix param currently on the image url. Same as doing .getParam('balph')
 	@name imgix.URL#getBlendAlpha
+	@function
+*/
+
+/**
+	Get the value of the "bm" imgix param currently on the image url. Same as doing .getParam('bm')
+	@name imgix.URL#getBlendMode
+	@function
+*/
+
+/**
+	Get the value of the "bc" imgix param currently on the image url. Same as doing .getParam('bc')
+	@name imgix.URL#getBlendCrop
+	@function
+*/
+
+/**
+	Get the value of the "bs" imgix param currently on the image url. Same as doing .getParam('bs')
+	@name imgix.URL#getBlendSize
 	@function
 */
 
@@ -3499,6 +3578,12 @@ if (typeof window !== 'undefined') {
 /**
 	Get the value of the "bg" imgix param currently on the image url. Same as doing .getParam('bg')
 	@name imgix.URL#getBackground
+	@function
+*/
+
+/**
+	Get the value of the "invert" imgix param currently on the image url. Same as doing .getParam('invert')
+	@name imgix.URL#getInvert
 	@function
 */
 }).call(this);
