@@ -57,7 +57,11 @@
     * [URL.setBlendHeight(val)](#imgix.URL#setBlendHeight)
     * [URL.setBlendPadding(val)](#imgix.URL#setBlendPadding)
     * [URL.setBlendFit(val)](#imgix.URL#setBlendFit)
+    * [URL.setBlendAlign(val)](#imgix.URL#setBlendAlign)
     * [URL.setBlendAlpha(val)](#imgix.URL#setBlendAlpha)
+    * [URL.setBlendMode(val)](#imgix.URL#setBlendMode)
+    * [URL.setBlendCrop(val)](#imgix.URL#setBlendCrop)
+    * [URL.setBlendSize(val)](#imgix.URL#setBlendSize)
     * [URL.setText(val)](#imgix.URL#setText)
     * [URL.setTextFont(val)](#imgix.URL#setTextFont)
     * [URL.setTextSize(val)](#imgix.URL#setTextSize)
@@ -83,6 +87,7 @@
     * [URL.setPaletteColorNumber(val)](#imgix.URL#setPaletteColorNumber)
     * [URL.setAuto(val)](#imgix.URL#setAuto)
     * [URL.setMask(val)](#imgix.URL#setMask)
+    * [URL.setBackground(val)](#imgix.URL#setBackground)
     * [URL.getCrop(val)](#imgix.URL#getCrop)
     * [URL.getFit()](#imgix.URL#getFit)
     * [URL.getHeight()](#imgix.URL#getHeight)
@@ -111,7 +116,11 @@
     * [URL.getBlendHeight()](#imgix.URL#getBlendHeight)
     * [URL.getBlendPadding()](#imgix.URL#getBlendPadding)
     * [URL.getBlendFit()](#imgix.URL#getBlendFit)
+    * [URL.getBlendAlign()](#imgix.URL#getBlendAlign)
     * [URL.getBlendAlpha()](#imgix.URL#getBlendAlpha)
+    * [URL.getBlendMode()](#imgix.URL#getBlendMode)
+    * [URL.getBlendCrop()](#imgix.URL#getBlendCrop)
+    * [URL.getBlendSize()](#imgix.URL#getBlendSize)
     * [URL.getText()](#imgix.URL#getText)
     * [URL.getTextFont()](#imgix.URL#getTextFont)
     * [URL.getTextSize()](#imgix.URL#getTextSize)
@@ -138,6 +147,7 @@
     * [URL.getAuto()](#imgix.URL#getAuto)
     * [URL.getMask()](#imgix.URL#getMask)
     * [URL.getBackground()](#imgix.URL#getBackground)
+    * [URL.getInvert()](#imgix.URL#getInvert)
     * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
     * [URL.setToken(token)](#imgix.URL#setToken)
     * [URL.getColors(num, callback)](#imgix.URL#getColors)
@@ -371,7 +381,11 @@ The helper namespace for lower-level functions
   * [URL.setBlendHeight(val)](#imgix.URL#setBlendHeight)
   * [URL.setBlendPadding(val)](#imgix.URL#setBlendPadding)
   * [URL.setBlendFit(val)](#imgix.URL#setBlendFit)
+  * [URL.setBlendAlign(val)](#imgix.URL#setBlendAlign)
   * [URL.setBlendAlpha(val)](#imgix.URL#setBlendAlpha)
+  * [URL.setBlendMode(val)](#imgix.URL#setBlendMode)
+  * [URL.setBlendCrop(val)](#imgix.URL#setBlendCrop)
+  * [URL.setBlendSize(val)](#imgix.URL#setBlendSize)
   * [URL.setText(val)](#imgix.URL#setText)
   * [URL.setTextFont(val)](#imgix.URL#setTextFont)
   * [URL.setTextSize(val)](#imgix.URL#setTextSize)
@@ -397,6 +411,7 @@ The helper namespace for lower-level functions
   * [URL.setPaletteColorNumber(val)](#imgix.URL#setPaletteColorNumber)
   * [URL.setAuto(val)](#imgix.URL#setAuto)
   * [URL.setMask(val)](#imgix.URL#setMask)
+  * [URL.setBackground(val)](#imgix.URL#setBackground)
   * [URL.getCrop(val)](#imgix.URL#getCrop)
   * [URL.getFit()](#imgix.URL#getFit)
   * [URL.getHeight()](#imgix.URL#getHeight)
@@ -425,7 +440,11 @@ The helper namespace for lower-level functions
   * [URL.getBlendHeight()](#imgix.URL#getBlendHeight)
   * [URL.getBlendPadding()](#imgix.URL#getBlendPadding)
   * [URL.getBlendFit()](#imgix.URL#getBlendFit)
+  * [URL.getBlendAlign()](#imgix.URL#getBlendAlign)
   * [URL.getBlendAlpha()](#imgix.URL#getBlendAlpha)
+  * [URL.getBlendMode()](#imgix.URL#getBlendMode)
+  * [URL.getBlendCrop()](#imgix.URL#getBlendCrop)
+  * [URL.getBlendSize()](#imgix.URL#getBlendSize)
   * [URL.getText()](#imgix.URL#getText)
   * [URL.getTextFont()](#imgix.URL#getTextFont)
   * [URL.getTextSize()](#imgix.URL#getTextSize)
@@ -452,6 +471,7 @@ The helper namespace for lower-level functions
   * [URL.getAuto()](#imgix.URL#getAuto)
   * [URL.getMask()](#imgix.URL#getMask)
   * [URL.getBackground()](#imgix.URL#getBackground)
+  * [URL.getInvert()](#imgix.URL#getInvert)
   * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
   * [URL.setToken(token)](#imgix.URL#setToken)
   * [URL.getColors(num, callback)](#imgix.URL#getColors)
@@ -709,13 +729,45 @@ Apply the "bf" imgix param to the image url. Same as doing .setParam('bf', val)
 
 - val  - the value to set for bf  
 
-<a name="imgix.URL#setBlendAlpha"></a>
-###URL.setBlendAlpha(val)
+<a name="imgix.URL#setBlendAlign"></a>
+###URL.setBlendAlign(val)
 Apply the "ba" imgix param to the image url. Same as doing .setParam('ba', val)
 
 **Params**
 
 - val  - the value to set for ba  
+
+<a name="imgix.URL#setBlendAlpha"></a>
+###URL.setBlendAlpha(val)
+Apply the "balph" imgix param to the image url. Same as doing .setParam('balph', val)
+
+**Params**
+
+- val  - the value to set for balph  
+
+<a name="imgix.URL#setBlendMode"></a>
+###URL.setBlendMode(val)
+Apply the "bm" imgix param to the image url. Same as doing .setParam('bm', val)
+
+**Params**
+
+- val  - the value to set for bm  
+
+<a name="imgix.URL#setBlendCrop"></a>
+###URL.setBlendCrop(val)
+Apply the "bc" imgix param to the image url. Same as doing .setParam('bc', val)
+
+**Params**
+
+- val  - the value to set for bc  
+
+<a name="imgix.URL#setBlendSize"></a>
+###URL.setBlendSize(val)
+Apply the "bs" imgix param to the image url. Same as doing .setParam('bs', val)
+
+**Params**
+
+- val  - the value to set for bs  
 
 <a name="imgix.URL#setText"></a>
 ###URL.setText(val)
@@ -917,13 +969,21 @@ Apply the "mask" imgix param to the image url. Same as doing .setParam('mask', v
 
 - val  - the value to set for mask  
 
-<a name="imgix.URL#getCrop"></a>
-###URL.getCrop(val)
+<a name="imgix.URL#setBackground"></a>
+###URL.setBackground(val)
 Apply the "bg" imgix param to the image url. Same as doing .setParam('bg', val)
 
 **Params**
 
 - val  - the value to set for bg  
+
+<a name="imgix.URL#getCrop"></a>
+###URL.getCrop(val)
+Apply the "invert" imgix param to the image url. Same as doing .setParam('invert', val)
+
+**Params**
+
+- val  - the value to set for invert  
 
 <a name="imgix.URL#getFit"></a>
 ###URL.getFit()
@@ -1033,9 +1093,25 @@ Get the value of the "bp" imgix param currently on the image url. Same as doing 
 ###URL.getBlendFit()
 Get the value of the "bf" imgix param currently on the image url. Same as doing .getParam('bf')
 
+<a name="imgix.URL#getBlendAlign"></a>
+###URL.getBlendAlign()
+Get the value of the "ba" imgix param currently on the image url. Same as doing .getParam('ba')
+
 <a name="imgix.URL#getBlendAlpha"></a>
 ###URL.getBlendAlpha()
-Get the value of the "ba" imgix param currently on the image url. Same as doing .getParam('ba')
+Get the value of the "balph" imgix param currently on the image url. Same as doing .getParam('balph')
+
+<a name="imgix.URL#getBlendMode"></a>
+###URL.getBlendMode()
+Get the value of the "bm" imgix param currently on the image url. Same as doing .getParam('bm')
+
+<a name="imgix.URL#getBlendCrop"></a>
+###URL.getBlendCrop()
+Get the value of the "bc" imgix param currently on the image url. Same as doing .getParam('bc')
+
+<a name="imgix.URL#getBlendSize"></a>
+###URL.getBlendSize()
+Get the value of the "bs" imgix param currently on the image url. Same as doing .getParam('bs')
 
 <a name="imgix.URL#getText"></a>
 ###URL.getText()
@@ -1140,6 +1216,10 @@ Get the value of the "mask" imgix param currently on the image url. Same as doin
 <a name="imgix.URL#getBackground"></a>
 ###URL.getBackground()
 Get the value of the "bg" imgix param currently on the image url. Same as doing .getParam('bg')
+
+<a name="imgix.URL#getInvert"></a>
+###URL.getInvert()
+Get the value of the "invert" imgix param currently on the image url. Same as doing .getParam('invert')
 
 <a name="imgix.URL#attachImageTo"></a>
 ###URL.attachImageTo(elemOrSel, callback)
