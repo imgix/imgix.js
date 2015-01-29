@@ -2231,7 +2231,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem) {
 	if (this.options.lazyLoad) {
 		var view = {
 		  l: 0 - this.lazyLoadOffsets.l,
-		  t: 0 - this.lastLoadOffsets.t,
+		  t: 0 - this.lazyLoadOffsets.t,
 		  b: (window.innerHeight || document.documentElement.clientHeight) +  this.lazyLoadOffsets.b,
 		  r: (window.innerWidth || document.documentElement.clientWidth) +  this.lazyLoadOffsets.r
 		};
