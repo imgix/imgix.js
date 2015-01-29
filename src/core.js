@@ -1723,6 +1723,7 @@ imgix.FluidSet = function(options) {
 	this.namespace = "" + Math.random().toString(36).substring(7);
 
 	this.windowResizeEventBound = false;
+	this.windowScrollEventBound = false;
 	this.windowLastWidth = 0;
 	this.windowLastHeight = 0;
 	this.lazyLoadPoll = null;
@@ -1872,6 +1873,20 @@ imgix.FluidSet.prototype.resizeListener = function() {
 
 var instances = {};
 
+imgix.FluidSet.prototype.attachScrollListener = function() {
+	instances[this.namespace] = function() {
+		this.resizeListener();
+	}.bind(this);
+
+	if (document.addEventListener) {
+		window.addEventListener('scroll', instances[this.namespace], false);
+	} else {
+		window.attachEvent('onscroll', instances[this.namespace]);
+	}
+
+	this.windowScrollEventBound = true;
+}
+
 imgix.FluidSet.prototype.attachWindowResizer = function() {
 	instances[this.namespace] = function() {
 		this.resizeListener();
@@ -1992,12 +2007,8 @@ imgix.fluid = function(elem) {
 		fluidSet.updateSrc(fluidElements[i]);
 	}
 
-	if (options.lazyLoad) {
-		if (document.addEventListener) {
-			window.addEventListener('scroll', fluidSet.reload, false);
-		} else {
-			window.attachEvent('onscroll', fluidSet.reload);
-		}
+	if (options.lazyLoad && !fluidSet.windowScrollEventBound) {
+		fluidSet.attachScrollListener();
 	}
 
 	if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
