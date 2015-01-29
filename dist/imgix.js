@@ -2212,7 +2212,7 @@ imgix.FluidSet = function(options) {
 		t: this.options.lazyLoadOffsetVertical,
 		b: this.options.lazyLoadOffsetVertical,
 		l: this.options.lazyLoadOffsetHorizontal,
-		r: this.options.lazyLoadOffsetHorizontal,
+		r: this.options.lazyLoadOffsetHorizontal
 	};
 	//Object.freeze(options);
 
@@ -2222,7 +2222,6 @@ imgix.FluidSet = function(options) {
 	this.windowScrollEventBound = false;
 	this.windowLastWidth = 0;
 	this.windowLastHeight = 0;
-	this.lazyLoadPoll = null;
 
 	this.reload = imgix.helpers.debouncer(this.reloader, this.options.debounce);
 };
@@ -2231,10 +2230,10 @@ imgix.FluidSet.prototype.updateSrc = function(elem) {
 
 	if (this.options.lazyLoad) {
 		var view = {
-		  l: 0 - this.lazyLoadOffsets.l,
-		  t: 0 - this.lazyLoadOffsets.t,
-		  b: (window.innerHeight || document.documentElement.clientHeight) +  this.lazyLoadOffsets.b,
-		  r: (window.innerWidth || document.documentElement.clientWidth) +  this.lazyLoadOffsets.r
+			l: 0 - this.lazyLoadOffsets.l,
+			t: 0 - this.lazyLoadOffsets.t,
+			b: (window.innerHeight || document.documentElement.clientHeight) + this.lazyLoadOffsets.b,
+			r: (window.innerWidth || document.documentElement.clientWidth) + this.lazyLoadOffsets.r
 		};
 
 		if (!imgix.elementInView(elem, view)) {
@@ -2371,7 +2370,7 @@ var instances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function() {
 	instances[this.namespace] = function() {
-		this.resizeListener();
+		this.reload();
 	}.bind(this);
 
 	if (document.addEventListener) {
