@@ -1101,7 +1101,7 @@ imgix.getElementTreeXPath = function(element) {
  * Example: "American Typewriter Bold" => "American Typewriter,bold",
  * @memberof imgix
  * @static
- * @returns {object} passed color converted to hex
+ * @returns {object} pretty font name to imgix font param value
  */
 imgix.getFontLookup = function() {
 	return {
@@ -2182,12 +2182,24 @@ var fluidDefaults = {
 	fitImgTagToContainerHeight: false,
 	token: null,
 	ignoreDPR: false,
-	pixelStep: 10
+	pixelStep: 10,
+	debounce: 200,
+	lazyLoad: false,
+	lazyLoadOffsetVertical: 20,
+	lazyLoadOffsetHorizontal: 20,
 };
 
 function getFluidDefaults() {
 	return fluidDefaults;
 }
+
+imgix.elementInView = function (element, view) {
+	if (element === null) {
+		return false;
+	}
+	var box = element.getBoundingClientRect();
+	return (box.right >= view.l && box.bottom >= view.t && box.left <= view.r && box.top <= view.b);
+ };
 
 imgix.FluidSet = function(options) {
 	if (imgix.helpers.isReallyObject(options)) {
@@ -2196,19 +2208,40 @@ imgix.FluidSet = function(options) {
 		this.options = imgix.helpers.mergeObject(getFluidDefaults(), {});
 	}
 
+	this.lazyLoadOffsets = {
+		t: this.options.lazyLoadOffsetVertical,
+		b: this.options.lazyLoadOffsetVertical,
+		l: this.options.lazyLoadOffsetHorizontal,
+		r: this.options.lazyLoadOffsetHorizontal,
+	};
 	//Object.freeze(options);
 
 	this.namespace = "" + Math.random().toString(36).substring(7);
 
 	this.windowResizeEventBound = false;
-	this.windowResizeTimeout = 200;
 	this.windowLastWidth = 0;
 	this.windowLastHeight = 0;
+	this.lazyLoadPoll = null;
 
-	this.reload = imgix.helpers.debouncer(this.reloader, this.windowResizeTimeout);
+	this.reload = imgix.helpers.debouncer(this.reloader, this.options.debounce);
 };
 
 imgix.FluidSet.prototype.updateSrc = function(elem) {
+
+	if (this.options.lazyLoad) {
+		var view = {
+		  l: 0 - this.lazyLoadOffsets.l,
+		  t: 0 - this.lastLoadOffsets.t,
+		  b: (window.innerHeight || document.documentElement.clientHeight) +  this.lazyLoadOffsets.b,
+		  r: (window.innerWidth || document.documentElement.clientWidth) +  this.lazyLoadOffsets.r
+		};
+
+		if (!imgix.elementInView(elem, view)) {
+			console.log("LAZY LOADING ON. NOT IN VIEW");
+			return;
+		}
+	}
+
 	var details = this.getImgDetails(elem),
 		newUrl = details.url,
 		currentElemWidth = details.width,
@@ -2453,6 +2486,14 @@ imgix.fluid = function(elem) {
 		}
 
 		fluidSet.updateSrc(fluidElements[i]);
+	}
+
+	if (options.lazyLoad) {
+		if (document.addEventListener) {
+			window.addEventListener('scroll', fluidSet.reload, false);
+		} else {
+			window.attachEvent('onscroll', fluidSet.reload);
+		}
 	}
 
 	if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
