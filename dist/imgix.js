@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.13 - 2014-11-21 
+/*! http://www.imgix.com imgix.js - v1.0.13 - 2015-01-29 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -2458,6 +2458,8 @@ imgix.fluid = function(elem) {
 	if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
 		fluidSet.attachWindowResizer();
 	}
+
+	return fluidSet;
 };
 
 

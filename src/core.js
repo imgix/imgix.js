@@ -1962,6 +1962,8 @@ imgix.fluid = function(elem) {
 	if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
 		fluidSet.attachWindowResizer();
 	}
+
+	return fluidSet;
 };
 
 
