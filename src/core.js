@@ -1875,7 +1875,7 @@ var instances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function() {
 	instances[this.namespace] = function() {
-		this.resizeListener();
+		this.reload();
 	}.bind(this);
 
 	if (document.addEventListener) {
