@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.13 - 2015-01-29 
+/*! http://www.imgix.com imgix.js - v1.0.14 - 2015-01-29 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -2186,7 +2186,7 @@ var fluidDefaults = {
 	debounce: 200,
 	lazyLoad: false,
 	lazyLoadOffsetVertical: 20,
-	lazyLoadOffsetHorizontal: 20,
+	lazyLoadOffsetHorizontal: 20
 };
 
 function getFluidDefaults() {
@@ -2209,12 +2209,11 @@ imgix.FluidSet = function(options) {
 	}
 
 	this.lazyLoadOffsets = {
-		t: this.options.lazyLoadOffsetVertical,
-		b: this.options.lazyLoadOffsetVertical,
-		l: this.options.lazyLoadOffsetHorizontal,
-		r: this.options.lazyLoadOffsetHorizontal
+		t: Math.max(this.options.lazyLoadOffsetVertical, 0),
+		b: Math.max(this.options.lazyLoadOffsetVertical, 0),
+		l: Math.max(this.options.lazyLoadOffsetHorizontal, 0),
+		r: Math.max(this.options.lazyLoadOffsetHorizontal, 0)
 	};
-	//Object.freeze(options);
 
 	this.namespace = "" + Math.random().toString(36).substring(7);
 
@@ -2428,6 +2427,13 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
+`lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
+
+`lazyLoadOffsetVertical` __number__ when `lazyLoad` is true this allows you to set how far above and below the viewport (in pixels) you want before imgix.js starts to load the images.<br>
+
+`lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
+
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -2442,7 +2448,10 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
 		token: null,
-		ignoreDPR: false
+		ignoreDPR: false,
+		lazyLoad: false,
+		lazyLoadOffsetVertical: 20,
+		lazyLoadOffsetHorizontal: 20
 	}
 
 

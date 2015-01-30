@@ -279,7 +279,7 @@ Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
 Returns a font lookup. Pretty Name => name to use with imgix
 Example: "American Typewriter Bold" => "American Typewriter,bold",
 
-**Returns**: `object` - passed color converted to hex  
+**Returns**: `object` - pretty font name to imgix font param value  
 <a name="imgix.getFonts"></a>
 ##imgix.getFonts()
 Get a list of all the fonts supported by imgix
@@ -317,6 +317,13 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
+`lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
+
+`lazyLoadOffsetVertical` __number__ when `lazyLoad` is true this allows you to set how far above and below the viewport (in pixels) you want before imgix.js starts to load the images.<br>
+
+`lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
+
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -331,7 +338,10 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
 		token: null,
-		ignoreDPR: false
+		ignoreDPR: false,
+		lazyLoad: false,
+		lazyLoadOffsetVertical: 20,
+		lazyLoadOffsetHorizontal: 20
 	}
 
 **Params**
