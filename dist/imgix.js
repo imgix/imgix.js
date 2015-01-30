@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.13 - 2014-11-21 
+/*! http://www.imgix.com imgix.js - v1.0.14 - 2015-01-29 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1101,7 +1101,7 @@ imgix.getElementTreeXPath = function(element) {
  * Example: "American Typewriter Bold" => "American Typewriter,bold",
  * @memberof imgix
  * @static
- * @returns {object} passed color converted to hex
+ * @returns {object} pretty font name to imgix font param value
  */
 imgix.getFontLookup = function() {
 	return {
@@ -2182,12 +2182,24 @@ var fluidDefaults = {
 	fitImgTagToContainerHeight: false,
 	token: null,
 	ignoreDPR: false,
-	pixelStep: 10
+	pixelStep: 10,
+	debounce: 200,
+	lazyLoad: false,
+	lazyLoadOffsetVertical: 20,
+	lazyLoadOffsetHorizontal: 20
 };
 
 function getFluidDefaults() {
 	return fluidDefaults;
 }
+
+imgix.elementInView = function (element, view) {
+	if (element === null) {
+		return false;
+	}
+	var box = element.getBoundingClientRect();
+	return (box.right >= view.l && box.bottom >= view.t && box.left <= view.r && box.top <= view.b);
+ };
 
 imgix.FluidSet = function(options) {
 	if (imgix.helpers.isReallyObject(options)) {
@@ -2196,19 +2208,38 @@ imgix.FluidSet = function(options) {
 		this.options = imgix.helpers.mergeObject(getFluidDefaults(), {});
 	}
 
-	//Object.freeze(options);
+	this.lazyLoadOffsets = {
+		t: Math.max(this.options.lazyLoadOffsetVertical, 0),
+		b: Math.max(this.options.lazyLoadOffsetVertical, 0),
+		l: Math.max(this.options.lazyLoadOffsetHorizontal, 0),
+		r: Math.max(this.options.lazyLoadOffsetHorizontal, 0)
+	};
 
 	this.namespace = "" + Math.random().toString(36).substring(7);
 
 	this.windowResizeEventBound = false;
-	this.windowResizeTimeout = 200;
+	this.windowScrollEventBound = false;
 	this.windowLastWidth = 0;
 	this.windowLastHeight = 0;
 
-	this.reload = imgix.helpers.debouncer(this.reloader, this.windowResizeTimeout);
+	this.reload = imgix.helpers.debouncer(this.reloader, this.options.debounce);
 };
 
 imgix.FluidSet.prototype.updateSrc = function(elem) {
+
+	if (this.options.lazyLoad) {
+		var view = {
+			l: 0 - this.lazyLoadOffsets.l,
+			t: 0 - this.lazyLoadOffsets.t,
+			b: (window.innerHeight || document.documentElement.clientHeight) + this.lazyLoadOffsets.b,
+			r: (window.innerWidth || document.documentElement.clientWidth) + this.lazyLoadOffsets.r
+		};
+
+		if (!imgix.elementInView(elem, view)) {
+			return;
+		}
+	}
+
 	var details = this.getImgDetails(elem),
 		newUrl = details.url,
 		currentElemWidth = details.width,
@@ -2333,17 +2364,32 @@ imgix.FluidSet.prototype.resizeListener = function() {
 	}
 };
 
-var instances = {};
+var scrollInstances = {},
+	resizeInstances = {};
+
+imgix.FluidSet.prototype.attachScrollListener = function() {
+	scrollInstances[this.namespace] = function() {
+		this.reload();
+	}.bind(this);
+
+	if (document.addEventListener) {
+		window.addEventListener('scroll', scrollInstances[this.namespace], false);
+	} else {
+		window.attachEvent('onscroll', scrollInstances[this.namespace]);
+	}
+
+	this.windowScrollEventBound = true;
+};
 
 imgix.FluidSet.prototype.attachWindowResizer = function() {
-	instances[this.namespace] = function() {
+	resizeInstances[this.namespace] = function() {
 		this.resizeListener();
 	}.bind(this);
 
 	if (window.addEventListener) {
-		window.addEventListener("resize", instances[this.namespace], false);
+		window.addEventListener("resize", resizeInstances[this.namespace], false);
 	} else if (window.attachEvent) {
-		window.attachEvent("onresize", instances[this.namespace]);
+		window.attachEvent("onresize", resizeInstances[this.namespace]);
 	}
 
 	this.windowResizeEventBound = true;
@@ -2381,6 +2427,15 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
+`debounce` __number__ postpones resize/lazy load execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
+
+`lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
+
+`lazyLoadOffsetVertical` __number__ when `lazyLoad` is true this allows you to set how far above and below the viewport (in pixels) you want before imgix.js starts to load the images.<br>
+
+`lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
+
+
  <b>Default values</b> (passed config will extend these values)
 
 	{
@@ -2395,7 +2450,11 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
 		token: null,
-		ignoreDPR: false
+		debounce: 200,
+		ignoreDPR: false,
+		lazyLoad: false,
+		lazyLoadOffsetVertical: 20,
+		lazyLoadOffsetHorizontal: 20
 	}
 
 
@@ -2455,9 +2514,15 @@ imgix.fluid = function(elem) {
 		fluidSet.updateSrc(fluidElements[i]);
 	}
 
+	if (options.lazyLoad && !fluidSet.windowScrollEventBound) {
+		fluidSet.attachScrollListener();
+	}
+
 	if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
 		fluidSet.attachWindowResizer();
 	}
+
+	return fluidSet;
 };
 
 
