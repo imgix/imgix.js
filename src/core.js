@@ -1740,7 +1740,6 @@ imgix.FluidSet.prototype.updateSrc = function(elem) {
 		};
 
 		if (!imgix.elementInView(elem, view)) {
-			console.log("LAZY LOADING ON. NOT IN VIEW");
 			return;
 		}
 	}
