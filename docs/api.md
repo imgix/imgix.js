@@ -317,6 +317,8 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
+`debounce` __number__ postpones resize/lazy load execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
+
 `lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
 
 `lazyLoadOffsetVertical` __number__ when `lazyLoad` is true this allows you to set how far above and below the viewport (in pixels) you want before imgix.js starts to load the images.<br>
@@ -338,6 +340,7 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
 		token: null,
+		debounce: 200,
 		ignoreDPR: false,
 		lazyLoad: false,
 		lazyLoadOffsetVertical: 20,
