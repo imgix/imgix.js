@@ -1868,31 +1868,32 @@ imgix.FluidSet.prototype.resizeListener = function() {
 	}
 };
 
-var instances = {};
+var scrollInstances = {},
+	resizeInstances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function() {
-	instances[this.namespace] = function() {
+	scrollInstances[this.namespace] = function() {
 		this.reload();
 	}.bind(this);
 
 	if (document.addEventListener) {
-		window.addEventListener('scroll', instances[this.namespace], false);
+		window.addEventListener('scroll', scrollInstances[this.namespace], false);
 	} else {
-		window.attachEvent('onscroll', instances[this.namespace]);
+		window.attachEvent('onscroll', scrollInstances[this.namespace]);
 	}
 
 	this.windowScrollEventBound = true;
-}
+};
 
 imgix.FluidSet.prototype.attachWindowResizer = function() {
-	instances[this.namespace] = function() {
+	resizeInstances[this.namespace] = function() {
 		this.resizeListener();
 	}.bind(this);
 
 	if (window.addEventListener) {
-		window.addEventListener("resize", instances[this.namespace], false);
+		window.addEventListener("resize", resizeInstances[this.namespace], false);
 	} else if (window.attachEvent) {
-		window.attachEvent("onresize", instances[this.namespace]);
+		window.attachEvent("onresize", resizeInstances[this.namespace]);
 	}
 
 	this.windowResizeEventBound = true;
@@ -1930,6 +1931,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
+`debounce` __number__ postpones resize/lazy load execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
+
 `lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
 
 `lazyLoadOffsetVertical` __number__ when `lazyLoad` is true this allows you to set how far above and below the viewport (in pixels) you want before imgix.js starts to load the images.<br>
@@ -1951,6 +1954,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		fitImgTagToContainerHeight: false,
 		pixelStep: 10,
 		token: null,
+		debounce: 200,
 		ignoreDPR: false,
 		lazyLoad: false,
 		lazyLoadOffsetVertical: 20,
