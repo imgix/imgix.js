@@ -134,7 +134,7 @@ imgix.helpers = {
 	},
 
 	pixelRound: function (pixelSize, pixelStep) {
-		return Math.ceil(parseFloat(pixelSize) / pixelStep) * pixelStep;
+		return Math.ceil(pixelSize / pixelStep) * pixelStep;
 	},
 
 	isMobileDevice: function () {
