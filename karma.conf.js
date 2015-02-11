@@ -12,6 +12,5 @@ module.exports = function(config) {
 			'dist/imgix.js',
 			'tests/test.js'
 		]
-
 	});
 };
