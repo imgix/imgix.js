@@ -1,3 +1,13 @@
+# new imgix.js 1.0.16
+
+## Features
+
+N/A
+
+## Bug Fixes
+
+Ensure version was properly reflected in source code for git tag.
+
 # new imgix.js 1.0.15
 
 ## Features
