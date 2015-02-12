@@ -325,6 +325,9 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
+`maxWidth` __number__ Never set the width parameter higher than this value.<br>
+
+`maxHeight` __number__ Never set the height parameter higher than this value.<br>
 
  <b>Default values</b> (passed config will extend these values)
 
@@ -344,7 +347,9 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 		ignoreDPR: false,
 		lazyLoad: false,
 		lazyLoadOffsetVertical: 20,
-		lazyLoadOffsetHorizontal: 20
+		lazyLoadOffsetHorizontal: 20,
+		maxWidth: 5000,
+		maxHeight: 5000
 	}
 
 **Params**

@@ -1,7 +1,27 @@
 'use strict';
 
-function onlyUnique(value, index, self) { 
+function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
+}
+
+function extractWidth(url) {
+	var matches = url.match('w=([0-9]+)');
+
+	if (matches && matches.length === 2) {
+		return parseInt(matches[1], 10);
+	}
+
+	return 0;
+}
+
+function extractHeight(url) {
+	var matches = url.match('h=([0-9]+)');
+
+	if (matches && matches.length === 2) {
+		return +matches[1];
+	}
+
+	return 0;
 }
 
 describe('imgix-javascript unit tests', function() {
@@ -326,10 +346,10 @@ describe('imgix-javascript unit tests', function() {
 	});
 
 	it('correctly sets the image after the load', function() {
-		var el, newUrl, loadedFlag = false;
+		var img, el, newUrl, loadedFlag = false;
 		runs(function() {
-			var img = document.createElement('img'),
-				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
 			img.id = tmpId;
 			img.src = '';
 			img.src = 'http://static-a.imgix.net/macaw.png';
@@ -351,14 +371,15 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			document.body.removeChild(img);
 		});
 	});
 
 	it('should attachImageTo with element', function() {
-		var el, newUrl, loadedFlag = false;
+		var img, el, newUrl, loadedFlag = false;
 		runs(function() {
-			var img = document.createElement('img'),
-				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
 			img.id = tmpId;
 			img.src = '';
 			img.src = 'http://static-a.imgix.net/macaw.png';
@@ -382,14 +403,15 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			document.body.removeChild(img);
 		});
 	});
 
 	it('should attachImageTo with element selector', function() {
-		var el, newUrl, loadedFlag = false;
+		var img, el, newUrl, loadedFlag = false;
 		runs(function() {
-			var img = document.createElement('img'),
-				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
 			img.id = tmpId;
 			img.src = '';
 			img.src = 'http://static-a.imgix.net/macaw.png';
@@ -413,14 +435,15 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			document.body.removeChild(img);
 		});
 	});
 
 	it('should attachImageTo with element selector multiple', function() {
-		var el, el2, newUrl, loadedCount = 0;
+		var img, img2, el, el2, newUrl, loadedCount = 0;
 		runs(function() {
-			var img = document.createElement('img'),
-				tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
 
 			img.id = tmpId;
 			img.className = 'tester';
@@ -430,8 +453,8 @@ describe('imgix-javascript unit tests', function() {
 			el = document.querySelector('#' + tmpId);
 			expect(el).toBeDefined();
 
-			var img2 = document.createElement('img'),
-				tmpId2 = 'test' + parseInt((Math.random() * 100000), 10);
+			img2 = document.createElement('img');
+			var tmpId2 = 'test' + parseInt((Math.random() * 100000), 10);
 
 			img2.id = tmpId2;
 			img2.className = 'tester';
@@ -459,6 +482,9 @@ describe('imgix-javascript unit tests', function() {
 			// ensure it actually loaded on both images...
 			expect(imgix.getElementImage(el)).toEqual(newUrl);
 			expect(imgix.getElementImage(el2)).toEqual(newUrl);
+
+			document.body.removeChild(img);
+			document.body.removeChild(img2);
 		});
 	});
 
@@ -599,6 +625,89 @@ describe('imgix-javascript unit tests', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
 		i.setSepia(50).setWidth(50).setHeight(100);
 		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?h=100&sepia=50&w=50');
+	});
+
+	it('defaults to a zoom level of 1', function() {
+		expect(imgix.helpers.getZoom()).toEqual(1);
+	});
+
+	it('imgix.fluid img test', function() {
+
+		var pixelStep = 10;
+		var el, fl, elemSize;
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+
+			document.body.appendChild(el);
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
+
+			var opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				pixelStep: 10
+			};
+
+			fl = imgix.fluid(opts);
+		});
+
+		waitsFor(function() {
+			return el.src !== '';
+		}, "Waiting for imgix.fluid", 5000);
+
+		runs(function() {
+			var	expectedH = imgix.helpers.pixelRound(elemSize.height, pixelStep),
+				expectedW = imgix.helpers.pixelRound(elemSize.width, pixelStep)
+
+			var setUrl = el.src,
+				setW = extractWidth(setUrl),
+				setH = extractHeight(setUrl);
+
+			expect(setW).toEqual(expectedW);
+			expect(setH).toEqual(expectedH);
+			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid img test max test', function() {
+
+		var pixelStep = 10,
+			maxHeight = 200,
+			maxWidth = 300;
+		var el, fl, elemSize;
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+
+			document.body.appendChild(el);
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
+
+			var opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				maxHeight: maxHeight,
+				maxWidth: maxWidth
+			};
+
+			fl = imgix.fluid(opts);
+		});
+
+		waitsFor(function() {
+			return el.src !== '';
+		}, "Waiting for imgix.fluid", 5000);
+
+		runs(function() {
+			var setUrl = el.src,
+				setW = extractWidth(setUrl),
+				setH = extractHeight(setUrl);
+
+			expect(setW).toEqual(maxWidth);
+			expect(setH).toEqual(maxHeight);
+
+			document.body.removeChild(el);
+		});
 	});
 
 });

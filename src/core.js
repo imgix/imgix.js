@@ -146,8 +146,17 @@ imgix.helpers = {
 	},
 
 	getZoom: function () {
-		var zoomMult = Math.round((screen.width / window.innerWidth) * 10) / 10;
-		return zoomMult <= 1 ? 1 : zoomMult;
+		// http://stackoverflow.com/a/16091319/24998
+		if (!document.createElementNS) {
+			return 1;
+		}
+		var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+		svg.setAttribute('version', '1.1');
+		document.body.appendChild(svg);
+		var z = svg.currentScale || 1;
+		document.body.removeChild(svg);
+		return z;
 	},
 
 	getDPR: function () {
@@ -163,11 +172,11 @@ imgix.helpers = {
 	},
 
 	getWindowWidth: function () {
-		return document.documentElement.clientWidth || document.body && document.body.clientWidth || 1024;
+		return Math.max(document.documentElement.clientWidth, window.innerWidth || 0) || 1024;
 	},
 
 	getWindowHeight: function () {
-		return document.documentElement.clientHeight || document.body && document.body.clientHeight || 768;
+		return Math.max(document.documentElement.clientHeight, window.innerHeight || 0) || 768;
 	},
 
 	getImgSrc: function (elem) {
@@ -180,7 +189,7 @@ imgix.helpers = {
 			height: elem.offsetHeight
 		};
 
-		if (elem.parentNode === null) {
+		if (elem.parentNode === null || elem === document.body) {
 			val.width = this.getWindowWidth();
 			val.height = this.getWindowHeight();
 			return val;
@@ -192,7 +201,6 @@ imgix.helpers = {
 				return this.calculateElementSize(elem.parentNode);
 			}
 			return val;
-
 		} else {
 			var found,
 				prop,
@@ -1690,7 +1698,9 @@ var fluidDefaults = {
 	debounce: 200,
 	lazyLoad: false,
 	lazyLoadOffsetVertical: 20,
-	lazyLoadOffsetHorizontal: 20
+	lazyLoadOffsetHorizontal: 20,
+	maxHeight: 5000,
+	maxWidth: 5000
 };
 
 function getFluidDefaults() {
@@ -1770,7 +1780,6 @@ imgix.FluidSet.prototype.getImgDetails = function(elem) {
 		pixelStep = this.options.pixelStep,
 		zoomMultiplier = imgix.helpers.isMobileDevice() ? imgix.helpers.getZoom() : 1,
 		elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
-		//elemSize = imgix.helpers.calculateElementSize(elem),
 		elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
 		elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
 		i = new imgix.URL(imgix.helpers.getImgSrc(elem));
@@ -1781,6 +1790,9 @@ imgix.FluidSet.prototype.getImgDetails = function(elem) {
 
 	i.setHeight('');
 	i.setWidth('');
+
+	elemWidth = Math.min(elemWidth, this.options.maxWidth);
+	elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
 	if (dpr !== 1 && !this.options.ignoreDPR) {
 		i.setDPR(dpr);
@@ -1795,7 +1807,6 @@ imgix.FluidSet.prototype.getImgDetails = function(elem) {
 	}
 
 	if (i.getFit() === 'crop') {
-		//console.log("is auto", isAuto, " ||| ", elem);
 		if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerHeight))) {
 			i.setHeight(elemHeight);
 		}
@@ -1939,6 +1950,9 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
+`maxWidth` __number__ Never set the width parameter higher than this value.<br>
+
+`maxHeight` __number__ Never set the height parameter higher than this value.<br>
 
  <b>Default values</b> (passed config will extend these values)
 
@@ -1958,7 +1972,9 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		ignoreDPR: false,
 		lazyLoad: false,
 		lazyLoadOffsetVertical: 20,
-		lazyLoadOffsetHorizontal: 20
+		lazyLoadOffsetHorizontal: 20,
+		maxWidth: 5000,
+		maxHeight: 5000
 	}
 
 
