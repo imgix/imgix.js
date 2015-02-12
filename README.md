@@ -23,7 +23,7 @@ If you don't already have an imgix account then sign up at [imgix.com](http://ww
 
 Once your imgix source is created then simply add `imgix.min.js` to your page:
 
-    <script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+    <script src="http://www.imgix.com/libraries/imgix.js" type="text/javascript"></script>
 
 
 `imgix.js` is dependency-free so it includes its own DOM `onready` method. Although if you're using additional libraries that include similar functionality then you can continue to use those.
@@ -63,7 +63,7 @@ This is the smallest full example of using imgix to provide a fluid image.
 		</style>
 
 		<!-- include imgix.js -->
-		<script src="http://www.imgix.com/static/js/imgix.min.js" type="text/javascript"></script>
+		<script src="http://www.imgix.com/libraries/imgix.js" type="text/javascript"></script>
 		<script>
 			imgix.onready(function() {
 				imgix.fluid({
