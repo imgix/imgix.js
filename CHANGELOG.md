@@ -1,3 +1,45 @@
+# new imgix.js 1.0.15
+
+## Features
+
+`imgix.fluid` now supports `maxHeight` and `maxWidth` options to ensure no requests over this size are requested automatically via imgix.js. This both default to 5000.
+
+## Bug Fixes
+
+N/A
+
+
+# new imgix.js 1.0.14
+
+## Features
+
+`imgix.fluid` now supports lazy loading of images with when the `lazyLoad` option is set to `true`. This option defaults to `false` for backwards compatibility.
+
+## Bug Fixes
+
+N/A
+
+# new imgix.js 1.0.13
+
+## Features
+
+Add support for the imgix blend API.
+
+## Bug Fixes
+
+N/A
+
+
+# new imgix.js 1.0.12
+
+## Features
+
+Respect protocol of request.
+
+## Bug Fixes
+
+N/A
+
 # new imgix.js 1.0.11
 
 ## Features
