@@ -1,3 +1,14 @@
+# new imgix.js 1.0.17
+
+## Features
+
+Improved pinch zoom by taking `scale` value directly from gesture event.
+
+## Bug Fixes
+
+Fixed pinch zoom on iOS devices.
+
+
 # new imgix.js 1.0.16
 
 ## Features
