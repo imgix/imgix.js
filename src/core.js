@@ -1739,7 +1739,7 @@ imgix.FluidSet = function(options) {
 	this.reload = imgix.helpers.debouncer(this.reloader, this.options.debounce);
 };
 
-imgix.FluidSet.prototype.updateSrc = function(elem) {
+imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 
 	if (this.options.lazyLoad) {
 		var view = {
@@ -1754,7 +1754,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem) {
 		}
 	}
 
-	var details = this.getImgDetails(elem),
+	var details = this.getImgDetails(elem, pinchScale || 1),
 		newUrl = details.url,
 		currentElemWidth = details.width,
 		currentElemHeight = details.height;
@@ -1771,14 +1771,13 @@ imgix.FluidSet.prototype.updateSrc = function(elem) {
 	elem.lastHeight = currentElemHeight;
 };
 
-imgix.FluidSet.prototype.getImgDetails = function(elem) {
+imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
 	if (!elem) {
 		return;
 	}
 
 	var dpr = imgix.helpers.getDPR(elem),
 		pixelStep = this.options.pixelStep,
-		zoomMultiplier = imgix.helpers.isMobileDevice() ? imgix.helpers.getZoom() : 1,
 		elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
 		elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
 		elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
@@ -1860,8 +1859,8 @@ imgix.FluidSet.prototype.reloader = function() {
 imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
 	var self = this;
 	if (elem.addEventListener && !elem.listenerAttached) {
-		elem.addEventListener("gestureend", function() {
-			self.updateSrc(this);
+		elem.addEventListener("gestureend", function(e) {
+			self.updateSrc(this, e.scale);
 		}, false);
 
 		elem.addEventListener("gesturechange", function() {
