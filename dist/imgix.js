@@ -2630,7 +2630,7 @@ if (typeof window !== 'undefined') {
 
 /*jslint bitwise: true */
 /*global unescape, define */
-(function ($) {
+(function (ctx) {
 	'use strict';
 
 	/*
@@ -2874,13 +2874,7 @@ if (typeof window !== 'undefined') {
 		return raw_hmac_md5(key, string);
 	}
 
-	if (typeof define === 'function' && define.amd) {
-		define(function () {
-			return md5;
-		});
-	} else {
-		$.md5 = md5;
-	}
+	ctx.md5 = md5;
 }(imgix));
 
 
