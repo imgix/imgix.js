@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.17 - 2015-02-12 
+/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-03 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -3666,4 +3666,10 @@ if (typeof window !== 'undefined') {
 	@name imgix.URL#getInvert
 	@function
 */
+	if (typeof define === 'function' && define.amd) {
+		define('imgix', [], function() {
+			return imgix;
+		});
+	}
+
 }).call(this);
