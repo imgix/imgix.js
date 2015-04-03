@@ -1,3 +1,14 @@
+# new imgix.js 1.0.18
+
+## Features
+
+AMD Support
+
+## Bug Fixes
+
+N/A
+
+
 # new imgix.js 1.0.17
 
 ## Features
