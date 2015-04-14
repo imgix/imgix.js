@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-03 
+/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-14 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -810,7 +810,7 @@ imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
 	img.onload = function() {
 		imgix.setElementImage(el, imgUrl);
 		if (typeof callback === "function") {
-			callback();
+			callback(el, imgUrl);
 		}
 	};
 };
@@ -925,6 +925,26 @@ imgix.getColorBrightness = function(c) {
 		b = +parts[2];
 
 	return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
+};
+
+/**
+ * Apply alpha to a RGB color string
+ * @memberof imgix
+ * @static
+ * @param {string} color a color in rgb(r, g, b) format
+ * @param {number} alpha amount 1=opaque 0=transparent
+ * @returns {string} color in rgba format rgb(255, 0, 255, 0.5)
+ */
+imgix.applyAlphaToRGB = function(rgb, alpha) {
+	var parts = rgb.split(",");
+
+	parts = parts.map(function(a) {
+		return parseInt(a.replace(/\D/g, ''), 10);
+	});
+
+	parts.push(alpha);
+
+	return 'rgba(' + parts.join(", ") + ')';
 };
 
 /**
@@ -1384,6 +1404,32 @@ imgix.instanceOfImgixURL = function(x) {
 	return x && x.toString() === "[object imgixURL]";
 };
 
+imgix.setGradientOnElement = function(el, colors, baseColor) {
+	if (typeof baseColor === "undefined") {
+		console.warn("baseColor not defined for", el);
+		return;
+	}
+
+	var baseColors = [];
+	var base = imgix.hexToRGB(baseColor); // force rgb if in hex
+
+	baseColors.push(imgix.applyAlphaToRGB(base, 0.5));
+	baseColors.push(imgix.applyAlphaToRGB(base, 0));
+
+	var backgroundGradients = [
+			'-ms-linear-gradient(top, '+baseColors[0]+' 0%, '+baseColors[1]+' 100%),-ms-linear-gradient(bottom left, '+colors[2]+' 0%,'+colors[4]+' 25%, '+colors[6]+' 50%, '+colors[8]+' 75%,'+colors[10]+' 100%)',
+'-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, '+baseColors[1]+'), color-stop(100%, '+baseColors[0]+')),-webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, '+colors[2]+'), color-stop(25%, '+colors[4]+'), color-stop(50%, '+colors[6]+'), color-stop(75%, '+colors[7]+'), color-stop(100%, '+colors[10]+'))',
+			'-webkit-linear-gradient(top, '+baseColors[0]+', '+baseColors[1]+' 100%),-webkit-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
+			'-moz-linear-gradient(top, '+baseColors[0]+', '+baseColors[1]+' ),-moz-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
+			'-o-linear-gradient(top, '+baseColors[0]+','+baseColors[1]+'),-o-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
+			'linear-gradient(top, '+baseColors[0]+','+baseColors[1]+'),linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')'
+		];
+
+	for (var x = 0; x < backgroundGradients.length; x++) {
+		el.style.backgroundImage = backgroundGradients[x];
+	}
+}
+
 /**
  * Represents an imgix url
  * @memberof imgix
@@ -1410,6 +1456,38 @@ imgix.URL = function(url, imgParams, token, isRj) {
 	}
 
 	this.paramAliases = {};
+};
+
+/**
+ * Attach a gradient of colors from the imgix image URL to the passed html element (or selector for that element)
+ * @memberof imgix
+ * @param {string} elemOrSel html elment or css selector for the element
+ * @param {string} base color in rgb or hex
+ */
+imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) {
+	this.getColors(16, function(colors) {
+		if (colors && colors.length < 9) {
+			console.warn("not enough colors to create a gradient");
+			if (callback && typeof callback === "function") {
+				callback(false);
+			}
+			return;
+		}
+		if (typeof elemOrSel === "string") {
+			var results = document.querySelectorAll(elemOrSel);
+			if (results && results.length > 0) {
+				for (var i = 0; i < results.length; i++) {
+					imgix.setGradientOnElement(results[i], colors, baseColor);
+				}
+			}
+		} else {
+			imgix.setGradientOnElement(elemOrSel, colors, baseColor);
+		}
+
+		if (callback && typeof callback === "function") {
+			callback(true);
+		}
+	});
 };
 
 /**
@@ -2193,10 +2271,12 @@ var fluidDefaults = {
 	pixelStep: 10,
 	debounce: 200,
 	lazyLoad: false,
+	lazyLoadColor: null,
 	lazyLoadOffsetVertical: 20,
 	lazyLoadOffsetHorizontal: 20,
 	maxHeight: 5000,
-	maxWidth: 5000
+	maxWidth: 5000,
+	onLoad: null
 };
 
 function getFluidDefaults() {
@@ -2246,6 +2326,36 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 		};
 
 		if (!imgix.elementInView(elem, view)) {
+			if (!elem.fluidLazyColored && this.options.lazyLoadColor) {
+				elem.fluidLazyColored = 1;
+				var self = this,
+					llcType = typeof this.options.lazyLoadColor,
+					i = new imgix.URL(imgix.helpers.getImgSrc(elem));
+
+				i.getColors(16, function(colors) {
+					if (!colors) {
+						console.warn("No colors found for", i.getURL(), "for element", elem);
+						return;
+					}
+
+					var useColor = null;
+					if (llcType === "boolean") {
+						useColor = colors[0];
+					} else if (llcType === "number" && self.options.lazyLoadColor < colors.length) {
+						useColor = colors[self.options.lazyLoadColor];
+					} else if (llcType === "function") {
+						useColor = self.options.lazyLoadColor(elem, colors);
+					}
+
+					if (useColor !== null) {
+						if (imgix.isImageElement(elem) && elem.parentNode && elem.parentNode.tagName.toLowerCase() !== 'body') {
+							elem.parentNode.style.backgroundColor = useColor;
+						} else {
+							elem.style.backgroundColor = useColor;
+						}
+					}
+				});
+			}
 			return;
 		}
 	}
@@ -2262,7 +2372,19 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 		return;
 	}
 
-	imgix.setElementImageAfterLoad(elem, newUrl);
+	if (!elem.fluidUpdateCount) {
+		elem.fluidUpdateCount = 1;
+	} else {
+		elem.fluidUpdateCount = parseInt(elem.fluidUpdateCount, 10) + 1;
+	}
+
+	var onLoad = function() {};
+
+	if (this.options.onLoad && typeof this.options.onLoad === "function") {
+		onLoad = this.options.onLoad;
+	}
+
+	imgix.setElementImageAfterLoad(elem, newUrl, onLoad);
 	elem.lastWidth = currentElemWidth;
 	elem.lastHeight = currentElemHeight;
 };
@@ -2325,7 +2447,7 @@ imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
 
 	var overrides = {};
 	if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === "function") {
-		overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams());
+		overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams(), elem);
 	} else {
 		//console.log("skipping...");
 	}
@@ -2423,7 +2545,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `highDPRAutoScaleQuality` __boolean__ should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
-`onChangeParamOverride` __function__ if defined the follwing are passed (__number__ h, __number__ w, __object__ params). When an object of params is returned they are applied to the image<br>
+`onChangeParamOverride` __function__ if defined the following are passed (__number__ h, __number__ w, __object__ params). When an object of params is returned they are applied to the image<br>
 
 `autoInsertCSSBestPractices` __boolean__ should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
 
@@ -2445,9 +2567,13 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
+`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When `true` = first color, when `number` that index from the color array, when `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
+
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
 `maxHeight` __number__ Never set the height parameter higher than this value.<br>
+
+`onLoad` __function__ Called when an image is loaded. It's passed the `HTMLElement` that contains the image that was just loaded and the URL of that image (`HTMLElement' el, `String` imageURL)<br>
 
  <b>Default values</b> (passed config will extend these values)
 
@@ -2469,7 +2595,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		lazyLoadOffsetVertical: 20,
 		lazyLoadOffsetHorizontal: 20,
 		maxWidth: 5000,
-		maxHeight: 5000
+		maxHeight: 5000,
+		onLoad: null
 	}
 
 

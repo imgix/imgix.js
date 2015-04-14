@@ -291,6 +291,14 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.rgbToHex('rgb(251, 150, 23)').toLowerCase()).toEqual('fb9617');
 	});
 
+	it('converts rgb to rgba colors correctly', function() {
+		expect(imgix.applyAlphaToRGB('rgb(251, 150, 23)', 0.5).toLowerCase()).toEqual('rgba(251, 150, 23, 0.5)');
+	});
+
+	it('converting hex to rgb returns self if passed rgb', function() {
+		expect(imgix.hexToRGB('rgb(251, 150, 23)').toLowerCase()).toEqual('rgb(251, 150, 23)');
+	});
+
 	it('converts rgb to hex colors correctly on setBlend', function() {
 		var i = new imgix.URL('https://assets.imgix.net/pixel.gif');
 		i.setBlend('rgb(255, 0, 0)');
@@ -403,6 +411,38 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			document.body.removeChild(img);
+		});
+	});
+
+	it('should attachGradientTo with element', function() {
+		var img, el, newUrl, loadedFlag = false;
+		runs(function() {
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = '';
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?w=200&blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+			ix.attachGradientTo('body', '#FF0000', function(status) {
+				loadedFlag = status;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			expect(document.querySelector('body').style.backgroundImage.indexOf('gradient') > -1).toBe(true);
 			document.body.removeChild(img);
 		});
 	});
@@ -707,6 +747,146 @@ describe('imgix-javascript unit tests', function() {
 			expect(setH).toEqual(maxHeight);
 
 			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid onLoad', function() {
+
+		var el, opts, fl, elemSize, loaded = false, loadUpdateCount = null, loadedURLs = [];
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+
+			document.body.appendChild(el);
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
+
+			opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				onLoad: function(elem, url) {
+					loaded = true;
+					loadUpdateCount = elem.fluidUpdateCount;
+					loadedURLs.push(url);
+				}
+			};
+
+			fl = imgix.fluid(opts);
+		});
+
+		waitsFor(function() {
+			return el.src !== '' && loaded && el.fluidUpdateCount > 0;
+		}, "Waiting for first imgix.fluid", 5000);
+
+		// test first && trigger 2nd onload
+		runs(function() {
+			expect(loadUpdateCount).toEqual(1);
+			expect(loadedURLs[0].indexOf('/chester.png?') !== -1).toBe(true);
+			loaded = false;
+			fl.updateSrc(el, 1.2); // force new second update (must be new and bigger)
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for imgix.fluid update...", 5000);
+
+
+		//test 2nd && trigger 3rd onload
+		runs(function() {
+			expect(loadUpdateCount).toEqual(2);
+			expect(loadedURLs[1].indexOf('/chester.png?') !== -1).toBe(true);
+			expect(loadedURLs[0] !== loadedURLs[1]).toBe(true);
+			loaded = false;
+			fl.updateSrc(el, 1.4); // force force third update
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for imgix.fluid update...", 5000);
+
+		runs(function() {
+			expect(loadedURLs[2].indexOf('/chester.png?') !== -1).toBe(true);
+			expect(loadedURLs[1] !== loadedURLs[2]).toBe(true);
+			expect(loadUpdateCount).toEqual(3);
+			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid lazyLoadColor', function() {
+
+		var el, opts, fl, elemSize, loaded = false, imgSrc, foundColors = [];
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+			el.style.position = 'absolute';
+			el.style.top = '2000px';
+
+			document.body.appendChild(el);
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
+
+			opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				lazyLoad: true,
+				lazyLoadColor: function(elem, colors) {
+					loaded = true;
+					foundColors = colors;
+					imgSrc = elem.src;
+
+					return colors[0];
+				}
+			};
+
+			fl = imgix.fluid(opts);
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for lazy load", 5000);
+
+		runs(function() {
+			expect(foundColors.length).toEqual(16);
+			expect(el.style.backgroundColor).toEqual(foundColors[0]);
+			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid lazyLoad', function() {
+
+		var el, opts, fl, loaded = false;
+		runs(function() {
+			window.scroll(0, 0);
+
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+			el.style.position = 'absolute';
+			el.style.top = '2000px';
+
+			document.body.appendChild(el);
+
+			opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				lazyLoad: true,
+				onLoad: function() {
+					loaded = true;
+				}
+			};
+
+			fl = imgix.fluid(opts);
+
+			el.style.top = '50px'; // TODO: ideallly this should trigger a scroll instead
+			fl.updateSrc(el);
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for lazy load", 7000);
+
+		runs(function() {
+			expect(el.src.indexOf('chester.png?') > -1).toBe(true);
 		});
 	});
 
