@@ -436,7 +436,7 @@ imgix.getColorBrightness = function(c) {
  * @memberof imgix
  * @static
  * @param {string} color a color in rgb(r, g, b) format
- * @param {number} alpha amount 1=opaque 0=transparent
+ * @param {number} alpha aplpha amount 1=opaque 0=transparent
  * @returns {string} color in rgba format rgb(255, 0, 255, 0.5)
  */
 imgix.applyAlphaToRGB = function(rgb, alpha) {
@@ -966,7 +966,7 @@ imgix.URL = function(url, imgParams, token, isRj) {
  * Attach a gradient of colors from the imgix image URL to the passed html element (or selector for that element)
  * @memberof imgix
  * @param {string} elemOrSel html elment or css selector for the element
- * @param {string} base color in rgb or hex
+ * @param {string} baseColor color in rgb or hex
  */
 imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) {
 	this.getColors(16, function(colors) {
@@ -2049,7 +2049,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `highDPRAutoScaleQuality` __boolean__ should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
-`onChangeParamOverride` __function__ if defined the following are passed (__number__ h, __number__ w, __object__ params). When an object of params is returned they are applied to the image<br>
+`onChangeParamOverride` __function__ if defined the following are passed (__number__ h, __number__ w, __object__ params, __HTMLElement__ element). When an object of params is returned they are applied to the image<br>
 
 `autoInsertCSSBestPractices` __boolean__ should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
 

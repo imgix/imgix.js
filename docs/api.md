@@ -17,6 +17,7 @@
   * [imgix.getElementImage(el)](#imgix.getElementImage)
   * [imgix.getBackgroundImage(el)](#imgix.getBackgroundImage)
   * [imgix.getColorBrightness(color)](#imgix.getColorBrightness)
+  * [imgix.applyAlphaToRGB(color, alpha)](#imgix.applyAlphaToRGB)
   * [imgix.hexToRGB(color)](#imgix.hexToRGB)
   * [imgix.getElementsWithImages()](#imgix.getElementsWithImages)
   * [imgix.hasImage(el)](#imgix.hasImage)
@@ -148,6 +149,7 @@
     * [URL.getMask()](#imgix.URL#getMask)
     * [URL.getBackground()](#imgix.URL#getBackground)
     * [URL.getInvert()](#imgix.URL#getInvert)
+    * [URL.attachGradientTo(elemOrSel, baseColor)](#imgix.URL#attachGradientTo)
     * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
     * [URL.setToken(token)](#imgix.URL#setToken)
     * [URL.getColors(num, callback)](#imgix.URL#getColors)
@@ -232,6 +234,16 @@ Gives a brightness score for a given color (higher is brighter)
 - color `string` - a color in rgb(r, g, b) format  
 
 **Returns**: `Number` - brightness score for the passed color  
+<a name="imgix.applyAlphaToRGB"></a>
+##imgix.applyAlphaToRGB(color, alpha)
+Apply alpha to a RGB color string
+
+**Params**
+
+- color `string` - a color in rgb(r, g, b) format  
+- alpha `number` - aplpha amount 1=opaque 0=transparent  
+
+**Returns**: `string` - color in rgba format rgb(255, 0, 255, 0.5)  
 <a name="imgix.hexToRGB"></a>
 ##imgix.hexToRGB(color)
 Converts a hex color to rgb (#ff00ff -> rgb(255, 0, 255)
@@ -303,7 +315,7 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `highDPRAutoScaleQuality` __boolean__ should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
-`onChangeParamOverride` __function__ if defined the follwing are passed (__number__ h, __number__ w, __object__ params). When an object of params is returned they are applied to the image<br>
+`onChangeParamOverride` __function__ if defined the following are passed (__number__ h, __number__ w, __object__ params, __HTMLElement__ element). When an object of params is returned they are applied to the image<br>
 
 `autoInsertCSSBestPractices` __boolean__ should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
 
@@ -325,9 +337,13 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
+`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When `true` = first color, when `number` that index from the color array, when `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
+
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
 `maxHeight` __number__ Never set the height parameter higher than this value.<br>
+
+`onLoad` __function__ Called when an image is loaded. It's passed the `HTMLElement` that contains the image that was just loaded and the URL of that image (`HTMLElement' el, `String` imageURL)<br>
 
  <b>Default values</b> (passed config will extend these values)
 
@@ -349,7 +365,8 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 		lazyLoadOffsetVertical: 20,
 		lazyLoadOffsetHorizontal: 20,
 		maxWidth: 5000,
-		maxHeight: 5000
+		maxHeight: 5000,
+		onLoad: null
 	}
 
 **Params**
@@ -490,6 +507,7 @@ The helper namespace for lower-level functions
   * [URL.getMask()](#imgix.URL#getMask)
   * [URL.getBackground()](#imgix.URL#getBackground)
   * [URL.getInvert()](#imgix.URL#getInvert)
+  * [URL.attachGradientTo(elemOrSel, baseColor)](#imgix.URL#attachGradientTo)
   * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
   * [URL.setToken(token)](#imgix.URL#setToken)
   * [URL.getColors(num, callback)](#imgix.URL#getColors)
@@ -1238,6 +1256,15 @@ Get the value of the "bg" imgix param currently on the image url. Same as doing 
 <a name="imgix.URL#getInvert"></a>
 ###URL.getInvert()
 Get the value of the "invert" imgix param currently on the image url. Same as doing .getParam('invert')
+
+<a name="imgix.URL#attachGradientTo"></a>
+###URL.attachGradientTo(elemOrSel, baseColor)
+Attach a gradient of colors from the imgix image URL to the passed html element (or selector for that element)
+
+**Params**
+
+- elemOrSel `string` - html elment or css selector for the element  
+- baseColor `string` - color in rgb or hex  
 
 <a name="imgix.URL#attachImageTo"></a>
 ###URL.attachImageTo(elemOrSel, callback)
