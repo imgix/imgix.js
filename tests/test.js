@@ -710,4 +710,138 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('imgix.fluid onLoad', function() {
+
+		var el, opts, fl, elemSize, loaded = false, loadUpdateCount = null;
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+
+			document.body.appendChild(el);
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
+
+			opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				onLoad: function(elem) {
+					loaded = true;
+					loadUpdateCount = elem.fluidUpdateCount;
+				}
+			};
+
+			fl = imgix.fluid(opts);
+		});
+
+		waitsFor(function() {
+			return el.src !== '' && loaded && el.fluidUpdateCount > 0;
+		}, "Waiting for first imgix.fluid", 5000);
+
+		// test first && trigger 2nd onload
+		runs(function() {
+			expect(loadUpdateCount).toEqual(1);
+			loaded = false;
+			fl.updateSrc(el, 1.2); // force new second update (must be new and bigger)
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for imgix.fluid update...", 5000);
+
+
+		//test 2nd && trigger 3rd onload
+		runs(function() {
+			expect(loadUpdateCount).toEqual(2);
+			loaded = false;
+			fl.updateSrc(el, 1.4); // force force third update
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for imgix.fluid update...", 5000);
+
+		runs(function() {
+			expect(loadUpdateCount).toEqual(3);
+			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid lazyLoadColor', function() {
+
+		var el, opts, fl, elemSize, loaded = false, imgSrc, foundColors = [];
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+			el.style.position = 'absolute';
+			el.style.top = '2000px';
+
+			document.body.appendChild(el);
+			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
+
+			opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				lazyLoad: true,
+				lazyLoadColor: function(elem, colors) {
+					loaded = true;
+					foundColors = colors;
+					imgSrc = elem.src;
+
+					return colors[0];
+				}
+			};
+
+			fl = imgix.fluid(opts);
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for lazy load", 5000);
+
+		runs(function() {
+			expect(foundColors.length).toEqual(16);
+			expect(el.style.backgroundColor).toEqual(foundColors[0]);
+			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid lazyLoad', function() {
+
+		var el, opts, fl, loaded = false;
+		runs(function() {
+			window.scroll(0, 0);
+
+			el = document.createElement('img');
+			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
+			el.setAttribute('class', 'imgix-fluid');
+			el.style.position = 'absolute';
+			el.style.top = '2000px';
+
+			document.body.appendChild(el);
+
+			opts = {
+				fitImgTagToContainerWidth: true,
+				fitImgTagToContainerHeight: true,
+				lazyLoad: true,
+				onLoad: function() {
+					loaded = true;
+				}
+			};
+
+			fl = imgix.fluid(opts);
+
+			el.style.top = '50px'; // TODO: ideallly this should trigger a scroll instead
+			fl.updateSrc(el);
+		});
+
+		waitsFor(function() {
+			return loaded;
+		}, "Waiting for lazy load", 7000);
+
+		runs(function() {
+			expect(el.src.indexOf('chester.png?') > -1).toBe(true);
+		});
+	});
+
 });

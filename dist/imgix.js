@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-03 
+/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-13 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -810,7 +810,7 @@ imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
 	img.onload = function() {
 		imgix.setElementImage(el, imgUrl);
 		if (typeof callback === "function") {
-			callback();
+			callback(el);
 		}
 	};
 };
@@ -2193,10 +2193,12 @@ var fluidDefaults = {
 	pixelStep: 10,
 	debounce: 200,
 	lazyLoad: false,
+	lazyLoadColor: null,
 	lazyLoadOffsetVertical: 20,
 	lazyLoadOffsetHorizontal: 20,
 	maxHeight: 5000,
-	maxWidth: 5000
+	maxWidth: 5000,
+	onLoad: false
 };
 
 function getFluidDefaults() {
@@ -2246,6 +2248,36 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 		};
 
 		if (!imgix.elementInView(elem, view)) {
+			if (!elem.fluidLazyColored && this.options.lazyLoadColor) {
+				elem.fluidLazyColored = 1;
+				var self = this,
+					llcType = typeof this.options.lazyLoadColor,
+					i = new imgix.URL(imgix.helpers.getImgSrc(elem));
+
+				i.getColors(16, function(colors) {
+					if (!colors) {
+						console.warn("No colors found for", i.getURL(), " for element" , elem);
+						return;
+					}
+
+					var useColor = null;
+					if (llcType === "boolean") {
+						useColor = colors[0];
+					} else if (llcType === "number" && self.options.lazyLoadColor < colors.length) {
+						useColor = colors[self.options.lazyLoadColor];
+					} else if (llcType === "function") {
+						useColor = self.options.lazyLoadColor(elem, colors);
+					}
+
+					if (useColor !== null) {
+						if (imgix.isImageElement(elem) && elem.parentNode && elem.parentNode.tagName.toLowerCase() !== 'body') {
+							elem.parentNode.style.backgroundColor = useColor;
+						} else {
+							elem.style.backgroundColor = useColor;
+						}
+					}
+				});
+			}
 			return;
 		}
 	}
@@ -2262,7 +2294,19 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 		return;
 	}
 
-	imgix.setElementImageAfterLoad(elem, newUrl);
+	if (!elem.fluidUpdateCount) {
+		elem.fluidUpdateCount = 1;
+	} else {
+		elem.fluidUpdateCount = parseInt(elem.fluidUpdateCount, 10) + 1;
+	}
+
+	var onLoad = function() {};
+
+	if (this.options.onLoad && typeof this.options.onLoad === "function") {
+		onLoad = this.options.onLoad;
+	}
+
+	imgix.setElementImageAfterLoad(elem, newUrl, onLoad);
 	elem.lastWidth = currentElemWidth;
 	elem.lastHeight = currentElemHeight;
 };
@@ -2325,7 +2369,7 @@ imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
 
 	var overrides = {};
 	if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === "function") {
-		overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams());
+		overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams(), elem);
 	} else {
 		//console.log("skipping...");
 	}
@@ -2423,7 +2467,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `highDPRAutoScaleQuality` __boolean__ should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
-`onChangeParamOverride` __function__ if defined the follwing are passed (__number__ h, __number__ w, __object__ params). When an object of params is returned they are applied to the image<br>
+`onChangeParamOverride` __function__ if defined the following are passed (__number__ h, __number__ w, __object__ params). When an object of params is returned they are applied to the image<br>
 
 `autoInsertCSSBestPractices` __boolean__ should it automatically add `backgroundRepeat = 'no-repeat`; `elem.style.backgroundSize = 'cover'` `elem.style.backgroundPosition = '50% 50%'` to elements with a background image<br>
 
@@ -2445,9 +2489,13 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
+`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When `true` = first color, when `number` that index from the color array, when `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
+
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
 `maxHeight` __number__ Never set the height parameter higher than this value.<br>
+
+`onLoad` __function__ Called when an image is loaded. It's passed the `HTMLElement` that contains the image that was loaded<br>
 
  <b>Default values</b> (passed config will extend these values)
 
@@ -2469,7 +2517,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 		lazyLoadOffsetVertical: 20,
 		lazyLoadOffsetHorizontal: 20,
 		maxWidth: 5000,
-		maxHeight: 5000
+		maxHeight: 5000,
+		onLoad: null
 	}
 
 
