@@ -1,3 +1,16 @@
+# new imgix.js 1.0.19
+
+## Features
+
+* `attachGradientTo` added to `imgix.URL` [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.URL#attachGradientTo)
+* `lazyColorSet` config option added to `imgix.fluid` [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid)
+* `onLoad` config callback added to `imgix.fluid` [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid)
+
+## Bug Fixes
+
+N/A
+
+
 # new imgix.js 1.0.18
 
 ## Features
