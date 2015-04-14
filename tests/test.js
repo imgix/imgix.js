@@ -295,8 +295,16 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.applyAlphaToRGB('rgb(251, 150, 23)', 0.5).toLowerCase()).toEqual('rgba(251, 150, 23, 0.5)');
 	});
 
+	it('converts rgba to rgba colors correctly', function() {
+		expect(imgix.applyAlphaToRGB('rgba(251, 150, 23, 0.3)', 0.5).toLowerCase()).toEqual('rgba(251, 150, 23, 0.5)');
+	});
+
 	it('converting hex to rgb returns self if passed rgb', function() {
 		expect(imgix.hexToRGB('rgb(251, 150, 23)').toLowerCase()).toEqual('rgb(251, 150, 23)');
+	});
+
+	it('converting hex to rgb returns self if passed rgba', function() {
+		expect(imgix.hexToRGB('rgba(251, 150, 23, 0.2)').toLowerCase()).toEqual('rgba(251, 150, 23, 0.2)');
 	});
 
 	it('converts rgb to hex colors correctly on setBlend', function() {
@@ -443,6 +451,89 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			expect(document.querySelector('body').style.backgroundImage.indexOf('gradient') > -1).toBe(true);
+			document.body.removeChild(img);
+		});
+	});
+
+	it('should attachGradientTo an element with a alpha baseColor', function() {
+		var img, el, newUrl, loadedFlag = false, baseColor = 'rgba(255, 0, 255, 0.4)', expectedBaseColorLow = 'rgba(255, 0, 255, 0)';
+		runs(function() {
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?w=200&blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+			ix.attachGradientTo('body', baseColor, function(status) {
+				loadedFlag = status;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			var bodyBackgroundImage = document.querySelector('body').style.backgroundImage;
+			expect(bodyBackgroundImage.indexOf('gradient') > -1).toBe(true);
+
+			// ripe out the alpha since floats for a "toBeCloseTo" since floats go crazy in the browser
+			var injectedTop = bodyBackgroundImage.match(/rgba\(255, 0, 255, 0\.[0-9]+\)/);
+			expect(injectedTop.length).toBe(1);
+			var floatTest = parseFloat(injectedTop[0].replace(/[^0-9,.]+/g, '').split(",").pop());
+			expect(floatTest).toBeCloseTo(0.4);
+
+			expect(bodyBackgroundImage.indexOf(expectedBaseColorLow) > -1).toBe(true);
+			document.body.removeChild(img);
+		});
+	});
+
+	it('should attachGradientTo an element with NO base color', function() {
+		var img, el, newUrl, loadedFlag = false, baseColor = 'transparent';
+		runs(function() {
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?w=200&blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+
+			// passing undefined here to mimic nothing being passed...
+			ix.attachGradientTo('body', undefined, function(status) {
+				loadedFlag = status;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			var bodyBackgroundImage = document.querySelector('body').style.backgroundImage;
+			console.log(bodyBackgroundImage);
+			expect(bodyBackgroundImage.indexOf('gradient') > -1).toBe(true);
+
+			var firstBase = bodyBackgroundImage.indexOf(baseColor),
+				secondBase = bodyBackgroundImage.lastIndexOf(baseColor)
+
+			expect(firstBase > -1).toBe(true);
+			expect(secondBase > -1).toBe(true);
+			expect(firstBase !== secondBase).toBe(true);
+
 			document.body.removeChild(img);
 		});
 	});
