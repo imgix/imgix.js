@@ -712,7 +712,7 @@ describe('imgix-javascript unit tests', function() {
 
 	it('imgix.fluid onLoad', function() {
 
-		var el, opts, fl, elemSize, loaded = false, loadUpdateCount = null;
+		var el, opts, fl, elemSize, loaded = false, loadUpdateCount = null, loadedURLs = [];
 		runs(function() {
 			el = document.createElement('img');
 			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
@@ -724,9 +724,10 @@ describe('imgix-javascript unit tests', function() {
 			opts = {
 				fitImgTagToContainerWidth: true,
 				fitImgTagToContainerHeight: true,
-				onLoad: function(elem) {
+				onLoad: function(elem, url) {
 					loaded = true;
 					loadUpdateCount = elem.fluidUpdateCount;
+					loadedURLs.push(url);
 				}
 			};
 
@@ -740,6 +741,7 @@ describe('imgix-javascript unit tests', function() {
 		// test first && trigger 2nd onload
 		runs(function() {
 			expect(loadUpdateCount).toEqual(1);
+			expect(loadedURLs[0].indexOf('/chester.png?') !== -1).toBe(true);
 			loaded = false;
 			fl.updateSrc(el, 1.2); // force new second update (must be new and bigger)
 		});
@@ -752,6 +754,8 @@ describe('imgix-javascript unit tests', function() {
 		//test 2nd && trigger 3rd onload
 		runs(function() {
 			expect(loadUpdateCount).toEqual(2);
+			expect(loadedURLs[1].indexOf('/chester.png?') !== -1).toBe(true);
+			expect(loadedURLs[0] !== loadedURLs[1]).toBe(true);
 			loaded = false;
 			fl.updateSrc(el, 1.4); // force force third update
 		});
@@ -761,6 +765,8 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for imgix.fluid update...", 5000);
 
 		runs(function() {
+			expect(loadedURLs[2].indexOf('/chester.png?') !== -1).toBe(true);
+			expect(loadedURLs[1] !== loadedURLs[2]).toBe(true);
 			expect(loadUpdateCount).toEqual(3);
 			document.body.removeChild(el);
 		});

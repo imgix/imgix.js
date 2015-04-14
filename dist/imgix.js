@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-13 
+/*! http://www.imgix.com imgix.js - v1.0.18 - 2015-04-14 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -810,7 +810,7 @@ imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
 	img.onload = function() {
 		imgix.setElementImage(el, imgUrl);
 		if (typeof callback === "function") {
-			callback(el);
+			callback(el, imgUrl);
 		}
 	};
 };
@@ -2198,7 +2198,7 @@ var fluidDefaults = {
 	lazyLoadOffsetHorizontal: 20,
 	maxHeight: 5000,
 	maxWidth: 5000,
-	onLoad: false
+	onLoad: null
 };
 
 function getFluidDefaults() {
@@ -2256,7 +2256,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 
 				i.getColors(16, function(colors) {
 					if (!colors) {
-						console.warn("No colors found for", i.getURL(), " for element" , elem);
+						console.warn("No colors found for", i.getURL(), "for element", elem);
 						return;
 					}
 
@@ -2495,7 +2495,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `maxHeight` __number__ Never set the height parameter higher than this value.<br>
 
-`onLoad` __function__ Called when an image is loaded. It's passed the `HTMLElement` that contains the image that was loaded<br>
+`onLoad` __function__ Called when an image is loaded. It's passed the `HTMLElement` that contains the image that was just loaded and the URL of that image (`HTMLElement' el, `String` imageURL)<br>
 
  <b>Default values</b> (passed config will extend these values)
 
