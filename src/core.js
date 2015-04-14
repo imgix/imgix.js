@@ -432,6 +432,26 @@ imgix.getColorBrightness = function(c) {
 };
 
 /**
+ * Apply alpha to a RGB color string
+ * @memberof imgix
+ * @static
+ * @param {string} color a color in rgb(r, g, b) format
+ * @param {number} alpha amount 1=opaque 0=transparent
+ * @returns {string} color in rgba format rgb(255, 0, 255, 0.5)
+ */
+imgix.applyAlphaToRGB = function(rgb, alpha) {
+	var parts = rgb.split(",");
+
+	parts = parts.map(function(a) {
+		return parseInt(a.replace(/\D/g, ''), 10);
+	});
+
+	parts.push(alpha);
+
+	return 'rgba(' + parts.join(", ") + ')';
+};
+
+/**
  * Converts a hex color to rgb (#ff00ff -> rgb(255, 0, 255)
  * @memberof imgix
  * @static
@@ -888,6 +908,32 @@ imgix.instanceOfImgixURL = function(x) {
 	return x && x.toString() === "[object imgixURL]";
 };
 
+imgix.setGradientOnElement = function(el, colors, baseColor) {
+	if (typeof baseColor === "undefined") {
+		console.warn("baseColor not defined for", el);
+		return;
+	}
+
+	var baseColors = [];
+	var base = imgix.hexToRGB(baseColor); // force rgb if in hex
+
+	baseColors.push(imgix.applyAlphaToRGB(base, 0.5));
+	baseColors.push(imgix.applyAlphaToRGB(base, 0));
+
+	var backgroundGradients = [
+			'-ms-linear-gradient(top, '+baseColors[0]+' 0%, '+baseColors[1]+' 100%),-ms-linear-gradient(bottom left, '+colors[2]+' 0%,'+colors[4]+' 25%, '+colors[6]+' 50%, '+colors[8]+' 75%,'+colors[10]+' 100%)',
+'-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, '+baseColors[1]+'), color-stop(100%, '+baseColors[0]+')),-webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, '+colors[2]+'), color-stop(25%, '+colors[4]+'), color-stop(50%, '+colors[6]+'), color-stop(75%, '+colors[7]+'), color-stop(100%, '+colors[10]+'))',
+			'-webkit-linear-gradient(top, '+baseColors[0]+', '+baseColors[1]+' 100%),-webkit-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
+			'-moz-linear-gradient(top, '+baseColors[0]+', '+baseColors[1]+' ),-moz-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
+			'-o-linear-gradient(top, '+baseColors[0]+','+baseColors[1]+'),-o-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
+			'linear-gradient(top, '+baseColors[0]+','+baseColors[1]+'),linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')'
+		];
+
+	for (var x = 0; x < backgroundGradients.length; x++) {
+		el.style.backgroundImage = backgroundGradients[x];
+	}
+}
+
 /**
  * Represents an imgix url
  * @memberof imgix
@@ -914,6 +960,38 @@ imgix.URL = function(url, imgParams, token, isRj) {
 	}
 
 	this.paramAliases = {};
+};
+
+/**
+ * Attach a gradient of colors from the imgix image URL to the passed html element (or selector for that element)
+ * @memberof imgix
+ * @param {string} elemOrSel html elment or css selector for the element
+ * @param {string} base color in rgb or hex
+ */
+imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) {
+	this.getColors(16, function(colors) {
+		if (colors && colors.length < 9) {
+			console.warn("not enough colors to create a gradient");
+			if (callback && typeof callback === "function") {
+				callback(false);
+			}
+			return;
+		}
+		if (typeof elemOrSel === "string") {
+			var results = document.querySelectorAll(elemOrSel);
+			if (results && results.length > 0) {
+				for (var i = 0; i < results.length; i++) {
+					imgix.setGradientOnElement(results[i], colors, baseColor);
+				}
+			}
+		} else {
+			imgix.setGradientOnElement(elemOrSel, colors, baseColor);
+		}
+
+		if (callback && typeof callback === "function") {
+			callback(true);
+		}
+	});
 };
 
 /**

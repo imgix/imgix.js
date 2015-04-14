@@ -291,6 +291,14 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.rgbToHex('rgb(251, 150, 23)').toLowerCase()).toEqual('fb9617');
 	});
 
+	it('converts rgb to rgba colors correctly', function() {
+		expect(imgix.applyAlphaToRGB('rgb(251, 150, 23)', 0.5).toLowerCase()).toEqual('rgba(251, 150, 23, 0.5)');
+	});
+
+	it('converting hex to rgb returns self if passed rgb', function() {
+		expect(imgix.hexToRGB('rgb(251, 150, 23)').toLowerCase()).toEqual('rgb(251, 150, 23)');
+	});
+
 	it('converts rgb to hex colors correctly on setBlend', function() {
 		var i = new imgix.URL('https://assets.imgix.net/pixel.gif');
 		i.setBlend('rgb(255, 0, 0)');
@@ -403,6 +411,38 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			document.body.removeChild(img);
+		});
+	});
+
+	it('should attachGradientTo with element', function() {
+		var img, el, newUrl, loadedFlag = false;
+		runs(function() {
+			img = document.createElement('img');
+			var tmpId = 'test' + parseInt((Math.random() * 100000), 10);
+			img.id = tmpId;
+			img.src = '';
+			img.src = 'http://static-a.imgix.net/macaw.png';
+			document.body.appendChild(img);
+
+			el = document.querySelector('#' + tmpId);
+			expect(el).toBeDefined();
+
+			newUrl = 'http://static-a.imgix.net/macaw.png?w=200&blur=' + parseInt((Math.random() * 1000), 10);
+
+			var ix = new imgix.URL(newUrl);
+			ix.attachGradientTo('body', '#FF0000', function(status) {
+				loadedFlag = status;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			expect(document.querySelector('body').style.backgroundImage.indexOf('gradient') > -1).toBe(true);
 			document.body.removeChild(img);
 		});
 	});
