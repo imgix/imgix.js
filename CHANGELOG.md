@@ -1,3 +1,14 @@
+# new imgix.js 1.0.20
+
+## Features
+
+* `attachGradientTo` no longer requires a base color to be passed. `rgba` colors are now valid as well.  [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.URL#attachGradientTo)
+
+## Bug Fixes
+
+N/A
+
+
 # new imgix.js 1.0.19
 
 ## Features

@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.19 - 2015-04-14 
+/*! http://www.imgix.com imgix.js - v1.0.20 - 2015-04-14 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1414,7 +1414,6 @@ imgix.setGradientOnElement = function(el, colors, baseColor) {
 	var baseColors = [];
 	if (typeof baseColor === "undefined") {
 		// transparent base colors if not set
-		//baseColors = ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"]
 		baseColors = ["transparent", "transparent"];
 	} else {
 		var base = imgix.hexToRGB(baseColor); // force rgb if in hex
