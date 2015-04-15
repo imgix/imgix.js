@@ -936,13 +936,19 @@ imgix.getColorBrightness = function(c) {
  * @returns {string} color in rgba format rgb(255, 0, 255, 0.5)
  */
 imgix.applyAlphaToRGB = function(rgb, alpha) {
-	var parts = rgb.split(",");
+
+	var pushAlpha = rgb.slice(0, 4) !== 'rgba',
+		parts = rgb.split(",");
 
 	parts = parts.map(function(a) {
 		return parseInt(a.replace(/\D/g, ''), 10);
 	});
 
-	parts.push(alpha);
+	if (pushAlpha) {
+		parts.push(alpha);
+	} else if (parts.length === 4) {
+		parts[3] = alpha;
+	}
 
 	return 'rgba(' + parts.join(", ") + ')';
 };
@@ -1405,16 +1411,23 @@ imgix.instanceOfImgixURL = function(x) {
 };
 
 imgix.setGradientOnElement = function(el, colors, baseColor) {
-	if (typeof baseColor === "undefined") {
-		console.warn("baseColor not defined for", el);
-		return;
-	}
-
 	var baseColors = [];
-	var base = imgix.hexToRGB(baseColor); // force rgb if in hex
-
-	baseColors.push(imgix.applyAlphaToRGB(base, 0.5));
-	baseColors.push(imgix.applyAlphaToRGB(base, 0));
+	if (typeof baseColor === "undefined") {
+		// transparent base colors if not set
+		//baseColors = ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"]
+		baseColors = ["transparent", "transparent"];
+	} else {
+		var base = imgix.hexToRGB(baseColor); // force rgb if in hex
+		if (base.slice(0, 4) === "rgba") {
+			// if given an rgba then use that as the upper and force 0 for lower
+			baseColors.push(base);
+			baseColors.push(imgix.applyAlphaToRGB(base, 0));
+		} else {
+			// default to 0 to 50% transparency for passed solid base color
+			baseColors.push(imgix.applyAlphaToRGB(base, 0.5));
+			baseColors.push(imgix.applyAlphaToRGB(base, 0));
+		}
+	}
 
 	var backgroundGradients = [
 			'-ms-linear-gradient(top, '+baseColors[0]+' 0%, '+baseColors[1]+' 100%),-ms-linear-gradient(bottom left, '+colors[2]+' 0%,'+colors[4]+' 25%, '+colors[6]+' 50%, '+colors[8]+' 75%,'+colors[10]+' 100%)',
