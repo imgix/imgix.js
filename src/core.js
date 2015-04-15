@@ -918,7 +918,6 @@ imgix.setGradientOnElement = function(el, colors, baseColor) {
 	var baseColors = [];
 	if (typeof baseColor === "undefined") {
 		// transparent base colors if not set
-		//baseColors = ["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0)"]
 		baseColors = ["transparent", "transparent"];
 	} else {
 		var base = imgix.hexToRGB(baseColor); // force rgb if in hex
