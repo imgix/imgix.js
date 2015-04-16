@@ -524,7 +524,6 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			var bodyBackgroundImage = document.querySelector('body').style.backgroundImage;
-			console.log(bodyBackgroundImage);
 			expect(bodyBackgroundImage.indexOf('gradient') > -1).toBe(true);
 
 			var firstBase = bodyBackgroundImage.indexOf(baseColor),
