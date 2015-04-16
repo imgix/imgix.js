@@ -24,6 +24,24 @@ function extractHeight(url) {
 	return 0;
 }
 
+function getPrefixedCssRule(rule) {
+	var ua = window.navigator.userAgent,
+		isBrowser = function(bn) {
+			return ua.indexOf(bn) > -1;
+		},
+		prefix = '';
+
+	if (isBrowser('PhantomJS') || isBrowser('Chrome/')) {
+		prefix = '-webkit-';
+	} else if (isBrowser('Opera/')) {
+		prefix = '-o-';
+	} else if (isBrowser('Firefox/')) {
+		prefix = '-moz-';
+	}
+
+	return prefix + rule;
+}
+
 describe('imgix-javascript unit tests', function() {
 
 	beforeEach(function() {
@@ -450,7 +468,8 @@ describe('imgix-javascript unit tests', function() {
 
 		runs(function() {
 			// ensure it actually loaded...
-			expect(document.querySelector('body').style.backgroundImage.indexOf('gradient') > -1).toBe(true);
+			var bodyBackgroundImage = document.querySelector('body').style.backgroundImage;
+			expect(bodyBackgroundImage.indexOf(getPrefixedCssRule('linear-gradient')) > -1).toBe(true);
 			document.body.removeChild(img);
 		});
 	});
@@ -482,7 +501,7 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			var bodyBackgroundImage = document.querySelector('body').style.backgroundImage;
-			expect(bodyBackgroundImage.indexOf('gradient') > -1).toBe(true);
+			expect(bodyBackgroundImage.indexOf(getPrefixedCssRule('linear-gradient')) > -1).toBe(true);
 
 			// ripe out the alpha since floats for a "toBeCloseTo" since floats go crazy in the browser
 			var injectedTop = bodyBackgroundImage.match(/rgba\(255, 0, 255, 0\.[0-9]+\)/);
@@ -524,8 +543,7 @@ describe('imgix-javascript unit tests', function() {
 		runs(function() {
 			// ensure it actually loaded...
 			var bodyBackgroundImage = document.querySelector('body').style.backgroundImage;
-			console.log(bodyBackgroundImage);
-			expect(bodyBackgroundImage.indexOf('gradient') > -1).toBe(true);
+			expect(bodyBackgroundImage.indexOf(getPrefixedCssRule('linear-gradient')) > -1).toBe(true);
 
 			var firstBase = bodyBackgroundImage.indexOf(baseColor),
 				secondBase = bodyBackgroundImage.lastIndexOf(baseColor)
