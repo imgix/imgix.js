@@ -1889,9 +1889,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 	}
 
 	if (!elem.fluidUpdateCount) {
-		elem.fluidUpdateCount = 1;
-	} else {
-		elem.fluidUpdateCount = parseInt(elem.fluidUpdateCount, 10) + 1;
+		elem.fluidUpdateCount = 0;
 	}
 
 	var onLoad = function() {};
@@ -1900,7 +1898,13 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 		onLoad = this.options.onLoad;
 	}
 
-	imgix.setElementImageAfterLoad(elem, newUrl, onLoad);
+	// wrapped onLoad to handle race condition where multiple images are requested before the first one can load
+	var wrappedOnLoad = function(el, imgUrl) {
+		elem.fluidUpdateCount = parseInt(elem.fluidUpdateCount, 10) + 1;
+		onLoad(el, imgUrl);
+	};
+
+	imgix.setElementImageAfterLoad(elem, newUrl, wrappedOnLoad);
 	elem.lastWidth = currentElemWidth;
 	elem.lastHeight = currentElemHeight;
 };
