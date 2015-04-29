@@ -1889,9 +1889,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 	}
 
 	if (!elem.fluidUpdateCount) {
-		elem.fluidUpdateCount = 1;
-	} else {
-		elem.fluidUpdateCount = parseInt(elem.fluidUpdateCount, 10) + 1;
+		elem.fluidUpdateCount = 0;
 	}
 
 	var onLoad = function() {};
@@ -1900,7 +1898,13 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 		onLoad = this.options.onLoad;
 	}
 
-	imgix.setElementImageAfterLoad(elem, newUrl, onLoad);
+	// wrapped onLoad to handle race condition where multiple images are requested before the first one can load
+	var wrappedOnLoad = function(el, imgUrl) {
+		el.fluidUpdateCount = parseInt(el.fluidUpdateCount, 10) + 1;
+		onLoad(el, imgUrl);
+	};
+
+	imgix.setElementImageAfterLoad(elem, newUrl, wrappedOnLoad);
 	elem.lastWidth = currentElemWidth;
 	elem.lastHeight = currentElemHeight;
 };
@@ -2083,7 +2087,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
-`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When `true` = first color, when `number` that index from the color array, when `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
+`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first colorin color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
