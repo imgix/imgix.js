@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.20 - 2015-04-29 
+/*! http://www.imgix.com imgix.js - v1.0.21 - 2015-04-29 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___

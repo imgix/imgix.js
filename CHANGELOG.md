@@ -1,3 +1,13 @@
+# new imgix.js 1.0.21
+
+## Features
+
+N/A
+
+## Bug Fixes
+
+This release fixes a race condition when using the `onLoad` callback with `imgix.fluid()` where if multiple image updates are requested before the first image actually loads then `fluidUpdateCount` could be incorrect.
+
 # new imgix.js 1.0.20
 
 ## Features
