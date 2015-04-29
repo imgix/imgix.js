@@ -2396,7 +2396,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 
 	// wrapped onLoad to handle race condition where multiple images are requested before the first one can load
 	var wrappedOnLoad = function(el, imgUrl) {
-		elem.fluidUpdateCount = parseInt(elem.fluidUpdateCount, 10) + 1;
+		el.fluidUpdateCount = parseInt(el.fluidUpdateCount, 10) + 1;
 		onLoad(el, imgUrl);
 	};
 
