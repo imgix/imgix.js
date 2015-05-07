@@ -261,6 +261,14 @@ imgix.helpers = {
 		}
 
 		return '';
+	},
+
+	matchesSelector: function(elem, selector) {
+		if (elem.parentNode) {
+			var children = elem.parentNode.querySelectorAll(selector);
+			return Array.prototype.slice.call(children).indexOf(elem) > -1;
+		}
+		return false;
 	}
 };
 
@@ -2124,7 +2132,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
  * @memberof imgix
  * @static
  * @param [rootNode=document] optional HTML element to scope operations on
- *  @param {object} config options for fluid (this extends the defaults)
+ * @param {object} config options for fluid (this extends the defaults)
  */
 imgix.fluid = function() {
 	var elem, node;
@@ -2171,11 +2179,10 @@ imgix.fluid = function() {
 	} else {
 		var cls = '' + options.fluidClass;
 		cls = cls.slice(0, 1) === '.' ? cls : ('.' + cls);
-		if (node && imgix.isImageElement(node)) {
-			fluidElements = [node];
-		} else {
-			var rootNode = node || document;
-			fluidElements = rootNode.querySelectorAll(cls);
+		fluidElements = (node || document).querySelectorAll(cls);
+		if (node && imgix.helpers.matchesSelector(node, cls)) {
+			fluidElements = Array.prototype.slice.call(fluidElements);
+			fluidElements.unshift(node);
 		}
 	}
 

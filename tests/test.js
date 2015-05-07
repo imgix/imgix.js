@@ -780,6 +780,17 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.helpers.getZoom()).toEqual(1);
 	});
 
+	it('detects if an element matches a selector', function() {
+		var yes = document.createElement('div');
+		yes.setAttribute('class','imgix-fluid');
+		var no = document.createElement('div');
+		document.body.appendChild(yes);
+		document.body.appendChild(no);
+
+		expect(imgix.helpers.matchesSelector(yes, '.imgix-fluid')).toBeTruthy();
+		expect(imgix.helpers.matchesSelector(no, '.imgix-fluid')).not.toBeTruthy();
+	});
+
 	it('imgix.fluid img test', function() {
 
 		var pixelStep = 10;
@@ -894,6 +905,8 @@ describe('imgix-javascript unit tests', function() {
 			child.setAttribute('class', 'imgix-fluid');
 
 			parent = document.createElement('div');
+			parent.setAttribute('data-src', src);
+			parent.setAttribute('class', 'imgix-fluid');
 			parent.appendChild(child);
 
 			document.body.appendChild(parent);
@@ -907,6 +920,7 @@ describe('imgix-javascript unit tests', function() {
 
 		runs(function() {
 			expect(child.src).toMatch(/chester\.png\?/);
+			expect(parent.style.backgroundImage).toMatch(/chester\.png\?/);
 			document.body.removeChild(parent);
 		});
 	});
