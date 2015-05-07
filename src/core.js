@@ -2124,7 +2124,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
  * @memberof imgix
  * @static
  * @param [rootNode=document] optional HTML element to scope operations on
-*  @param {object} config options for fluid (this extends the defaults)
+ *  @param {object} config options for fluid (this extends the defaults)
  */
 imgix.fluid = function() {
 	var elem, node;
