@@ -859,85 +859,85 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-  it('imgix.fluid given an img node as first arg', function() {
-    var el,
-        src = 'http://jackangers.imgix.net/chester.png';
+	it('imgix.fluid given an img node as first arg', function() {
+		var el,
+				src = 'http://jackangers.imgix.net/chester.png';
 
-    runs(function() {
-      el = document.createElement('img');
-      el.setAttribute('data-src', src);
-      el.setAttribute('class', 'imgix-fluid');
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', src);
+			el.setAttribute('class', 'imgix-fluid');
 
-      document.body.appendChild(el);
+			document.body.appendChild(el);
 
-      imgix.fluid(el);
-    });
+			imgix.fluid(el);
+		});
 
-    waitsFor(function() {
-      return el.src !== '';
-    }, 'Waiting for imgix.fluid', 5000);
+		waitsFor(function() {
+			return el.src !== '';
+		}, 'Waiting for imgix.fluid', 5000);
 
-    runs(function() {
-      expect(el.src).toMatch(/chester\.png\?/);
-      document.body.removeChild(el);
-    });
-  });
+		runs(function() {
+			expect(el.src).toMatch(/chester\.png\?/);
+			document.body.removeChild(el);
+		});
+	});
 
-  it('imgix.fluid given a containing node as first arg', function() {
-    var parent,
-        child,
-        src = 'http://jackangers.imgix.net/chester.png';
+	it('imgix.fluid given a containing node as first arg', function() {
+		var parent,
+				child,
+				src = 'http://jackangers.imgix.net/chester.png';
 
-    runs(function() {
-      child = document.createElement('img');
-      child.setAttribute('data-src', src);
-      child.setAttribute('class', 'imgix-fluid');
+		runs(function() {
+			child = document.createElement('img');
+			child.setAttribute('data-src', src);
+			child.setAttribute('class', 'imgix-fluid');
 
-      parent = document.createElement('div');
-      parent.appendChild(child);
+			parent = document.createElement('div');
+			parent.appendChild(child);
 
-      document.body.appendChild(parent);
+			document.body.appendChild(parent);
 
-      imgix.fluid(parent);
-    });
+			imgix.fluid(parent);
+		});
 
-    waitsFor(function() {
-      return child.src !== '';
-    }, 'Waiting for imgix.fluid', 5000);
+		waitsFor(function() {
+			return child.src !== '';
+		}, 'Waiting for imgix.fluid', 5000);
 
-    runs(function() {
-      expect(child.src).toMatch(/chester\.png\?/);
-      document.body.removeChild(parent);
-    });
-  });
+		runs(function() {
+			expect(child.src).toMatch(/chester\.png\?/);
+			document.body.removeChild(parent);
+		});
+	});
 
-  it('imgix.fluid respects classes when given a node', function() {
-    var parent,
-        child,
-        src = 'http://jackangers.imgix.net/chester.png';
+	it('imgix.fluid respects classes when given a node', function() {
+		var parent,
+				child,
+				src = 'http://jackangers.imgix.net/chester.png';
 
-    runs(function() {
-      child = document.createElement('img');
-      child.setAttribute('data-src', src);
-      child.setAttribute('class', 'imgix-fluid-test');
+		runs(function() {
+			child = document.createElement('img');
+			child.setAttribute('data-src', src);
+			child.setAttribute('class', 'imgix-fluid-test');
 
-      parent = document.createElement('div');
-      parent.appendChild(child);
+			parent = document.createElement('div');
+			parent.appendChild(child);
 
-      document.body.appendChild(parent);
+			document.body.appendChild(parent);
 
-      imgix.fluid(parent, {fluidClass: "imgix-fluid-test"});
-    });
+			imgix.fluid(parent, {fluidClass: "imgix-fluid-test"});
+		});
 
-    waitsFor(function() {
-      return child.src !== '';
-    }, 'Waiting for imgix.fluid', 5000);
+		waitsFor(function() {
+			return child.src !== '';
+		}, 'Waiting for imgix.fluid', 5000);
 
-    runs(function() {
-      expect(child.src).toMatch(/chester\.png\?/);
-      document.body.removeChild(parent);
-    });
-  });
+		runs(function() {
+			expect(child.src).toMatch(/chester\.png\?/);
+			document.body.removeChild(parent);
+		});
+	});
 
 	it('imgix.fluid onLoad', function() {
 

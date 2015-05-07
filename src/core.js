@@ -2127,13 +2127,13 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 *  @param {object} config options for fluid (this extends the defaults)
  */
 imgix.fluid = function() {
-  var elem, node;
-  if (arguments.length > 0 && arguments[0].nodeType === 1) {
-    node = arguments[0];
-    elem = arguments[1];
-  } else {
-    elem = arguments[0];
-  }
+	var elem, node;
+	if (arguments.length > 0 && arguments[0].nodeType === 1) {
+		node = arguments[0];
+		elem = arguments[1];
+	} else {
+		elem = arguments[0];
+	}
 
 	if (elem === null){
 		return;
@@ -2168,15 +2168,15 @@ imgix.fluid = function() {
 	var fluidElements;
 	if (elem && !imgix.helpers.isFluidSet(elem)) {
 		fluidElements = Array.isArray(elem) ? elem : [elem];
-  } else {
+	} else {
 		var cls = '' + options.fluidClass;
 		cls = cls.slice(0, 1) === '.' ? cls : ('.' + cls);
-    if (node && imgix.isImageElement(node)) {
-      fluidElements = [node];
-    } else {
-      var rootNode = node || document;
-      fluidElements = rootNode.querySelectorAll(cls);
-    }
+		if (node && imgix.isImageElement(node)) {
+			fluidElements = [node];
+		} else {
+			var rootNode = node || document;
+			fluidElements = rootNode.querySelectorAll(cls);
+		}
 	}
 
 	for (var i = 0; i < fluidElements.length; i++) {
