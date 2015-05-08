@@ -261,6 +261,11 @@ imgix.helpers = {
 		}
 
 		return '';
+	},
+
+	matchesSelector: function(elem, selector) {
+		var children = (elem.parentNode || document).querySelectorAll(selector);
+		return Array.prototype.slice.call(children).indexOf(elem) > -1;
 	}
 };
 
@@ -2049,7 +2054,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 
 /**
- * Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class
+ * Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class.
+ * To scope to images within a specific DOM node, pass the enclosing HTML element as the first argument.
 
 
 #####Option Descriptions
@@ -2122,9 +2128,18 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
  * @memberof imgix
  * @static
+ * @param [rootNode=document] optional HTML element to scope operations on
  * @param {object} config options for fluid (this extends the defaults)
  */
-imgix.fluid = function(elem) {
+imgix.fluid = function() {
+	var elem, node;
+	if (arguments.length > 0 && arguments[0].nodeType === 1) {
+		node = arguments[0];
+		elem = arguments[1];
+	} else {
+		elem = arguments[0];
+	}
+
 	if (elem === null){
 		return;
 	}
@@ -2161,7 +2176,11 @@ imgix.fluid = function(elem) {
 	} else {
 		var cls = '' + options.fluidClass;
 		cls = cls.slice(0, 1) === '.' ? cls : ('.' + cls);
-		fluidElements = document.querySelectorAll(cls);
+		fluidElements = (node || document).querySelectorAll(cls);
+		if (node && imgix.helpers.matchesSelector(node, cls)) {
+			fluidElements = Array.prototype.slice.call(fluidElements);
+			fluidElements.unshift(node);
+		}
 	}
 
 	for (var i = 0; i < fluidElements.length; i++) {

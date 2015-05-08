@@ -780,6 +780,17 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.helpers.getZoom()).toEqual(1);
 	});
 
+	it('detects if an element matches a selector', function() {
+		var yes = document.createElement('div');
+		yes.setAttribute('class','imgix-fluid');
+		var no = document.createElement('div');
+		document.body.appendChild(yes);
+		document.body.appendChild(no);
+
+		expect(imgix.helpers.matchesSelector(yes, '.imgix-fluid')).toBeTruthy();
+		expect(imgix.helpers.matchesSelector(no, '.imgix-fluid')).not.toBeTruthy();
+	});
+
 	it('imgix.fluid img test', function() {
 
 		var pixelStep = 10;
@@ -856,6 +867,65 @@ describe('imgix-javascript unit tests', function() {
 			expect(setH).toEqual(maxHeight);
 
 			document.body.removeChild(el);
+		});
+	});
+
+	it('imgix.fluid given a node', function() {
+		var parent,
+				child,
+				src = 'http://jackangers.imgix.net/chester.png';
+
+		runs(function() {
+			child = document.createElement('img');
+			child.setAttribute('data-src', src);
+			child.setAttribute('class', 'imgix-fluid');
+
+			parent = document.createElement('div');
+			parent.setAttribute('data-src', src);
+			parent.setAttribute('class', 'imgix-fluid');
+			parent.appendChild(child);
+
+			document.body.appendChild(parent);
+
+			imgix.fluid(parent);
+		});
+
+		waitsFor(function() {
+			return child.src !== '';
+		}, 'Waiting for imgix.fluid', 5000);
+
+		runs(function() {
+			expect(child.src).toMatch(/chester\.png\?/);
+			expect(parent.style.backgroundImage).toMatch(/chester\.png\?/);
+			document.body.removeChild(parent);
+		});
+	});
+
+	it('imgix.fluid respects classes when given a node', function() {
+		var parent,
+				child,
+				src = 'http://jackangers.imgix.net/chester.png';
+
+		runs(function() {
+			child = document.createElement('img');
+			child.setAttribute('data-src', src);
+			child.setAttribute('class', 'imgix-fluid-test');
+
+			parent = document.createElement('div');
+			parent.appendChild(child);
+
+			document.body.appendChild(parent);
+
+			imgix.fluid(parent, {fluidClass: "imgix-fluid-test"});
+		});
+
+		waitsFor(function() {
+			return child.src !== '';
+		}, 'Waiting for imgix.fluid', 5000);
+
+		runs(function() {
+			expect(child.src).toMatch(/chester\.png\?/);
+			document.body.removeChild(parent);
 		});
 	});
 
