@@ -1,3 +1,14 @@
+# new imgix.js 1.0.22
+
+## Features
+
+* `fluid` now accepts an element to operate on as an optional first parameter, instead of the entire document ([See docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid)).
+
+## Bug Fixes
+
+N/A
+
+
 # new imgix.js 1.0.21
 
 ## Features
@@ -7,6 +18,7 @@ N/A
 ## Bug Fixes
 
 This release fixes a race condition when using the `onLoad` callback with `imgix.fluid()` where if multiple image updates are requested before the first image actually loads then `fluidUpdateCount` could be incorrect.
+
 
 # new imgix.js 1.0.20
 
@@ -110,7 +122,7 @@ N/A
 
 ## Features
 
-`imgix.fluid` now supports an `ignoreDPR` option that when set to `true` __never__ sets the `dpr` imgix param (even on retina screens). This option defaults to `false` for backwards compatibility 
+`imgix.fluid` now supports an `ignoreDPR` option that when set to `true` __never__ sets the `dpr` imgix param (even on retina screens). This option defaults to `false` for backwards compatibility
 
 ## Bug Fixes
 
