@@ -264,11 +264,8 @@ imgix.helpers = {
 	},
 
 	matchesSelector: function(elem, selector) {
-		if (elem.parentNode) {
-			var children = elem.parentNode.querySelectorAll(selector);
-			return Array.prototype.slice.call(children).indexOf(elem) > -1;
-		}
-		return false;
+		var children = (elem.parentNode || document).querySelectorAll(selector);
+		return Array.prototype.slice.call(children).indexOf(elem) > -1;
 	}
 };
 
