@@ -25,7 +25,7 @@
   * [imgix.rgbToHex(color)](#imgix.rgbToHex)
   * [imgix.getFontLookup()](#imgix.getFontLookup)
   * [imgix.getFonts()](#imgix.getFonts)
-  * [imgix.fluid(config)](#imgix.fluid)
+  * [imgix.fluid([rootNode], config)](#imgix.fluid)
   * [imgix.helpers](#imgix.helpers)
   * [class: imgix.URL](#imgix.URL)
     * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
@@ -298,8 +298,9 @@ Get a list of all the fonts supported by imgix
 
 **Returns**: `array` - An array of strings of the supported font names  
 <a name="imgix.fluid"></a>
-##imgix.fluid(config)
-Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class
+##imgix.fluid([rootNode], config)
+Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class.
+To scope to images within a specific DOM node, pass the enclosing HTML element as the first argument.
 
 
 #####Option Descriptions
@@ -371,6 +372,7 @@ Enables fluid (responsive) images for any element(s) with the "imgix-fluid" clas
 
 **Params**
 
+- \[rootNode=document\]  - optional HTML element to scope operations on  
 - config `object` - options for fluid (this extends the defaults)  
 
 <a name="imgix.helpers"></a>
