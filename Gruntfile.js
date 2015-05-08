@@ -146,6 +146,7 @@ module.exports = function(grunt) {
 		contents = contents.split('<a name="imgix"></a>')[1];
 
 		contents = contents.replace(/uRL/g, 'URL');
+		contents = contents.replace(/urL/g, 'URL');
 
 		contents = contents.replace('#imgix', '#imgix.js Documentation'); // only first
 
@@ -202,7 +203,7 @@ module.exports = function(grunt) {
 	// Default task.
 	grunt.registerTask('default', 'build');
 
-	// load all our build dependencies 
+	// load all our build dependencies
 	grunt.loadNpmTasks("grunt-jsdoc-to-markdown");
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-watch');
