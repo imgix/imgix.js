@@ -870,31 +870,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid given an img node as first arg', function() {
-		var el,
-				src = 'http://jackangers.imgix.net/chester.png';
-
-		runs(function() {
-			el = document.createElement('img');
-			el.setAttribute('data-src', src);
-			el.setAttribute('class', 'imgix-fluid');
-
-			document.body.appendChild(el);
-
-			imgix.fluid(el);
-		});
-
-		waitsFor(function() {
-			return el.src !== '';
-		}, 'Waiting for imgix.fluid', 5000);
-
-		runs(function() {
-			expect(el.src).toMatch(/chester\.png\?/);
-			document.body.removeChild(el);
-		});
-	});
-
-	it('imgix.fluid given a containing node as first arg', function() {
+	it('imgix.fluid given a node', function() {
 		var parent,
 				child,
 				src = 'http://jackangers.imgix.net/chester.png';
