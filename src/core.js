@@ -800,6 +800,7 @@ imgix.getAllParams = function () {
 		'nrs',
 
 		// Palette
+		'class', // Deprecated
 		'colors',
 		'prefix',
 		'palette',
@@ -916,7 +917,7 @@ imgix.getDefaultParamValues = function () {
 		// Palette
 		colors: 6,
 		prefix: 'image',
-		palette: 'css',
+		palette: '',
 
 		// PDF
 		page: 1,
