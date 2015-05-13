@@ -22,7 +22,7 @@ if (typeof exports !== 'undefined') {
 var IMGIX_USABLE_CLASS = 'imgix-usable';
 
 /**
- * The helper namespace for lower-level functions 
+ * The helper namespace for lower-level functions
  * @namespace imgix.helpers
  */
 imgix.helpers = {
@@ -74,7 +74,7 @@ imgix.helpers = {
 			if (arg === 'hostname') { return _h; }
 			else if (arg === 'domain') {
 				if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) { return _h; }
-				return _hs.slice(-2).join('.'); 
+				return _hs.slice(-2).join('.');
 			}
 			//else if (arg === 'tld') { return _hs.slice(-1).join('.'); }
 			else if (arg === 'sub') { return _hs.slice(0, _hs.length - 2).join('.'); }
@@ -747,106 +747,213 @@ imgix.isFontAvailable = function(font) {
 	return imgix.isDef(imgix.getFontLookup()[font]);
 };
 
-imgix.getParamAliases = function() {
-		return {
-			't': 'txt',
-			'tf': 'txtfont',
-			'tsz': 'txtsize',
-			'tl': 'txtline',
-			'tsh': 'txtshad',
-			'tp': 'txtpad',
-			'txtlinecolor': 'txtlineclr',
-			'ta': 'txtalign',
-			'intensity': 'int',
-			'monochrome': 'mono',
-			'f': 'fit',
-			'orient': 'or',
-			'm': 'watermark',
-			'mf': 'markfit',
-			'ms': 'markscale',
-			'ma': 'markalign',
-			'mp': 'markpad'
-		};
+imgix.getAllParams = function () {
+	return [
+		// Adjustment
+		'bri',
+		'con',
+		'exp',
+		'gam',
+		'high',
+		'hue',
+		'invert',
+		'int', // Deprecated
+		'sat',
+		'shad',
+		'sharp',
+		'usm',
+		'usmrad',
+		'vib',
+
+		// Automatic
+		'auto',
+
+		// Background
+		'bg',
+
+		// Blend
+		'ba',
+		'balph',
+		'bc',
+		'bf',
+		'bh',
+		'blend',
+		'bm',
+		'bp',
+		'bs',
+		'bw',
+
+		// Border & padding
+		'border',
+		'pad',
+
+		// Format
+		'dl',
+		'fm',
+		'q',
+
+		// Mask
+		'mask',
+
+		// Noise
+		'nr',
+		'nrs',
+
+		// Palette
+		'colors',
+		'prefix',
+		'palette',
+
+		// PDF
+		'page',
+
+		// Pixel Density
+		'dpr',
+
+		// Rotation
+		'flip',
+		'or',
+		'rot',
+
+		// Size
+		'crop',
+		'fit',
+		'h',
+		'rect',
+		'w',
+
+		// Stylize
+		'blur',
+		'htn',
+		'mono',
+		'px',
+		'sepia',
+
+		// Text
+		'txt',
+		'txtalign',
+		'txtclip',
+		'txtclr',
+		'txtfit',
+		'txtfont',
+		'txtline',
+		'txtlineclr',
+		'txtpad',
+		'txtshad',
+		'txtsize',
+
+		// Trim
+		'trim',
+		'trimcolor',
+		'trimmd',
+
+		// Watermark
+		'mark',
+		'markalign',
+		'markalpha',
+		'markfit',
+		'markh',
+		'markpad',
+		'markscale',
+		'markw'
+	];
 };
 
-imgix.getDefaultParamValues = function() {
+imgix.getParamAliases = function () {
 	return {
-		// STYLIZE
-		'sepia': "0",
-		'px': "0",
-		'htn': "0",
-		'blur': "0",
-		'mono': '',
-		'int': "100",
+		t: 'txt',
+		tf: 'txtfont',
+		tsz: 'txtsize',
+		tl: 'txtline',
+		tsh: 'txtshad',
+		tp: 'txtpad',
+		txtlinecolor: 'txtlineclr',
+		ta: 'txtalign',
+		intensity: 'int',
+		monochrome: 'mono',
+		f: 'fit',
+		orient: 'or',
+		m: 'watermark',
+		mf: 'markfit',
+		ms: 'markscale',
+		ma: 'markalign',
+		mp: 'markpad'
+	};
+};
 
-		// ENHANCE
-		'hue': "0",
-		'sat': "0",
-		'bri': "0",
-		'con': "0",
-		'exp': "0",
-		'high': "0",
-		'shad': "0",
-		'gam': "0",
-		'vib': "0",
-		'sharp': "0",
+imgix.getDefaultParamValues = function () {
+	return {
+		// Adjustment
+		bri: 0,
+		con: 0,
+		exp: 0,
+		gam: 0,
+		high: 0,
+		hue: 0,
+		sat: 0,
+		shad: 0,
+		sharp: 0,
+		usm: 0,
+		usmrad: 2.5,
+		vib: 0,
 
-		// BLEND
-		'blend': '',
-		'bm': '',
-		'bw': '',
-		'bh': '',
-		'bp': 0,
-		'bf': 'clip',
-		'ba': 'middle,center',
-		'balph': 100,
-		'bc': '',
-		'bs': '',
+		// Blend
+		ba: 'middle,center',
+		balph: 100,
+		bf: 'clip',
+		bp: 0,
 
-		// TEXT
-		'txt': '',
-		'txtfont': 'Helvetica',
-		'txtsize': "12",
-		'txtclr': '000000',
-		'txtalign': 'bottom,right',
-		'txtshad': "0",
-		'txtpad': "10",
-		'txtline': "0",
-		'txtlineclr': 'ffffff',
-		'txtfit': '',
+		// Border & padding
+		pad: 0,
 
-		// RESIZE
-		'rect': '',
-		'dpr': "1",
-		'fit': 'clip',
-		'flip': '',
-		'or': "0",
-		'crop': '',
-		'rot': "0",
-		'h': "0",
-		'w': "0",
+		// Format
+		q: 75,
 
-		// GENERAL
-		'fm': '',
-		'q': 75,
+		// Noise
+		nr: 20,
+		nrs: 20,
 
-		// WATERMARK
-		'mark': '',
-		'markw': '',
-		'markh': '',
-		'markfit': 'clip',
-		'markscale': '',
-		'markalign': 'bottom,right',
-		'markalpha': 100,
-		'markpad': 5,
+		// Palette
+		colors: 6,
+		prefix: 'image',
+		palette: 'css',
 
-		'palette': '',
-		'colors': '',
-		'class': '',
-		'auto': '',
-		'mask': '',
-		'bg': '',
-		'invert': ''
+		// PDF
+		page: 1,
+
+		// Pixel Density
+		dpr: 1,
+
+		// Rotation
+		rot: 0,
+
+		// Size
+		fit: 'clip',
+
+		// Stylize
+		blur: 0,
+		htn: 0,
+		px: 0,
+		sepia: 0,
+
+		// Text
+		txtalign: 'bottom,right',
+		txtclip: 'end',
+		txtclr: '000',
+		txtfont: 'Helvetica',
+		txtline: 0,
+		txtlineclr: 'FFF',
+		txtpad: 10,
+		txtsize: 12,
+
+		// Trim
+		trimmd: 11,
+
+		// Watermark
+		markalign: 'bottom,right',
+		markalpha: 100,
+		markfit: 'clip',
+		markpad: 10
 	};
 };
 
@@ -1265,7 +1372,7 @@ imgix.URL.prototype.autoUpdateImg = function(sel, callback) {
 	this._handleAutoUpdate();
 };
 /**
- * 
+ *
  * @callback autoUpdateElementCallback
  * @param {object} obj information about element and image
  * @todo how to doc the complex object that is passed back
@@ -1372,7 +1479,7 @@ imgix.URL.prototype.setParams = function(dict, doOverride) {
  * @memberof imgix
 
  * @param {string} param the imgix param to set (e.g. txtclr)
- * @param {string} value the value to set for the param 
+ * @param {string} value the value to set for the param
  * @param {boolean} doOverride (optional) should the value(s) be overridden if they already exist (defaults to true)
  * @param {boolean} noUpdate (optional) iff using autoUpdateImg should callback be called (defaults to false)
  */
@@ -1389,7 +1496,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	}
 
 	// TODO: handle aliases -- only need on build?
-	if (imgix.getDefaultParams().indexOf(param) === -1) {
+	if (imgix.getAllParams().indexOf(param) === -1) {
 		console.warn("\"" + param + "\" is an invalid imgix param");
 		return this;
 	}
@@ -1491,92 +1598,122 @@ imgix.URL.prototype.getQueryString = function() {
 
 // "param name": "pretty name" (for auto-generated get/set-ers)
 imgix.URL.theGetSetFuncs = Object.freeze({
-	//resize
-	"crop": "Crop",
-	"fit": "Fit",
-	"h": "Height",
-	"w": "Width",
-	"rot": "Rotate",
-	"flip": "Flip",
-	"or": "Orient",
-	"dpr": "DPR",
+	// Adjustment
+	bri: 'Brightness',
+	con: 'Contrast',
+	exp: 'Exposure',
+	gam: 'Gamma',
+	high: 'Highlight',
+	hue: 'Hue',
+	invert: 'Invert',
+	sat: 'Saturation',
+	shad: 'Shadow',
+	sharp: 'Sharpness',
+	usm: 'UnsharpMask',
+	usmrad: 'UnsharpMaskRadius',
+	vib: 'Vibrance',
 
-	//enhance
-	"hue": "Hue",
-	"sat": "Saturation",
-	"bri": "Brightness",
-	"con": "Contrast",
-	"exp": "Exposure",
-	"high": "Highlight",
-	"shad": "Shadow",
-	"gam": "Gamma",
-	"vib": "Vibrance",
-	"sharp": "Sharpness",
+	// Automatic
+	auto: 'Auto',
 
-	//stylize
-	"sepia": "Sepia",
-	"htn": "Halftone",
-	"blur": "Blur",
-	"mono": "Monochrome",
-	"px": "Pixelate",
+	// Background
+	bg: 'Background',
 
-	//blend
-	"blend": "Blend",
-	"bw": "BlendWidth",
-	"bh": "BlendHeight",
-	"bp": "BlendPadding",
-	"bf": "BlendFit",
-	"ba": "BlendAlign",
-	"balph": "BlendAlpha",
-	"bm": "BlendMode",
-	"bc": "BlendCrop",
-	"bs": "BlendSize",
+	// Blend
+	ba: 'BlendAlign',
+	balph: 'BlendAlpha',
+	bc: 'BlendCrop',
+	bf: 'BlendFit',
+	bh: 'BlendHeight',
+	blend: 'Blend',
+	bm: 'BlendMode',
+	bp: 'BlendPadding',
+	bs: 'BlendSize',
+	bw: 'BlendWidth',
 
-	//text
-	"txt": "Text",
-	"txtfont": "TextFont",
-	"txtsize": "TextSize",
-	"txtclr": "TextColor",
-	"txtalign": "TextAlign",
-	"txtshad": "TextShadow",
-	"txtpad": "TextPad",
-	"txtline": "TextLine",
-	"txtlineclr": "TextLineColor",
-	"txtfit": "TextFit",
+	// Border & padding
+	border: 'Border',
+	pad: 'Pad',
 
-	//general
-	"fm": "Format",
-	"q": "Quality",
+	// Format
+	dl: 'Download',
+	fm: 'Format',
+	q: 'Quality',
+
+	// Mask
+	mask: 'Mask',
+
+	// Noise
+	nr: 'NoiseReduction',
+	nrs: 'NoiseReductionSharpen',
+
+	// Palette
+	palette: 'Palette',
+	'class': 'PaletteClass',
+	prefix: 'PalettePrefix',
+	colors: 'PaletteColorNumber',
+
+	// PDF
+	page: 'Page',
+
+	// Pixel Density
+	dpr: 'DPR',
+
+	// Rotation
+	flip: 'Flip',
+	or: 'Orient',
+	rot: 'Rotate',
+
+	// Size
+	crop: 'Crop',
+	fit: 'Fit',
+	h: 'Height',
+	rect: 'Rectangle',
+	w: 'Width',
+
+	// Stylize
+	blur: 'Blur',
+	htn: 'Halftone',
+	mono: 'Monochrome',
+	px: 'Pixelate',
+	sepia: 'Sepia',
+
+	// Text
+	txt: 'Text',
+	txtalign: 'TextAlign',
+	txtclip: 'TextClip',
+	txtclr: 'TextColor',
+	txtfit: 'TextFit',
+	txtfont: 'TextFont',
+	txtline: 'TextLine',
+	txtlineclr: 'TextLineColor',
+	txtpad: 'TextPad',
+	txtsize: 'TextSize',
+	txtshad: 'TextShadow',
+
+	// Trim
+	trim: 'Trim',
+	trimcolor: 'TrimColor',
+	trimmd: 'TrimMeanDifference',
 
 	// watermarks
-	'mark': 'Watermark',
-	'markw': 'WatermarkWidth',
-	'markh': 'WatermarkHeight',
-	'markfit': 'WatermarkFit',
-	'markscale': 'WatermarkScale',
-	'markalign': 'WatermarkAlign',
-	'markalpha': 'WatermarkAlpha',
-	'markpad': 'WatermarkPadding',
-
-	// palette
-	'palette': 'Palette',
-	'class': 'PaletteClass',
-	'colors': 'PaletteColorNumber',
-
-	//
-	'auto': 'Auto',
-	'mask': 'Mask',
-	'bg': 'Background',
-	'invert': 'Invert'
+	mark: 'Watermark',
+	markalign: 'WatermarkAlign',
+	markalpha: 'WatermarkAlpha',
+	markfit: 'WatermarkFit',
+	markh: 'WatermarkHeight',
+	markpad: 'WatermarkPadding',
+	markscale: 'WatermarkScale',
+	markw: 'WatermarkWidth'
 });
 
 
-/** 
+/**
 	Apply the speia imgix param to the image url. Same as doing .setParam('sepia', val);
 	@param val the value to set for sepia
 	@name imgix.URL#setSepia
-	@function 
-*/ 
+	@function
+*/
 
 // Dynamically create our param getter and setters
 for (var param in imgix.URL.theGetSetFuncs) {
@@ -1652,7 +1789,7 @@ imgix.buildRjUrl = function(parsed) {
 };
 
 imgix.parseUrl = function(url) {
-	var 
+	var
 		pkeys = ['protocol', 'hostname', 'port', 'path', '?', '#', 'hostname'],
 		keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
 		result = {};
@@ -2284,7 +2421,7 @@ if (typeof window !== 'undefined') {
  *
  * Licensed under the MIT license:
  * http://www.opensource.org/licenses/MIT
- * 
+ *
  * Based on
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
