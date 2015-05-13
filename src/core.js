@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Establish the root object, `window` in the browser, or `exports` on the server.
 var root = this;
@@ -165,7 +165,7 @@ imgix.helpers = {
 		if (dpr % 1 !== 0) {
 			var tmpStr = '' + dpr;
 			tmpStr = tmpStr.split('.')[1];
-			dpr = (tmpStr.length > 1 && tmpStr.slice(1, 2) !== "0") ? dpr.toFixed(2) : dpr.toFixed(1);
+			dpr = (tmpStr.length > 1 && tmpStr.slice(1, 2) !== '0') ? dpr.toFixed(2) : dpr.toFixed(1);
 		}
 
 		return dpr;
@@ -180,7 +180,7 @@ imgix.helpers = {
 	},
 
 	getImgSrc: function (elem) {
-		return elem.getAttribute("data-src") || elem.getAttribute("src");
+		return elem.getAttribute('data-src') || elem.getAttribute('src');
 	},
 
 	calculateElementSize: function (elem) {
@@ -205,7 +205,7 @@ imgix.helpers = {
 			var found,
 				prop,
 				past = {},
-				visProp = {position : "absolute", visibility : "hidden", display : "block"};
+				visProp = {position : 'absolute', visibility : 'hidden', display : 'block'};
 
 			for (prop in visProp) {
 				if (visProp.hasOwnProperty(prop)) {
@@ -231,24 +231,24 @@ imgix.helpers = {
 	},
 
 	isReallyObject: function(elem) {
-		return elem && typeof elem === "object" && (elem + '') === '[object Object]';
+		return elem && typeof elem === 'object' && (elem + '') === '[object Object]';
 	},
 
 	isFluidSet: function(elem) {
-		return elem && typeof elem === "object" && (elem + '') === '[object FluidSet]';
+		return elem && typeof elem === 'object' && (elem + '') === '[object FluidSet]';
 	},
 
 	extractInt: function(str) {
 		if (str === undefined) {
 			return 0;
-		} else if (typeof str === "number") {
+		} else if (typeof str === 'number') {
 			return str;
 		}
 		return parseInt(str.replace(/\D/g, ''), 10) || 0;
 	},
 
 	camelize: function(str) {
-		return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ""; });
+		return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ''; });
 	},
 
 	getElementCssProperty: function(elem, prop) {
@@ -318,7 +318,7 @@ imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
 	img.src = imgUrl;
 	img.onload = function() {
 		imgix.setElementImage(el, imgUrl);
-		if (typeof callback === "function") {
+		if (typeof callback === 'function') {
 			callback(el, imgUrl);
 		}
 	};
@@ -428,7 +428,7 @@ imgix.getColorBrightness = function(c) {
 		return 0;
 	}
 
-	var parts = c.replace(/[^0-9,]+/g, '').split(","),
+	var parts = c.replace(/[^0-9,]+/g, '').split(','),
 		r = +parts[0],
 		g = +parts[1],
 		b = +parts[2];
@@ -447,7 +447,7 @@ imgix.getColorBrightness = function(c) {
 imgix.applyAlphaToRGB = function(rgb, alpha) {
 
 	var pushAlpha = rgb.slice(0, 4) !== 'rgba',
-		parts = rgb.split(",");
+		parts = rgb.split(',');
 
 	parts = parts.map(function(a) {
 		return parseInt(a.replace(/\D/g, ''), 10);
@@ -459,7 +459,7 @@ imgix.applyAlphaToRGB = function(rgb, alpha) {
 		parts[3] = alpha;
 	}
 
-	return 'rgba(' + parts.join(", ") + ')';
+	return 'rgba(' + parts.join(', ') + ')';
 };
 
 /**
@@ -496,7 +496,7 @@ imgix.hexToRGB = function(hex) {
 		g = parseInt(hex.slice(2, 4), 16);
 		b = parseInt(hex.slice(4, 6), 16);
 	} else {
-		console.warn("invalid hex color:", hex);
+		console.warn('invalid hex color:', hex);
 	}
 
 	return 'rgb(' + r + ', ' + g + ', ' + b + ')';
@@ -511,7 +511,7 @@ imgix.hexToRGB = function(hex) {
 imgix.getElementsWithImages = function() {
 	imgix.markElementsWithImages();
 
-	return document.querySelectorAll("." + IMGIX_USABLE_CLASS);
+	return document.querySelectorAll('.' + IMGIX_USABLE_CLASS);
 };
 
 /**
@@ -533,7 +533,7 @@ imgix.hasImage = function(el) {
  * @static
  */
 imgix.markElementsWithImages = function() {
-	var all = document.getElementsByTagName("*");
+	var all = document.getElementsByTagName('*');
 	for (var i=0, max=all.length; i < max; i++) {
 		if (imgix.hasImage(all[i])) {
 			imgix.setImgixClass(all[i]);
@@ -550,11 +550,11 @@ imgix.markElementsWithImages = function() {
  * @returns {boolean} true if element has the class
  */
 imgix.hasClass = function(elem, name) {
-	return (" " + elem.className + " ").indexOf(" " + name + " ") > -1;
+	return (' ' + elem.className + ' ').indexOf(' ' + name + ' ') > -1;
 };
 
 /**
- * Helper method that "marks" an element as "imgix usable" by adding special classes
+ * Helper method that 'marks' an element as 'imgix usable' by adding special classes
  * @memberof imgix
  * @static
  * @private
@@ -575,7 +575,7 @@ imgix.setImgixClass = function(el) {
 };
 
 /**
- * Helper method that returns generated (via xpath) class name for "marked" image elements
+ * Helper method that returns generated (via xpath) class name for 'marked' image elements
  * @memberof imgix
  * @static
  * @private
@@ -601,7 +601,7 @@ imgix.getXPathClass = function(xpath) {
  * @returns {string} passed color converted to hex
  */
 imgix.rgbToHex = function(value) {
-	var parts = value.split(",");
+	var parts = value.split(',');
 
 	parts = parts.map(function(a) {
 		return imgix.componentToHex(parseInt(a.replace(/\D/g, '')));
@@ -612,7 +612,7 @@ imgix.rgbToHex = function(value) {
 
 imgix.componentToHex = function(c) {
 	var hex = c.toString(16);
-	return hex.length === 1 ? "0" + hex : hex;
+	return hex.length === 1 ? '0' + hex : hex;
 };
 
 // Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
@@ -631,100 +631,100 @@ imgix.getElementTreeXPath = function(element) {
 				++index;
 		}
 
-		var tagName = (element.prefix ? element.prefix + ":" : "") + element.localName;
-		var pathIndex = (index ? "[" + (index+1) + "]" : "");
+		var tagName = (element.prefix ? element.prefix + ':' : '') + element.localName;
+		var pathIndex = (index ? '[' + (index+1) + ']' : '');
 		paths.splice(0, 0, tagName + pathIndex);
 	}
 
-	return paths.length ? "/" + paths.join("/") : null;
+	return paths.length ? '/' + paths.join('/') : null;
 };
 
 /**
  * Returns a font lookup. Pretty Name => name to use with imgix
- * Example: "American Typewriter Bold" => "American Typewriter,bold",
+ * Example: 'American Typewriter Bold' => 'American Typewriter,bold',
  * @memberof imgix
  * @static
  * @returns {object} pretty font name to imgix font param value
  */
 imgix.getFontLookup = function() {
 	return {
-		"American Typewriter": "American Typewriter",
-		"American Typewriter Bold": "American Typewriter,bold",
-		"American Typewriter Condensed": "American Typewriter Condensed",
-		"American Typewriter Condensed Bold": "American Typewriter Condensed,bold",
-		"American Typewriter Condensed Light": "American Typewriter Condensed Light",
-		"American Typewriter Light": "American Typewriter Light",
-		"Andale Mono": "Andale Mono",
-		"Arial": "Arial",
-		"Arial Black": "Arial Black",
-		"Arial Bold": "Arial,bold",
-		"Arial Bold Italic": "Arial,bold,italic",
-		"Arial Italic": "Arial,italic",
-		"Baskerville": "Baskerville",
-		"Big Caslon": "Big Caslon",
-		"Brush Script MT": "Brush Script MT",
-		"Cochin": "Cochin",
-		"Copperplate": "Copperplate",
-		"Courier": "Courier",
-		"Courier Bold": "Courier,bold",
-		"Courier Oblique": "Courier Oblique",
-		"Didot": "Didot",
-		"Futura": "Futura",
-		"Futura Condensed": "Futura Condensed Medium",
-		"Futura Italic": "Futura Medium,italic",
-		"Georgia": "Georgia",
-		"Georgia Bold": "Georgia,bold",
-		"Georgia Bold Italic": "Georgia,bold,italic",
-		"Georgia Italic": "Georgia,italic",
-		"Gill Sans": "Gill Sans",
-		"Gill Sans Bold": "Gill Sans,bold",
-		"Gill Sans Bold Italic": "Gill Sans,bold,italic",
-		"Gill Sans Italic": "Gill Sans,italic",
-		"Gill Sans Light": "Gill Sans Light",
-		"Gill Sans Light Italic": "Gill Sans Light,italic",
-		"Helvetica": "Helvetica",
-		"Helvetica Bold": "Helvetica,bold",
-		"Helvetica Light": "Helvetica Light",
-		"Helvetica Light Oblique": "Helvetica Light Oblique",
-		"Helvetica Neue": "Helvetica Neue",
-		"Helvetica Neue Bold": "Helvetica Neue,bold",
-		"Helvetica Neue Bold Italic": "Helvetica Neue,bold,italic",
-		"Helvetica Neue Condensed Black": "Helvetica Neue Condensed Black",
-		"Helvetica Neue Condensed Bold": "Helvetica Neue Condensed,bold",
-		"Helvetica Neue Light": "Helvetica Neue Light",
-		"Helvetica Neue Light Italic": "Helvetica Neue Light,italic",
-		"Helvetica Neue Medium": "Helvetica Neue Medium",
-		"Helvetica Neue UltraLight": "Helvetica Neue UltraLight",
-		"Helvetica Neue UltraLight Italic": "Helvetica Neue UltraLight,italic",
-		"Helvetica Oblique": "Helvetica Oblique",
-		"Herculanum": "Herculanum",
-		"Impact": "Impact",
-		"Marker Felt Thin": "Marker Felt Thin",
-		"Marker Felt Wide": "Marker Felt Wide",
-		"Optima": "Optima",
-		"Optima Bold": "Optima,bold",
-		"Optima Bold Italic": "Optima,bold,italic",
-		"Optima ExtraBlack": "Optima ExtraBlack",
-		"Optima Italic": "Optima,italic",
-		"Papyrus": "Papyrus",
-		"Papyrus Condensed": "Papyrus Condensed",
-		"Times": "Times",
-		"Times Bold": "Times,bold",
-		"Times Bold Italic": "Times,bold,italic",
-		"Times Italic": "Times,italic",
-		"Times New Roman": "Times New Roman",
-		"Times New Roman Bold": "Times New Roman,bold",
-		"Times New Roman Bold Italic": "Times New Roman,bold,italic",
-		"Times New Roman Italic": "Times New Roman,italic",
-		"Trebuchet MS": "Trebuchet MS",
-		"Trebuchet MS Bold": "Trebuchet MS,bold",
-		"Trebuchet MS Bold Italic": "Trebuchet MS,bold,italic",
-		"Trebuchet MS Italic": "Trebuchet MS,italic",
-		"Verdana": "Verdana",
-		"Verdana Bold": "Verdana,bold",
-		"Verdana Bold Italic": "Verdana,bold,italic",
-		"Verdana Italic": "Verdana,italic",
-		"Zapfino": "Zapfino"
+		'American Typewriter': 'American Typewriter',
+		'American Typewriter Bold': 'American Typewriter,bold',
+		'American Typewriter Condensed': 'American Typewriter Condensed',
+		'American Typewriter Condensed Bold': 'American Typewriter Condensed,bold',
+		'American Typewriter Condensed Light': 'American Typewriter Condensed Light',
+		'American Typewriter Light': 'American Typewriter Light',
+		'Andale Mono': 'Andale Mono',
+		'Arial': 'Arial',
+		'Arial Black': 'Arial Black',
+		'Arial Bold': 'Arial,bold',
+		'Arial Bold Italic': 'Arial,bold,italic',
+		'Arial Italic': 'Arial,italic',
+		'Baskerville': 'Baskerville',
+		'Big Caslon': 'Big Caslon',
+		'Brush Script MT': 'Brush Script MT',
+		'Cochin': 'Cochin',
+		'Copperplate': 'Copperplate',
+		'Courier': 'Courier',
+		'Courier Bold': 'Courier,bold',
+		'Courier Oblique': 'Courier Oblique',
+		'Didot': 'Didot',
+		'Futura': 'Futura',
+		'Futura Condensed': 'Futura Condensed Medium',
+		'Futura Italic': 'Futura Medium,italic',
+		'Georgia': 'Georgia',
+		'Georgia Bold': 'Georgia,bold',
+		'Georgia Bold Italic': 'Georgia,bold,italic',
+		'Georgia Italic': 'Georgia,italic',
+		'Gill Sans': 'Gill Sans',
+		'Gill Sans Bold': 'Gill Sans,bold',
+		'Gill Sans Bold Italic': 'Gill Sans,bold,italic',
+		'Gill Sans Italic': 'Gill Sans,italic',
+		'Gill Sans Light': 'Gill Sans Light',
+		'Gill Sans Light Italic': 'Gill Sans Light,italic',
+		'Helvetica': 'Helvetica',
+		'Helvetica Bold': 'Helvetica,bold',
+		'Helvetica Light': 'Helvetica Light',
+		'Helvetica Light Oblique': 'Helvetica Light Oblique',
+		'Helvetica Neue': 'Helvetica Neue',
+		'Helvetica Neue Bold': 'Helvetica Neue,bold',
+		'Helvetica Neue Bold Italic': 'Helvetica Neue,bold,italic',
+		'Helvetica Neue Condensed Black': 'Helvetica Neue Condensed Black',
+		'Helvetica Neue Condensed Bold': 'Helvetica Neue Condensed,bold',
+		'Helvetica Neue Light': 'Helvetica Neue Light',
+		'Helvetica Neue Light Italic': 'Helvetica Neue Light,italic',
+		'Helvetica Neue Medium': 'Helvetica Neue Medium',
+		'Helvetica Neue UltraLight': 'Helvetica Neue UltraLight',
+		'Helvetica Neue UltraLight Italic': 'Helvetica Neue UltraLight,italic',
+		'Helvetica Oblique': 'Helvetica Oblique',
+		'Herculanum': 'Herculanum',
+		'Impact': 'Impact',
+		'Marker Felt Thin': 'Marker Felt Thin',
+		'Marker Felt Wide': 'Marker Felt Wide',
+		'Optima': 'Optima',
+		'Optima Bold': 'Optima,bold',
+		'Optima Bold Italic': 'Optima,bold,italic',
+		'Optima ExtraBlack': 'Optima ExtraBlack',
+		'Optima Italic': 'Optima,italic',
+		'Papyrus': 'Papyrus',
+		'Papyrus Condensed': 'Papyrus Condensed',
+		'Times': 'Times',
+		'Times Bold': 'Times,bold',
+		'Times Bold Italic': 'Times,bold,italic',
+		'Times Italic': 'Times,italic',
+		'Times New Roman': 'Times New Roman',
+		'Times New Roman Bold': 'Times New Roman,bold',
+		'Times New Roman Bold Italic': 'Times New Roman,bold,italic',
+		'Times New Roman Italic': 'Times New Roman,italic',
+		'Trebuchet MS': 'Trebuchet MS',
+		'Trebuchet MS Bold': 'Trebuchet MS,bold',
+		'Trebuchet MS Bold Italic': 'Trebuchet MS,bold,italic',
+		'Trebuchet MS Italic': 'Trebuchet MS,italic',
+		'Verdana': 'Verdana',
+		'Verdana Bold': 'Verdana,bold',
+		'Verdana Bold Italic': 'Verdana,bold,italic',
+		'Verdana Italic': 'Verdana,italic',
+		'Zapfino': 'Zapfino'
 	};
 };
 
@@ -967,16 +967,16 @@ imgix.getDefaultParams = function() {
 };
 
 imgix.makeCssClass = function(url) {
-	return "tmp_" + imgix.md5(url);
+	return 'tmp_' + imgix.md5(url);
 };
 
 imgix.injectStyleSheet = function(url) {
-	var ss = document.createElement("link");
-	ss.type = "text/css";
-	ss.rel = "stylesheet";
+	var ss = document.createElement('link');
+	ss.type = 'text/css';
+	ss.rel = 'stylesheet';
 	ss.href = url;
 
-	document.getElementsByTagName("head")[0].appendChild(ss);
+	document.getElementsByTagName('head')[0].appendChild(ss);
 };
 
 imgix.findInjectedStyleSheet = function(url) {
@@ -999,8 +999,8 @@ imgix.getElementImageSize = function(el) {
 		w = el.naturalWidth;
 		h = el.naturalHeight;
 	} else {
-		w = imgix.helpers.extractInt(imgix.getCssProperty(el, "width"));
-		h = imgix.helpers.extractInt(imgix.getCssProperty(el, "height"));
+		w = imgix.helpers.extractInt(imgix.getCssProperty(el, 'width'));
+		h = imgix.helpers.extractInt(imgix.getCssProperty(el, 'height'));
 	}
 
 	return {
@@ -1024,17 +1024,17 @@ imgix.getCssPropertyBySelector = function(sel, property) {
 };
 
 imgix.instanceOfImgixURL = function(x) {
-	return x && x.toString() === "[object imgixURL]";
+	return x && x.toString() === '[object imgixURL]';
 };
 
 imgix.setGradientOnElement = function(el, colors, baseColor) {
 	var baseColors = [];
-	if (typeof baseColor === "undefined") {
+	if (typeof baseColor === 'undefined') {
 		// transparent base colors if not set
-		baseColors = ["transparent", "transparent"];
+		baseColors = ['transparent', 'transparent'];
 	} else {
 		var base = imgix.hexToRGB(baseColor); // force rgb if in hex
-		if (base.slice(0, 4) === "rgba") {
+		if (base.slice(0, 4) === 'rgba') {
 			// if given an rgba then use that as the upper and force 0 for lower
 			baseColors.push(base);
 			baseColors.push(imgix.applyAlphaToRGB(base, 0));
@@ -1080,7 +1080,7 @@ imgix.URL = function(url, imgParams, token, isRj) {
 
 	this.setUrl(url);
 
-	if (typeof imgParams === "object") {
+	if (typeof imgParams === 'object') {
 		this.setParams(imgParams);
 	}
 
@@ -1096,13 +1096,13 @@ imgix.URL = function(url, imgParams, token, isRj) {
 imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) {
 	this.getColors(16, function(colors) {
 		if (colors && colors.length < 9) {
-			console.warn("not enough colors to create a gradient");
-			if (callback && typeof callback === "function") {
+			console.warn('not enough colors to create a gradient');
+			if (callback && typeof callback === 'function') {
 				callback(false);
 			}
 			return;
 		}
-		if (typeof elemOrSel === "string") {
+		if (typeof elemOrSel === 'string') {
 			var results = document.querySelectorAll(elemOrSel);
 			if (results && results.length > 0) {
 				for (var i = 0; i < results.length; i++) {
@@ -1113,7 +1113,7 @@ imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) 
 			imgix.setGradientOnElement(elemOrSel, colors, baseColor);
 		}
 
-		if (callback && typeof callback === "function") {
+		if (callback && typeof callback === 'function') {
 			callback(true);
 		}
 	});
@@ -1127,7 +1127,7 @@ imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) 
  */
 imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
 	//this.token = token;
-	if (typeof elemOrSel === "string") {
+	if (typeof elemOrSel === 'string') {
 		var results = document.querySelectorAll(elemOrSel);
 		if (results && results.length > 0) {
 			for (var i = 0; i < results.length; i++) {
@@ -1166,8 +1166,8 @@ imgix.URL.prototype.getColors = function(num, callback) {
 	var clone = new imgix.URL(this.getUrl()),
 		paletteClass = imgix.makeCssClass(this.getUrl());
 
-	if (typeof num === "function") {
-		if (typeof callback === "number") {
+	if (typeof num === 'function') {
+		if (typeof callback === 'number') {
 			var tmpNum = callback;
 			callback = num;
 			num = tmpNum;
@@ -1198,7 +1198,7 @@ imgix.URL.prototype.getColors = function(num, callback) {
 				for (var i = 1; i <= num; i++) {
 
 					(function(i) {
-						var tmps = document.createElement("span");
+						var tmps = document.createElement('span');
 						tmps.id = paletteClass + '-' + i;
 						tmps.className = paletteClass + '-fg-' + i;
 						document.body.appendChild(tmps);
@@ -1210,14 +1210,14 @@ imgix.URL.prototype.getColors = function(num, callback) {
 									var c = imgix.getCssPropertyById(tmps.id, 'color');
 									if (c !== lastColor) {
 										document.body.removeChild(tmps);
-										resolve({"num": i, "color": c});
+										resolve({'num': i, 'color': c});
 										lastColor = c;
 									} else {
 										if (++attempts < maxTries) {
 											setTimeout(checkLoaded, 50);
 										} else {
 											document.body.removeChild(tmps);
-											resolve({"num": i, "color": 'rgb(255, 255, 255)'});
+											resolve({'num': i, 'color': 'rgb(255, 255, 255)'});
 										}
 									}
 								};
@@ -1308,7 +1308,7 @@ imgix.URL.prototype._handleAutoUpdate = function() {
 						imgix.setElementImage(imgToEls[imgUrl][i], imgUrl);
 						loadedImages++;
 
-						if (typeof self._autoUpdateCallback === "function") {
+						if (typeof self._autoUpdateCallback === 'function') {
 							var obj = {
 									element: imgToEls[imgUrl][i],
 									isComplete: loadedImages === totalImages, // boolean
@@ -1380,7 +1380,7 @@ imgix.URL.prototype.autoUpdateImg = function(sel, callback) {
  */
 
 imgix.URL.prototype.setUrl = function(url) {
-	if (!url || typeof url !== "string" || url.length === 0) {
+	if (!url || typeof url !== 'string' || url.length === 0) {
 		url = imgix.getEmptyImage();
 	}
 	this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
@@ -1395,7 +1395,7 @@ imgix.URL.prototype.getURL = function() {
 };
 
 imgix.URL.prototype.toString = function() {
-	return "[object imgixURL]";
+	return '[object imgixURL]';
 };
 
 /**
@@ -1457,14 +1457,14 @@ imgix.URL.prototype.clearParams = function(runUpdate) {
 
 
 /**
- * Set multiple params using using an object (e.g. {txt: "hello", txtclr: "f00"})
+ * Set multiple params using using an object (e.g. {txt: 'hello', txtclr: 'f00'})
  * @memberof imgix
  * @param {object} dict an object of imgix params and their values
  * @param {boolean} doOverride should the value(s) be overridden if they already exist (defaults to true)
  */
 imgix.URL.prototype.setParams = function(dict, doOverride) {
 	if (imgix.instanceOfImgixURL(dict)) {
-		console.warn("setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead");
+		console.warn('setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead');
 		return;
 	}
 	for (var k in dict) {
@@ -1490,7 +1490,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 	doOverride = !imgix.isDef(doOverride) ? true : doOverride;
 	noUpdate = !imgix.isDef(noUpdate) ? false : noUpdate;
 
-	if (param === 'col' || param === 'colorize' || param === 'blend' || param === 'mono' || param === "monochrome") {
+	if (param === 'col' || param === 'colorize' || param === 'blend' || param === 'mono' || param === 'monochrome') {
 		if (value.slice(0, 3) === 'rgb') {
 			value = imgix.rgbToHex(value);
 		}
@@ -1498,7 +1498,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
 
 	// TODO: handle aliases -- only need on build?
 	if (imgix.getAllParams().indexOf(param) === -1) {
-		console.warn("\"" + param + "\" is an invalid imgix param");
+		console.warn('\'' + param + '\' is an invalid imgix param');
 		return this;
 	}
 
@@ -1559,7 +1559,7 @@ imgix.URL.prototype.getParam = function(param) {
 /**
  * Get an object of all the params and their values on the current image
  * @memberof imgix
- * @returns {object} an object of params and their values (e.g. {txt: "hello", txtclr: "f00"})
+ * @returns {object} an object of params and their values (e.g. {txt: 'hello', txtclr: 'f00'})
 */
 imgix.URL.prototype.getParams = function() {
 	if (this.urlParts.paramValues) {
@@ -1597,7 +1597,7 @@ imgix.URL.prototype.getQueryString = function() {
 	return '';
 };
 
-// "param name": "pretty name" (for auto-generated get/set-ers)
+// 'param name': 'pretty name' (for auto-generated get/set-ers)
 imgix.URL.theGetSetFuncs = Object.freeze({
 	// Adjustment
 	bri: 'Brightness',
@@ -1815,7 +1815,7 @@ imgix.parseUrl = function(url) {
 		var parts = qs.split('&');
 		for (var y = 0; y < parts.length; y++) {
 			var tmp = parts[y].split('=');
-			if (tmp[0] && tmp[0].length && tmp[0] !== "s") {
+			if (tmp[0] && tmp[0].length && tmp[0] !== 's') {
 				result.paramValues[tmp[0]] = (tmp.length === 2 ? tmp[1] : '');
 				if (result.params.indexOf(tmp[0]) === -1) {
 					result.params.push(tmp[0]);
@@ -1873,7 +1873,7 @@ imgix.signRjUrl = function(newUrl, token) {
 		rest = newUrl.substr(sig_location),
 		find_path = rest.match(/([^\/]+)(.+)/g),
 		path = find_path[1],
-		args = "/" + rest.replace(path, ""),
+		args = '/' + rest.replace(path, ''),
 		concat = token + args,
 		new_sig = imgix.safe_btoa_encode(MD5_hash(concat)).substr(0, 8),
 		new_url = newUrl.replace(sig, new_sig);
@@ -1888,9 +1888,9 @@ imgix.signUrl = function(newUrl, token) {
 
 		if (newUrl.indexOf('?') === -1) {
 			sig = imgix.md5(token + parts.pathname);
-			newUrl = newUrl + "?s=" + sig;
+			newUrl = newUrl + '?s=' + sig;
 		} else {
-			newUrl = newUrl + "&s=" + sig;
+			newUrl = newUrl + '&s=' + sig;
 		}
 	}
 
@@ -1898,7 +1898,7 @@ imgix.signUrl = function(newUrl, token) {
 };
 
 imgix.isDef = function(obj) {
-	return (typeof obj !== "undefined");
+	return (typeof obj !== 'undefined');
 };
 
 imgix.safe_btoa_encode = function (str) {
@@ -1915,7 +1915,7 @@ imgix.safe_btoa_decode = function (str) {
 // START FLUID
 
 var fluidDefaults = {
-	fluidClass: "imgix-fluid",
+	fluidClass: 'imgix-fluid',
 	updateOnResize: true,
 	updateOnResizeDown : false,
 	updateOnPinchZoom: false,
@@ -1964,7 +1964,7 @@ imgix.FluidSet = function(options) {
 		r: Math.max(this.options.lazyLoadOffsetHorizontal, 0)
 	};
 
-	this.namespace = "" + Math.random().toString(36).substring(7);
+	this.namespace = '' + Math.random().toString(36).substring(7);
 
 	this.windowResizeEventBound = false;
 	this.windowScrollEventBound = false;
@@ -1993,16 +1993,16 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 
 				i.getColors(16, function(colors) {
 					if (!colors) {
-						console.warn("No colors found for", i.getURL(), "for element", elem);
+						console.warn('No colors found for', i.getURL(), 'for element', elem);
 						return;
 					}
 
 					var useColor = null;
-					if (llcType === "boolean") {
+					if (llcType === 'boolean') {
 						useColor = colors[0];
-					} else if (llcType === "number" && self.options.lazyLoadColor < colors.length) {
+					} else if (llcType === 'number' && self.options.lazyLoadColor < colors.length) {
 						useColor = colors[self.options.lazyLoadColor];
-					} else if (llcType === "function") {
+					} else if (llcType === 'function') {
 						useColor = self.options.lazyLoadColor(elem, colors);
 					}
 
@@ -2037,7 +2037,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
 
 	var onLoad = function() {};
 
-	if (this.options.onLoad && typeof this.options.onLoad === "function") {
+	if (this.options.onLoad && typeof this.options.onLoad === 'function') {
 		onLoad = this.options.onLoad;
 	}
 
@@ -2109,10 +2109,10 @@ imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
 	}
 
 	var overrides = {};
-	if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === "function") {
+	if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === 'function') {
 		overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams(), elem);
 	} else {
-		//console.log("skipping...");
+		//console.log('skipping...');
 	}
 
 	for (var k in overrides) {
@@ -2127,7 +2127,7 @@ imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
 };
 
 imgix.FluidSet.prototype.toString = function() {
-	return "[object FluidSet]";
+	return '[object FluidSet]';
 };
 
 imgix.FluidSet.prototype.reloader = function() {
@@ -2140,11 +2140,11 @@ imgix.FluidSet.prototype.reloader = function() {
 imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
 	var self = this;
 	if (elem.addEventListener && !elem.listenerAttached) {
-		elem.addEventListener("gestureend", function(e) {
+		elem.addEventListener('gestureend', function(e) {
 			self.updateSrc(this, e.scale);
 		}, false);
 
-		elem.addEventListener("gesturechange", function() {
+		elem.addEventListener('gesturechange', function() {
 			self.updateSrc(this);
 		}, false);
 
@@ -2182,9 +2182,9 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 	}.bind(this);
 
 	if (window.addEventListener) {
-		window.addEventListener("resize", resizeInstances[this.namespace], false);
+		window.addEventListener('resize', resizeInstances[this.namespace], false);
 	} else if (window.attachEvent) {
-		window.attachEvent("onresize", resizeInstances[this.namespace]);
+		window.attachEvent('onresize', resizeInstances[this.namespace]);
 	}
 
 	this.windowResizeEventBound = true;
@@ -2192,7 +2192,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 
 /**
- * Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class.
+ * Enables fluid (responsive) images for any element(s) with the 'imgix-fluid' class.
  * To scope to images within a specific DOM node, pass the enclosing HTML element as the first argument.
 
 
@@ -2242,7 +2242,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
  <b>Default values</b> (passed config will extend these values)
 
 	{
-		fluidClass: "imgix-fluid",
+		fluidClass: 'imgix-fluid',
 		updateOnResize: true,
 		updateOnResizeDown : false,
 		updateOnPinchZoom: false,
@@ -2292,7 +2292,7 @@ imgix.fluid = function() {
 
 		for (var i = 0; i < passedKeys.length; i++) {
 			if (goodKeys.indexOf(passedKeys[i]) === -1) {
-				console.warn("\"" + passedKeys[i] + "\" is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.");
+				console.warn('\'' + passedKeys[i] + '\' is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.');
 			}
 		}
 
@@ -2369,10 +2369,10 @@ if (typeof window !== 'undefined') {
 		var doc = document;
 		var testEl = doc.documentElement;
 		var hack = testEl.doScroll;
-		var domContentLoaded = "DOMContentLoaded";
-		var addEventListener = "addEventListener";
-		var onreadystatechange = "onreadystatechange";
-		var readyState = "readyState";
+		var domContentLoaded = 'DOMContentLoaded';
+		var addEventListener = 'addEventListener';
+		var onreadystatechange = 'onreadystatechange';
+		var readyState = 'readyState';
 		var loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/;
 		var loaded = loadedRgx.test(doc[readyState]);
 		function flush(f) {
@@ -2397,7 +2397,7 @@ if (typeof window !== 'undefined') {
 					loaded ? fn() : fns.push(fn) :
 					function () {
 						try {
-							testEl.doScroll("left");
+							testEl.doScroll('left');
 						} catch (e) {
 							return setTimeout(function () {
 							ready(fn);
