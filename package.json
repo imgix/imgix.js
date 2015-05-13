@@ -21,11 +21,16 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-uglify": "~0.2.4",
     "grunt-contrib-watch": "~0.5.3",
+    "grunt-jscs": "^1.8.0",
     "grunt-jsdoc-to-markdown": "^0.4.2",
     "grunt-karma": "~0.6.2",
+    "jit-grunt": "^0.9.1",
+    "jscs": "^1.13.1",
     "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git",
+    "jshint": "^2.7.0",
     "karma": "~0.10.2",
     "karma-chrome-launcher": "~0.1.0",
     "karma-firefox-launcher": "~0.1.0",
@@ -34,6 +39,9 @@
     "karma-phantomjs-launcher": "~0.1.0",
     "karma-requirejs": "~0.2.0",
     "karma-script-launcher": "~0.1.0",
+    "precommit-hook": "^2.0.1",
+    "reporter-plus": "git://github.com/jayeb/reporter-plus.git",
+    "time-grunt": "^1.2.0",
     "underscore": "^1.7.0"
   }
 }

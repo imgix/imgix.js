@@ -20,6 +20,9 @@ module.exports = function(grunt) {
 		minjQueryJsFile = distPath('imgix.jquery.min.js'),
 		jsjQueryFile = distPath('imgix.jquery.js');
 
+  require('time-grunt')(grunt);
+  require('jit-grunt')(grunt);
+
 	function fileCopy(src, dest) {
 		dest = grunt.file.isFile(dest) ? dest : path.join(dest, path.basename(src));
 		grunt.file.copy(src, dest);
@@ -118,7 +121,22 @@ module.exports = function(grunt) {
 				}
 			}
 
-		}
+		},
+
+    jshint: {
+        src: ['src/core.js', 'src/polyfill.js'],
+        options: {
+            jshintrc: '.jshintrc',
+            reporter: require('reporter-plus/jshint')
+          }
+      },
+    jscs: {
+        src: ['src/core.js', 'src/polyfill.js'],
+        options: {
+            config: ".jscsrc",
+            reporter: require('reporter-plus/jscs').path
+          }
+      }
 	});
 
 	grunt.registerTask('prebuild', ['copy-core', 'build-dynamic-method-docs']);
@@ -202,11 +220,4 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask('default', 'build');
-
-	// load all our build dependencies
-	grunt.loadNpmTasks("grunt-jsdoc-to-markdown");
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-karma');
 };
