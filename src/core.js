@@ -1710,7 +1710,7 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 
 
 /**
-	Apply the speia imgix param to the image url. Same as doing .setParam('sepia', val);
+	Apply the sepia imgix param to the image url. Same as doing .setParam('sepia', val);
 	@param val the value to set for sepia
 	@name imgix.URL#setSepia
 	@function
