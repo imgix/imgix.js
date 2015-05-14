@@ -373,20 +373,24 @@ imgix.setElementImage = function (el, imgUrl) {
   }
 
   if (imgix.isImageElement(el)) {
-    el.src = imgUrl;
+    if (el.src !== imgUrl) {
+      el.src = imgUrl;
+    }
     return true;
   } else {
     var curBg = imgix.getBackgroundImage(el);
-    if (curBg) {
-      el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
-      return true;
-    } else {
-      if (document.addEventListener) {
-        el.style.backgroundImage = 'url(' + imgUrl + ')';
+    if (curBg !== imgUrl) {
+      if (curBg) {
+        el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
+        return true;
       } else {
-        el.style.cssText = 'background-image:url(' + imgUrl + ')';
+        if (document.addEventListener) {
+          el.style.backgroundImage = 'url(' + imgUrl + ')';
+        } else {
+          el.style.cssText = 'background-image:url(' + imgUrl + ')';
+        }
+        return true;
       }
-      return true;
     }
   }
 
