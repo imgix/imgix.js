@@ -30,125 +30,153 @@
   * [class: imgix.URL](#imgix.URL)
     * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
     * [URL.setSepia(val)](#imgix.URL#setSepia)
-    * [URL.setCrop(val)](#imgix.URL#setCrop)
-    * [URL.setFit(val)](#imgix.URL#setFit)
-    * [URL.setHeight(val)](#imgix.URL#setHeight)
-    * [URL.setWidth(val)](#imgix.URL#setWidth)
-    * [URL.setRotate(val)](#imgix.URL#setRotate)
-    * [URL.setFlip(val)](#imgix.URL#setFlip)
-    * [URL.setOrient(val)](#imgix.URL#setOrient)
-    * [URL.setDPR(val)](#imgix.URL#setDPR)
-    * [URL.setHue(val)](#imgix.URL#setHue)
-    * [URL.setSaturation(val)](#imgix.URL#setSaturation)
     * [URL.setBrightness(val)](#imgix.URL#setBrightness)
     * [URL.setContrast(val)](#imgix.URL#setContrast)
     * [URL.setExposure(val)](#imgix.URL#setExposure)
-    * [URL.setHighlight(val)](#imgix.URL#setHighlight)
-    * [URL.setShadow(val)](#imgix.URL#setShadow)
     * [URL.setGamma(val)](#imgix.URL#setGamma)
-    * [URL.setVibrance(val)](#imgix.URL#setVibrance)
+    * [URL.setHighlight(val)](#imgix.URL#setHighlight)
+    * [URL.setHue(val)](#imgix.URL#setHue)
+    * [URL.setInvert(val)](#imgix.URL#setInvert)
+    * [URL.setSaturation(val)](#imgix.URL#setSaturation)
+    * [URL.setShadow(val)](#imgix.URL#setShadow)
     * [URL.setSharpness(val)](#imgix.URL#setSharpness)
-    * [URL.setSepia(val)](#imgix.URL#setSepia)
-    * [URL.setHalftone(val)](#imgix.URL#setHalftone)
-    * [URL.setBlur(val)](#imgix.URL#setBlur)
-    * [URL.setMonochrome(val)](#imgix.URL#setMonochrome)
-    * [URL.setPixelate(val)](#imgix.URL#setPixelate)
-    * [URL.setBlend(val)](#imgix.URL#setBlend)
-    * [URL.setBlendWidth(val)](#imgix.URL#setBlendWidth)
-    * [URL.setBlendHeight(val)](#imgix.URL#setBlendHeight)
-    * [URL.setBlendPadding(val)](#imgix.URL#setBlendPadding)
-    * [URL.setBlendFit(val)](#imgix.URL#setBlendFit)
+    * [URL.setUnsharpMask(val)](#imgix.URL#setUnsharpMask)
+    * [URL.setUnsharpMaskRadius(val)](#imgix.URL#setUnsharpMaskRadius)
+    * [URL.setVibrance(val)](#imgix.URL#setVibrance)
+    * [URL.setAuto(val)](#imgix.URL#setAuto)
+    * [URL.setBackground(val)](#imgix.URL#setBackground)
     * [URL.setBlendAlign(val)](#imgix.URL#setBlendAlign)
     * [URL.setBlendAlpha(val)](#imgix.URL#setBlendAlpha)
-    * [URL.setBlendMode(val)](#imgix.URL#setBlendMode)
     * [URL.setBlendCrop(val)](#imgix.URL#setBlendCrop)
+    * [URL.setBlendFit(val)](#imgix.URL#setBlendFit)
+    * [URL.setBlendHeight(val)](#imgix.URL#setBlendHeight)
+    * [URL.setBlend(val)](#imgix.URL#setBlend)
+    * [URL.setBlendMode(val)](#imgix.URL#setBlendMode)
+    * [URL.setBlendPadding(val)](#imgix.URL#setBlendPadding)
     * [URL.setBlendSize(val)](#imgix.URL#setBlendSize)
-    * [URL.setText(val)](#imgix.URL#setText)
-    * [URL.setTextFont(val)](#imgix.URL#setTextFont)
-    * [URL.setTextSize(val)](#imgix.URL#setTextSize)
-    * [URL.setTextColor(val)](#imgix.URL#setTextColor)
-    * [URL.setTextAlign(val)](#imgix.URL#setTextAlign)
-    * [URL.setTextShadow(val)](#imgix.URL#setTextShadow)
-    * [URL.setTextPad(val)](#imgix.URL#setTextPad)
-    * [URL.setTextLine(val)](#imgix.URL#setTextLine)
-    * [URL.setTextLineColor(val)](#imgix.URL#setTextLineColor)
-    * [URL.setTextFit(val)](#imgix.URL#setTextFit)
+    * [URL.setBlendWidth(val)](#imgix.URL#setBlendWidth)
+    * [URL.setBorder(val)](#imgix.URL#setBorder)
+    * [URL.setPad(val)](#imgix.URL#setPad)
+    * [URL.setDownload(val)](#imgix.URL#setDownload)
     * [URL.setFormat(val)](#imgix.URL#setFormat)
     * [URL.setQuality(val)](#imgix.URL#setQuality)
-    * [URL.setWatermark(val)](#imgix.URL#setWatermark)
-    * [URL.setWatermarkWidth(val)](#imgix.URL#setWatermarkWidth)
-    * [URL.setWatermarkHeight(val)](#imgix.URL#setWatermarkHeight)
-    * [URL.setWatermarkFit(val)](#imgix.URL#setWatermarkFit)
-    * [URL.setWatermarkScale(val)](#imgix.URL#setWatermarkScale)
-    * [URL.setWatermarkAlign(val)](#imgix.URL#setWatermarkAlign)
-    * [URL.setWatermarkAlpha(val)](#imgix.URL#setWatermarkAlpha)
-    * [URL.setWatermarkPadding(val)](#imgix.URL#setWatermarkPadding)
+    * [URL.setMask(val)](#imgix.URL#setMask)
+    * [URL.setNoiseReduction(val)](#imgix.URL#setNoiseReduction)
+    * [URL.setNoiseReductionSharpen(val)](#imgix.URL#setNoiseReductionSharpen)
     * [URL.setPalette(val)](#imgix.URL#setPalette)
     * [URL.setPaletteClass(val)](#imgix.URL#setPaletteClass)
+    * [URL.setPalettePrefix(val)](#imgix.URL#setPalettePrefix)
     * [URL.setPaletteColorNumber(val)](#imgix.URL#setPaletteColorNumber)
-    * [URL.setAuto(val)](#imgix.URL#setAuto)
-    * [URL.setMask(val)](#imgix.URL#setMask)
-    * [URL.setBackground(val)](#imgix.URL#setBackground)
-    * [URL.getCrop(val)](#imgix.URL#getCrop)
-    * [URL.getFit()](#imgix.URL#getFit)
-    * [URL.getHeight()](#imgix.URL#getHeight)
-    * [URL.getWidth()](#imgix.URL#getWidth)
-    * [URL.getRotate()](#imgix.URL#getRotate)
-    * [URL.getFlip()](#imgix.URL#getFlip)
-    * [URL.getOrient()](#imgix.URL#getOrient)
-    * [URL.getDPR()](#imgix.URL#getDPR)
-    * [URL.getHue()](#imgix.URL#getHue)
-    * [URL.getSaturation()](#imgix.URL#getSaturation)
-    * [URL.getBrightness()](#imgix.URL#getBrightness)
+    * [URL.setPage(val)](#imgix.URL#setPage)
+    * [URL.setDPR(val)](#imgix.URL#setDPR)
+    * [URL.setFlip(val)](#imgix.URL#setFlip)
+    * [URL.setOrient(val)](#imgix.URL#setOrient)
+    * [URL.setRotate(val)](#imgix.URL#setRotate)
+    * [URL.setCrop(val)](#imgix.URL#setCrop)
+    * [URL.setFit(val)](#imgix.URL#setFit)
+    * [URL.setHeight(val)](#imgix.URL#setHeight)
+    * [URL.setRectangle(val)](#imgix.URL#setRectangle)
+    * [URL.setWidth(val)](#imgix.URL#setWidth)
+    * [URL.setBlur(val)](#imgix.URL#setBlur)
+    * [URL.setHalftone(val)](#imgix.URL#setHalftone)
+    * [URL.setMonochrome(val)](#imgix.URL#setMonochrome)
+    * [URL.setPixelate(val)](#imgix.URL#setPixelate)
+    * [URL.setSepia(val)](#imgix.URL#setSepia)
+    * [URL.setText(val)](#imgix.URL#setText)
+    * [URL.setTextAlign(val)](#imgix.URL#setTextAlign)
+    * [URL.setTextClip(val)](#imgix.URL#setTextClip)
+    * [URL.setTextColor(val)](#imgix.URL#setTextColor)
+    * [URL.setTextFit(val)](#imgix.URL#setTextFit)
+    * [URL.setTextFont(val)](#imgix.URL#setTextFont)
+    * [URL.setTextLine(val)](#imgix.URL#setTextLine)
+    * [URL.setTextLineColor(val)](#imgix.URL#setTextLineColor)
+    * [URL.setTextPad(val)](#imgix.URL#setTextPad)
+    * [URL.setTextSize(val)](#imgix.URL#setTextSize)
+    * [URL.setTextShadow(val)](#imgix.URL#setTextShadow)
+    * [URL.setTrim(val)](#imgix.URL#setTrim)
+    * [URL.setTrimColor(val)](#imgix.URL#setTrimColor)
+    * [URL.setTrimMeanDifference(val)](#imgix.URL#setTrimMeanDifference)
+    * [URL.setWatermark(val)](#imgix.URL#setWatermark)
+    * [URL.setWatermarkAlign(val)](#imgix.URL#setWatermarkAlign)
+    * [URL.setWatermarkAlpha(val)](#imgix.URL#setWatermarkAlpha)
+    * [URL.setWatermarkFit(val)](#imgix.URL#setWatermarkFit)
+    * [URL.setWatermarkHeight(val)](#imgix.URL#setWatermarkHeight)
+    * [URL.setWatermarkPadding(val)](#imgix.URL#setWatermarkPadding)
+    * [URL.setWatermarkScale(val)](#imgix.URL#setWatermarkScale)
+    * [URL.getBrightness(val)](#imgix.URL#getBrightness)
     * [URL.getContrast()](#imgix.URL#getContrast)
     * [URL.getExposure()](#imgix.URL#getExposure)
-    * [URL.getHighlight()](#imgix.URL#getHighlight)
-    * [URL.getShadow()](#imgix.URL#getShadow)
     * [URL.getGamma()](#imgix.URL#getGamma)
-    * [URL.getVibrance()](#imgix.URL#getVibrance)
+    * [URL.getHighlight()](#imgix.URL#getHighlight)
+    * [URL.getHue()](#imgix.URL#getHue)
+    * [URL.getInvert()](#imgix.URL#getInvert)
+    * [URL.getSaturation()](#imgix.URL#getSaturation)
+    * [URL.getShadow()](#imgix.URL#getShadow)
     * [URL.getSharpness()](#imgix.URL#getSharpness)
-    * [URL.getSepia()](#imgix.URL#getSepia)
-    * [URL.getHalftone()](#imgix.URL#getHalftone)
-    * [URL.getBlur()](#imgix.URL#getBlur)
-    * [URL.getMonochrome()](#imgix.URL#getMonochrome)
-    * [URL.getPixelate()](#imgix.URL#getPixelate)
-    * [URL.getBlend()](#imgix.URL#getBlend)
-    * [URL.getBlendWidth()](#imgix.URL#getBlendWidth)
-    * [URL.getBlendHeight()](#imgix.URL#getBlendHeight)
-    * [URL.getBlendPadding()](#imgix.URL#getBlendPadding)
-    * [URL.getBlendFit()](#imgix.URL#getBlendFit)
+    * [URL.getUnsharpMask()](#imgix.URL#getUnsharpMask)
+    * [URL.getUnsharpMaskRadius()](#imgix.URL#getUnsharpMaskRadius)
+    * [URL.getVibrance()](#imgix.URL#getVibrance)
+    * [URL.getAuto()](#imgix.URL#getAuto)
+    * [URL.getBackground()](#imgix.URL#getBackground)
     * [URL.getBlendAlign()](#imgix.URL#getBlendAlign)
     * [URL.getBlendAlpha()](#imgix.URL#getBlendAlpha)
-    * [URL.getBlendMode()](#imgix.URL#getBlendMode)
     * [URL.getBlendCrop()](#imgix.URL#getBlendCrop)
+    * [URL.getBlendFit()](#imgix.URL#getBlendFit)
+    * [URL.getBlendHeight()](#imgix.URL#getBlendHeight)
+    * [URL.getBlend()](#imgix.URL#getBlend)
+    * [URL.getBlendMode()](#imgix.URL#getBlendMode)
+    * [URL.getBlendPadding()](#imgix.URL#getBlendPadding)
     * [URL.getBlendSize()](#imgix.URL#getBlendSize)
-    * [URL.getText()](#imgix.URL#getText)
-    * [URL.getTextFont()](#imgix.URL#getTextFont)
-    * [URL.getTextSize()](#imgix.URL#getTextSize)
-    * [URL.getTextColor()](#imgix.URL#getTextColor)
-    * [URL.getTextAlign()](#imgix.URL#getTextAlign)
-    * [URL.getTextShadow()](#imgix.URL#getTextShadow)
-    * [URL.getTextPad()](#imgix.URL#getTextPad)
-    * [URL.getTextLine()](#imgix.URL#getTextLine)
-    * [URL.getTextLineColor()](#imgix.URL#getTextLineColor)
-    * [URL.getTextFit()](#imgix.URL#getTextFit)
+    * [URL.getBlendWidth()](#imgix.URL#getBlendWidth)
+    * [URL.getBorder()](#imgix.URL#getBorder)
+    * [URL.getPad()](#imgix.URL#getPad)
+    * [URL.getDownload()](#imgix.URL#getDownload)
     * [URL.getFormat()](#imgix.URL#getFormat)
     * [URL.getQuality()](#imgix.URL#getQuality)
-    * [URL.getWatermark()](#imgix.URL#getWatermark)
-    * [URL.getWatermarkWidth()](#imgix.URL#getWatermarkWidth)
-    * [URL.getWatermarkHeight()](#imgix.URL#getWatermarkHeight)
-    * [URL.getWatermarkFit()](#imgix.URL#getWatermarkFit)
-    * [URL.getWatermarkScale()](#imgix.URL#getWatermarkScale)
-    * [URL.getWatermarkAlign()](#imgix.URL#getWatermarkAlign)
-    * [URL.getWatermarkAlpha()](#imgix.URL#getWatermarkAlpha)
-    * [URL.getWatermarkPadding()](#imgix.URL#getWatermarkPadding)
+    * [URL.getMask()](#imgix.URL#getMask)
+    * [URL.getNoiseReduction()](#imgix.URL#getNoiseReduction)
+    * [URL.getNoiseReductionSharpen()](#imgix.URL#getNoiseReductionSharpen)
     * [URL.getPalette()](#imgix.URL#getPalette)
     * [URL.getPaletteClass()](#imgix.URL#getPaletteClass)
+    * [URL.getPalettePrefix()](#imgix.URL#getPalettePrefix)
     * [URL.getPaletteColorNumber()](#imgix.URL#getPaletteColorNumber)
-    * [URL.getAuto()](#imgix.URL#getAuto)
-    * [URL.getMask()](#imgix.URL#getMask)
-    * [URL.getBackground()](#imgix.URL#getBackground)
-    * [URL.getInvert()](#imgix.URL#getInvert)
+    * [URL.getPage()](#imgix.URL#getPage)
+    * [URL.getDPR()](#imgix.URL#getDPR)
+    * [URL.getFlip()](#imgix.URL#getFlip)
+    * [URL.getOrient()](#imgix.URL#getOrient)
+    * [URL.getRotate()](#imgix.URL#getRotate)
+    * [URL.getCrop()](#imgix.URL#getCrop)
+    * [URL.getFit()](#imgix.URL#getFit)
+    * [URL.getHeight()](#imgix.URL#getHeight)
+    * [URL.getRectangle()](#imgix.URL#getRectangle)
+    * [URL.getWidth()](#imgix.URL#getWidth)
+    * [URL.getBlur()](#imgix.URL#getBlur)
+    * [URL.getHalftone()](#imgix.URL#getHalftone)
+    * [URL.getMonochrome()](#imgix.URL#getMonochrome)
+    * [URL.getPixelate()](#imgix.URL#getPixelate)
+    * [URL.getSepia()](#imgix.URL#getSepia)
+    * [URL.getText()](#imgix.URL#getText)
+    * [URL.getTextAlign()](#imgix.URL#getTextAlign)
+    * [URL.getTextClip()](#imgix.URL#getTextClip)
+    * [URL.getTextColor()](#imgix.URL#getTextColor)
+    * [URL.getTextFit()](#imgix.URL#getTextFit)
+    * [URL.getTextFont()](#imgix.URL#getTextFont)
+    * [URL.getTextLine()](#imgix.URL#getTextLine)
+    * [URL.getTextLineColor()](#imgix.URL#getTextLineColor)
+    * [URL.getTextPad()](#imgix.URL#getTextPad)
+    * [URL.getTextSize()](#imgix.URL#getTextSize)
+    * [URL.getTextShadow()](#imgix.URL#getTextShadow)
+    * [URL.getTrim()](#imgix.URL#getTrim)
+    * [URL.getTrimColor()](#imgix.URL#getTrimColor)
+    * [URL.getTrimMeanDifference()](#imgix.URL#getTrimMeanDifference)
+    * [URL.getWatermark()](#imgix.URL#getWatermark)
+    * [URL.getWatermarkAlign()](#imgix.URL#getWatermarkAlign)
+    * [URL.getWatermarkAlpha()](#imgix.URL#getWatermarkAlpha)
+    * [URL.getWatermarkFit()](#imgix.URL#getWatermarkFit)
+    * [URL.getWatermarkHeight()](#imgix.URL#getWatermarkHeight)
+    * [URL.getWatermarkPadding()](#imgix.URL#getWatermarkPadding)
+    * [URL.getWatermarkScale()](#imgix.URL#getWatermarkScale)
+    * [URL.getWatermarkWidth()](#imgix.URL#getWatermarkWidth)
     * [URL.attachGradientTo(elemOrSel, baseColor)](#imgix.URL#attachGradientTo)
     * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
     * [URL.setToken(token)](#imgix.URL#setToken)
@@ -289,7 +317,7 @@ Helper method to turn rgb(255, 255, 255) style colors to hex (ffffff)
 <a name="imgix.getFontLookup"></a>
 ##imgix.getFontLookup()
 Returns a font lookup. Pretty Name => name to use with imgix
-Example: "American Typewriter Bold" => "American Typewriter,bold",
+Example: 'American Typewriter Bold' => 'American Typewriter,bold',
 
 **Returns**: `object` - pretty font name to imgix font param value  
 <a name="imgix.getFonts"></a>
@@ -299,7 +327,7 @@ Get a list of all the fonts supported by imgix
 **Returns**: `array` - An array of strings of the supported font names  
 <a name="imgix.fluid"></a>
 ##imgix.fluid([rootNode], config)
-Enables fluid (responsive) images for any element(s) with the "imgix-fluid" class.
+Enables fluid (responsive) images for any element(s) with the 'imgix-fluid' class.
 To scope to images within a specific DOM node, pass the enclosing HTML element as the first argument.
 
 
@@ -338,7 +366,7 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
-`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
+`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function (`HTMLElement' el, `Array` colors)
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
@@ -348,27 +376,27 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
 
  <b>Default values</b> (passed config will extend these values)
 
-	{
-		fluidClass: "imgix-fluid",
-		updateOnResize: true,
-		updateOnResizeDown : false,
-		updateOnPinchZoom: false,
-		highDPRAutoScaleQuality: true,
-		onChangeParamOverride: null,
-		autoInsertCSSBestPractices: false,
-		fitImgTagToContainerWidth: true,
-		fitImgTagToContainerHeight: false,
-		pixelStep: 10,
-		token: null,
-		debounce: 200,
-		ignoreDPR: false,
-		lazyLoad: false,
-		lazyLoadOffsetVertical: 20,
-		lazyLoadOffsetHorizontal: 20,
-		maxWidth: 5000,
-		maxHeight: 5000,
-		onLoad: null
-	}
+  {
+    fluidClass: 'imgix-fluid',
+    updateOnResize: true,
+    updateOnResizeDown: false,
+    updateOnPinchZoom: false,
+    highDPRAutoScaleQuality: true,
+    onChangeParamOverride: null,
+    autoInsertCSSBestPractices: false,
+    fitImgTagToContainerWidth: true,
+    fitImgTagToContainerHeight: false,
+    pixelStep: 10,
+    token: null,
+    debounce: 200,
+    ignoreDPR: false,
+    lazyLoad: false,
+    lazyLoadOffsetVertical: 20,
+    lazyLoadOffsetHorizontal: 20,
+    maxWidth: 5000,
+    maxHeight: 5000,
+    onLoad: null
+  }
 
 **Params**
 
@@ -390,125 +418,153 @@ The helper namespace for lower-level functions
 * [class: imgix.URL](#imgix.URL)
   * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
   * [URL.setSepia(val)](#imgix.URL#setSepia)
-  * [URL.setCrop(val)](#imgix.URL#setCrop)
-  * [URL.setFit(val)](#imgix.URL#setFit)
-  * [URL.setHeight(val)](#imgix.URL#setHeight)
-  * [URL.setWidth(val)](#imgix.URL#setWidth)
-  * [URL.setRotate(val)](#imgix.URL#setRotate)
-  * [URL.setFlip(val)](#imgix.URL#setFlip)
-  * [URL.setOrient(val)](#imgix.URL#setOrient)
-  * [URL.setDPR(val)](#imgix.URL#setDPR)
-  * [URL.setHue(val)](#imgix.URL#setHue)
-  * [URL.setSaturation(val)](#imgix.URL#setSaturation)
   * [URL.setBrightness(val)](#imgix.URL#setBrightness)
   * [URL.setContrast(val)](#imgix.URL#setContrast)
   * [URL.setExposure(val)](#imgix.URL#setExposure)
-  * [URL.setHighlight(val)](#imgix.URL#setHighlight)
-  * [URL.setShadow(val)](#imgix.URL#setShadow)
   * [URL.setGamma(val)](#imgix.URL#setGamma)
-  * [URL.setVibrance(val)](#imgix.URL#setVibrance)
+  * [URL.setHighlight(val)](#imgix.URL#setHighlight)
+  * [URL.setHue(val)](#imgix.URL#setHue)
+  * [URL.setInvert(val)](#imgix.URL#setInvert)
+  * [URL.setSaturation(val)](#imgix.URL#setSaturation)
+  * [URL.setShadow(val)](#imgix.URL#setShadow)
   * [URL.setSharpness(val)](#imgix.URL#setSharpness)
-  * [URL.setSepia(val)](#imgix.URL#setSepia)
-  * [URL.setHalftone(val)](#imgix.URL#setHalftone)
-  * [URL.setBlur(val)](#imgix.URL#setBlur)
-  * [URL.setMonochrome(val)](#imgix.URL#setMonochrome)
-  * [URL.setPixelate(val)](#imgix.URL#setPixelate)
-  * [URL.setBlend(val)](#imgix.URL#setBlend)
-  * [URL.setBlendWidth(val)](#imgix.URL#setBlendWidth)
-  * [URL.setBlendHeight(val)](#imgix.URL#setBlendHeight)
-  * [URL.setBlendPadding(val)](#imgix.URL#setBlendPadding)
-  * [URL.setBlendFit(val)](#imgix.URL#setBlendFit)
+  * [URL.setUnsharpMask(val)](#imgix.URL#setUnsharpMask)
+  * [URL.setUnsharpMaskRadius(val)](#imgix.URL#setUnsharpMaskRadius)
+  * [URL.setVibrance(val)](#imgix.URL#setVibrance)
+  * [URL.setAuto(val)](#imgix.URL#setAuto)
+  * [URL.setBackground(val)](#imgix.URL#setBackground)
   * [URL.setBlendAlign(val)](#imgix.URL#setBlendAlign)
   * [URL.setBlendAlpha(val)](#imgix.URL#setBlendAlpha)
-  * [URL.setBlendMode(val)](#imgix.URL#setBlendMode)
   * [URL.setBlendCrop(val)](#imgix.URL#setBlendCrop)
+  * [URL.setBlendFit(val)](#imgix.URL#setBlendFit)
+  * [URL.setBlendHeight(val)](#imgix.URL#setBlendHeight)
+  * [URL.setBlend(val)](#imgix.URL#setBlend)
+  * [URL.setBlendMode(val)](#imgix.URL#setBlendMode)
+  * [URL.setBlendPadding(val)](#imgix.URL#setBlendPadding)
   * [URL.setBlendSize(val)](#imgix.URL#setBlendSize)
-  * [URL.setText(val)](#imgix.URL#setText)
-  * [URL.setTextFont(val)](#imgix.URL#setTextFont)
-  * [URL.setTextSize(val)](#imgix.URL#setTextSize)
-  * [URL.setTextColor(val)](#imgix.URL#setTextColor)
-  * [URL.setTextAlign(val)](#imgix.URL#setTextAlign)
-  * [URL.setTextShadow(val)](#imgix.URL#setTextShadow)
-  * [URL.setTextPad(val)](#imgix.URL#setTextPad)
-  * [URL.setTextLine(val)](#imgix.URL#setTextLine)
-  * [URL.setTextLineColor(val)](#imgix.URL#setTextLineColor)
-  * [URL.setTextFit(val)](#imgix.URL#setTextFit)
+  * [URL.setBlendWidth(val)](#imgix.URL#setBlendWidth)
+  * [URL.setBorder(val)](#imgix.URL#setBorder)
+  * [URL.setPad(val)](#imgix.URL#setPad)
+  * [URL.setDownload(val)](#imgix.URL#setDownload)
   * [URL.setFormat(val)](#imgix.URL#setFormat)
   * [URL.setQuality(val)](#imgix.URL#setQuality)
-  * [URL.setWatermark(val)](#imgix.URL#setWatermark)
-  * [URL.setWatermarkWidth(val)](#imgix.URL#setWatermarkWidth)
-  * [URL.setWatermarkHeight(val)](#imgix.URL#setWatermarkHeight)
-  * [URL.setWatermarkFit(val)](#imgix.URL#setWatermarkFit)
-  * [URL.setWatermarkScale(val)](#imgix.URL#setWatermarkScale)
-  * [URL.setWatermarkAlign(val)](#imgix.URL#setWatermarkAlign)
-  * [URL.setWatermarkAlpha(val)](#imgix.URL#setWatermarkAlpha)
-  * [URL.setWatermarkPadding(val)](#imgix.URL#setWatermarkPadding)
+  * [URL.setMask(val)](#imgix.URL#setMask)
+  * [URL.setNoiseReduction(val)](#imgix.URL#setNoiseReduction)
+  * [URL.setNoiseReductionSharpen(val)](#imgix.URL#setNoiseReductionSharpen)
   * [URL.setPalette(val)](#imgix.URL#setPalette)
   * [URL.setPaletteClass(val)](#imgix.URL#setPaletteClass)
+  * [URL.setPalettePrefix(val)](#imgix.URL#setPalettePrefix)
   * [URL.setPaletteColorNumber(val)](#imgix.URL#setPaletteColorNumber)
-  * [URL.setAuto(val)](#imgix.URL#setAuto)
-  * [URL.setMask(val)](#imgix.URL#setMask)
-  * [URL.setBackground(val)](#imgix.URL#setBackground)
-  * [URL.getCrop(val)](#imgix.URL#getCrop)
-  * [URL.getFit()](#imgix.URL#getFit)
-  * [URL.getHeight()](#imgix.URL#getHeight)
-  * [URL.getWidth()](#imgix.URL#getWidth)
-  * [URL.getRotate()](#imgix.URL#getRotate)
-  * [URL.getFlip()](#imgix.URL#getFlip)
-  * [URL.getOrient()](#imgix.URL#getOrient)
-  * [URL.getDPR()](#imgix.URL#getDPR)
-  * [URL.getHue()](#imgix.URL#getHue)
-  * [URL.getSaturation()](#imgix.URL#getSaturation)
-  * [URL.getBrightness()](#imgix.URL#getBrightness)
+  * [URL.setPage(val)](#imgix.URL#setPage)
+  * [URL.setDPR(val)](#imgix.URL#setDPR)
+  * [URL.setFlip(val)](#imgix.URL#setFlip)
+  * [URL.setOrient(val)](#imgix.URL#setOrient)
+  * [URL.setRotate(val)](#imgix.URL#setRotate)
+  * [URL.setCrop(val)](#imgix.URL#setCrop)
+  * [URL.setFit(val)](#imgix.URL#setFit)
+  * [URL.setHeight(val)](#imgix.URL#setHeight)
+  * [URL.setRectangle(val)](#imgix.URL#setRectangle)
+  * [URL.setWidth(val)](#imgix.URL#setWidth)
+  * [URL.setBlur(val)](#imgix.URL#setBlur)
+  * [URL.setHalftone(val)](#imgix.URL#setHalftone)
+  * [URL.setMonochrome(val)](#imgix.URL#setMonochrome)
+  * [URL.setPixelate(val)](#imgix.URL#setPixelate)
+  * [URL.setSepia(val)](#imgix.URL#setSepia)
+  * [URL.setText(val)](#imgix.URL#setText)
+  * [URL.setTextAlign(val)](#imgix.URL#setTextAlign)
+  * [URL.setTextClip(val)](#imgix.URL#setTextClip)
+  * [URL.setTextColor(val)](#imgix.URL#setTextColor)
+  * [URL.setTextFit(val)](#imgix.URL#setTextFit)
+  * [URL.setTextFont(val)](#imgix.URL#setTextFont)
+  * [URL.setTextLine(val)](#imgix.URL#setTextLine)
+  * [URL.setTextLineColor(val)](#imgix.URL#setTextLineColor)
+  * [URL.setTextPad(val)](#imgix.URL#setTextPad)
+  * [URL.setTextSize(val)](#imgix.URL#setTextSize)
+  * [URL.setTextShadow(val)](#imgix.URL#setTextShadow)
+  * [URL.setTrim(val)](#imgix.URL#setTrim)
+  * [URL.setTrimColor(val)](#imgix.URL#setTrimColor)
+  * [URL.setTrimMeanDifference(val)](#imgix.URL#setTrimMeanDifference)
+  * [URL.setWatermark(val)](#imgix.URL#setWatermark)
+  * [URL.setWatermarkAlign(val)](#imgix.URL#setWatermarkAlign)
+  * [URL.setWatermarkAlpha(val)](#imgix.URL#setWatermarkAlpha)
+  * [URL.setWatermarkFit(val)](#imgix.URL#setWatermarkFit)
+  * [URL.setWatermarkHeight(val)](#imgix.URL#setWatermarkHeight)
+  * [URL.setWatermarkPadding(val)](#imgix.URL#setWatermarkPadding)
+  * [URL.setWatermarkScale(val)](#imgix.URL#setWatermarkScale)
+  * [URL.getBrightness(val)](#imgix.URL#getBrightness)
   * [URL.getContrast()](#imgix.URL#getContrast)
   * [URL.getExposure()](#imgix.URL#getExposure)
-  * [URL.getHighlight()](#imgix.URL#getHighlight)
-  * [URL.getShadow()](#imgix.URL#getShadow)
   * [URL.getGamma()](#imgix.URL#getGamma)
-  * [URL.getVibrance()](#imgix.URL#getVibrance)
+  * [URL.getHighlight()](#imgix.URL#getHighlight)
+  * [URL.getHue()](#imgix.URL#getHue)
+  * [URL.getInvert()](#imgix.URL#getInvert)
+  * [URL.getSaturation()](#imgix.URL#getSaturation)
+  * [URL.getShadow()](#imgix.URL#getShadow)
   * [URL.getSharpness()](#imgix.URL#getSharpness)
-  * [URL.getSepia()](#imgix.URL#getSepia)
-  * [URL.getHalftone()](#imgix.URL#getHalftone)
-  * [URL.getBlur()](#imgix.URL#getBlur)
-  * [URL.getMonochrome()](#imgix.URL#getMonochrome)
-  * [URL.getPixelate()](#imgix.URL#getPixelate)
-  * [URL.getBlend()](#imgix.URL#getBlend)
-  * [URL.getBlendWidth()](#imgix.URL#getBlendWidth)
-  * [URL.getBlendHeight()](#imgix.URL#getBlendHeight)
-  * [URL.getBlendPadding()](#imgix.URL#getBlendPadding)
-  * [URL.getBlendFit()](#imgix.URL#getBlendFit)
+  * [URL.getUnsharpMask()](#imgix.URL#getUnsharpMask)
+  * [URL.getUnsharpMaskRadius()](#imgix.URL#getUnsharpMaskRadius)
+  * [URL.getVibrance()](#imgix.URL#getVibrance)
+  * [URL.getAuto()](#imgix.URL#getAuto)
+  * [URL.getBackground()](#imgix.URL#getBackground)
   * [URL.getBlendAlign()](#imgix.URL#getBlendAlign)
   * [URL.getBlendAlpha()](#imgix.URL#getBlendAlpha)
-  * [URL.getBlendMode()](#imgix.URL#getBlendMode)
   * [URL.getBlendCrop()](#imgix.URL#getBlendCrop)
+  * [URL.getBlendFit()](#imgix.URL#getBlendFit)
+  * [URL.getBlendHeight()](#imgix.URL#getBlendHeight)
+  * [URL.getBlend()](#imgix.URL#getBlend)
+  * [URL.getBlendMode()](#imgix.URL#getBlendMode)
+  * [URL.getBlendPadding()](#imgix.URL#getBlendPadding)
   * [URL.getBlendSize()](#imgix.URL#getBlendSize)
-  * [URL.getText()](#imgix.URL#getText)
-  * [URL.getTextFont()](#imgix.URL#getTextFont)
-  * [URL.getTextSize()](#imgix.URL#getTextSize)
-  * [URL.getTextColor()](#imgix.URL#getTextColor)
-  * [URL.getTextAlign()](#imgix.URL#getTextAlign)
-  * [URL.getTextShadow()](#imgix.URL#getTextShadow)
-  * [URL.getTextPad()](#imgix.URL#getTextPad)
-  * [URL.getTextLine()](#imgix.URL#getTextLine)
-  * [URL.getTextLineColor()](#imgix.URL#getTextLineColor)
-  * [URL.getTextFit()](#imgix.URL#getTextFit)
+  * [URL.getBlendWidth()](#imgix.URL#getBlendWidth)
+  * [URL.getBorder()](#imgix.URL#getBorder)
+  * [URL.getPad()](#imgix.URL#getPad)
+  * [URL.getDownload()](#imgix.URL#getDownload)
   * [URL.getFormat()](#imgix.URL#getFormat)
   * [URL.getQuality()](#imgix.URL#getQuality)
-  * [URL.getWatermark()](#imgix.URL#getWatermark)
-  * [URL.getWatermarkWidth()](#imgix.URL#getWatermarkWidth)
-  * [URL.getWatermarkHeight()](#imgix.URL#getWatermarkHeight)
-  * [URL.getWatermarkFit()](#imgix.URL#getWatermarkFit)
-  * [URL.getWatermarkScale()](#imgix.URL#getWatermarkScale)
-  * [URL.getWatermarkAlign()](#imgix.URL#getWatermarkAlign)
-  * [URL.getWatermarkAlpha()](#imgix.URL#getWatermarkAlpha)
-  * [URL.getWatermarkPadding()](#imgix.URL#getWatermarkPadding)
+  * [URL.getMask()](#imgix.URL#getMask)
+  * [URL.getNoiseReduction()](#imgix.URL#getNoiseReduction)
+  * [URL.getNoiseReductionSharpen()](#imgix.URL#getNoiseReductionSharpen)
   * [URL.getPalette()](#imgix.URL#getPalette)
   * [URL.getPaletteClass()](#imgix.URL#getPaletteClass)
+  * [URL.getPalettePrefix()](#imgix.URL#getPalettePrefix)
   * [URL.getPaletteColorNumber()](#imgix.URL#getPaletteColorNumber)
-  * [URL.getAuto()](#imgix.URL#getAuto)
-  * [URL.getMask()](#imgix.URL#getMask)
-  * [URL.getBackground()](#imgix.URL#getBackground)
-  * [URL.getInvert()](#imgix.URL#getInvert)
+  * [URL.getPage()](#imgix.URL#getPage)
+  * [URL.getDPR()](#imgix.URL#getDPR)
+  * [URL.getFlip()](#imgix.URL#getFlip)
+  * [URL.getOrient()](#imgix.URL#getOrient)
+  * [URL.getRotate()](#imgix.URL#getRotate)
+  * [URL.getCrop()](#imgix.URL#getCrop)
+  * [URL.getFit()](#imgix.URL#getFit)
+  * [URL.getHeight()](#imgix.URL#getHeight)
+  * [URL.getRectangle()](#imgix.URL#getRectangle)
+  * [URL.getWidth()](#imgix.URL#getWidth)
+  * [URL.getBlur()](#imgix.URL#getBlur)
+  * [URL.getHalftone()](#imgix.URL#getHalftone)
+  * [URL.getMonochrome()](#imgix.URL#getMonochrome)
+  * [URL.getPixelate()](#imgix.URL#getPixelate)
+  * [URL.getSepia()](#imgix.URL#getSepia)
+  * [URL.getText()](#imgix.URL#getText)
+  * [URL.getTextAlign()](#imgix.URL#getTextAlign)
+  * [URL.getTextClip()](#imgix.URL#getTextClip)
+  * [URL.getTextColor()](#imgix.URL#getTextColor)
+  * [URL.getTextFit()](#imgix.URL#getTextFit)
+  * [URL.getTextFont()](#imgix.URL#getTextFont)
+  * [URL.getTextLine()](#imgix.URL#getTextLine)
+  * [URL.getTextLineColor()](#imgix.URL#getTextLineColor)
+  * [URL.getTextPad()](#imgix.URL#getTextPad)
+  * [URL.getTextSize()](#imgix.URL#getTextSize)
+  * [URL.getTextShadow()](#imgix.URL#getTextShadow)
+  * [URL.getTrim()](#imgix.URL#getTrim)
+  * [URL.getTrimColor()](#imgix.URL#getTrimColor)
+  * [URL.getTrimMeanDifference()](#imgix.URL#getTrimMeanDifference)
+  * [URL.getWatermark()](#imgix.URL#getWatermark)
+  * [URL.getWatermarkAlign()](#imgix.URL#getWatermarkAlign)
+  * [URL.getWatermarkAlpha()](#imgix.URL#getWatermarkAlpha)
+  * [URL.getWatermarkFit()](#imgix.URL#getWatermarkFit)
+  * [URL.getWatermarkHeight()](#imgix.URL#getWatermarkHeight)
+  * [URL.getWatermarkPadding()](#imgix.URL#getWatermarkPadding)
+  * [URL.getWatermarkScale()](#imgix.URL#getWatermarkScale)
+  * [URL.getWatermarkWidth()](#imgix.URL#getWatermarkWidth)
   * [URL.attachGradientTo(elemOrSel, baseColor)](#imgix.URL#attachGradientTo)
   * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
   * [URL.setToken(token)](#imgix.URL#setToken)
@@ -537,91 +593,11 @@ Represents an imgix url
 
 <a name="imgix.URL#setSepia"></a>
 ###URL.setSepia(val)
-Apply the speia imgix param to the image url. Same as doing .setParam('sepia', val);
+Apply the sepia imgix param to the image url. Same as doing .setParam('sepia', val);
 
 **Params**
 
 - val  - the value to set for sepia  
-
-<a name="imgix.URL#setCrop"></a>
-###URL.setCrop(val)
-Apply the "crop" imgix param to the image url. Same as doing .setParam('crop', val)
-
-**Params**
-
-- val  - the value to set for crop  
-
-<a name="imgix.URL#setFit"></a>
-###URL.setFit(val)
-Apply the "fit" imgix param to the image url. Same as doing .setParam('fit', val)
-
-**Params**
-
-- val  - the value to set for fit  
-
-<a name="imgix.URL#setHeight"></a>
-###URL.setHeight(val)
-Apply the "h" imgix param to the image url. Same as doing .setParam('h', val)
-
-**Params**
-
-- val  - the value to set for h  
-
-<a name="imgix.URL#setWidth"></a>
-###URL.setWidth(val)
-Apply the "w" imgix param to the image url. Same as doing .setParam('w', val)
-
-**Params**
-
-- val  - the value to set for w  
-
-<a name="imgix.URL#setRotate"></a>
-###URL.setRotate(val)
-Apply the "rot" imgix param to the image url. Same as doing .setParam('rot', val)
-
-**Params**
-
-- val  - the value to set for rot  
-
-<a name="imgix.URL#setFlip"></a>
-###URL.setFlip(val)
-Apply the "flip" imgix param to the image url. Same as doing .setParam('flip', val)
-
-**Params**
-
-- val  - the value to set for flip  
-
-<a name="imgix.URL#setOrient"></a>
-###URL.setOrient(val)
-Apply the "or" imgix param to the image url. Same as doing .setParam('or', val)
-
-**Params**
-
-- val  - the value to set for or  
-
-<a name="imgix.URL#setDPR"></a>
-###URL.setDPR(val)
-Apply the "dpr" imgix param to the image url. Same as doing .setParam('dpr', val)
-
-**Params**
-
-- val  - the value to set for dpr  
-
-<a name="imgix.URL#setHue"></a>
-###URL.setHue(val)
-Apply the "hue" imgix param to the image url. Same as doing .setParam('hue', val)
-
-**Params**
-
-- val  - the value to set for hue  
-
-<a name="imgix.URL#setSaturation"></a>
-###URL.setSaturation(val)
-Apply the "sat" imgix param to the image url. Same as doing .setParam('sat', val)
-
-**Params**
-
-- val  - the value to set for sat  
 
 <a name="imgix.URL#setBrightness"></a>
 ###URL.setBrightness(val)
@@ -647,6 +623,14 @@ Apply the "exp" imgix param to the image url. Same as doing .setParam('exp', val
 
 - val  - the value to set for exp  
 
+<a name="imgix.URL#setGamma"></a>
+###URL.setGamma(val)
+Apply the "gam" imgix param to the image url. Same as doing .setParam('gam', val)
+
+**Params**
+
+- val  - the value to set for gam  
+
 <a name="imgix.URL#setHighlight"></a>
 ###URL.setHighlight(val)
 Apply the "high" imgix param to the image url. Same as doing .setParam('high', val)
@@ -654,6 +638,30 @@ Apply the "high" imgix param to the image url. Same as doing .setParam('high', v
 **Params**
 
 - val  - the value to set for high  
+
+<a name="imgix.URL#setHue"></a>
+###URL.setHue(val)
+Apply the "hue" imgix param to the image url. Same as doing .setParam('hue', val)
+
+**Params**
+
+- val  - the value to set for hue  
+
+<a name="imgix.URL#setInvert"></a>
+###URL.setInvert(val)
+Apply the "invert" imgix param to the image url. Same as doing .setParam('invert', val)
+
+**Params**
+
+- val  - the value to set for invert  
+
+<a name="imgix.URL#setSaturation"></a>
+###URL.setSaturation(val)
+Apply the "sat" imgix param to the image url. Same as doing .setParam('sat', val)
+
+**Params**
+
+- val  - the value to set for sat  
 
 <a name="imgix.URL#setShadow"></a>
 ###URL.setShadow(val)
@@ -663,13 +671,29 @@ Apply the "shad" imgix param to the image url. Same as doing .setParam('shad', v
 
 - val  - the value to set for shad  
 
-<a name="imgix.URL#setGamma"></a>
-###URL.setGamma(val)
-Apply the "gam" imgix param to the image url. Same as doing .setParam('gam', val)
+<a name="imgix.URL#setSharpness"></a>
+###URL.setSharpness(val)
+Apply the "sharp" imgix param to the image url. Same as doing .setParam('sharp', val)
 
 **Params**
 
-- val  - the value to set for gam  
+- val  - the value to set for sharp  
+
+<a name="imgix.URL#setUnsharpMask"></a>
+###URL.setUnsharpMask(val)
+Apply the "usm" imgix param to the image url. Same as doing .setParam('usm', val)
+
+**Params**
+
+- val  - the value to set for usm  
+
+<a name="imgix.URL#setUnsharpMaskRadius"></a>
+###URL.setUnsharpMaskRadius(val)
+Apply the "usmrad" imgix param to the image url. Same as doing .setParam('usmrad', val)
+
+**Params**
+
+- val  - the value to set for usmrad  
 
 <a name="imgix.URL#setVibrance"></a>
 ###URL.setVibrance(val)
@@ -679,93 +703,21 @@ Apply the "vib" imgix param to the image url. Same as doing .setParam('vib', val
 
 - val  - the value to set for vib  
 
-<a name="imgix.URL#setSharpness"></a>
-###URL.setSharpness(val)
-Apply the "sharp" imgix param to the image url. Same as doing .setParam('sharp', val)
+<a name="imgix.URL#setAuto"></a>
+###URL.setAuto(val)
+Apply the "auto" imgix param to the image url. Same as doing .setParam('auto', val)
 
 **Params**
 
-- val  - the value to set for sharp  
+- val  - the value to set for auto  
 
-<a name="imgix.URL#setSepia"></a>
-###URL.setSepia(val)
-Apply the "sepia" imgix param to the image url. Same as doing .setParam('sepia', val)
-
-**Params**
-
-- val  - the value to set for sepia  
-
-<a name="imgix.URL#setHalftone"></a>
-###URL.setHalftone(val)
-Apply the "htn" imgix param to the image url. Same as doing .setParam('htn', val)
+<a name="imgix.URL#setBackground"></a>
+###URL.setBackground(val)
+Apply the "bg" imgix param to the image url. Same as doing .setParam('bg', val)
 
 **Params**
 
-- val  - the value to set for htn  
-
-<a name="imgix.URL#setBlur"></a>
-###URL.setBlur(val)
-Apply the "blur" imgix param to the image url. Same as doing .setParam('blur', val)
-
-**Params**
-
-- val  - the value to set for blur  
-
-<a name="imgix.URL#setMonochrome"></a>
-###URL.setMonochrome(val)
-Apply the "mono" imgix param to the image url. Same as doing .setParam('mono', val)
-
-**Params**
-
-- val  - the value to set for mono  
-
-<a name="imgix.URL#setPixelate"></a>
-###URL.setPixelate(val)
-Apply the "px" imgix param to the image url. Same as doing .setParam('px', val)
-
-**Params**
-
-- val  - the value to set for px  
-
-<a name="imgix.URL#setBlend"></a>
-###URL.setBlend(val)
-Apply the "blend" imgix param to the image url. Same as doing .setParam('blend', val)
-
-**Params**
-
-- val  - the value to set for blend  
-
-<a name="imgix.URL#setBlendWidth"></a>
-###URL.setBlendWidth(val)
-Apply the "bw" imgix param to the image url. Same as doing .setParam('bw', val)
-
-**Params**
-
-- val  - the value to set for bw  
-
-<a name="imgix.URL#setBlendHeight"></a>
-###URL.setBlendHeight(val)
-Apply the "bh" imgix param to the image url. Same as doing .setParam('bh', val)
-
-**Params**
-
-- val  - the value to set for bh  
-
-<a name="imgix.URL#setBlendPadding"></a>
-###URL.setBlendPadding(val)
-Apply the "bp" imgix param to the image url. Same as doing .setParam('bp', val)
-
-**Params**
-
-- val  - the value to set for bp  
-
-<a name="imgix.URL#setBlendFit"></a>
-###URL.setBlendFit(val)
-Apply the "bf" imgix param to the image url. Same as doing .setParam('bf', val)
-
-**Params**
-
-- val  - the value to set for bf  
+- val  - the value to set for bg  
 
 <a name="imgix.URL#setBlendAlign"></a>
 ###URL.setBlendAlign(val)
@@ -783,6 +735,38 @@ Apply the "balph" imgix param to the image url. Same as doing .setParam('balph',
 
 - val  - the value to set for balph  
 
+<a name="imgix.URL#setBlendCrop"></a>
+###URL.setBlendCrop(val)
+Apply the "bc" imgix param to the image url. Same as doing .setParam('bc', val)
+
+**Params**
+
+- val  - the value to set for bc  
+
+<a name="imgix.URL#setBlendFit"></a>
+###URL.setBlendFit(val)
+Apply the "bf" imgix param to the image url. Same as doing .setParam('bf', val)
+
+**Params**
+
+- val  - the value to set for bf  
+
+<a name="imgix.URL#setBlendHeight"></a>
+###URL.setBlendHeight(val)
+Apply the "bh" imgix param to the image url. Same as doing .setParam('bh', val)
+
+**Params**
+
+- val  - the value to set for bh  
+
+<a name="imgix.URL#setBlend"></a>
+###URL.setBlend(val)
+Apply the "blend" imgix param to the image url. Same as doing .setParam('blend', val)
+
+**Params**
+
+- val  - the value to set for blend  
+
 <a name="imgix.URL#setBlendMode"></a>
 ###URL.setBlendMode(val)
 Apply the "bm" imgix param to the image url. Same as doing .setParam('bm', val)
@@ -791,13 +775,13 @@ Apply the "bm" imgix param to the image url. Same as doing .setParam('bm', val)
 
 - val  - the value to set for bm  
 
-<a name="imgix.URL#setBlendCrop"></a>
-###URL.setBlendCrop(val)
-Apply the "bc" imgix param to the image url. Same as doing .setParam('bc', val)
+<a name="imgix.URL#setBlendPadding"></a>
+###URL.setBlendPadding(val)
+Apply the "bp" imgix param to the image url. Same as doing .setParam('bp', val)
 
 **Params**
 
-- val  - the value to set for bc  
+- val  - the value to set for bp  
 
 <a name="imgix.URL#setBlendSize"></a>
 ###URL.setBlendSize(val)
@@ -807,85 +791,37 @@ Apply the "bs" imgix param to the image url. Same as doing .setParam('bs', val)
 
 - val  - the value to set for bs  
 
-<a name="imgix.URL#setText"></a>
-###URL.setText(val)
-Apply the "txt" imgix param to the image url. Same as doing .setParam('txt', val)
+<a name="imgix.URL#setBlendWidth"></a>
+###URL.setBlendWidth(val)
+Apply the "bw" imgix param to the image url. Same as doing .setParam('bw', val)
 
 **Params**
 
-- val  - the value to set for txt  
+- val  - the value to set for bw  
 
-<a name="imgix.URL#setTextFont"></a>
-###URL.setTextFont(val)
-Apply the "txtfont" imgix param to the image url. Same as doing .setParam('txtfont', val)
-
-**Params**
-
-- val  - the value to set for txtfont  
-
-<a name="imgix.URL#setTextSize"></a>
-###URL.setTextSize(val)
-Apply the "txtsize" imgix param to the image url. Same as doing .setParam('txtsize', val)
+<a name="imgix.URL#setBorder"></a>
+###URL.setBorder(val)
+Apply the "border" imgix param to the image url. Same as doing .setParam('border', val)
 
 **Params**
 
-- val  - the value to set for txtsize  
+- val  - the value to set for border  
 
-<a name="imgix.URL#setTextColor"></a>
-###URL.setTextColor(val)
-Apply the "txtclr" imgix param to the image url. Same as doing .setParam('txtclr', val)
-
-**Params**
-
-- val  - the value to set for txtclr  
-
-<a name="imgix.URL#setTextAlign"></a>
-###URL.setTextAlign(val)
-Apply the "txtalign" imgix param to the image url. Same as doing .setParam('txtalign', val)
+<a name="imgix.URL#setPad"></a>
+###URL.setPad(val)
+Apply the "pad" imgix param to the image url. Same as doing .setParam('pad', val)
 
 **Params**
 
-- val  - the value to set for txtalign  
+- val  - the value to set for pad  
 
-<a name="imgix.URL#setTextShadow"></a>
-###URL.setTextShadow(val)
-Apply the "txtshad" imgix param to the image url. Same as doing .setParam('txtshad', val)
-
-**Params**
-
-- val  - the value to set for txtshad  
-
-<a name="imgix.URL#setTextPad"></a>
-###URL.setTextPad(val)
-Apply the "txtpad" imgix param to the image url. Same as doing .setParam('txtpad', val)
+<a name="imgix.URL#setDownload"></a>
+###URL.setDownload(val)
+Apply the "dl" imgix param to the image url. Same as doing .setParam('dl', val)
 
 **Params**
 
-- val  - the value to set for txtpad  
-
-<a name="imgix.URL#setTextLine"></a>
-###URL.setTextLine(val)
-Apply the "txtline" imgix param to the image url. Same as doing .setParam('txtline', val)
-
-**Params**
-
-- val  - the value to set for txtline  
-
-<a name="imgix.URL#setTextLineColor"></a>
-###URL.setTextLineColor(val)
-Apply the "txtlineclr" imgix param to the image url. Same as doing .setParam('txtlineclr', val)
-
-**Params**
-
-- val  - the value to set for txtlineclr  
-
-<a name="imgix.URL#setTextFit"></a>
-###URL.setTextFit(val)
-Apply the "txtfit" imgix param to the image url. Same as doing .setParam('txtfit', val)
-
-**Params**
-
-- val  - the value to set for txtfit  
+- val  - the value to set for dl  
 
 <a name="imgix.URL#setFormat"></a>
 ###URL.setFormat(val)
@@ -903,69 +839,29 @@ Apply the "q" imgix param to the image url. Same as doing .setParam('q', val)
 
 - val  - the value to set for q  
 
-<a name="imgix.URL#setWatermark"></a>
-###URL.setWatermark(val)
-Apply the "mark" imgix param to the image url. Same as doing .setParam('mark', val)
+<a name="imgix.URL#setMask"></a>
+###URL.setMask(val)
+Apply the "mask" imgix param to the image url. Same as doing .setParam('mask', val)
 
 **Params**
 
-- val  - the value to set for mark  
+- val  - the value to set for mask  
 
-<a name="imgix.URL#setWatermarkWidth"></a>
-###URL.setWatermarkWidth(val)
-Apply the "markw" imgix param to the image url. Same as doing .setParam('markw', val)
-
-**Params**
-
-- val  - the value to set for markw  
-
-<a name="imgix.URL#setWatermarkHeight"></a>
-###URL.setWatermarkHeight(val)
-Apply the "markh" imgix param to the image url. Same as doing .setParam('markh', val)
+<a name="imgix.URL#setNoiseReduction"></a>
+###URL.setNoiseReduction(val)
+Apply the "nr" imgix param to the image url. Same as doing .setParam('nr', val)
 
 **Params**
 
-- val  - the value to set for markh  
+- val  - the value to set for nr  
 
-<a name="imgix.URL#setWatermarkFit"></a>
-###URL.setWatermarkFit(val)
-Apply the "markfit" imgix param to the image url. Same as doing .setParam('markfit', val)
-
-**Params**
-
-- val  - the value to set for markfit  
-
-<a name="imgix.URL#setWatermarkScale"></a>
-###URL.setWatermarkScale(val)
-Apply the "markscale" imgix param to the image url. Same as doing .setParam('markscale', val)
+<a name="imgix.URL#setNoiseReductionSharpen"></a>
+###URL.setNoiseReductionSharpen(val)
+Apply the "nrs" imgix param to the image url. Same as doing .setParam('nrs', val)
 
 **Params**
 
-- val  - the value to set for markscale  
-
-<a name="imgix.URL#setWatermarkAlign"></a>
-###URL.setWatermarkAlign(val)
-Apply the "markalign" imgix param to the image url. Same as doing .setParam('markalign', val)
-
-**Params**
-
-- val  - the value to set for markalign  
-
-<a name="imgix.URL#setWatermarkAlpha"></a>
-###URL.setWatermarkAlpha(val)
-Apply the "markalpha" imgix param to the image url. Same as doing .setParam('markalpha', val)
-
-**Params**
-
-- val  - the value to set for markalpha  
-
-<a name="imgix.URL#setWatermarkPadding"></a>
-###URL.setWatermarkPadding(val)
-Apply the "markpad" imgix param to the image url. Same as doing .setParam('markpad', val)
-
-**Params**
-
-- val  - the value to set for markpad  
+- val  - the value to set for nrs  
 
 <a name="imgix.URL#setPalette"></a>
 ###URL.setPalette(val)
@@ -983,6 +879,14 @@ Apply the "class" imgix param to the image url. Same as doing .setParam('class',
 
 - val  - the value to set for class  
 
+<a name="imgix.URL#setPalettePrefix"></a>
+###URL.setPalettePrefix(val)
+Apply the "prefix" imgix param to the image url. Same as doing .setParam('prefix', val)
+
+**Params**
+
+- val  - the value to set for prefix  
+
 <a name="imgix.URL#setPaletteColorNumber"></a>
 ###URL.setPaletteColorNumber(val)
 Apply the "colors" imgix param to the image url. Same as doing .setParam('colors', val)
@@ -991,77 +895,301 @@ Apply the "colors" imgix param to the image url. Same as doing .setParam('colors
 
 - val  - the value to set for colors  
 
-<a name="imgix.URL#setAuto"></a>
-###URL.setAuto(val)
-Apply the "auto" imgix param to the image url. Same as doing .setParam('auto', val)
+<a name="imgix.URL#setPage"></a>
+###URL.setPage(val)
+Apply the "page" imgix param to the image url. Same as doing .setParam('page', val)
 
 **Params**
 
-- val  - the value to set for auto  
+- val  - the value to set for page  
 
-<a name="imgix.URL#setMask"></a>
-###URL.setMask(val)
-Apply the "mask" imgix param to the image url. Same as doing .setParam('mask', val)
-
-**Params**
-
-- val  - the value to set for mask  
-
-<a name="imgix.URL#setBackground"></a>
-###URL.setBackground(val)
-Apply the "bg" imgix param to the image url. Same as doing .setParam('bg', val)
+<a name="imgix.URL#setDPR"></a>
+###URL.setDPR(val)
+Apply the "dpr" imgix param to the image url. Same as doing .setParam('dpr', val)
 
 **Params**
 
-- val  - the value to set for bg  
+- val  - the value to set for dpr  
 
-<a name="imgix.URL#getCrop"></a>
-###URL.getCrop(val)
-Apply the "invert" imgix param to the image url. Same as doing .setParam('invert', val)
+<a name="imgix.URL#setFlip"></a>
+###URL.setFlip(val)
+Apply the "flip" imgix param to the image url. Same as doing .setParam('flip', val)
 
 **Params**
 
-- val  - the value to set for invert  
+- val  - the value to set for flip  
 
-<a name="imgix.URL#getFit"></a>
-###URL.getFit()
-Get the value of the "fit" imgix param currently on the image url. Same as doing .getParam('fit')
+<a name="imgix.URL#setOrient"></a>
+###URL.setOrient(val)
+Apply the "or" imgix param to the image url. Same as doing .setParam('or', val)
 
-<a name="imgix.URL#getHeight"></a>
-###URL.getHeight()
-Get the value of the "h" imgix param currently on the image url. Same as doing .getParam('h')
+**Params**
 
-<a name="imgix.URL#getWidth"></a>
-###URL.getWidth()
-Get the value of the "w" imgix param currently on the image url. Same as doing .getParam('w')
+- val  - the value to set for or  
 
-<a name="imgix.URL#getRotate"></a>
-###URL.getRotate()
-Get the value of the "rot" imgix param currently on the image url. Same as doing .getParam('rot')
+<a name="imgix.URL#setRotate"></a>
+###URL.setRotate(val)
+Apply the "rot" imgix param to the image url. Same as doing .setParam('rot', val)
 
-<a name="imgix.URL#getFlip"></a>
-###URL.getFlip()
-Get the value of the "flip" imgix param currently on the image url. Same as doing .getParam('flip')
+**Params**
 
-<a name="imgix.URL#getOrient"></a>
-###URL.getOrient()
-Get the value of the "or" imgix param currently on the image url. Same as doing .getParam('or')
+- val  - the value to set for rot  
 
-<a name="imgix.URL#getDPR"></a>
-###URL.getDPR()
-Get the value of the "dpr" imgix param currently on the image url. Same as doing .getParam('dpr')
+<a name="imgix.URL#setCrop"></a>
+###URL.setCrop(val)
+Apply the "crop" imgix param to the image url. Same as doing .setParam('crop', val)
 
-<a name="imgix.URL#getHue"></a>
-###URL.getHue()
-Get the value of the "hue" imgix param currently on the image url. Same as doing .getParam('hue')
+**Params**
 
-<a name="imgix.URL#getSaturation"></a>
-###URL.getSaturation()
-Get the value of the "sat" imgix param currently on the image url. Same as doing .getParam('sat')
+- val  - the value to set for crop  
+
+<a name="imgix.URL#setFit"></a>
+###URL.setFit(val)
+Apply the "fit" imgix param to the image url. Same as doing .setParam('fit', val)
+
+**Params**
+
+- val  - the value to set for fit  
+
+<a name="imgix.URL#setHeight"></a>
+###URL.setHeight(val)
+Apply the "h" imgix param to the image url. Same as doing .setParam('h', val)
+
+**Params**
+
+- val  - the value to set for h  
+
+<a name="imgix.URL#setRectangle"></a>
+###URL.setRectangle(val)
+Apply the "rect" imgix param to the image url. Same as doing .setParam('rect', val)
+
+**Params**
+
+- val  - the value to set for rect  
+
+<a name="imgix.URL#setWidth"></a>
+###URL.setWidth(val)
+Apply the "w" imgix param to the image url. Same as doing .setParam('w', val)
+
+**Params**
+
+- val  - the value to set for w  
+
+<a name="imgix.URL#setBlur"></a>
+###URL.setBlur(val)
+Apply the "blur" imgix param to the image url. Same as doing .setParam('blur', val)
+
+**Params**
+
+- val  - the value to set for blur  
+
+<a name="imgix.URL#setHalftone"></a>
+###URL.setHalftone(val)
+Apply the "htn" imgix param to the image url. Same as doing .setParam('htn', val)
+
+**Params**
+
+- val  - the value to set for htn  
+
+<a name="imgix.URL#setMonochrome"></a>
+###URL.setMonochrome(val)
+Apply the "mono" imgix param to the image url. Same as doing .setParam('mono', val)
+
+**Params**
+
+- val  - the value to set for mono  
+
+<a name="imgix.URL#setPixelate"></a>
+###URL.setPixelate(val)
+Apply the "px" imgix param to the image url. Same as doing .setParam('px', val)
+
+**Params**
+
+- val  - the value to set for px  
+
+<a name="imgix.URL#setSepia"></a>
+###URL.setSepia(val)
+Apply the "sepia" imgix param to the image url. Same as doing .setParam('sepia', val)
+
+**Params**
+
+- val  - the value to set for sepia  
+
+<a name="imgix.URL#setText"></a>
+###URL.setText(val)
+Apply the "txt" imgix param to the image url. Same as doing .setParam('txt', val)
+
+**Params**
+
+- val  - the value to set for txt  
+
+<a name="imgix.URL#setTextAlign"></a>
+###URL.setTextAlign(val)
+Apply the "txtalign" imgix param to the image url. Same as doing .setParam('txtalign', val)
+
+**Params**
+
+- val  - the value to set for txtalign  
+
+<a name="imgix.URL#setTextClip"></a>
+###URL.setTextClip(val)
+Apply the "txtclip" imgix param to the image url. Same as doing .setParam('txtclip', val)
+
+**Params**
+
+- val  - the value to set for txtclip  
+
+<a name="imgix.URL#setTextColor"></a>
+###URL.setTextColor(val)
+Apply the "txtclr" imgix param to the image url. Same as doing .setParam('txtclr', val)
+
+**Params**
+
+- val  - the value to set for txtclr  
+
+<a name="imgix.URL#setTextFit"></a>
+###URL.setTextFit(val)
+Apply the "txtfit" imgix param to the image url. Same as doing .setParam('txtfit', val)
+
+**Params**
+
+- val  - the value to set for txtfit  
+
+<a name="imgix.URL#setTextFont"></a>
+###URL.setTextFont(val)
+Apply the "txtfont" imgix param to the image url. Same as doing .setParam('txtfont', val)
+
+**Params**
+
+- val  - the value to set for txtfont  
+
+<a name="imgix.URL#setTextLine"></a>
+###URL.setTextLine(val)
+Apply the "txtline" imgix param to the image url. Same as doing .setParam('txtline', val)
+
+**Params**
+
+- val  - the value to set for txtline  
+
+<a name="imgix.URL#setTextLineColor"></a>
+###URL.setTextLineColor(val)
+Apply the "txtlineclr" imgix param to the image url. Same as doing .setParam('txtlineclr', val)
+
+**Params**
+
+- val  - the value to set for txtlineclr  
+
+<a name="imgix.URL#setTextPad"></a>
+###URL.setTextPad(val)
+Apply the "txtpad" imgix param to the image url. Same as doing .setParam('txtpad', val)
+
+**Params**
+
+- val  - the value to set for txtpad  
+
+<a name="imgix.URL#setTextSize"></a>
+###URL.setTextSize(val)
+Apply the "txtsize" imgix param to the image url. Same as doing .setParam('txtsize', val)
+
+**Params**
+
+- val  - the value to set for txtsize  
+
+<a name="imgix.URL#setTextShadow"></a>
+###URL.setTextShadow(val)
+Apply the "txtshad" imgix param to the image url. Same as doing .setParam('txtshad', val)
+
+**Params**
+
+- val  - the value to set for txtshad  
+
+<a name="imgix.URL#setTrim"></a>
+###URL.setTrim(val)
+Apply the "trim" imgix param to the image url. Same as doing .setParam('trim', val)
+
+**Params**
+
+- val  - the value to set for trim  
+
+<a name="imgix.URL#setTrimColor"></a>
+###URL.setTrimColor(val)
+Apply the "trimcolor" imgix param to the image url. Same as doing .setParam('trimcolor', val)
+
+**Params**
+
+- val  - the value to set for trimcolor  
+
+<a name="imgix.URL#setTrimMeanDifference"></a>
+###URL.setTrimMeanDifference(val)
+Apply the "trimmd" imgix param to the image url. Same as doing .setParam('trimmd', val)
+
+**Params**
+
+- val  - the value to set for trimmd  
+
+<a name="imgix.URL#setWatermark"></a>
+###URL.setWatermark(val)
+Apply the "mark" imgix param to the image url. Same as doing .setParam('mark', val)
+
+**Params**
+
+- val  - the value to set for mark  
+
+<a name="imgix.URL#setWatermarkAlign"></a>
+###URL.setWatermarkAlign(val)
+Apply the "markalign" imgix param to the image url. Same as doing .setParam('markalign', val)
+
+**Params**
+
+- val  - the value to set for markalign  
+
+<a name="imgix.URL#setWatermarkAlpha"></a>
+###URL.setWatermarkAlpha(val)
+Apply the "markalpha" imgix param to the image url. Same as doing .setParam('markalpha', val)
+
+**Params**
+
+- val  - the value to set for markalpha  
+
+<a name="imgix.URL#setWatermarkFit"></a>
+###URL.setWatermarkFit(val)
+Apply the "markfit" imgix param to the image url. Same as doing .setParam('markfit', val)
+
+**Params**
+
+- val  - the value to set for markfit  
+
+<a name="imgix.URL#setWatermarkHeight"></a>
+###URL.setWatermarkHeight(val)
+Apply the "markh" imgix param to the image url. Same as doing .setParam('markh', val)
+
+**Params**
+
+- val  - the value to set for markh  
+
+<a name="imgix.URL#setWatermarkPadding"></a>
+###URL.setWatermarkPadding(val)
+Apply the "markpad" imgix param to the image url. Same as doing .setParam('markpad', val)
+
+**Params**
+
+- val  - the value to set for markpad  
+
+<a name="imgix.URL#setWatermarkScale"></a>
+###URL.setWatermarkScale(val)
+Apply the "markscale" imgix param to the image url. Same as doing .setParam('markscale', val)
+
+**Params**
+
+- val  - the value to set for markscale  
 
 <a name="imgix.URL#getBrightness"></a>
-###URL.getBrightness()
-Get the value of the "bri" imgix param currently on the image url. Same as doing .getParam('bri')
+###URL.getBrightness(val)
+Apply the "markw" imgix param to the image url. Same as doing .setParam('markw', val)
+
+**Params**
+
+- val  - the value to set for markw  
 
 <a name="imgix.URL#getContrast"></a>
 ###URL.getContrast()
@@ -1071,65 +1199,53 @@ Get the value of the "con" imgix param currently on the image url. Same as doing
 ###URL.getExposure()
 Get the value of the "exp" imgix param currently on the image url. Same as doing .getParam('exp')
 
+<a name="imgix.URL#getGamma"></a>
+###URL.getGamma()
+Get the value of the "gam" imgix param currently on the image url. Same as doing .getParam('gam')
+
 <a name="imgix.URL#getHighlight"></a>
 ###URL.getHighlight()
 Get the value of the "high" imgix param currently on the image url. Same as doing .getParam('high')
+
+<a name="imgix.URL#getHue"></a>
+###URL.getHue()
+Get the value of the "hue" imgix param currently on the image url. Same as doing .getParam('hue')
+
+<a name="imgix.URL#getInvert"></a>
+###URL.getInvert()
+Get the value of the "invert" imgix param currently on the image url. Same as doing .getParam('invert')
+
+<a name="imgix.URL#getSaturation"></a>
+###URL.getSaturation()
+Get the value of the "sat" imgix param currently on the image url. Same as doing .getParam('sat')
 
 <a name="imgix.URL#getShadow"></a>
 ###URL.getShadow()
 Get the value of the "shad" imgix param currently on the image url. Same as doing .getParam('shad')
 
-<a name="imgix.URL#getGamma"></a>
-###URL.getGamma()
-Get the value of the "gam" imgix param currently on the image url. Same as doing .getParam('gam')
+<a name="imgix.URL#getSharpness"></a>
+###URL.getSharpness()
+Get the value of the "sharp" imgix param currently on the image url. Same as doing .getParam('sharp')
+
+<a name="imgix.URL#getUnsharpMask"></a>
+###URL.getUnsharpMask()
+Get the value of the "usm" imgix param currently on the image url. Same as doing .getParam('usm')
+
+<a name="imgix.URL#getUnsharpMaskRadius"></a>
+###URL.getUnsharpMaskRadius()
+Get the value of the "usmrad" imgix param currently on the image url. Same as doing .getParam('usmrad')
 
 <a name="imgix.URL#getVibrance"></a>
 ###URL.getVibrance()
 Get the value of the "vib" imgix param currently on the image url. Same as doing .getParam('vib')
 
-<a name="imgix.URL#getSharpness"></a>
-###URL.getSharpness()
-Get the value of the "sharp" imgix param currently on the image url. Same as doing .getParam('sharp')
+<a name="imgix.URL#getAuto"></a>
+###URL.getAuto()
+Get the value of the "auto" imgix param currently on the image url. Same as doing .getParam('auto')
 
-<a name="imgix.URL#getSepia"></a>
-###URL.getSepia()
-Get the value of the "sepia" imgix param currently on the image url. Same as doing .getParam('sepia')
-
-<a name="imgix.URL#getHalftone"></a>
-###URL.getHalftone()
-Get the value of the "htn" imgix param currently on the image url. Same as doing .getParam('htn')
-
-<a name="imgix.URL#getBlur"></a>
-###URL.getBlur()
-Get the value of the "blur" imgix param currently on the image url. Same as doing .getParam('blur')
-
-<a name="imgix.URL#getMonochrome"></a>
-###URL.getMonochrome()
-Get the value of the "mono" imgix param currently on the image url. Same as doing .getParam('mono')
-
-<a name="imgix.URL#getPixelate"></a>
-###URL.getPixelate()
-Get the value of the "px" imgix param currently on the image url. Same as doing .getParam('px')
-
-<a name="imgix.URL#getBlend"></a>
-###URL.getBlend()
-Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
-
-<a name="imgix.URL#getBlendWidth"></a>
-###URL.getBlendWidth()
-Get the value of the "bw" imgix param currently on the image url. Same as doing .getParam('bw')
-
-<a name="imgix.URL#getBlendHeight"></a>
-###URL.getBlendHeight()
-Get the value of the "bh" imgix param currently on the image url. Same as doing .getParam('bh')
-
-<a name="imgix.URL#getBlendPadding"></a>
-###URL.getBlendPadding()
-Get the value of the "bp" imgix param currently on the image url. Same as doing .getParam('bp')
-
-<a name="imgix.URL#getBlendFit"></a>
-###URL.getBlendFit()
-Get the value of the "bf" imgix param currently on the image url. Same as doing .getParam('bf')
+<a name="imgix.URL#getBackground"></a>
+###URL.getBackground()
+Get the value of the "bg" imgix param currently on the image url. Same as doing .getParam('bg')
 
 <a name="imgix.URL#getBlendAlign"></a>
 ###URL.getBlendAlign()
@@ -1139,57 +1255,49 @@ Get the value of the "ba" imgix param currently on the image url. Same as doing 
 ###URL.getBlendAlpha()
 Get the value of the "balph" imgix param currently on the image url. Same as doing .getParam('balph')
 
+<a name="imgix.URL#getBlendCrop"></a>
+###URL.getBlendCrop()
+Get the value of the "bc" imgix param currently on the image url. Same as doing .getParam('bc')
+
+<a name="imgix.URL#getBlendFit"></a>
+###URL.getBlendFit()
+Get the value of the "bf" imgix param currently on the image url. Same as doing .getParam('bf')
+
+<a name="imgix.URL#getBlendHeight"></a>
+###URL.getBlendHeight()
+Get the value of the "bh" imgix param currently on the image url. Same as doing .getParam('bh')
+
+<a name="imgix.URL#getBlend"></a>
+###URL.getBlend()
+Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
+
 <a name="imgix.URL#getBlendMode"></a>
 ###URL.getBlendMode()
 Get the value of the "bm" imgix param currently on the image url. Same as doing .getParam('bm')
 
-<a name="imgix.URL#getBlendCrop"></a>
-###URL.getBlendCrop()
-Get the value of the "bc" imgix param currently on the image url. Same as doing .getParam('bc')
+<a name="imgix.URL#getBlendPadding"></a>
+###URL.getBlendPadding()
+Get the value of the "bp" imgix param currently on the image url. Same as doing .getParam('bp')
 
 <a name="imgix.URL#getBlendSize"></a>
 ###URL.getBlendSize()
 Get the value of the "bs" imgix param currently on the image url. Same as doing .getParam('bs')
 
-<a name="imgix.URL#getText"></a>
-###URL.getText()
-Get the value of the "txt" imgix param currently on the image url. Same as doing .getParam('txt')
+<a name="imgix.URL#getBlendWidth"></a>
+###URL.getBlendWidth()
+Get the value of the "bw" imgix param currently on the image url. Same as doing .getParam('bw')
 
-<a name="imgix.URL#getTextFont"></a>
-###URL.getTextFont()
-Get the value of the "txtfont" imgix param currently on the image url. Same as doing .getParam('txtfont')
+<a name="imgix.URL#getBorder"></a>
+###URL.getBorder()
+Get the value of the "border" imgix param currently on the image url. Same as doing .getParam('border')
 
-<a name="imgix.URL#getTextSize"></a>
-###URL.getTextSize()
-Get the value of the "txtsize" imgix param currently on the image url. Same as doing .getParam('txtsize')
+<a name="imgix.URL#getPad"></a>
+###URL.getPad()
+Get the value of the "pad" imgix param currently on the image url. Same as doing .getParam('pad')
 
-<a name="imgix.URL#getTextColor"></a>
-###URL.getTextColor()
-Get the value of the "txtclr" imgix param currently on the image url. Same as doing .getParam('txtclr')
-
-<a name="imgix.URL#getTextAlign"></a>
-###URL.getTextAlign()
-Get the value of the "txtalign" imgix param currently on the image url. Same as doing .getParam('txtalign')
-
-<a name="imgix.URL#getTextShadow"></a>
-###URL.getTextShadow()
-Get the value of the "txtshad" imgix param currently on the image url. Same as doing .getParam('txtshad')
-
-<a name="imgix.URL#getTextPad"></a>
-###URL.getTextPad()
-Get the value of the "txtpad" imgix param currently on the image url. Same as doing .getParam('txtpad')
-
-<a name="imgix.URL#getTextLine"></a>
-###URL.getTextLine()
-Get the value of the "txtline" imgix param currently on the image url. Same as doing .getParam('txtline')
-
-<a name="imgix.URL#getTextLineColor"></a>
-###URL.getTextLineColor()
-Get the value of the "txtlineclr" imgix param currently on the image url. Same as doing .getParam('txtlineclr')
-
-<a name="imgix.URL#getTextFit"></a>
-###URL.getTextFit()
-Get the value of the "txtfit" imgix param currently on the image url. Same as doing .getParam('txtfit')
+<a name="imgix.URL#getDownload"></a>
+###URL.getDownload()
+Get the value of the "dl" imgix param currently on the image url. Same as doing .getParam('dl')
 
 <a name="imgix.URL#getFormat"></a>
 ###URL.getFormat()
@@ -1199,37 +1307,17 @@ Get the value of the "fm" imgix param currently on the image url. Same as doing 
 ###URL.getQuality()
 Get the value of the "q" imgix param currently on the image url. Same as doing .getParam('q')
 
-<a name="imgix.URL#getWatermark"></a>
-###URL.getWatermark()
-Get the value of the "mark" imgix param currently on the image url. Same as doing .getParam('mark')
+<a name="imgix.URL#getMask"></a>
+###URL.getMask()
+Get the value of the "mask" imgix param currently on the image url. Same as doing .getParam('mask')
 
-<a name="imgix.URL#getWatermarkWidth"></a>
-###URL.getWatermarkWidth()
-Get the value of the "markw" imgix param currently on the image url. Same as doing .getParam('markw')
+<a name="imgix.URL#getNoiseReduction"></a>
+###URL.getNoiseReduction()
+Get the value of the "nr" imgix param currently on the image url. Same as doing .getParam('nr')
 
-<a name="imgix.URL#getWatermarkHeight"></a>
-###URL.getWatermarkHeight()
-Get the value of the "markh" imgix param currently on the image url. Same as doing .getParam('markh')
-
-<a name="imgix.URL#getWatermarkFit"></a>
-###URL.getWatermarkFit()
-Get the value of the "markfit" imgix param currently on the image url. Same as doing .getParam('markfit')
-
-<a name="imgix.URL#getWatermarkScale"></a>
-###URL.getWatermarkScale()
-Get the value of the "markscale" imgix param currently on the image url. Same as doing .getParam('markscale')
-
-<a name="imgix.URL#getWatermarkAlign"></a>
-###URL.getWatermarkAlign()
-Get the value of the "markalign" imgix param currently on the image url. Same as doing .getParam('markalign')
-
-<a name="imgix.URL#getWatermarkAlpha"></a>
-###URL.getWatermarkAlpha()
-Get the value of the "markalpha" imgix param currently on the image url. Same as doing .getParam('markalpha')
-
-<a name="imgix.URL#getWatermarkPadding"></a>
-###URL.getWatermarkPadding()
-Get the value of the "markpad" imgix param currently on the image url. Same as doing .getParam('markpad')
+<a name="imgix.URL#getNoiseReductionSharpen"></a>
+###URL.getNoiseReductionSharpen()
+Get the value of the "nrs" imgix param currently on the image url. Same as doing .getParam('nrs')
 
 <a name="imgix.URL#getPalette"></a>
 ###URL.getPalette()
@@ -1239,25 +1327,161 @@ Get the value of the "palette" imgix param currently on the image url. Same as d
 ###URL.getPaletteClass()
 Get the value of the "class" imgix param currently on the image url. Same as doing .getParam('class')
 
+<a name="imgix.URL#getPalettePrefix"></a>
+###URL.getPalettePrefix()
+Get the value of the "prefix" imgix param currently on the image url. Same as doing .getParam('prefix')
+
 <a name="imgix.URL#getPaletteColorNumber"></a>
 ###URL.getPaletteColorNumber()
 Get the value of the "colors" imgix param currently on the image url. Same as doing .getParam('colors')
 
-<a name="imgix.URL#getAuto"></a>
-###URL.getAuto()
-Get the value of the "auto" imgix param currently on the image url. Same as doing .getParam('auto')
+<a name="imgix.URL#getPage"></a>
+###URL.getPage()
+Get the value of the "page" imgix param currently on the image url. Same as doing .getParam('page')
 
-<a name="imgix.URL#getMask"></a>
-###URL.getMask()
-Get the value of the "mask" imgix param currently on the image url. Same as doing .getParam('mask')
+<a name="imgix.URL#getDPR"></a>
+###URL.getDPR()
+Get the value of the "dpr" imgix param currently on the image url. Same as doing .getParam('dpr')
 
-<a name="imgix.URL#getBackground"></a>
-###URL.getBackground()
-Get the value of the "bg" imgix param currently on the image url. Same as doing .getParam('bg')
+<a name="imgix.URL#getFlip"></a>
+###URL.getFlip()
+Get the value of the "flip" imgix param currently on the image url. Same as doing .getParam('flip')
 
-<a name="imgix.URL#getInvert"></a>
-###URL.getInvert()
-Get the value of the "invert" imgix param currently on the image url. Same as doing .getParam('invert')
+<a name="imgix.URL#getOrient"></a>
+###URL.getOrient()
+Get the value of the "or" imgix param currently on the image url. Same as doing .getParam('or')
+
+<a name="imgix.URL#getRotate"></a>
+###URL.getRotate()
+Get the value of the "rot" imgix param currently on the image url. Same as doing .getParam('rot')
+
+<a name="imgix.URL#getCrop"></a>
+###URL.getCrop()
+Get the value of the "crop" imgix param currently on the image url. Same as doing .getParam('crop')
+
+<a name="imgix.URL#getFit"></a>
+###URL.getFit()
+Get the value of the "fit" imgix param currently on the image url. Same as doing .getParam('fit')
+
+<a name="imgix.URL#getHeight"></a>
+###URL.getHeight()
+Get the value of the "h" imgix param currently on the image url. Same as doing .getParam('h')
+
+<a name="imgix.URL#getRectangle"></a>
+###URL.getRectangle()
+Get the value of the "rect" imgix param currently on the image url. Same as doing .getParam('rect')
+
+<a name="imgix.URL#getWidth"></a>
+###URL.getWidth()
+Get the value of the "w" imgix param currently on the image url. Same as doing .getParam('w')
+
+<a name="imgix.URL#getBlur"></a>
+###URL.getBlur()
+Get the value of the "blur" imgix param currently on the image url. Same as doing .getParam('blur')
+
+<a name="imgix.URL#getHalftone"></a>
+###URL.getHalftone()
+Get the value of the "htn" imgix param currently on the image url. Same as doing .getParam('htn')
+
+<a name="imgix.URL#getMonochrome"></a>
+###URL.getMonochrome()
+Get the value of the "mono" imgix param currently on the image url. Same as doing .getParam('mono')
+
+<a name="imgix.URL#getPixelate"></a>
+###URL.getPixelate()
+Get the value of the "px" imgix param currently on the image url. Same as doing .getParam('px')
+
+<a name="imgix.URL#getSepia"></a>
+###URL.getSepia()
+Get the value of the "sepia" imgix param currently on the image url. Same as doing .getParam('sepia')
+
+<a name="imgix.URL#getText"></a>
+###URL.getText()
+Get the value of the "txt" imgix param currently on the image url. Same as doing .getParam('txt')
+
+<a name="imgix.URL#getTextAlign"></a>
+###URL.getTextAlign()
+Get the value of the "txtalign" imgix param currently on the image url. Same as doing .getParam('txtalign')
+
+<a name="imgix.URL#getTextClip"></a>
+###URL.getTextClip()
+Get the value of the "txtclip" imgix param currently on the image url. Same as doing .getParam('txtclip')
+
+<a name="imgix.URL#getTextColor"></a>
+###URL.getTextColor()
+Get the value of the "txtclr" imgix param currently on the image url. Same as doing .getParam('txtclr')
+
+<a name="imgix.URL#getTextFit"></a>
+###URL.getTextFit()
+Get the value of the "txtfit" imgix param currently on the image url. Same as doing .getParam('txtfit')
+
+<a name="imgix.URL#getTextFont"></a>
+###URL.getTextFont()
+Get the value of the "txtfont" imgix param currently on the image url. Same as doing .getParam('txtfont')
+
+<a name="imgix.URL#getTextLine"></a>
+###URL.getTextLine()
+Get the value of the "txtline" imgix param currently on the image url. Same as doing .getParam('txtline')
+
+<a name="imgix.URL#getTextLineColor"></a>
+###URL.getTextLineColor()
+Get the value of the "txtlineclr" imgix param currently on the image url. Same as doing .getParam('txtlineclr')
+
+<a name="imgix.URL#getTextPad"></a>
+###URL.getTextPad()
+Get the value of the "txtpad" imgix param currently on the image url. Same as doing .getParam('txtpad')
+
+<a name="imgix.URL#getTextSize"></a>
+###URL.getTextSize()
+Get the value of the "txtsize" imgix param currently on the image url. Same as doing .getParam('txtsize')
+
+<a name="imgix.URL#getTextShadow"></a>
+###URL.getTextShadow()
+Get the value of the "txtshad" imgix param currently on the image url. Same as doing .getParam('txtshad')
+
+<a name="imgix.URL#getTrim"></a>
+###URL.getTrim()
+Get the value of the "trim" imgix param currently on the image url. Same as doing .getParam('trim')
+
+<a name="imgix.URL#getTrimColor"></a>
+###URL.getTrimColor()
+Get the value of the "trimcolor" imgix param currently on the image url. Same as doing .getParam('trimcolor')
+
+<a name="imgix.URL#getTrimMeanDifference"></a>
+###URL.getTrimMeanDifference()
+Get the value of the "trimmd" imgix param currently on the image url. Same as doing .getParam('trimmd')
+
+<a name="imgix.URL#getWatermark"></a>
+###URL.getWatermark()
+Get the value of the "mark" imgix param currently on the image url. Same as doing .getParam('mark')
+
+<a name="imgix.URL#getWatermarkAlign"></a>
+###URL.getWatermarkAlign()
+Get the value of the "markalign" imgix param currently on the image url. Same as doing .getParam('markalign')
+
+<a name="imgix.URL#getWatermarkAlpha"></a>
+###URL.getWatermarkAlpha()
+Get the value of the "markalpha" imgix param currently on the image url. Same as doing .getParam('markalpha')
+
+<a name="imgix.URL#getWatermarkFit"></a>
+###URL.getWatermarkFit()
+Get the value of the "markfit" imgix param currently on the image url. Same as doing .getParam('markfit')
+
+<a name="imgix.URL#getWatermarkHeight"></a>
+###URL.getWatermarkHeight()
+Get the value of the "markh" imgix param currently on the image url. Same as doing .getParam('markh')
+
+<a name="imgix.URL#getWatermarkPadding"></a>
+###URL.getWatermarkPadding()
+Get the value of the "markpad" imgix param currently on the image url. Same as doing .getParam('markpad')
+
+<a name="imgix.URL#getWatermarkScale"></a>
+###URL.getWatermarkScale()
+Get the value of the "markscale" imgix param currently on the image url. Same as doing .getParam('markscale')
+
+<a name="imgix.URL#getWatermarkWidth"></a>
+###URL.getWatermarkWidth()
+Get the value of the "markw" imgix param currently on the image url. Same as doing .getParam('markw')
 
 <a name="imgix.URL#attachGradientTo"></a>
 ###URL.attachGradientTo(elemOrSel, baseColor)
@@ -1334,7 +1558,7 @@ Clear all imgix params attached to the image
 
 <a name="imgix.URL#setParams"></a>
 ###URL.setParams(dict, doOverride)
-Set multiple params using using an object (e.g. {txt: "hello", txtclr: "f00"})
+Set multiple params using using an object (e.g. {txt: 'hello', txtclr: 'f00'})
 
 **Params**
 
@@ -1365,7 +1589,7 @@ Get the value of an imgix param in the query string
 ###URL.getParams()
 Get an object of all the params and their values on the current image
 
-**Returns**: `object` - an object of params and their values (e.g. {txt: "hello", txtclr: "f00"})  
+**Returns**: `object` - an object of params and their values (e.g. {txt: 'hello', txtclr: 'f00'})  
 <a name="imgix.URL#getBaseUrl"></a>
 ###URL.getBaseUrl()
 Get the base url. This is getUrl() without the query string
