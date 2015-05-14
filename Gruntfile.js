@@ -21,7 +21,9 @@ module.exports = function(grunt) {
 		jsjQueryFile = distPath('imgix.jquery.js');
 
   require('time-grunt')(grunt);
-  require('jit-grunt')(grunt);
+  require('jit-grunt')(grunt, {
+  	jsdoc2md: 'grunt-jsdoc-to-markdown'
+  });
 
 	function fileCopy(src, dest) {
 		dest = grunt.file.isFile(dest) ? dest : path.join(dest, path.basename(src));
