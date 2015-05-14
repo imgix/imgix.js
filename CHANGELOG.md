@@ -1,3 +1,14 @@
+# new imgix.js 1.0.23
+
+## Features
+
+* Updated parameter lists and accompanying getters and setters. These had gotten a little out-of-date with newly released imgix API features, so they needed some love.
+
+## Bug Fixes
+
+* Fixed an issue in Safari where lazy-loaded images would repaint relentlessly while scrolling.
+
+
 # new imgix.js 1.0.22
 
 ## Features
