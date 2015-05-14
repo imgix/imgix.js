@@ -109,6 +109,10 @@ module.exports = function(grunt) {
 			// also run tests with the minified version of the js
 			unitmin: {
 				configFile: 'karma-min.conf.js'
+			},
+
+			unitquick: {
+				configFile: 'karma-quick.conf.js'
 			}
 		},
 
@@ -157,6 +161,8 @@ module.exports = function(grunt) {
 			grunt.task.run(['build', 'karma']);
 		}
 	});
+
+	grunt.registerTask('test:quick', ['build', 'karma:unitquick']);
 
 	grunt.registerTask('doc-cleanup', 'clean up output', function() {
 		var contents = fs.readFileSync(docsApiFile, 'UTF-8');
