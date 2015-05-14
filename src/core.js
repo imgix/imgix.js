@@ -4,7 +4,7 @@
 var root = this;
 
 /**
- *  `imgix` is the root namespace for all imgix client code.
+ * `imgix` is the root namespace for all imgix client code.
  * @namespace imgix
  */
 var imgix = {};
@@ -42,73 +42,108 @@ imgix.helpers = {
   },
 
   // FROM: https://github.com/websanova/js-url | unknown license.
-  urlParser: (function() {
+  urlParser: (function () {
     function isNumeric(arg) {
       return !isNaN(parseFloat(arg)) && isFinite(arg);
     }
 
-    return function(arg, url) {
+    return function (arg, url) {
       var _ls = url || window.location.toString();
 
-      if (!arg) { return _ls; }
-      else { arg = arg.toString(); }
+      if (!arg) {
+        return _ls;
+      } else {
+        arg = arg.toString();
+      }
 
-      if (_ls.substring(0,2) === '//') { _ls = 'http:' + _ls; }
-      else if (_ls.split('://').length === 1) { _ls = 'http://' + _ls; }
+      if (_ls.substring(0, 2) === '//') {
+        _ls = 'http:' + _ls;
+      } else if (_ls.split('://').length === 1) {
+        _ls = 'http://' + _ls;
+      }
 
       url = _ls.split('/');
-      var _l = {auth:''}, host = url[2].split('@');
+      var _l = {auth: ''},
+          host = url[2].split('@');
 
-      if (host.length === 1) { host = host[0].split(':'); }
-      else { _l.auth = host[0]; host = host[1].split(':'); }
+      if (host.length === 1) {
+        host = host[0].split(':');
+      } else {
+        _l.auth = host[0]; host = host[1].split(':');
+      }
 
       _l.protocol = url[0];
-      _l.hostname=host[0];
-      _l.port=(host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
-      _l.pathname=( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
+      _l.hostname = host[0];
+      _l.port = (host[1] || ((_l.protocol.split(':')[0].toLowerCase() === 'https') ? '443' : '80'));
+      _l.pathname = ( (url.length > 3 ? '/' : '') + url.slice(3, url.length).join('/').split('?')[0].split('#')[0]);
       var _p = _l.pathname;
 
-      if (_p.charAt(_p.length-1) === '/') { _p=_p.substring(0, _p.length-1); }
-      var _h = _l.hostname, _hs = _h.split('.'), _ps = _p.split('/');
-
-      if (arg === 'hostname') { return _h; }
-      else if (arg === 'domain') {
-        if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) { return _h; }
-        return _hs.slice(-2).join('.');
+      if (_p.charAt(_p.length - 1) === '/') {
+        _p = _p.substring(0, _p.length - 1);
       }
-      //else if (arg === 'tld') { return _hs.slice(-1).join('.'); }
-      else if (arg === 'sub') { return _hs.slice(0, _hs.length - 2).join('.'); }
-      else if (arg === 'port') { return _l.port; }
-      else if (arg === 'protocol') { return _l.protocol.split(':')[0]; }
-      else if (arg === 'auth') { return _l.auth; }
-      else if (arg === 'user') { return _l.auth.split(':')[0]; }
-      else if (arg === 'pass') { return _l.auth.split(':')[1] || ''; }
-      else if (arg === 'path') { return _l.pathname; }
-      else if (arg.charAt(0) === '.')
-      {
+      var _h = _l.hostname,
+          _hs = _h.split('.'),
+          _ps = _p.split('/');
+
+      if (arg === 'hostname') {
+        return _h;
+      } else if (arg === 'domain') {
+        if (/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/.test(_h)) {
+          return _h;
+        } else {
+          return _hs.slice(-2).join('.');
+        }
+      } else if (arg === 'sub') {
+        return _hs.slice(0, _hs.length - 2).join('.');
+      } else if (arg === 'port') {
+        return _l.port;
+      } else if (arg === 'protocol') {
+        return _l.protocol.split(':')[0];
+      } else if (arg === 'auth') {
+        return _l.auth;
+      } else if (arg === 'user') {
+        return _l.auth.split(':')[0];
+      } else if (arg === 'pass') {
+        return _l.auth.split(':')[1] || '';
+      } else if (arg === 'path') {
+        return _l.pathname;
+      } else if (arg.charAt(0) === '.') {
         arg = arg.substring(1);
-        if(isNumeric(arg)) {arg = parseInt(arg, 10); return _hs[arg < 0 ? _hs.length + arg : arg-1] || ''; }
-      }
-      else if (isNumeric(arg)) { arg = parseInt(arg, 10); return _ps[arg < 0 ? _ps.length + arg : arg] || ''; }
-      else if (arg === 'file') { return _ps.slice(-1)[0]; }
-      else if (arg === 'filename') { return _ps.slice(-1)[0].split('.')[0]; }
-      else if (arg === 'fileext') { return _ps.slice(-1)[0].split('.')[1] || ''; }
-      else if (arg.charAt(0) === '?' || arg.charAt(0) === '#')
-      {
-        var params = _ls, param = null;
+        if (isNumeric(arg)) {
+          arg = parseInt(arg, 10);
+          return _hs[arg < 0 ? _hs.length + arg : arg - 1] || '';
+        }
+      } else if (isNumeric(arg)) {
+        arg = parseInt(arg, 10);
+        return _ps[arg < 0 ? _ps.length + arg : arg] || '';
+      } else if (arg === 'file') {
+        return _ps.slice(-1)[0];
+      } else if (arg === 'filename') {
+        return _ps.slice(-1)[0].split('.')[0];
+      } else if (arg === 'fileext') {
+        return _ps.slice(-1)[0].split('.')[1] || '';
+      } else if (arg.charAt(0) === '?' || arg.charAt(0) === '#') {
+        var params = _ls,
+            param = null;
 
-        if(arg.charAt(0) === '?') { params = (params.split('?')[1] || '').split('#')[0]; }
-        else if(arg.charAt(0) === '#') { params = (params.split('#')[1] || ''); }
+        if (arg.charAt(0) === '?') {
+          params = (params.split('?')[1] || '').split('#')[0];
+        } else if (arg.charAt(0) === '#') {
+          params = (params.split('#')[1] || '');
+        }
 
-        if(!arg.charAt(1)) { return params; }
+        if (!arg.charAt(1)) {
+          return params;
+        }
 
         arg = arg.substring(1);
         params = params.split('&');
 
-        for(var i=0,ii=params.length; i<ii; i++)
-        {
+        for (var i = 0, ii = params.length; i < ii; i++) {
           param = params[i].split('=');
-          if(param[0] === arg) { return param[1] || ''; }
+          if (param[0] === arg) {
+            return param[1] || '';
+          }
         }
 
         return null;
@@ -118,11 +153,11 @@ imgix.helpers = {
     };
   })(),
 
-  mergeObject: function() {
+  mergeObject: function () {
     var obj = {},
-      i = 0,
-      il = arguments.length,
-      key;
+        i = 0,
+        il = arguments.length,
+        key;
     for (; i < il; i++) {
       for (key in arguments[i]) {
         if (arguments[i].hasOwnProperty(key)) {
@@ -163,7 +198,7 @@ imgix.helpers = {
     var dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
     if (dpr % 1 !== 0) {
-      var tmpStr = '' + dpr;
+      var tmpStr = dpr.toString();
       tmpStr = tmpStr.split('.')[1];
       dpr = (tmpStr.length > 1 && tmpStr.slice(1, 2) !== '0') ? dpr.toFixed(2) : dpr.toFixed(1);
     }
@@ -205,7 +240,7 @@ imgix.helpers = {
       var found,
         prop,
         past = {},
-        visProp = {position : 'absolute', visibility : 'hidden', display : 'block'};
+        visProp = {position: 'absolute', visibility: 'hidden', display: 'block'};
 
       for (prop in visProp) {
         if (visProp.hasOwnProperty(prop)) {
@@ -230,15 +265,15 @@ imgix.helpers = {
     }
   },
 
-  isReallyObject: function(elem) {
-    return elem && typeof elem === 'object' && (elem + '') === '[object Object]';
+  isReallyObject: function (elem) {
+    return elem && typeof elem === 'object' && (elem.toString()) === '[object Object]';
   },
 
-  isFluidSet: function(elem) {
-    return elem && typeof elem === 'object' && (elem + '') === '[object FluidSet]';
+  isFluidSet: function (elem) {
+    return elem && typeof elem === 'object' && (elem.toString()) === '[object FluidSet]';
   },
 
-  extractInt: function(str) {
+  extractInt: function (str) {
     if (str === undefined) {
       return 0;
     } else if (typeof str === 'number') {
@@ -247,11 +282,11 @@ imgix.helpers = {
     return parseInt(str.replace(/\D/g, ''), 10) || 0;
   },
 
-  camelize: function(str) {
-    return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ''; });
+  camelize: function (str) {
+    return str.replace(/[-_\s]+(.)?/g, function (match, c) { return c ? c.toUpperCase() : ''; });
   },
 
-  getElementCssProperty: function(elem, prop) {
+  getElementCssProperty: function (elem, prop) {
     if (window.getComputedStyle) {
       return window.getComputedStyle(elem, null).getPropertyValue(prop);
     } else {
@@ -263,7 +298,7 @@ imgix.helpers = {
     return '';
   },
 
-  matchesSelector: function(elem, selector) {
+  matchesSelector: function (elem, selector) {
     var children = (elem.parentNode || document).querySelectorAll(selector);
     return Array.prototype.slice.call(children).indexOf(elem) > -1;
   }
@@ -277,7 +312,7 @@ imgix.helpers = {
  * @param {string} xpath the xpath of the element
  * @returns {Element} element with the xpath
  */
-imgix.getElementByXPathClassName = function(xpath) {
+imgix.getElementByXPathClassName = function (xpath) {
   return document.querySelector('.' + imgix.getXPathClass(xpath));
 };
 
@@ -290,7 +325,7 @@ imgix.getElementByXPathClassName = function(xpath) {
  * @param {string} xpath the xpath of the element to get
  * @returns {string} url of image on the element
  */
-imgix.getElementImageByXPathClassName = function(xpath) {
+imgix.getElementImageByXPathClassName = function (xpath) {
   return imgix.getElementImage(imgix.getElementByXPathClassName(xpath));
 };
 
@@ -301,7 +336,7 @@ imgix.getElementImageByXPathClassName = function(xpath) {
  * @param {Element} el the element to check
  * @returns {boolean} true if the element is an img tag
  */
-imgix.isImageElement = function(el) {
+imgix.isImageElement = function (el) {
   return (el && el.tagName && el.tagName.toLowerCase() === 'img');
 };
 
@@ -313,10 +348,10 @@ imgix.isImageElement = function(el) {
  * @param {string} url the url of the image to set
  * @param {function} callback called once image has been preloaded and set
  */
-imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
+imgix.setElementImageAfterLoad = function (el, imgUrl, callback) {
   var img = new Image();
   img.src = imgUrl;
-  img.onload = function() {
+  img.onload = function () {
     imgix.setElementImage(el, imgUrl);
     if (typeof callback === 'function') {
       callback(el, imgUrl);
@@ -332,7 +367,7 @@ imgix.setElementImageAfterLoad = function(el, imgUrl, callback) {
  * @param {string} url the url of the image to set
  * @returns {boolean} true on success
  */
-imgix.setElementImage = function(el, imgUrl) {
+imgix.setElementImage = function (el, imgUrl) {
   if (!el) {
     return false;
   }
@@ -346,7 +381,7 @@ imgix.setElementImage = function(el, imgUrl) {
       el.style.cssText = el.style.cssText.replace(curBg, imgUrl);
       return true;
     } else {
-      if(document.addEventListener){
+      if (document.addEventListener) {
         el.style.backgroundImage = 'url(' + imgUrl + ')';
       } else {
         el.style.cssText = 'background-image:url(' + imgUrl + ')';
@@ -364,7 +399,7 @@ imgix.setElementImage = function(el, imgUrl) {
  * @static
  * @returns {string} url of an empty image
  */
-imgix.getEmptyImage = function() {
+imgix.getEmptyImage = function () {
   return 'https://assets.imgix.net/pixel.gif';
 };
 
@@ -375,7 +410,7 @@ imgix.getEmptyImage = function() {
  * @param {Element} el the element to check
  * @returns {string} url of the image on the element
  */
-imgix.getElementImage = function(el) {
+imgix.getElementImage = function (el) {
   if (imgix.isImageElement(el)) {
     return el.src;
   } else {
@@ -392,7 +427,7 @@ imgix.getElementImage = function(el) {
  * @todo use cssProperty instead?
  * @returns {string} url of the image on the element
  */
-imgix.getRawBackgroundImage = function(el) {
+imgix.getRawBackgroundImage = function (el) {
   return el.style.cssText.match(/url\(([^\)]+)/);
 };
 
@@ -403,7 +438,7 @@ imgix.getRawBackgroundImage = function(el) {
  * @param {Element} el the element to check
  * @returns {string} url of the image on the element
  */
-imgix.getBackgroundImage = function(el) {
+imgix.getBackgroundImage = function (el) {
   var raw = imgix.getRawBackgroundImage(el);
   if (!raw) {
     return '';
@@ -419,7 +454,7 @@ imgix.getBackgroundImage = function(el) {
  * @param {string} color a color in rgb(r, g, b) format
  * @returns {Number} brightness score for the passed color
  */
-imgix.getColorBrightness = function(c) {
+imgix.getColorBrightness = function (c) {
   if (c) {
     if (c.slice(0, 1) === '#') {
       c = imgix.hexToRGB(c);
@@ -429,11 +464,11 @@ imgix.getColorBrightness = function(c) {
   }
 
   var parts = c.replace(/[^0-9,]+/g, '').split(','),
-    r = +parts[0],
-    g = +parts[1],
-    b = +parts[2];
+    r = parseInt(parts[0], 10),
+    g = parseInt(parts[1], 10),
+    b = parseInt(parts[2], 10);
 
-  return +Math.sqrt((r * r * .241) + (g * g * .691) + (b * b * .068));
+  return Math.sqrt((r * r * 0.241) + (g * g * 0.691) + (b * b * 0.068));
 };
 
 /**
@@ -444,12 +479,12 @@ imgix.getColorBrightness = function(c) {
  * @param {number} alpha aplpha amount 1=opaque 0=transparent
  * @returns {string} color in rgba format rgb(255, 0, 255, 0.5)
  */
-imgix.applyAlphaToRGB = function(rgb, alpha) {
+imgix.applyAlphaToRGB = function (rgb, alpha) {
 
   var pushAlpha = rgb.slice(0, 4) !== 'rgba',
     parts = rgb.split(',');
 
-  parts = parts.map(function(a) {
+  parts = parts.map(function (a) {
     return parseInt(a.replace(/\D/g, ''), 10);
   });
 
@@ -469,7 +504,7 @@ imgix.applyAlphaToRGB = function(rgb, alpha) {
  * @param {string} color a color in hex format (#ff00ff)
  * @returns {string} color in rgb format rgb(255, 0, 255)
  */
-imgix.hexToRGB = function(hex) {
+imgix.hexToRGB = function (hex) {
 
   if (hex) {
     if (hex.slice(0, 1) === '#') {
@@ -484,7 +519,7 @@ imgix.hexToRGB = function(hex) {
     b = 0;
 
   function dupe(x) {
-    return '' + x + x;
+    return (x + x).toString();
   }
 
   if (hex.length === 3) {
@@ -508,7 +543,7 @@ imgix.hexToRGB = function(hex) {
  * @static
  * @returns {NodeList} html elements with images
  */
-imgix.getElementsWithImages = function() {
+imgix.getElementsWithImages = function () {
   imgix.markElementsWithImages();
 
   return document.querySelectorAll('.' + IMGIX_USABLE_CLASS);
@@ -521,7 +556,7 @@ imgix.getElementsWithImages = function() {
  * @param {Element} el element to check for images
  * @returns {boolean} true if passed element has an image
  */
-imgix.hasImage = function(el) {
+imgix.hasImage = function (el) {
   var toCheck = el.style.cssText ? el.style.cssText.toLowerCase() : el.style.cssText;
   return el && (imgix.isImageElement(el) || toCheck.indexOf('background-image') !== -1);
 };
@@ -532,9 +567,9 @@ imgix.hasImage = function(el) {
  * @private
  * @static
  */
-imgix.markElementsWithImages = function() {
+imgix.markElementsWithImages = function () {
   var all = document.getElementsByTagName('*');
-  for (var i=0, max=all.length; i < max; i++) {
+  for (var i = 0, max = all.length; i < max; i++) {
     if (imgix.hasImage(all[i])) {
       imgix.setImgixClass(all[i]);
     }
@@ -549,7 +584,7 @@ imgix.markElementsWithImages = function() {
  * @param {string} name class name to look for
  * @returns {boolean} true if element has the class
  */
-imgix.hasClass = function(elem, name) {
+imgix.hasClass = function (elem, name) {
   return (' ' + elem.className + ' ').indexOf(' ' + name + ' ') > -1;
 };
 
@@ -561,7 +596,7 @@ imgix.hasClass = function(elem, name) {
  * @param {Element} el the element to place the class on
  * @returns {string} auto-generated class name (via xpath)
  */
-imgix.setImgixClass = function(el) {
+imgix.setImgixClass = function (el) {
   if (imgix.hasClass(el, IMGIX_USABLE_CLASS)) {
     return imgix.getImgixClass(el);
   }
@@ -582,13 +617,13 @@ imgix.setImgixClass = function(el) {
  * @param {Element} el the element to get the class for
  * @returns {string} class name
  */
-imgix.getImgixClass = function(el) {
+imgix.getImgixClass = function (el) {
   if (imgix.hasClass(el, IMGIX_USABLE_CLASS)) {
     return el.className.match(/imgix-el-[^\s]+/)[0];
   }
 };
 
-imgix.getXPathClass = function(xpath) {
+imgix.getXPathClass = function (xpath) {
   xpath = !!xpath ? xpath : (new Date().getTime().toString());
   return 'imgix-el-' + imgix.md5(xpath);
 };
@@ -600,39 +635,42 @@ imgix.getXPathClass = function(xpath) {
  * @param {string} color in rgb(255, 255, 255) format
  * @returns {string} passed color converted to hex
  */
-imgix.rgbToHex = function(value) {
+imgix.rgbToHex = function (value) {
   var parts = value.split(',');
 
-  parts = parts.map(function(a) {
+  parts = parts.map(function (a) {
     return imgix.componentToHex(parseInt(a.replace(/\D/g, '')));
   });
 
   return parts.join('');
 };
 
-imgix.componentToHex = function(c) {
+imgix.componentToHex = function (c) {
   var hex = c.toString(16);
   return hex.length === 1 ? '0' + hex : hex;
 };
 
 // Current: https://github.com/firebug/firebug/blob/5026362f2d1734adfcc4b44d5413065c50b27400/extension/content/firebug/lib/xpath.js
-imgix.getElementTreeXPath = function(element) {
+imgix.getElementTreeXPath = function (element) {
   var paths = [];
 
   // Use nodeName (instead of localName) so namespace prefix is included (if any).
-  for (; element && element.nodeType == Node.ELEMENT_NODE; element = element.parentNode) {
+  for (; element && element.nodeType === Node.ELEMENT_NODE; element = element.parentNode) {
     var index = 0;
     for (var sibling = element.previousSibling; sibling; sibling = sibling.previousSibling) {
       // Ignore document type declaration.
-      if (sibling.nodeType == Node.DOCUMENT_TYPE_NODE)
+      if (sibling.nodeType === Node.DOCUMENT_TYPE_NODE) {
         continue;
+      }
 
-      if (sibling.nodeName == element.nodeName)
+      if (sibling.nodeName === element.nodeName) {
         ++index;
+      }
     }
 
-    var tagName = (element.prefix ? element.prefix + ':' : '') + element.localName;
-    var pathIndex = (index ? '[' + (index+1) + ']' : '');
+    var tagName = (element.prefix ? element.prefix + ':' : '') + element.localName,
+        pathIndex = (index ? '[' + (index + 1) + ']' : '');
+
     paths.splice(0, 0, tagName + pathIndex);
   }
 
@@ -646,7 +684,7 @@ imgix.getElementTreeXPath = function(element) {
  * @static
  * @returns {object} pretty font name to imgix font param value
  */
-imgix.getFontLookup = function() {
+imgix.getFontLookup = function () {
   return {
     'American Typewriter': 'American Typewriter',
     'American Typewriter Bold': 'American Typewriter,bold',
@@ -734,20 +772,20 @@ imgix.getFontLookup = function() {
  * @static
  * @returns {array} An array of strings of the supported font names
  */
-imgix.getFonts = function() {
+imgix.getFonts = function () {
   return Object.keys(imgix.getFontLookup());
 };
 
-imgix.searchFonts = function(needle) {
+imgix.searchFonts = function (needle) {
   needle = needle.toLowerCase();
-  return imgix.getFonts().filter(function(i) { return i.toLowerCase().indexOf(needle) !== -1; });
+  return imgix.getFonts().filter(function (i) { return i.toLowerCase().indexOf(needle) !== -1; });
 };
 
-imgix.isFontAvailable = function(font) {
+imgix.isFontAvailable = function (font) {
   return imgix.isDef(imgix.getFontLookup()[font]);
 };
 
-imgix.getAllParams = function() {
+imgix.getAllParams = function () {
   return [
     // Adjustment
     'bri',
@@ -958,19 +996,19 @@ imgix.getDefaultParamValues = function () {
   };
 };
 
-imgix.getDefaultParamValue = function(param) {
+imgix.getDefaultParamValue = function (param) {
   return imgix.getDefaultParamValues()[param];
 };
 
-imgix.getDefaultParams = function() {
+imgix.getDefaultParams = function () {
   return Object.keys(imgix.getDefaultParamValues());
 };
 
-imgix.makeCssClass = function(url) {
+imgix.makeCssClass = function (url) {
   return 'tmp_' + imgix.md5(url);
 };
 
-imgix.injectStyleSheet = function(url) {
+imgix.injectStyleSheet = function (url) {
   var ss = document.createElement('link');
   ss.type = 'text/css';
   ss.rel = 'stylesheet';
@@ -979,7 +1017,7 @@ imgix.injectStyleSheet = function(url) {
   document.getElementsByTagName('head')[0].appendChild(ss);
 };
 
-imgix.findInjectedStyleSheet = function(url) {
+imgix.findInjectedStyleSheet = function (url) {
   if (document.styleSheets) {
     for (var i = 0; i < document.styleSheets.length; i++) {
       if (document.styleSheets[i].href === url) {
@@ -991,7 +1029,7 @@ imgix.findInjectedStyleSheet = function(url) {
   return false;
 };
 
-imgix.getElementImageSize = function(el) {
+imgix.getElementImageSize = function (el) {
   var w = 0,
     h = 0;
 
@@ -1009,25 +1047,25 @@ imgix.getElementImageSize = function(el) {
   };
 };
 
-imgix.getCssPropertyById = function(elmId, property) {
+imgix.getCssPropertyById = function (elmId, property) {
   var elem = document.getElementById(elmId);
   return imgix.helpers.getElementCssProperty(elem, property);
 };
 
-imgix.getCssProperty = function(el, property) {
+imgix.getCssProperty = function (el, property) {
   return imgix.helpers.getElementCssProperty(el, property);
 };
 
-imgix.getCssPropertyBySelector = function(sel, property) {
+imgix.getCssPropertyBySelector = function (sel, property) {
   var elem = document.querySelector(sel);
   return imgix.helpers.getElementCssProperty(elem, property);
 };
 
-imgix.instanceOfImgixURL = function(x) {
+imgix.instanceOfImgixURL = function (x) {
   return x && x.toString() === '[object imgixURL]';
 };
 
-imgix.setGradientOnElement = function(el, colors, baseColor) {
+imgix.setGradientOnElement = function (el, colors, baseColor) {
   var baseColors = [];
   if (typeof baseColor === 'undefined') {
     // transparent base colors if not set
@@ -1046,18 +1084,18 @@ imgix.setGradientOnElement = function(el, colors, baseColor) {
   }
 
   var backgroundGradients = [
-      '-ms-linear-gradient(top, '+baseColors[0]+' 0%, '+baseColors[1]+' 100%),-ms-linear-gradient(bottom left, '+colors[2]+' 0%,'+colors[4]+' 25%, '+colors[6]+' 50%, '+colors[8]+' 75%,'+colors[10]+' 100%)',
-'-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, '+baseColors[1]+'), color-stop(100%, '+baseColors[0]+')),-webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, '+colors[2]+'), color-stop(25%, '+colors[4]+'), color-stop(50%, '+colors[6]+'), color-stop(75%, '+colors[7]+'), color-stop(100%, '+colors[10]+'))',
-      '-webkit-linear-gradient(top, '+baseColors[0]+', '+baseColors[1]+' 100%),-webkit-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
-      '-moz-linear-gradient(top, '+baseColors[0]+', '+baseColors[1]+' ),-moz-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
-      '-o-linear-gradient(top, '+baseColors[0]+','+baseColors[1]+'),-o-linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')',
-      'linear-gradient(top, '+baseColors[0]+','+baseColors[1]+'),linear-gradient(bottom left, '+colors[2]+', '+colors[4]+', '+colors[6]+','+colors[8]+')'
+      '-ms-linear-gradient(top, ' + baseColors[0] + ' 0%, ' + baseColors[1] + ' 100%),-ms-linear-gradient(bottom left, ' + colors[2] + ' 0%,' + colors[4] + ' 25%, ' + colors[6] + ' 50%, ' + colors[8] + ' 75%,' + colors[10] + ' 100%)',
+'-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, ' + baseColors[1] + '), color-stop(100%, ' + baseColors[0] + ')),-webkit-gradient(linear, 0% 100%, 100% 0%, color-stop(0%, ' + colors[2] + '), color-stop(25%, ' + colors[4] + '), color-stop(50%, ' + colors[6] + '), color-stop(75%, ' + colors[7] + '), color-stop(100%, ' + colors[10] + '))',
+      '-webkit-linear-gradient(top, ' + baseColors[0] + ', ' + baseColors[1] + ' 100%),-webkit-linear-gradient(bottom left, ' + colors[2] + ', ' + colors[4] + ', ' + colors[6] + ',' + colors[8] + ')',
+      '-moz-linear-gradient(top, ' + baseColors[0] + ', ' + baseColors[1] + ' ),-moz-linear-gradient(bottom left, ' + colors[2] + ', ' + colors[4] + ', ' + colors[6] + ',' + colors[8] + ')',
+      '-o-linear-gradient(top, ' + baseColors[0] + ',' + baseColors[1] + '),-o-linear-gradient(bottom left, ' + colors[2] + ', ' + colors[4] + ', ' + colors[6] + ',' + colors[8] + ')',
+      'linear-gradient(top, ' + baseColors[0] + ',' + baseColors[1] + '),linear-gradient(bottom left, ' + colors[2] + ', ' + colors[4] + ', ' + colors[6] + ',' + colors[8] + ')'
     ];
 
   for (var x = 0; x < backgroundGradients.length; x++) {
     el.style.backgroundImage = backgroundGradients[x];
   }
-}
+};
 
 /**
  * Represents an imgix url
@@ -1067,7 +1105,7 @@ imgix.setGradientOnElement = function(el, colors, baseColor) {
  * @param {object} imgParams imgix query string params (optional)
  * @param {object} token secure url token for signing images (optional)
  */
-imgix.URL = function(url, imgParams, token, isRj) {
+imgix.URL = function (url, imgParams, token, isRj) {
 
   this.token = token || '';
   this._autoUpdateSel = null;
@@ -1093,8 +1131,8 @@ imgix.URL = function(url, imgParams, token, isRj) {
  * @param {string} elemOrSel html elment or css selector for the element
  * @param {string} baseColor color in rgb or hex
  */
-imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) {
-  this.getColors(16, function(colors) {
+imgix.URL.prototype.attachGradientTo = function (elemOrSel, baseColor, callback) {
+  this.getColors(16, function (colors) {
     if (colors && colors.length < 9) {
       console.warn('not enough colors to create a gradient');
       if (callback && typeof callback === 'function') {
@@ -1125,8 +1163,8 @@ imgix.URL.prototype.attachGradientTo = function(elemOrSel, baseColor, callback) 
  * @param {string} elemOrSel html elment or css selector for the element
  * @param {function} callback optional callback to be called when image is set on the element
  */
-imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
-  //this.token = token;
+imgix.URL.prototype.attachImageTo = function (elemOrSel, callback) {
+  // this.token = token;
   if (typeof elemOrSel === 'string') {
     var results = document.querySelectorAll(elemOrSel);
     if (results && results.length > 0) {
@@ -1145,11 +1183,11 @@ imgix.URL.prototype.attachImageTo = function(elemOrSel, callback) {
  * @memberof imgix
  * @param {string} token secure url token from your imgix source
  */
-imgix.URL.prototype.setToken = function(token) {
+imgix.URL.prototype.setToken = function (token) {
   this.token = token;
 };
 
-imgix.createParamString = function() {
+imgix.createParamString = function () {
   return new imgix.URL('');
 };
 
@@ -1162,7 +1200,7 @@ var cssColorCache = {};
  * @param {number} num Desired number of colors
  * @param {colorsCallback} callback handles the response of colors
  */
-imgix.URL.prototype.getColors = function(num, callback) {
+imgix.URL.prototype.getColors = function (num, callback) {
   var clone = new imgix.URL(this.getUrl()),
     paletteClass = imgix.makeCssClass(this.getUrl());
 
@@ -1185,19 +1223,19 @@ imgix.URL.prototype.getColors = function(num, callback) {
 
   imgix.injectStyleSheet(cssUrl);
 
-  var lookForLoadedCss = function() {
+  var lookForLoadedCss = function () {
     if (!imgix.findInjectedStyleSheet(cssUrl)) {
       setTimeout(lookForLoadedCss, 100);
     } else {
       var lastColor = null;
 
-      setTimeout(function() {
+      setTimeout(function () {
         var promises = [],
           maxTries = 100;
 
         for (var i = 1; i <= num; i++) {
 
-          (function(i) {
+          (function (i) {
             var tmps = document.createElement('span');
             tmps.id = paletteClass + '-' + i;
             tmps.className = paletteClass + '-fg-' + i;
@@ -1205,8 +1243,10 @@ imgix.URL.prototype.getColors = function(num, callback) {
 
             promises.push(
               new Promise(function (resolve, reject) {
-                var attempts = 0;
-                var checkLoaded = function() {
+                var attempts = 0,
+                    checkLoaded;
+
+                checkLoaded = function () {
                   var c = imgix.getCssPropertyById(tmps.id, 'color');
                   if (c !== lastColor) {
                     document.body.removeChild(tmps);
@@ -1229,10 +1269,10 @@ imgix.URL.prototype.getColors = function(num, callback) {
 
         } // end loop
 
-        Promise.all(promises).then(function(values) {
+        Promise.all(promises).then(function (values) {
           var resultColors = [];
 
-          values = values.sort(function(a, b) {
+          values = values.sort(function (a, b) {
             return a.num - b.num;
           });
 
@@ -1271,7 +1311,7 @@ imgix.URL.prototype.getColors = function(num, callback) {
  * @param {array} colors an array of colors
  */
 
-imgix.URL.prototype._handleAutoUpdate = function() {
+imgix.URL.prototype._handleAutoUpdate = function () {
   var self = this,
     totalImages = 0,
     loadedImages = 0,
@@ -1292,15 +1332,15 @@ imgix.URL.prototype._handleAutoUpdate = function() {
   function setImage(el, imgUrl) {
     if (!(imgUrl in imgToEls)) {
       imgToEls[imgUrl] = [];
-      (function() {
+      (function () {
         var img = document.createElement('img'),
           curV = imgix.updateVersion[curSel],
           startTime = (new Date()).getTime();
 
         img.src = imgUrl;
-        img.onload = img.onerror = function() {
+        img.onload = img.onerror = function () {
           if (!isVersionFresh(curV)) {
-            //console.log(curV + ' is an old version -- not updating');
+            // console.log(curV + ' is an old version -- not updating');
             return;
           }
 
@@ -1367,7 +1407,7 @@ imgix.URL.prototype._handleAutoUpdate = function() {
  * @param {string} sel css selector for an <img> element on the page
  * @param {autoUpdateElementCallback} callback fires whenever the img element is updated
  */
-imgix.URL.prototype.autoUpdateImg = function(sel, callback) {
+imgix.URL.prototype.autoUpdateImg = function (sel, callback) {
   this._autoUpdateSel = sel;
   this._autoUpdateCallback = callback;
   this._handleAutoUpdate();
@@ -1379,22 +1419,22 @@ imgix.URL.prototype.autoUpdateImg = function(sel, callback) {
  * @todo how to doc the complex object that is passed back
  */
 
-imgix.URL.prototype.setUrl = function(url) {
+imgix.URL.prototype.setUrl = function (url) {
   if (!url || typeof url !== 'string' || url.length === 0) {
     url = imgix.getEmptyImage();
   }
   this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
 };
 
-imgix.URL.prototype.setURL = function(url) {
+imgix.URL.prototype.setURL = function (url) {
   return this.setUrl(url);
 };
 
-imgix.URL.prototype.getURL = function() {
+imgix.URL.prototype.getURL = function () {
   return this.getUrl();
 };
 
-imgix.URL.prototype.toString = function() {
+imgix.URL.prototype.toString = function () {
   return '[object imgixURL]';
 };
 
@@ -1403,7 +1443,7 @@ imgix.URL.prototype.toString = function() {
  * @memberof imgix
  * @returns {string} the generated url
  */
-imgix.URL.prototype.getUrl = function() {
+imgix.URL.prototype.getUrl = function () {
   var url = this.isRj ? imgix.buildRjUrl(this.urlParts) : imgix.buildUrl(this.urlParts);
   if (this.token) {
     return this.isRj ? imgix.signRjUrl(url, this.token) : imgix.signUrl(url, this.token);
@@ -1421,7 +1461,7 @@ imgix.URL.prototype.getUrl = function() {
  * @memberof imgix
  * @param {string} param the imgix param to remove (e.g. txtfont)
  */
-imgix.URL.prototype.removeParam = function(param) {
+imgix.URL.prototype.removeParam = function (param) {
   if (this.urlParts.paramValues.hasOwnProperty(param)) {
     delete this.urlParts.paramValues[param];
     this.urlParts.params = Object.keys(this.urlParts.paramValues);
@@ -1433,8 +1473,8 @@ imgix.URL.prototype.removeParam = function(param) {
  * @memberof imgix
  * @param {object} params object of params to set
  */
-imgix.URL.prototype.clearThenSetParams = function(params) {
-  this.clearParams(false); //do not trigger update yet
+imgix.URL.prototype.clearThenSetParams = function (params) {
+  this.clearParams(false); // do not trigger update yet
   this.setParams(params);
 };
 
@@ -1443,11 +1483,13 @@ imgix.URL.prototype.clearThenSetParams = function(params) {
  * @memberof imgix
  * @param {boolean} runUpdate (optional) iff using autoUpdateImg should callback be called (defaults to true)
  */
-imgix.URL.prototype.clearParams = function(runUpdate) {
+imgix.URL.prototype.clearParams = function (runUpdate) {
   runUpdate = !imgix.isDef(runUpdate) ? true : runUpdate;
 
   for (var k in this.urlParts.paramValues) {
-    this.removeParam(k);
+    if (this.urlParts.paramValues.hasOwnProperty(k)) {
+      this.removeParam(k);
+    }
   }
 
   if (runUpdate) {
@@ -1462,13 +1504,15 @@ imgix.URL.prototype.clearParams = function(runUpdate) {
  * @param {object} dict an object of imgix params and their values
  * @param {boolean} doOverride should the value(s) be overridden if they already exist (defaults to true)
  */
-imgix.URL.prototype.setParams = function(dict, doOverride) {
+imgix.URL.prototype.setParams = function (dict, doOverride) {
   if (imgix.instanceOfImgixURL(dict)) {
     console.warn('setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead');
     return;
   }
   for (var k in dict) {
-    this.setParam(k, dict[k], doOverride, true);
+    if (dict.hasOwnProperty(k)) {
+      this.setParam(k, dict[k], doOverride, true);
+    }
   }
 
   this._handleAutoUpdate();
@@ -1484,7 +1528,7 @@ imgix.URL.prototype.setParams = function(dict, doOverride) {
  * @param {boolean} doOverride (optional) should the value(s) be overridden if they already exist (defaults to true)
  * @param {boolean} noUpdate (optional) iff using autoUpdateImg should callback be called (defaults to false)
  */
-imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
+imgix.URL.prototype.setParam = function (param, value, doOverride, noUpdate) {
   param = param.toLowerCase();
 
   doOverride = !imgix.isDef(doOverride) ? true : doOverride;
@@ -1514,7 +1558,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
     }
   }
 
-  if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null ||  value.length === 0) {
+  if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null || value.length === 0) {
     this.removeParam(param);
     return this;
   }
@@ -1543,7 +1587,7 @@ imgix.URL.prototype.setParam = function(param, value, doOverride, noUpdate) {
  * @param {string} param the imgix param that you want the value of (e.g. txtclr)
  * @returns {string} the value of the param in the current url
 */
-imgix.URL.prototype.getParam = function(param) {
+imgix.URL.prototype.getParam = function (param) {
   if (param === 'mark' || param === 'mask') {
     var result = this.urlParts.paramValues[param];
     // if encoded then decode...
@@ -1561,7 +1605,7 @@ imgix.URL.prototype.getParam = function(param) {
  * @memberof imgix
  * @returns {object} an object of params and their values (e.g. {txt: 'hello', txtclr: 'f00'})
 */
-imgix.URL.prototype.getParams = function() {
+imgix.URL.prototype.getParams = function () {
   if (this.urlParts.paramValues) {
     return this.urlParts.paramValues;
   }
@@ -1574,7 +1618,7 @@ imgix.URL.prototype.getParams = function() {
  * @memberof imgix
  * @returns {string} the base url
 */
-imgix.URL.prototype.getBaseUrl = function() {
+imgix.URL.prototype.getBaseUrl = function () {
   var url = this.getUrl();
   if (url.indexOf('?') !== -1) {
     url = this.getUrl().split('?')[0];
@@ -1588,7 +1632,7 @@ imgix.URL.prototype.getBaseUrl = function() {
  * @memberof imgix
  * @returns {string} the query string for the url
 */
-imgix.URL.prototype.getQueryString = function() {
+imgix.URL.prototype.getQueryString = function () {
   var url = this.getUrl();
   if (url.indexOf('?') !== -1) {
     return this.getUrl().split('?')[1];
@@ -1718,24 +1762,30 @@ imgix.URL.theGetSetFuncs = Object.freeze({
 
 // Dynamically create our param getter and setters
 for (var param in imgix.URL.theGetSetFuncs) {
-  (function(tmp) {
-    imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function(v, doOverride) { return this.setParam(tmp, v, doOverride); };
-    imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function() { return this.getParam(tmp); };
-  })(param);
+  if (imgix.URL.theGetSetFuncs.hasOwnProperty(param)) {
+    (function (tmp) {
+      imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function (v, doOverride) {
+        return this.setParam(tmp, v, doOverride);
+      };
+      imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function () {
+        return this.getParam(tmp);
+      };
+    })(param);
+  }
 }
 
 // STATIC
-imgix.parseRjUrl = function(url) {
+imgix.parseRjUrl = function (url) {
   var keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
     parser = document.createElement('a'),
     result = {};
 
   parser.href = url;
 
-  var parts = parser.pathname.split('p:'),
-    sig = parts[0],
-    qs = !parts[1] || parts[1].indexOf('=') === -1 ? '' : parts[1].match(/([^/]+)/)[1],
-    path =!parts[1] ? '' :  parts[1].replace(qs, '');
+  var pathParts = parser.pathname.split('p:'),
+    sig = pathParts[0],
+    qs = !pathParts[1] || pathParts[1].indexOf('=') === -1 ? '' : pathParts[1].match(/([^/]+)/)[1],
+    path = !pathParts[1] ? '' : pathParts[1].replace(qs, '');
 
   for (var i = 0; i < keys.length; i++) {
     result[keys[i]] = parser[keys[i]];
@@ -1757,9 +1807,9 @@ imgix.parseRjUrl = function(url) {
   // parse query string into dictionary
   if (qs && qs.length > 0) {
 
-    var parts = qs.split('&');
-    for (var y = 0; y < parts.length; y++) {
-      var tmp = parts[y].split('=');
+    var qsParts = qs.split('&');
+    for (var y = 0; y < qsParts.length; y++) {
+      var tmp = qsParts[y].split('=');
       if (tmp[0] && tmp[0].length) {
         result.paramValues[tmp[0]] = (tmp.length === 2 ? tmp[1] : '');
         result.params.push(tmp[0]);
@@ -1769,7 +1819,7 @@ imgix.parseRjUrl = function(url) {
   return result;
 };
 
-imgix.buildRjUrl = function(parsed) {
+imgix.buildRjUrl = function (parsed) {
   var result = parsed.protocol + '//' + parsed.host + parsed.sig;
   if (parsed.params.length > 0) {
     var qs = [];
@@ -1779,7 +1829,7 @@ imgix.buildRjUrl = function(parsed) {
       }
     }
 
-    result += 'p:' + qs.join('&')
+    result += 'p:' + qs.join('&');
   } else {
     result += 'p:'; // need this no matter what...
   }
@@ -1789,7 +1839,7 @@ imgix.buildRjUrl = function(parsed) {
   return result + parsed.hash;
 };
 
-imgix.parseUrl = function(url) {
+imgix.parseUrl = function (url) {
   var
     pkeys = ['protocol', 'hostname', 'port', 'path', '?', '#', 'hostname'],
     keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
@@ -1827,25 +1877,29 @@ imgix.parseUrl = function(url) {
   return result;
 };
 
-imgix.buildUrl = function(parsed) {
-  var result = parsed.protocol + '://' + parsed.host +  parsed.pathname;
+imgix.buildUrl = function (parsed) {
+  var result = parsed.protocol + '://' + parsed.host + parsed.pathname;
   if (parsed.params.length > 0) {
 
 
-    parsed.params = parsed.params.map(function(e) {
+    parsed.params = parsed.params.map(function (e) {
       return e.toLowerCase();
     });
 
     // unique only
-    parsed.params = parsed.params.filter(function(value, index, self) {
+    parsed.params = parsed.params.filter(function (value, index, self) {
       return self.indexOf(value) === index;
     });
 
     // sort
-    parsed.params = parsed.params.sort(function(a, b) {
-      if(a < b) return -1;
-      if(a > b) return 1;
-      return 0;
+    parsed.params = parsed.params.sort(function (a, b) {
+      if (a < b) {
+        return -1;
+      } else if (a > b) {
+        return 1;
+      } else {
+        return 0;
+      }
     });
 
     var qs = [];
@@ -1865,22 +1919,22 @@ imgix.buildUrl = function(parsed) {
   return result;
 };
 
-imgix.signRjUrl = function(newUrl, token) {
+imgix.signRjUrl = function (newUrl, token) {
   var p = imgix.parseUrl(newUrl), // normal url parse
     m = p.pathname.match(/([\w\-_*]+)/g),
-    sig = m[0];
+    sig = m[0],
     sig_location = newUrl.indexOf(sig) + sig.length + 1,
     rest = newUrl.substr(sig_location),
     find_path = rest.match(/([^\/]+)(.+)/g),
     path = find_path[1],
     args = '/' + rest.replace(path, ''),
     concat = token + args,
-    new_sig = imgix.safe_btoa_encode(MD5_hash(concat)).substr(0, 8),
+    new_sig = imgix.safe_btoa_encode(imgix.md5(concat)).substr(0, 8),
     new_url = newUrl.replace(sig, new_sig);
   return new_url;
-}
+};
 
-imgix.signUrl = function(newUrl, token) {
+imgix.signUrl = function (newUrl, token) {
   if (token) {
     var parts = imgix.parseUrl(newUrl),
       toSign = token + parts.pathname + '?' + parts.search,
@@ -1897,7 +1951,7 @@ imgix.signUrl = function(newUrl, token) {
   return newUrl;
 };
 
-imgix.isDef = function(obj) {
+imgix.isDef = function (obj) {
   return (typeof obj !== 'undefined');
 };
 
@@ -1917,7 +1971,7 @@ imgix.safe_btoa_decode = function (str) {
 var fluidDefaults = {
   fluidClass: 'imgix-fluid',
   updateOnResize: true,
-  updateOnResizeDown : false,
+  updateOnResizeDown: false,
   updateOnPinchZoom: false,
   highDPRAutoScaleQuality: true,
   onChangeParamOverride: null,
@@ -1948,9 +2002,9 @@ imgix.elementInView = function (element, view) {
   }
   var box = element.getBoundingClientRect();
   return (box.right >= view.l && box.bottom >= view.t && box.left <= view.r && box.top <= view.b);
- };
+};
 
-imgix.FluidSet = function(options) {
+imgix.FluidSet = function (options) {
   if (imgix.helpers.isReallyObject(options)) {
     this.options = imgix.helpers.mergeObject(getFluidDefaults(), options);
   } else {
@@ -1964,7 +2018,7 @@ imgix.FluidSet = function(options) {
     r: Math.max(this.options.lazyLoadOffsetHorizontal, 0)
   };
 
-  this.namespace = '' + Math.random().toString(36).substring(7);
+  this.namespace = Math.random().toString(36).substring(7);
 
   this.windowResizeEventBound = false;
   this.windowScrollEventBound = false;
@@ -1974,7 +2028,7 @@ imgix.FluidSet = function(options) {
   this.reload = imgix.helpers.debouncer(this.reloader, this.options.debounce);
 };
 
-imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
+imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
 
   if (this.options.lazyLoad) {
     var view = {
@@ -1991,7 +2045,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
           llcType = typeof this.options.lazyLoadColor,
           i = new imgix.URL(imgix.helpers.getImgSrc(elem));
 
-        i.getColors(16, function(colors) {
+        i.getColors(16, function (colors) {
           if (!colors) {
             console.warn('No colors found for', i.getURL(), 'for element', elem);
             return;
@@ -2035,14 +2089,14 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
     elem.fluidUpdateCount = 0;
   }
 
-  var onLoad = function() {};
+  var onLoad = function () {};
 
   if (this.options.onLoad && typeof this.options.onLoad === 'function') {
     onLoad = this.options.onLoad;
   }
 
   // wrapped onLoad to handle race condition where multiple images are requested before the first one can load
-  var wrappedOnLoad = function(el, imgUrl) {
+  var wrappedOnLoad = function (el, imgUrl) {
     el.fluidUpdateCount = parseInt(el.fluidUpdateCount, 10) + 1;
     onLoad(el, imgUrl);
   };
@@ -2052,7 +2106,7 @@ imgix.FluidSet.prototype.updateSrc = function(elem, pinchScale) {
   elem.lastHeight = currentElemHeight;
 };
 
-imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
+imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
   if (!elem) {
     return;
   }
@@ -2111,12 +2165,12 @@ imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
   var overrides = {};
   if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === 'function') {
     overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams(), elem);
-  } else {
-    //console.log('skipping...');
   }
 
   for (var k in overrides) {
-    i.setParam(k, overrides[k]);
+    if (overrides.hasOwnProperty(k)) {
+      i.setParam(k, overrides[k]);
+    }
   }
 
   return {
@@ -2126,25 +2180,25 @@ imgix.FluidSet.prototype.getImgDetails = function(elem, zoomMultiplier) {
   };
 };
 
-imgix.FluidSet.prototype.toString = function() {
+imgix.FluidSet.prototype.toString = function () {
   return '[object FluidSet]';
 };
 
-imgix.FluidSet.prototype.reloader = function() {
+imgix.FluidSet.prototype.reloader = function () {
   imgix.fluid(this);
 
   this.windowLastWidth = imgix.helpers.getWindowWidth();
   this.windowLastHeight = imgix.helpers.getWindowHeight();
 };
 
-imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
+imgix.FluidSet.prototype.attachGestureEvent = function (elem) {
   var self = this;
   if (elem.addEventListener && !elem.listenerAttached) {
-    elem.addEventListener('gestureend', function(e) {
+    elem.addEventListener('gestureend', function (e) {
       self.updateSrc(this, e.scale);
     }, false);
 
-    elem.addEventListener('gesturechange', function() {
+    elem.addEventListener('gesturechange', function () {
       self.updateSrc(this);
     }, false);
 
@@ -2153,7 +2207,7 @@ imgix.FluidSet.prototype.attachGestureEvent = function(elem) {
 };
 
 
-imgix.FluidSet.prototype.resizeListener = function() {
+imgix.FluidSet.prototype.resizeListener = function () {
   if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
     this.reload();
   }
@@ -2162,8 +2216,8 @@ imgix.FluidSet.prototype.resizeListener = function() {
 var scrollInstances = {},
   resizeInstances = {};
 
-imgix.FluidSet.prototype.attachScrollListener = function() {
-  scrollInstances[this.namespace] = function() {
+imgix.FluidSet.prototype.attachScrollListener = function () {
+  scrollInstances[this.namespace] = function () {
     this.reload();
   }.bind(this);
 
@@ -2176,8 +2230,8 @@ imgix.FluidSet.prototype.attachScrollListener = function() {
   this.windowScrollEventBound = true;
 };
 
-imgix.FluidSet.prototype.attachWindowResizer = function() {
-  resizeInstances[this.namespace] = function() {
+imgix.FluidSet.prototype.attachWindowResizer = function () {
+  resizeInstances[this.namespace] = function () {
     this.resizeListener();
   }.bind(this);
 
@@ -2231,7 +2285,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
 
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
-`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function(`HTMLElement' el, `Array` colors)
+`lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function (`HTMLElement' el, `Array` colors)
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
@@ -2244,7 +2298,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
   {
     fluidClass: 'imgix-fluid',
     updateOnResize: true,
-    updateOnResizeDown : false,
+    updateOnResizeDown: false,
     updateOnPinchZoom: false,
     highDPRAutoScaleQuality: true,
     onChangeParamOverride: null,
@@ -2269,7 +2323,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function() {
  * @param [rootNode=document] optional HTML element to scope operations on
  * @param {object} config options for fluid (this extends the defaults)
  */
-imgix.fluid = function() {
+imgix.fluid = function () {
   var elem, node;
   if (arguments.length > 0 && arguments[0].nodeType === 1) {
     node = arguments[0];
@@ -2278,7 +2332,7 @@ imgix.fluid = function() {
     elem = arguments[0];
   }
 
-  if (elem === null){
+  if (elem === null) {
     return;
   }
 
@@ -2312,7 +2366,7 @@ imgix.fluid = function() {
   if (elem && !imgix.helpers.isFluidSet(elem)) {
     fluidElements = Array.isArray(elem) ? elem : [elem];
   } else {
-    var cls = '' + options.fluidClass;
+    var cls = options.fluidClass.toString();
     cls = cls.slice(0, 1) === '.' ? cls : ('.' + cls);
     fluidElements = (node || document).querySelectorAll(cls);
     if (node && imgix.helpers.matchesSelector(node, cls)) {
@@ -2321,16 +2375,16 @@ imgix.fluid = function() {
     }
   }
 
-  for (var i = 0; i < fluidElements.length; i++) {
-    if (fluidElements[i] === null) {
+  for (var j = 0; j < fluidElements.length; j++) {
+    if (fluidElements[j] === null) {
       continue;
     }
 
     if (options.updateOnPinchZoom) {
-      fluidSet.attachGestureEvent(fluidElements[i]);
+      fluidSet.attachGestureEvent(fluidElements[j]);
     }
 
-    fluidSet.updateSrc(fluidElements[i]);
+    fluidSet.updateSrc(fluidElements[j]);
   }
 
   if (options.lazyLoad && !fluidSet.windowScrollEventBound) {
@@ -2362,54 +2416,76 @@ if (typeof window !== 'undefined') {
    * @static
    * @param {function} ready the function to run when the DOM is ready.
    */
-  imgix.onready = function (ready) {
-    var fns = [];
-    var fn;
-    var f = false;
-    var doc = document;
-    var testEl = doc.documentElement;
-    var hack = testEl.doScroll;
-    var domContentLoaded = 'DOMContentLoaded';
-    var addEventListener = 'addEventListener';
-    var onreadystatechange = 'onreadystatechange';
-    var readyState = 'readyState';
-    var loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/;
-    var loaded = loadedRgx.test(doc[readyState]);
-    function flush(f) {
-      loaded = 1;
-      while (f = fns.shift()) {
-        f();
+  imgix.onready = (function (ready) {
+      var fns = [],
+          fn,
+          f = false,
+          doc = document,
+          testEl = doc.documentElement,
+          hack = testEl.doScroll,
+          domContentLoaded = 'DOMContentLoaded',
+          addEventListener = 'addEventListener',
+          onreadystatechange = 'onreadystatechange',
+          readyState = 'readyState',
+          loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/,
+          loaded = loadedRgx.test(doc[readyState]);
+
+      function flush(f) {
+        loaded = 1;
+        while (f = fns.shift()) {
+          f();
+        }
       }
-    }
-    doc[addEventListener] && doc[addEventListener](domContentLoaded, fn = function () {
-      doc.removeEventListener(domContentLoaded, fn, f);
-      flush();
-    }, f);
-    hack && doc.attachEvent(onreadystatechange, fn = function () {
-      if (/^c/.test(doc[readyState])) {
-        doc.detachEvent(onreadystatechange, fn);
-        flush();
+
+      if (doc[addEventListener]) {
+        doc[addEventListener](domContentLoaded, fn = function () {
+          doc.removeEventListener(domContentLoaded, fn, f);
+          flush();
+        }, f);
       }
-    });
-    return (ready = hack ?
-      function (fn) {
-        self !== top ?
-          loaded ? fn() : fns.push(fn) :
-          function () {
-            try {
-              testEl.doScroll('left');
-            } catch (e) {
-              return setTimeout(function () {
-              ready(fn);
-              }, 50);
+
+      if (hack) {
+        doc.attachEvent(onreadystatechange, fn = function () {
+          if (/^c/.test(doc[readyState])) {
+            doc.detachEvent(onreadystatechange, fn);
+            flush();
+          }
+        });
+      }
+
+      ready = hack;
+
+      if (!!ready) {
+        return function (fn) {
+          if (self !== top) {
+            if (loaded) {
+              fn();
+            } else {
+              fns.push(fn);
             }
-          fn();
-        }();
-      }:
-      function (fn) {
-        loaded ? fn() : fns.push(fn);
-      });
-  }();
+          } else {
+            (function () {
+              try {
+                testEl.doScroll('left');
+              } catch (e) {
+                return setTimeout(function () {
+                  ready(fn);
+                }, 50);
+              }
+              fn();
+            })();
+          }
+        };
+      } else {
+        return function (fn) {
+          if (loaded) {
+            fn();
+          } else {
+            fns.push(fn);
+          }
+        };
+      }
+    })();
 }
 // MD5 stuff...
 
@@ -2435,8 +2511,6 @@ if (typeof window !== 'undefined') {
 /*jslint bitwise: true */
 /*global unescape, define */
 (function (ctx) {
-  'use strict';
-
   /*
   * Add integers, wrapping at 2^32. This uses 16-bit operations internally
   * to work around bugs in some JS interpreters.
@@ -2482,10 +2556,10 @@ if (typeof window !== 'undefined') {
     x[(((len + 64) >>> 9) << 4) + 14] = len;
 
     var i, olda, oldb, oldc, oldd,
-      a =  1732584193,
+      a = 1732584193,
       b = -271733879,
       c = -1732584194,
-      d =  271733878;
+      d = 271733878;
 
     for (i = 0; i < x.length; i += 16) {
       olda = a;
@@ -2493,73 +2567,73 @@ if (typeof window !== 'undefined') {
       oldc = c;
       oldd = d;
 
-      a = md5_ff(a, b, c, d, x[i],     7, -680876936);
-      d = md5_ff(d, a, b, c, x[i +  1], 12, -389564586);
-      c = md5_ff(c, d, a, b, x[i +  2], 17,  606105819);
-      b = md5_ff(b, c, d, a, x[i +  3], 22, -1044525330);
-      a = md5_ff(a, b, c, d, x[i +  4],  7, -176418897);
-      d = md5_ff(d, a, b, c, x[i +  5], 12,  1200080426);
-      c = md5_ff(c, d, a, b, x[i +  6], 17, -1473231341);
-      b = md5_ff(b, c, d, a, x[i +  7], 22, -45705983);
-      a = md5_ff(a, b, c, d, x[i +  8],  7,  1770035416);
-      d = md5_ff(d, a, b, c, x[i +  9], 12, -1958414417);
+      a = md5_ff(a, b, c, d, x[i], 7, -680876936);
+      d = md5_ff(d, a, b, c, x[i + 1], 12, -389564586);
+      c = md5_ff(c, d, a, b, x[i + 2], 17, 606105819);
+      b = md5_ff(b, c, d, a, x[i + 3], 22, -1044525330);
+      a = md5_ff(a, b, c, d, x[i + 4], 7, -176418897);
+      d = md5_ff(d, a, b, c, x[i + 5], 12, 1200080426);
+      c = md5_ff(c, d, a, b, x[i + 6], 17, -1473231341);
+      b = md5_ff(b, c, d, a, x[i + 7], 22, -45705983);
+      a = md5_ff(a, b, c, d, x[i + 8], 7, 1770035416);
+      d = md5_ff(d, a, b, c, x[i + 9], 12, -1958414417);
       c = md5_ff(c, d, a, b, x[i + 10], 17, -42063);
       b = md5_ff(b, c, d, a, x[i + 11], 22, -1990404162);
-      a = md5_ff(a, b, c, d, x[i + 12],  7,  1804603682);
+      a = md5_ff(a, b, c, d, x[i + 12], 7, 1804603682);
       d = md5_ff(d, a, b, c, x[i + 13], 12, -40341101);
       c = md5_ff(c, d, a, b, x[i + 14], 17, -1502002290);
-      b = md5_ff(b, c, d, a, x[i + 15], 22,  1236535329);
+      b = md5_ff(b, c, d, a, x[i + 15], 22, 1236535329);
 
-      a = md5_gg(a, b, c, d, x[i +  1],  5, -165796510);
-      d = md5_gg(d, a, b, c, x[i +  6],  9, -1069501632);
-      c = md5_gg(c, d, a, b, x[i + 11], 14,  643717713);
-      b = md5_gg(b, c, d, a, x[i],    20, -373897302);
-      a = md5_gg(a, b, c, d, x[i +  5],  5, -701558691);
-      d = md5_gg(d, a, b, c, x[i + 10],  9,  38016083);
+      a = md5_gg(a, b, c, d, x[i + 1], 5, -165796510);
+      d = md5_gg(d, a, b, c, x[i + 6], 9, -1069501632);
+      c = md5_gg(c, d, a, b, x[i + 11], 14, 643717713);
+      b = md5_gg(b, c, d, a, x[i], 20, -373897302);
+      a = md5_gg(a, b, c, d, x[i + 5], 5, -701558691);
+      d = md5_gg(d, a, b, c, x[i + 10], 9, 38016083);
       c = md5_gg(c, d, a, b, x[i + 15], 14, -660478335);
-      b = md5_gg(b, c, d, a, x[i +  4], 20, -405537848);
-      a = md5_gg(a, b, c, d, x[i +  9],  5,  568446438);
-      d = md5_gg(d, a, b, c, x[i + 14],  9, -1019803690);
-      c = md5_gg(c, d, a, b, x[i +  3], 14, -187363961);
-      b = md5_gg(b, c, d, a, x[i +  8], 20,  1163531501);
-      a = md5_gg(a, b, c, d, x[i + 13],  5, -1444681467);
-      d = md5_gg(d, a, b, c, x[i +  2],  9, -51403784);
-      c = md5_gg(c, d, a, b, x[i +  7], 14,  1735328473);
+      b = md5_gg(b, c, d, a, x[i + 4], 20, -405537848);
+      a = md5_gg(a, b, c, d, x[i + 9], 5, 568446438);
+      d = md5_gg(d, a, b, c, x[i + 14], 9, -1019803690);
+      c = md5_gg(c, d, a, b, x[i + 3], 14, -187363961);
+      b = md5_gg(b, c, d, a, x[i + 8], 20, 1163531501);
+      a = md5_gg(a, b, c, d, x[i + 13], 5, -1444681467);
+      d = md5_gg(d, a, b, c, x[i + 2], 9, -51403784);
+      c = md5_gg(c, d, a, b, x[i + 7], 14, 1735328473);
       b = md5_gg(b, c, d, a, x[i + 12], 20, -1926607734);
 
-      a = md5_hh(a, b, c, d, x[i +  5],  4, -378558);
-      d = md5_hh(d, a, b, c, x[i +  8], 11, -2022574463);
-      c = md5_hh(c, d, a, b, x[i + 11], 16,  1839030562);
+      a = md5_hh(a, b, c, d, x[i + 5], 4, -378558);
+      d = md5_hh(d, a, b, c, x[i + 8], 11, -2022574463);
+      c = md5_hh(c, d, a, b, x[i + 11], 16, 1839030562);
       b = md5_hh(b, c, d, a, x[i + 14], 23, -35309556);
-      a = md5_hh(a, b, c, d, x[i +  1],  4, -1530992060);
-      d = md5_hh(d, a, b, c, x[i +  4], 11,  1272893353);
-      c = md5_hh(c, d, a, b, x[i +  7], 16, -155497632);
+      a = md5_hh(a, b, c, d, x[i + 1], 4, -1530992060);
+      d = md5_hh(d, a, b, c, x[i + 4], 11, 1272893353);
+      c = md5_hh(c, d, a, b, x[i + 7], 16, -155497632);
       b = md5_hh(b, c, d, a, x[i + 10], 23, -1094730640);
-      a = md5_hh(a, b, c, d, x[i + 13],  4,  681279174);
-      d = md5_hh(d, a, b, c, x[i],    11, -358537222);
-      c = md5_hh(c, d, a, b, x[i +  3], 16, -722521979);
-      b = md5_hh(b, c, d, a, x[i +  6], 23,  76029189);
-      a = md5_hh(a, b, c, d, x[i +  9],  4, -640364487);
+      a = md5_hh(a, b, c, d, x[i + 13], 4, 681279174);
+      d = md5_hh(d, a, b, c, x[i], 11, -358537222);
+      c = md5_hh(c, d, a, b, x[i + 3], 16, -722521979);
+      b = md5_hh(b, c, d, a, x[i + 6], 23, 76029189);
+      a = md5_hh(a, b, c, d, x[i + 9], 4, -640364487);
       d = md5_hh(d, a, b, c, x[i + 12], 11, -421815835);
-      c = md5_hh(c, d, a, b, x[i + 15], 16,  530742520);
-      b = md5_hh(b, c, d, a, x[i +  2], 23, -995338651);
+      c = md5_hh(c, d, a, b, x[i + 15], 16, 530742520);
+      b = md5_hh(b, c, d, a, x[i + 2], 23, -995338651);
 
-      a = md5_ii(a, b, c, d, x[i],     6, -198630844);
-      d = md5_ii(d, a, b, c, x[i +  7], 10,  1126891415);
+      a = md5_ii(a, b, c, d, x[i], 6, -198630844);
+      d = md5_ii(d, a, b, c, x[i + 7], 10, 1126891415);
       c = md5_ii(c, d, a, b, x[i + 14], 15, -1416354905);
-      b = md5_ii(b, c, d, a, x[i +  5], 21, -57434055);
-      a = md5_ii(a, b, c, d, x[i + 12],  6,  1700485571);
-      d = md5_ii(d, a, b, c, x[i +  3], 10, -1894986606);
+      b = md5_ii(b, c, d, a, x[i + 5], 21, -57434055);
+      a = md5_ii(a, b, c, d, x[i + 12], 6, 1700485571);
+      d = md5_ii(d, a, b, c, x[i + 3], 10, -1894986606);
       c = md5_ii(c, d, a, b, x[i + 10], 15, -1051523);
-      b = md5_ii(b, c, d, a, x[i +  1], 21, -2054922799);
-      a = md5_ii(a, b, c, d, x[i +  8],  6,  1873313359);
+      b = md5_ii(b, c, d, a, x[i + 1], 21, -2054922799);
+      a = md5_ii(a, b, c, d, x[i + 8], 6, 1873313359);
       d = md5_ii(d, a, b, c, x[i + 15], 10, -30611744);
-      c = md5_ii(c, d, a, b, x[i +  6], 15, -1560198380);
-      b = md5_ii(b, c, d, a, x[i + 13], 21,  1309151649);
-      a = md5_ii(a, b, c, d, x[i +  4],  6, -145523070);
+      c = md5_ii(c, d, a, b, x[i + 6], 15, -1560198380);
+      b = md5_ii(b, c, d, a, x[i + 13], 21, 1309151649);
+      a = md5_ii(a, b, c, d, x[i + 4], 6, -145523070);
       d = md5_ii(d, a, b, c, x[i + 11], 10, -1120210379);
-      c = md5_ii(c, d, a, b, x[i +  2], 15,  718787259);
-      b = md5_ii(b, c, d, a, x[i +  9], 21, -343485551);
+      c = md5_ii(c, d, a, b, x[i + 2], 15, 718787259);
+      b = md5_ii(b, c, d, a, x[i + 9], 21, -343485551);
 
       a = safe_add(a, olda);
       b = safe_add(b, oldb);
