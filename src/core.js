@@ -249,7 +249,10 @@ imgix.helpers = {
         }
       }
 
-      found = val;
+      found = {
+        width: elem.offsetWidth,
+        height: elem.offsetHeight
+      };
 
       for (prop in visProp) {
         if (visProp.hasOwnProperty(prop)) {
