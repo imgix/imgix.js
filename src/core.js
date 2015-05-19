@@ -2036,6 +2036,10 @@ imgix.FluidSet = function (options) {
 };
 
 imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
+  // Short-circuit if the image is hidden
+  if (!elem.getClientRects().length) {
+    return;
+  }
 
   if (this.options.lazyLoad) {
     var view = {
