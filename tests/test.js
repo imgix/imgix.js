@@ -792,7 +792,6 @@ describe('imgix-javascript unit tests', function() {
 	});
 
 	it('handles imgix.fluid images', function() {
-
 		var pixelStep = 10;
 		var el, fl, elemSize;
 		runs(function() {
@@ -835,14 +834,13 @@ describe('imgix-javascript unit tests', function() {
 		var pixelStep = 10,
 			maxHeight = 200,
 			maxWidth = 300;
-		var el, fl, elemSize;
+		var el, fl;
 		runs(function() {
 			el = document.createElement('img');
 			el.setAttribute('data-src', 'http://jackangers.imgix.net/chester.png');
 			el.setAttribute('class', 'imgix-fluid');
 
 			document.body.appendChild(el);
-			elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(el) ? el.parentNode : el);
 
 			var opts = {
 				fitImgTagToContainerWidth: true,
