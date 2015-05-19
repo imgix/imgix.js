@@ -2036,8 +2036,14 @@ imgix.FluidSet = function (options) {
 };
 
 imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
+  // An empty src attribute throws off the 'hidden' check below,
+  // so we need to give it something to actually fill it up
+  if (elem.hasAttribute('src') && elem.getAttribute('src') === '') {
+    elem.setAttribute('src', imgix.getEmptyImage());
+  }
+
   // Short-circuit if the image is hidden
-  if (!elem.getClientRects().length) {
+  if (!elem.offsetWidth && !elem.offsetHeight && !elem.getClientRects().length) {
     return;
   }
 
@@ -2095,6 +2101,7 @@ imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
   if (this.options.updateOnResizeDown === false && elem.lastWidth >= currentElemWidth && elem.lastHeight >= currentElemHeight) {
     return;
   }
+
 
   if (!elem.fluidUpdateCount) {
     elem.fluidUpdateCount = 0;
