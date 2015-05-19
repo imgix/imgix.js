@@ -829,6 +829,96 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('doesn\'t download images when the imgix.fluid image is hidden', function() {
+		var el,
+				src = 'http://jackangers.imgix.net/chester.png',
+				checkSrc = false;
+
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', src);
+			el.setAttribute('class', 'imgix-fluid');
+			el.style.display = 'none';
+
+			document.body.appendChild(el);
+
+			imgix.fluid(el);
+
+			// Wait 5 seconds, then check if image has a src
+			setTimeout(function() {
+				checkSrc = !el.hasAttribute('src');
+			}, 5000);
+		});
+
+		waitsFor(function() {
+			return checkSrc;
+		}, 'The image src should not be set', 5500);
+
+		runs(function() {
+			expect(el.hasAttribute('src')).toEqual(false);
+			document.body.removeChild(el);
+		});
+	});
+
+	it('doesn\'t download images when the imgix.fluid image\'s container is hidden', function() {
+		var child,
+				parent,
+				src = 'http://jackangers.imgix.net/chester.png',
+				checkSrc = false;
+
+		runs(function() {
+			child = document.createElement('img');
+			child.setAttribute('data-src', src);
+			child.setAttribute('class', 'imgix-fluid-test');
+
+			parent = document.createElement('div');
+			parent.style.display = 'none';
+			parent.appendChild(child);
+
+			document.body.appendChild(parent);
+
+			imgix.fluid(parent, {fluidClass: "imgix-fluid-test"});
+
+			// Wait 5 seconds, then check if image has a src
+			setTimeout(function() {
+				checkSrc = !child.hasAttribute('src');
+			}, 5000);
+		});
+
+		waitsFor(function() {
+			return checkSrc;
+		}, 'The image src should not be set', 5500);
+
+		runs(function() {
+			expect(child.hasAttribute('src')).toEqual(false);
+			document.body.removeChild(parent);
+		});
+	});
+
+	it('handles imgix.fluid images with an empty src attribute', function() {
+		var el,
+				src = 'http://jackangers.imgix.net/chester.png';
+
+		runs(function() {
+			el = document.createElement('img');
+			el.setAttribute('data-src', src);
+			el.setAttribute('class', 'imgix-fluid');
+
+			document.body.appendChild(el);
+
+			imgix.fluid(el);
+		});
+
+		waitsFor(function() {
+			return el.src !== '';
+		}, 'The image src should be set', 5500);
+
+		runs(function() {
+			expect(el.src).toMatch(/chester\.png\?/);
+			document.body.removeChild(el);
+		});
+	});
+
 	it('handles imgix.fluid images with maximum dimensions', function() {
 
 		var pixelStep = 10,
