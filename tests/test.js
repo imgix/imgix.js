@@ -127,7 +127,7 @@ describe('imgix-javascript unit tests', function() {
 
 	it('should remove params correctly', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=200&sepia=20');
-		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?sepia=20&w=200'); //normalized 
+		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?sepia=20&w=200'); //normalized
 
 		i.removeParam('sepia');
 		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?w=200');
@@ -171,7 +171,7 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png');
 	});
 
-	it('clearThenSetParams', function() {
+	it('clears then sets params', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=500&sepia=50');
 
 		i.clearThenSetParams({h: 100, blur: 50});
@@ -287,7 +287,7 @@ describe('imgix-javascript unit tests', function() {
 			//expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(207, 169, 183)', 'rgb(57, 72, 102)'].reverse());
 			//expect(returnColors).toEqual( [  'rgb(251, 150, 23)', 'rgb(208, 86, 13)', 'rgb(57, 72, 102)'].reverse());
 		});
-		
+
 	});
 
 	it('md5s strings correctly', function() {
@@ -317,11 +317,11 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.applyAlphaToRGB('rgba(251, 150, 23, 0.3)', 0.5).toLowerCase()).toEqual('rgba(251, 150, 23, 0.5)');
 	});
 
-	it('converting hex to rgb returns self if passed rgb', function() {
+	it('returns self if passed rgb when converting hex to rgb', function() {
 		expect(imgix.hexToRGB('rgb(251, 150, 23)').toLowerCase()).toEqual('rgb(251, 150, 23)');
 	});
 
-	it('converting hex to rgb returns self if passed rgba', function() {
+	it('returns self if passed rgba when converting hex to rgb', function() {
 		expect(imgix.hexToRGB('rgba(251, 150, 23, 0.2)').toLowerCase()).toEqual('rgba(251, 150, 23, 0.2)');
 	});
 
@@ -738,7 +738,7 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.getColorBrightness('#fcc')).toEqual(imgix.getColorBrightness('rgb(255, 204, 204'));
 	});
 
-	it('imgix.onready should be called', function() {
+	it('calls imgix.onready', function() {
 		var loadedFlag = false;
 		runs(function() {
 			imgix.onready(function() {
@@ -755,7 +755,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('should support blend params', function() {
+	it('supports blend params', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
 		i.setBlend('fff');
 		expect(i.getBlend()).toEqual('fff');
@@ -770,7 +770,7 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getURL()).toContain('bh=50');
 	});
 
-	it('should chain imgix.URL setX calls', function() {
+	it('chains imgix.URL setX calls', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
 		i.setSepia(50).setWidth(50).setHeight(100);
 		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?h=100&sepia=50&w=50');
@@ -791,7 +791,7 @@ describe('imgix-javascript unit tests', function() {
 		expect(imgix.helpers.matchesSelector(no, '.imgix-fluid')).not.toBeTruthy();
 	});
 
-	it('imgix.fluid img test', function() {
+	it('handles imgix.fluid images', function() {
 
 		var pixelStep = 10;
 		var el, fl, elemSize;
@@ -830,7 +830,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid img test max test', function() {
+	it('handles imgix.fluid images with maximum dimensions', function() {
 
 		var pixelStep = 10,
 			maxHeight = 200,
@@ -870,7 +870,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid given a node', function() {
+	it('handles imgix.fluid images when given a node', function() {
 		var parent,
 				child,
 				src = 'http://jackangers.imgix.net/chester.png';
@@ -901,7 +901,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid respects classes when given a node', function() {
+	it('respects classes when imgix.fluid is given a node', function() {
 		var parent,
 				child,
 				src = 'http://jackangers.imgix.net/chester.png';
@@ -929,7 +929,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid onLoad', function() {
+	it('calls an onLoad callback after setting up imgix.fluid', function() {
 
 		var el, opts, fl, elemSize, loaded = false, loadUpdateCount = null, loadedURLs = [];
 		runs(function() {
@@ -991,7 +991,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid lazyLoadColor', function() {
+	it('handles lazyLoadColor on imgix.fluid images', function() {
 
 		var el, opts, fl, elemSize, loaded = false, imgSrc, foundColors = [];
 		runs(function() {
@@ -1031,7 +1031,7 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
-	it('imgix.fluid lazyLoad', function() {
+	it('handles lazyLoad on imgix.fluid images', function() {
 
 		var el, opts, fl, loaded = false;
 		runs(function() {
