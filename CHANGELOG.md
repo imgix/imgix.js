@@ -1,3 +1,14 @@
+# new imgix.js 1.0.25
+
+## Features
+
+* Added a parameter to all image requests reflecting the current version of imgix.js. This will allow us to better track usage and debug problems with the library in the future.
+
+## Bug Fixes
+
+N/A
+
+
 # new imgix.js 1.0.24
 
 ## Features
