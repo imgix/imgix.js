@@ -127,10 +127,11 @@ describe('imgix-javascript unit tests', function() {
 
 	it('should remove params correctly', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=200&sepia=20');
-		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?sepia=20&w=200'); //normalized
 
 		i.removeParam('sepia');
-		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?w=200');
+		expect(i.urlParts.params).toContain('w');
+		expect(i.urlParts.params).not.toContain('sepia');
+		expect(i.getURL()).not.toMatch(/sepia=/);
 	});
 
 	it('sets params in constructor', function() {
@@ -167,15 +168,21 @@ describe('imgix-javascript unit tests', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=500&sepia=50');
 
 		i.clearParams();
-		expect(i.params, []);
-		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png');
+
+		expect(i.urlParts.params).not.toContain('w');
+		expect(i.urlParts.params).not.toContain('sepia');
 	});
 
 	it('clears then sets params', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png?w=500&sepia=50');
 
 		i.clearThenSetParams({h: 100, blur: 50});
-		expect(i.params, ["h", "blur"]);
+
+		expect(i.urlParts.params).toContain('h');
+		expect(i.urlParts.params).toContain('blur');
+		expect(i.urlParts.params).not.toContain('w');
+		expect(i.urlParts.params).not.toContain('sepia');
+
 	});
 
 	it('overrides url params', function() {
@@ -459,8 +466,8 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for image to load..", 10000);
 
 		runs(function() {
-			// ensure it actually loaded...
-			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			// ensure it now contains the blur param we added
+			expect(imgix.getElementImage(el)).toMatch(/blur=/);
 			document.body.removeChild(img);
 		});
 	});
@@ -606,8 +613,8 @@ describe('imgix-javascript unit tests', function() {
 		}, "Waiting for image to load..", 10000);
 
 		runs(function() {
-			// ensure it actually loaded...
-			expect(imgix.getElementImage(el)).toEqual(newUrl);
+			// ensure it now contains the blur param we added
+			expect(imgix.getElementImage(el)).toMatch(/blur=/);
 			document.body.removeChild(img);
 		});
 	});
@@ -652,25 +659,31 @@ describe('imgix-javascript unit tests', function() {
 
 
 		runs(function() {
-			// ensure it actually loaded on both images...
-			expect(imgix.getElementImage(el)).toEqual(newUrl);
-			expect(imgix.getElementImage(el2)).toEqual(newUrl);
+			// ensure both images now contain the blur param we added
+			expect(imgix.getElementImage(el)).toMatch(/blur=/);
+			expect(imgix.getElementImage(el2)).toMatch(/blur=/);
 
 			document.body.removeChild(img);
 			document.body.removeChild(img2);
 		});
 	});
 
-	it('should handle only qs in constructor', function() {
+	it('should handle query-only strings in constructor', function() {
 		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
 		i.setDPR(1.3);
-		expect(i.getQueryString()).toEqual('auto=format&dpr=1.3&fit=crop&h=360&q=80&w=940');
+
+		expect(i.urlParts.params).toContain('auto');
+		expect(i.urlParts.params).toContain('dpr');
+		expect(i.urlParts.params).toContain('fit');
+		expect(i.urlParts.params).toContain('h');
+		expect(i.urlParts.params).toContain('q');
+		expect(i.urlParts.params).toContain('w');
 	});
 
 	it('should remove the param from the url if null is set', function() {
 		var i = new imgix.URL('?auto=format&fit=crop&h=360&q=80&w=940');
 		i.setWidth(null);
-		expect(i.getQueryString()).toEqual('auto=format&fit=crop&h=360&q=80');
+		expect(i.getQueryString()).not.toMatch(/w=/);
 	});
 
 	it('should warn when trying to set an invalid imgix.fluid config key', function() {
@@ -715,7 +728,7 @@ describe('imgix-javascript unit tests', function() {
 		var i = new imgix.URL();
 		i.setParams({"txt": "this has spaces!"}); // should be encoded...
 		expect(i.getText()).toEqual("this%20has%20spaces!");
-		expect(i.getURL()).toEqual("https://assets.imgix.net/pixel.gif?txt=this%20has%20spaces!");
+		expect(i.getURL()).toMatch(/txt=this%20has%20spaces!/);
 	});
 
 	it('should auto hexify rgb colors', function() {
@@ -794,10 +807,12 @@ describe('imgix-javascript unit tests', function() {
 		expect(i.getURL()).toContain('bh=50');
 	});
 
-	it('chains imgix.URL setX calls', function() {
+	it('chains imgix.URL setFoo calls', function() {
 		var i = new imgix.URL('http://static-a.imgix.net/macaw.png');
 		i.setSepia(50).setWidth(50).setHeight(100);
-		expect(i.getURL()).toEqual('http://static-a.imgix.net/macaw.png?h=100&sepia=50&w=50');
+		expect(i.getURL()).toMatch(/h=100/);
+		expect(i.getURL()).toMatch(/sepia=50/);
+		expect(i.getURL()).toMatch(/w=50/);
 	});
 
 	it('defaults to a zoom level of 1', function() {
