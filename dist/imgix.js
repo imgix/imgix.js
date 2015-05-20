@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.23 - 2015-05-14 
+/*! http://www.imgix.com imgix.js - v1.0.24 - 2015-05-19 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -745,7 +745,10 @@ imgix.helpers = {
         }
       }
 
-      found = val;
+      found = {
+        width: elem.offsetWidth,
+        height: elem.offsetHeight
+      };
 
       for (prop in visProp) {
         if (visProp.hasOwnProperty(prop)) {
@@ -2529,6 +2532,16 @@ imgix.FluidSet = function (options) {
 };
 
 imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
+  // An empty src attribute throws off the 'hidden' check below,
+  // so we need to give it something to actually fill it up
+  if (elem.hasAttribute('src') && elem.getAttribute('src') === '') {
+    elem.setAttribute('src', imgix.getEmptyImage());
+  }
+
+  // Short-circuit if the image is hidden
+  if (!elem.offsetWidth && !elem.offsetHeight && !elem.getClientRects().length) {
+    return;
+  }
 
   if (this.options.lazyLoad) {
     var view = {
@@ -2584,6 +2597,7 @@ imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
   if (this.options.updateOnResizeDown === false && elem.lastWidth >= currentElemWidth && elem.lastHeight >= currentElemHeight) {
     return;
   }
+
 
   if (!elem.fluidUpdateCount) {
     elem.fluidUpdateCount = 0;
