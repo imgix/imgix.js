@@ -1963,10 +1963,13 @@ imgix.signUrl = function (newUrl, token) {
 };
 
 imgix.versionifyUrl = function (url) {
-  url += url.indexOf('?') === -1 ? '?' : '&';
-  url += 'ixjsv=' + imgix.version;
+  var parsed = imgix.parseUrl(url),
+      versionParam = 'ixjsv';
 
-  return url;
+  parsed.params.push(versionParam);
+  parsed.paramValues[versionParam] = imgix.version;
+
+  return imgix.buildUrl(parsed);
 };
 
 imgix.isDef = function (obj) {
