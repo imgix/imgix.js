@@ -409,6 +409,30 @@ describe('imgix-javascript unit tests', function() {
 		});
 	});
 
+	it('correctly adds imgix.js version string to the URL', function() {
+		var el, url, loadedFlag = false;
+		runs(function() {
+			el = document.createElement('img');
+			document.body.appendChild(el);
+
+			url = new imgix.URL('http://static-a.imgix.net/macaw.png');
+
+			imgix.setElementImageAfterLoad(el, url.getURL(), function() {
+				loadedFlag = true;
+			});
+		});
+
+		waitsFor(function() {
+			return loadedFlag;
+		}, "Waiting for image to load..", 10000);
+
+		runs(function() {
+			// ensure it actually loaded...
+			expect(imgix.getElementImage(el)).toMatch(/ixjsv=/);
+			document.body.removeChild(el);
+		});
+	});
+
 	it('should attachImageTo with element', function() {
 		var img, el, newUrl, loadedFlag = false;
 		runs(function() {
