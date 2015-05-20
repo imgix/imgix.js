@@ -7,7 +7,9 @@ var root = this;
  * `imgix` is the root namespace for all imgix client code.
  * @namespace imgix
  */
-var imgix = {};
+var imgix = {
+  version: '1.0.24'
+};
 
 // expose imgix to browser or node
 if (typeof exports !== 'undefined') {
@@ -407,7 +409,7 @@ imgix.setElementImage = function (el, imgUrl) {
  * @returns {string} url of an empty image
  */
 imgix.getEmptyImage = function () {
-  return 'https://assets.imgix.net/pixel.gif';
+  return imgix.versionifyUrl('https://assets.imgix.net/pixel.gif');
 };
 
 /**
@@ -1460,6 +1462,8 @@ imgix.URL.prototype.getUrl = function () {
     return imgix.getEmptyImage();
   }
 
+  url = imgix.versionifyUrl(url);
+
   return url;
 };
 
@@ -1956,6 +1960,13 @@ imgix.signUrl = function (newUrl, token) {
   }
 
   return newUrl;
+};
+
+imgix.versionifyUrl = function (url) {
+  url += url.indexOf('?') === -1 ? '?' : '&';
+  url += 'ixjsv=' + imgix.version;
+
+  return url;
 };
 
 imgix.isDef = function (obj) {
