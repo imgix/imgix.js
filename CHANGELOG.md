@@ -1,3 +1,14 @@
+# new imgix.js 1.0.24
+
+## Features
+
+N/A
+
+## Bug Fixes
+
+* Fixed a bug that could lead to unexpected requests for (sometimes massive) image files, occuring for elements that have been marked as fluid while it or its parents were set to `display:none;`. See [this PR](https://github.com/imgix/imgix.js/pull/28) for more details.
+
+
 # new imgix.js 1.0.23
 
 ## Features
