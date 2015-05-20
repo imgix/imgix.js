@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.0.24 - 2015-05-19 
+/*! http://www.imgix.com imgix.js - v1.0.24 - 2015-05-20 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -503,7 +503,9 @@ var root = this;
  * `imgix` is the root namespace for all imgix client code.
  * @namespace imgix
  */
-var imgix = {};
+var imgix = {
+  version: '1.0.24'
+};
 
 // expose imgix to browser or node
 if (typeof exports !== 'undefined') {
@@ -903,7 +905,7 @@ imgix.setElementImage = function (el, imgUrl) {
  * @returns {string} url of an empty image
  */
 imgix.getEmptyImage = function () {
-  return 'https://assets.imgix.net/pixel.gif';
+  return imgix.versionifyUrl('https://assets.imgix.net/pixel.gif');
 };
 
 /**
@@ -1956,6 +1958,8 @@ imgix.URL.prototype.getUrl = function () {
     return imgix.getEmptyImage();
   }
 
+  url = imgix.versionifyUrl(url);
+
   return url;
 };
 
@@ -2452,6 +2456,16 @@ imgix.signUrl = function (newUrl, token) {
   }
 
   return newUrl;
+};
+
+imgix.versionifyUrl = function (url) {
+  var parsed = imgix.parseUrl(url),
+      versionParam = 'ixjsv';
+
+  parsed.params.push(versionParam);
+  parsed.paramValues[versionParam] = imgix.version;
+
+  return imgix.buildUrl(parsed);
 };
 
 imgix.isDef = function (obj) {
