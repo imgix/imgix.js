@@ -1114,12 +1114,11 @@ imgix.setGradientOnElement = function (el, colors, baseColor) {
  * @param {object} imgParams imgix query string params (optional)
  * @param {object} token secure url token for signing images (optional)
  */
-imgix.URL = function (url, imgParams, token, isRj) {
+imgix.URL = function (url, imgParams, token) {
 
   this.token = token || '';
   this._autoUpdateSel = null;
   this._autoUpdateCallback = null;
-  this.isRj = !imgix.isDef(isRj) ? false : isRj;
 
   if (url && url.slice(0, 2) === '//' && window && window.location) {
     url = window.location.protocol + url;
@@ -1432,7 +1431,7 @@ imgix.URL.prototype.setUrl = function (url) {
   if (!url || typeof url !== 'string' || url.length === 0) {
     url = imgix.getEmptyImage();
   }
-  this.urlParts = this.isRj ? imgix.parseRjUrl(url) : imgix.parseUrl(url);
+  this.urlParts = imgix.parseUrl(url);
 };
 
 imgix.URL.prototype.setURL = function (url) {
@@ -1453,9 +1452,9 @@ imgix.URL.prototype.toString = function () {
  * @returns {string} the generated url
  */
 imgix.URL.prototype.getUrl = function () {
-  var url = this.isRj ? imgix.buildRjUrl(this.urlParts) : imgix.buildUrl(this.urlParts);
+  var url = imgix.buildUrl(this.urlParts);
   if (this.token) {
-    return this.isRj ? imgix.signRjUrl(url, this.token) : imgix.signUrl(url, this.token);
+    return imgix.signUrl(url, this.token);
   }
 
   if (!url || url.length === 0) {
@@ -1785,71 +1784,6 @@ for (var param in imgix.URL.theGetSetFuncs) {
   }
 }
 
-// STATIC
-imgix.parseRjUrl = function (url) {
-  var keys = ['protocol', 'hostname', 'port', 'pathname', 'search', 'hash', 'host'],
-    parser = document.createElement('a'),
-    result = {};
-
-  parser.href = url;
-
-  var pathParts = parser.pathname.split('p:'),
-    sig = pathParts[0],
-    qs = !pathParts[1] || pathParts[1].indexOf('=') === -1 ? '' : pathParts[1].match(/([^/]+)/)[1],
-    path = !pathParts[1] ? '' : pathParts[1].replace(qs, '');
-
-  for (var i = 0; i < keys.length; i++) {
-    result[keys[i]] = parser[keys[i]];
-  }
-
-  result.pathname = path;
-  result.search = qs;
-  result.sig = sig || '';
-
-  result.paramValues = {};
-  result.params = [];
-  result.baseUrl = path;
-
-  // hack attack - handle case where admin changed from a RJ url to non-RJ url...
-  if (sig.indexOf('.') !== -1) {
-    result.baseUrl = url.split('?')[0];
-  }
-
-  // parse query string into dictionary
-  if (qs && qs.length > 0) {
-
-    var qsParts = qs.split('&');
-    for (var y = 0; y < qsParts.length; y++) {
-      var tmp = qsParts[y].split('=');
-      if (tmp[0] && tmp[0].length) {
-        result.paramValues[tmp[0]] = (tmp.length === 2 ? tmp[1] : '');
-        result.params.push(tmp[0]);
-      }
-    }
-  }
-  return result;
-};
-
-imgix.buildRjUrl = function (parsed) {
-  var result = parsed.protocol + '//' + parsed.host + parsed.sig;
-  if (parsed.params.length > 0) {
-    var qs = [];
-    for (var i = 0; i < parsed.params.length; i++) {
-      if (parsed.paramValues[parsed.params[i]].length > 0) {
-        qs.push(parsed.params[i] + '=' + parsed.paramValues[parsed.params[i]]);
-      }
-    }
-
-    result += 'p:' + qs.join('&');
-  } else {
-    result += 'p:'; // need this no matter what...
-  }
-
-  result += parsed.pathname;
-
-  return result + parsed.hash;
-};
-
 imgix.parseUrl = function (url) {
   var
     pkeys = ['protocol', 'hostname', 'port', 'path', '?', '#', 'hostname'],
@@ -1928,21 +1862,6 @@ imgix.buildUrl = function (parsed) {
   }
 
   return result;
-};
-
-imgix.signRjUrl = function (newUrl, token) {
-  var p = imgix.parseUrl(newUrl), // normal url parse
-    m = p.pathname.match(/([\w\-_*]+)/g),
-    sig = m[0],
-    sig_location = newUrl.indexOf(sig) + sig.length + 1,
-    rest = newUrl.substr(sig_location),
-    find_path = rest.match(/([^\/]+)(.+)/g),
-    path = find_path[1],
-    args = '/' + rest.replace(path, ''),
-    concat = token + args,
-    new_sig = imgix.safe_btoa_encode(imgix.md5(concat)).substr(0, 8),
-    new_url = newUrl.replace(sig, new_sig);
-  return new_url;
 };
 
 imgix.signUrl = function (newUrl, token) {
