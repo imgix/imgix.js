@@ -355,13 +355,13 @@ imgix.isImageElement = function (el) {
  */
 imgix.setElementImageAfterLoad = function (el, imgUrl, callback) {
   var img = new Image();
-  img.src = imgUrl;
   img.onload = function () {
     imgix.setElementImage(el, imgUrl);
     if (typeof callback === 'function') {
       callback(el, imgUrl);
     }
   };
+  img.src = imgUrl;
 };
 
 /**
