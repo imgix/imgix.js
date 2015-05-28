@@ -182,17 +182,21 @@ imgix.helpers = {
     return !isNaN(parseFloat(value)) && isFinite(value);
   },
 
+  // From http://stackoverflow.com/a/16091319/24998
   getZoom: function () {
-    // http://stackoverflow.com/a/16091319/24998
-    if (!document.createElementNS) {
-      return 1;
+    var svg,
+        ns = 'http://www.w3.org/2000/svg',
+        z = 1;
+
+    if (document.createElementNS) {
+      svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('xmlns', ns);
+      svg.setAttribute('version', '1.1');
+      document.body.appendChild(svg);
+      z = svg.currentScale || 1;
+      document.body.removeChild(svg);
     }
-    var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-    svg.setAttribute('version', '1.1');
-    document.body.appendChild(svg);
-    var z = svg.currentScale || 1;
-    document.body.removeChild(svg);
+
     return z;
   },
 
