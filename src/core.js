@@ -174,10 +174,6 @@ imgix.helpers = {
     return Math.ceil(pixelSize / pixelStep) * pixelStep;
   },
 
-  isMobileDevice: function () {
-    return (/iPhone|iPod|iPad/i).test(navigator.userAgent);
-  },
-
   isNumber: function (value) {
     return !isNaN(parseFloat(value)) && isFinite(value);
   },
