@@ -1,3 +1,2 @@
 var config = {
-	visorToken: "YwpYbdby"
 };

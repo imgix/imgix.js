@@ -297,21 +297,6 @@ describe('imgix-javascript unit tests', function() {
 
 	});
 
-	it('md5s strings correctly', function() {
-		expect(imgix.md5("imgix")).toEqual("f12c7c39333410c10c2930b57116a943");
-	});
-
-	it('re-signs correctly', function() {
-
-
-		var su = "http://visor.imgix.net/http://a.abcnews.com/assets/images/navigation/abc-logo.png?rot=10&s=blah";
-
-		var i = new imgix.URL(su, {}, config.visorToken)
-		i.setRotate(15);
-
-		expect(i.getUrl()).toEqual("http://visor.imgix.net/http://a.abcnews.com/assets/images/navigation/abc-logo.png?rot=15&s=623966184d550b3bcb6a973040f8aa5d");
-	});
-
 	it('converts rgb to hex colors correctly', function() {
 		expect(imgix.rgbToHex('rgb(251, 150, 23)').toLowerCase()).toEqual('fb9617');
 	});
@@ -706,7 +691,7 @@ describe('imgix-javascript unit tests', function() {
 
 	it('should NOT warn when setting MULTIPLE valid imgix.fluid config keys', function() {
 		spyOn(console, 'warn');
-		imgix.fluid({pixelStep: 25, token: "asdf"});
+		imgix.fluid({pixelStep: 25, debounce: 250});
 		expect(console.warn).not.toHaveBeenCalled();
 	});
 
