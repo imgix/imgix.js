@@ -28,7 +28,7 @@
   * [imgix.fluid([rootNode], config)](#imgix.fluid)
   * [imgix.helpers](#imgix.helpers)
   * [class: imgix.URL](#imgix.URL)
-    * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
+    * [new imgix.URL(url, imgParams)](#new_imgix.URL)
     * [URL.setSepia(val)](#imgix.URL#setSepia)
     * [URL.setBrightness(val)](#imgix.URL#setBrightness)
     * [URL.setContrast(val)](#imgix.URL#setContrast)
@@ -179,7 +179,6 @@
     * [URL.getWatermarkWidth()](#imgix.URL#getWatermarkWidth)
     * [URL.attachGradientTo(elemOrSel, baseColor)](#imgix.URL#attachGradientTo)
     * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
-    * [URL.setToken(token)](#imgix.URL#setToken)
     * [URL.getColors(num, callback)](#imgix.URL#getColors)
     * [URL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
     * [URL.getUrl()](#imgix.URL#getUrl)
@@ -354,11 +353,9 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
 
 `pixelStep` __number__ image dimensions are rounded to this (e.g. for 10 the value 333 would be rounded to 340)<br>
 
-`token` __string__ the secure URL token to use to sign an image. when this is set URLs are automatically signed using this token<br>
-
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
-`debounce` __number__ postpones resize/lazy load execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
+`debounce` __number__ postpones resize execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
 
 `lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
 
@@ -367,6 +364,8 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
 `lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function (`HTMLElement' el, `Array` colors)
+
+`throttle` __number__ ensures scroll events fire only once every n milliseconds, throttling lazyLoad activity.<br>
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
@@ -387,12 +386,12 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
     fitImgTagToContainerWidth: true,
     fitImgTagToContainerHeight: false,
     pixelStep: 10,
-    token: null,
     debounce: 200,
     ignoreDPR: false,
     lazyLoad: false,
     lazyLoadOffsetVertical: 20,
     lazyLoadOffsetHorizontal: 20,
+    throttle: 200,
     maxWidth: 5000,
     maxHeight: 5000,
     onLoad: null
@@ -416,7 +415,7 @@ The helper namespace for lower-level functions
 **Members**
 
 * [class: imgix.URL](#imgix.URL)
-  * [new imgix.URL(url, imgParams, token)](#new_imgix.URL)
+  * [new imgix.URL(url, imgParams)](#new_imgix.URL)
   * [URL.setSepia(val)](#imgix.URL#setSepia)
   * [URL.setBrightness(val)](#imgix.URL#setBrightness)
   * [URL.setContrast(val)](#imgix.URL#setContrast)
@@ -567,7 +566,6 @@ The helper namespace for lower-level functions
   * [URL.getWatermarkWidth()](#imgix.URL#getWatermarkWidth)
   * [URL.attachGradientTo(elemOrSel, baseColor)](#imgix.URL#attachGradientTo)
   * [URL.attachImageTo(elemOrSel, callback)](#imgix.URL#attachImageTo)
-  * [URL.setToken(token)](#imgix.URL#setToken)
   * [URL.getColors(num, callback)](#imgix.URL#getColors)
   * [URL.autoUpdateImg(sel, callback)](#imgix.URL#autoUpdateImg)
   * [URL.getUrl()](#imgix.URL#getUrl)
@@ -582,14 +580,13 @@ The helper namespace for lower-level functions
   * [URL.getQueryString()](#imgix.URL#getQueryString)
 
 <a name="new_imgix.URL"></a>
-###new imgix.URL(url, imgParams, token)
+###new imgix.URL(url, imgParams)
 Represents an imgix url
 
 **Params**
 
 - url `string` - An imgix url to start with (optional)  
 - imgParams `object` - imgix query string params (optional)  
-- token `object` - secure url token for signing images (optional)  
 
 <a name="imgix.URL#setSepia"></a>
 ###URL.setSepia(val)
@@ -1500,14 +1497,6 @@ Attach the image url (.getUrl() value) to the passed html element (or selector f
 
 - elemOrSel `string` - html elment or css selector for the element  
 - callback `function` - optional callback to be called when image is set on the element  
-
-<a name="imgix.URL#setToken"></a>
-###URL.setToken(token)
-Set the token for signing images. If a token is set it will always sign the generated urls
-
-**Params**
-
-- token `string` - secure url token from your imgix source  
 
 <a name="imgix.URL#getColors"></a>
 ###URL.getColors(num, callback)
