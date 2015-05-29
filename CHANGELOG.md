@@ -1,3 +1,16 @@
+# new imgix.js 1.1.0
+
+## Features
+
+* Removed all code pertaining to signing imgix URLs with your API token. We decided that this code isn't well-suited for client-side code like imgix.js. If you need to use signed URLs, we suggest using one of our [client libraries](http://www.imgix.com/docs/libraries/) instead.
+* Added a `throttle` parameter to `imgix.fluid`. This parameter determines how often lazy-loaded images poll the viewport to determine whether they should load their source or not. This was previously defined by the `debounce` parameter, which also handles polling for window resize events. The default value for `throttle` is 200ms.
+
+## Bug Fixes
+
+* Fixed [a bug](https://github.com/imgix/imgix.js/commit/2d4825943efaa5cd445bdd8532ed194b08632d88) in our lazyLoad code that was preventing images clipped by the top or left sides of the browser viewport from rendering properly.
+* Fixed [a bug](https://github.com/imgix/imgix.js/pull/36) that could sometimes cause `imgix.fluid` to not behave properly if the source image was already in the browser's cache.
+
+
 # new imgix.js 1.0.25
 
 ## Features
