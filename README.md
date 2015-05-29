@@ -155,7 +155,7 @@ If you're already using jQuery then you can _also_ include `imgix.jquery.js` to 
 For example, if you wanted to add a text watermark to all your gallery images:
 
 ```javascript
-$('.gallery').imgix().setParams({txt: 'Copyright Chester 2014', txtclr: 'f00', txtsize:20});
+$('.gallery').imgix().setParams({txt: 'Copyright Chester 2015', txtclr: 'f00', txtsize:20});
 ```
 
 <a name="browser-support"></a>
