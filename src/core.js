@@ -1021,7 +1021,7 @@ imgix.getDefaultParams = function () {
 };
 
 imgix.makeCssClass = function (url) {
-  return 'tmp_' + window.btoa(url);
+  return 'tmp_' + window.btoa(url).replace(/\W/g, '');
 };
 
 imgix.injectStyleSheet = function (url) {
