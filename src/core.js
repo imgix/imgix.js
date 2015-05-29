@@ -43,6 +43,24 @@ imgix.helpers = {
     };
   },
 
+  throttler: function (func, wait) {
+    var timeoutRef;
+    return function () {
+      var self = this,
+        args = arguments,
+        later;
+
+      if (!timeoutRef) {
+        later = function () {
+          timeoutRef = null;
+          func.apply(self, args);
+        };
+
+        timeoutRef = window.setTimeout(later, wait);
+      }
+    };
+  },
+
   // FROM: https://github.com/websanova/js-url | unknown license.
   urlParser: (function () {
     function isNumeric(arg) {
@@ -1900,6 +1918,7 @@ var fluidDefaults = {
   lazyLoadColor: null,
   lazyLoadOffsetVertical: 20,
   lazyLoadOffsetHorizontal: 20,
+  throttle: 200,
   maxHeight: 5000,
   maxWidth: 5000,
   onLoad: null
@@ -1937,8 +1956,6 @@ imgix.FluidSet = function (options) {
   this.windowScrollEventBound = false;
   this.windowLastWidth = 0;
   this.windowLastHeight = 0;
-
-  this.reload = imgix.helpers.debouncer(this.reloader, this.options.debounce);
 };
 
 imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
@@ -2104,7 +2121,7 @@ imgix.FluidSet.prototype.toString = function () {
   return '[object FluidSet]';
 };
 
-imgix.FluidSet.prototype.reloader = function () {
+imgix.FluidSet.prototype.reload = function () {
   imgix.fluid(this);
 
   this.windowLastWidth = imgix.helpers.getWindowWidth();
@@ -2126,20 +2143,13 @@ imgix.FluidSet.prototype.attachGestureEvent = function (elem) {
   }
 };
 
-
-imgix.FluidSet.prototype.resizeListener = function () {
-  if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
-    this.reload();
-  }
-};
-
 var scrollInstances = {},
   resizeInstances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function () {
-  scrollInstances[this.namespace] = function () {
+  scrollInstances[this.namespace] = imgix.helpers.throttler(function () {
     this.reload();
-  }.bind(this);
+  }.bind(this), this.options.throttle);
 
   if (document.addEventListener) {
     window.addEventListener('scroll', scrollInstances[this.namespace], false);
@@ -2151,9 +2161,11 @@ imgix.FluidSet.prototype.attachScrollListener = function () {
 };
 
 imgix.FluidSet.prototype.attachWindowResizer = function () {
-  resizeInstances[this.namespace] = function () {
-    this.resizeListener();
-  }.bind(this);
+  resizeInstances[this.namespace] = imgix.helpers.debouncer(function () {
+    if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
+      this.reload();
+    }
+  }.bind(this), this.options.debounce);
 
   if (window.addEventListener) {
     window.addEventListener('resize', resizeInstances[this.namespace], false);
@@ -2195,7 +2207,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
 
 `ignoreDPR` __boolean__ when true the `dpr` param is not set on the image.<br>
 
-`debounce` __number__ postpones resize/lazy load execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
+`debounce` __number__ postpones resize execution until after this many milliseconds have elapsed since the last time it was invoked.<br>
 
 `lazyLoad` __boolean__ when true the image is not actually loaded until it is viewable (or within the offset)<br>
 
@@ -2204,6 +2216,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
 `lazyLoadOffsetHorizontal` __number__ when `lazyLoad` is true this allows you to set how far to the left and right of the viewport (in pixels) you want before imgix.js starts to load the images.<br>
 
 `lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function (`HTMLElement' el, `Array` colors)
+
+`throttle` __number__ ensures scroll events fire only once every n milliseconds, throttling lazyLoad activity.<br>
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
 
@@ -2229,6 +2243,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
     lazyLoad: false,
     lazyLoadOffsetVertical: 20,
     lazyLoadOffsetHorizontal: 20,
+    throttle: 200,
     maxWidth: 5000,
     maxHeight: 5000,
     onLoad: null
