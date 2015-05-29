@@ -1928,14 +1928,6 @@ function getFluidDefaults() {
   return fluidDefaults;
 }
 
-imgix.elementInView = function (element, view) {
-  if (element === null) {
-    return false;
-  }
-  var box = element.getBoundingClientRect();
-  return (box.right >= view.l && box.bottom >= view.t && box.left <= view.r && box.top <= view.b);
-};
-
 imgix.FluidSet = function (options) {
   if (imgix.helpers.isReallyObject(options)) {
     this.options = imgix.helpers.mergeObject(getFluidDefaults(), options);
@@ -1970,15 +1962,22 @@ imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
     return;
   }
 
-  if (this.options.lazyLoad) {
-    var view = {
-      l: 0 - this.lazyLoadOffsets.l,
-      t: 0 - this.lazyLoadOffsets.t,
-      b: (window.innerHeight || document.documentElement.clientHeight) + this.lazyLoadOffsets.b,
-      r: (window.innerWidth || document.documentElement.clientWidth) + this.lazyLoadOffsets.r
-    };
+  var details = this.getImgDetails(elem, pinchScale || 1),
+    newUrl = details.url,
+    currentElemWidth = details.width,
+    currentElemHeight = details.height;
 
-    if (!imgix.elementInView(elem, view)) {
+  if (this.options.lazyLoad) {
+    var r = elem.getBoundingClientRect(),
+        view = {
+          left: 0 - this.lazyLoadOffsets.l,
+          top: 0 - this.lazyLoadOffsets.t,
+          bottom: (window.innerHeight || document.documentElement.clientHeight) + this.lazyLoadOffsets.b,
+          right: (window.innerWidth || document.documentElement.clientWidth) + this.lazyLoadOffsets.r
+        };
+
+    if ((r.top > view.bottom) || (r.left > view.right) || (r.top + currentElemHeight < view.top) || (r.left + currentElemWidth < view.left)) {
+
       if (!elem.fluidLazyColored && this.options.lazyLoadColor) {
         elem.fluidLazyColored = 1;
         var self = this,
@@ -2013,10 +2012,6 @@ imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
     }
   }
 
-  var details = this.getImgDetails(elem, pinchScale || 1),
-    newUrl = details.url,
-    currentElemWidth = details.width,
-    currentElemHeight = details.height;
 
   elem.lastWidth = elem.lastWidth || 0;
   elem.lastHeight = elem.lastHeight || 0;
