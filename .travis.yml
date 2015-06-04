@@ -6,6 +6,6 @@ before_install: npm install -g grunt-cli karma karma-jasmine
 install:
   - npm config set spin false
   - npm config set loglevel http
-  - time npm install
+  - npm install
 before_script: grunt build
 script: karma start karma-travis.conf.js
