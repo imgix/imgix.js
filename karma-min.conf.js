@@ -6,7 +6,10 @@ module.exports = function(config) {
 		browsers: ['Firefox', 'Chrome', 'Safari'],
 		reporters: ['progress'],
 		singleRun: true,
-		frameworks: ['jasmine'],
+		frameworks: [
+				'jasmine',
+				'jasmine-matchers'
+			],
 		files: [
 			'dist/imgix.min.js',
 			'node_modules/lodash/index.js',
