@@ -2,7 +2,7 @@ module.exports = function(grunt) {
 	"use strict";
 	var path = require('path'),
 		fs = require('fs'),
-		_ = require('underscore'),
+		_ = require('lodash'),
 		path = require('path'),
 		exec = require('child_process').exec,
 		srcPath = function(p) { return path.normalize(__dirname + "/src/" + p); },

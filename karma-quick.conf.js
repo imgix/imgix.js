@@ -6,10 +6,13 @@ module.exports = function(config) {
 		browsers: ['PhantomJS'],
 		reporters: ['progress'],
 		singleRun: true,
-		frameworks: ['jasmine'],
+		frameworks: [
+				'jasmine',
+				'jasmine-matchers'
+			],
 		files: [
-			'tests/config.js',
 			'dist/imgix.js',
+			'node_modules/lodash/index.js',
 			'tests/test.js'
 		]
 	});

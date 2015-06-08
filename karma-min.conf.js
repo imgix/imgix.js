@@ -3,13 +3,16 @@
 module.exports = function(config) {
 	config.set({
 		basePath: '',
-		browsers: ['Firefox', 'Chrome', 'PhantomJS', 'Opera'],
+		browsers: ['Firefox', 'Chrome', 'Safari'],
 		reporters: ['progress'],
 		singleRun: true,
-		frameworks: ['jasmine'],
+		frameworks: [
+				'jasmine',
+				'jasmine-matchers'
+			],
 		files: [
-			'tests/config.js',
 			'dist/imgix.min.js',
+			'node_modules/lodash/index.js',
 			'tests/test.js'
 		]
 
