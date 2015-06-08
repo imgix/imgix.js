@@ -39,9 +39,9 @@
     "karma-requirejs": "~0.2.2",
     "karma-safari-launcher": "^0.1.1",
     "karma-script-launcher": "~0.1.0",
+    "lodash": "^3.9.3",
     "precommit-hook": "^2.0.1",
     "reporter-plus": "git://github.com/jayeb/reporter-plus.git",
     "time-grunt": "^1.2.1",
-    "underscore": "^1.8.3"
   }
 }

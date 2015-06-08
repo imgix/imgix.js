@@ -10,6 +10,7 @@ module.exports = function(config) {
 		files: [
 			'tests/config.js',
 			'dist/imgix.js',
+			'node_modules/lodash/index.js',
 			'tests/test.js'
 		]
 	});
