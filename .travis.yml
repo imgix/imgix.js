@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - '0.10'
 
-before_install: npm install -g grunt-cli karma phantomjs
+before_install: npm install -g grunt-cli karma karma-cli karma-jasmine phantomjs
 install:
   - npm config set spin false
   - npm config set loglevel http
