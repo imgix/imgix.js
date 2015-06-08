@@ -43,6 +43,6 @@
     "lodash": "^3.9.3",
     "precommit-hook": "^2.0.1",
     "reporter-plus": "git://github.com/jayeb/reporter-plus.git",
-    "time-grunt": "^1.2.1",
+    "time-grunt": "^1.2.1"
   }
 }
