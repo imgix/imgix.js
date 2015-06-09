@@ -1,3 +1,14 @@
+# new imgix.js 1.1.1
+
+## Features
+
+N/A
+
+## Bug Fixes
+
+* Fixed [a bug](https://github.com/imgix/imgix.js/issues/39) introduced in 1.1.0 that was generating obscenely long classnames when requesting color-palette CSS.
+
+
 # new imgix.js 1.1.0
 
 ## Features
