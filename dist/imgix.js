@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.1.0 - 2015-05-29 
+/*! http://www.imgix.com imgix.js - v1.1.1 - 2015-06-08 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -504,7 +504,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '1.1.0'
+  version: '1.1.1'
 };
 
 // expose imgix to browser or node
@@ -1150,7 +1150,7 @@ imgix.getXPathClass = function (xpath) {
   var suffix;
 
   if (xpath){
-    suffix = window.btoa(xpath);
+    suffix = imgix.hashCode(xpath);
   } else {
     suffix = (new Date()).getTime().toString(36);
   }
@@ -1535,7 +1535,7 @@ imgix.getDefaultParams = function () {
 };
 
 imgix.makeCssClass = function (url) {
-  return 'tmp_' + window.btoa(url).replace(/\W/g, '');
+  return 'tmp_' + imgix.hashCode(url);
 };
 
 imgix.injectStyleSheet = function (url) {
@@ -2383,12 +2383,17 @@ imgix.isDef = function (obj) {
   return (typeof obj !== 'undefined');
 };
 
-imgix.safe_btoa_encode = function (str) {
-  return window.btoa(str).replace(/\+/g, '-').replace(/\//g, '_');
-};
+// Adapted from http://stackoverflow.com/a/22429679
+imgix.hashCode = function (str) {
+    /*jshint bitwise:false */
+    var i, l, hval = 0x811c9dc5;
 
-imgix.safe_btoa_decode = function (str) {
-  return window.atob(str.replace(/\-+/g, '+').replace(/_+/g, '\/')); // http://
+    for (i = 0, l = str.length; i < l; i++) {
+        hval ^= str.charCodeAt(i);
+        hval += (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
+    }
+
+    return ("0000000" + (hval >>> 0).toString(16)).substr(-8);
 };
 
 
