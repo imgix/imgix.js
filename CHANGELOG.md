@@ -1,3 +1,14 @@
+# new imgix.js 1.1.2
+
+## Features
+
+N/A
+
+## Bug Fixes
+
+* Upgraded `imgix.onready()` internals to fix a bug in IE and increase legibility.
+
+
 # new imgix.js 1.1.1
 
 ## Features
