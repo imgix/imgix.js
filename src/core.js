@@ -2348,75 +2348,76 @@ if (typeof window !== 'undefined') {
    * @static
    * @param {function} ready the function to run when the DOM is ready.
    */
-  imgix.onready = (function (ready) {
-      var fns = [],
-          fn,
-          f = false,
-          doc = document,
-          testEl = doc.documentElement,
-          hack = testEl.doScroll,
-          domContentLoaded = 'DOMContentLoaded',
-          addEventListener = 'addEventListener',
-          onreadystatechange = 'onreadystatechange',
-          readyState = 'readyState',
-          loadedRgx = hack ? /^loaded|^c/ : /^loaded|c/,
-          loaded = loadedRgx.test(doc[readyState]);
+  imgix.onready = (function () {
+      var ready,
+          listener,
+          callbacks = [],
+          ieHack = document.documentElement.doScroll,
+          loadedRgx = ieHack ? /^loaded|^c/ : /^loaded|c/,
+          loaded = loadedRgx.test(document.readyState);
 
-      function flush(f) {
-        loaded = 1;
-        while (f = fns.shift()) {
-          f();
+      function flush() {
+        var callback;
+
+        loaded = true;
+        while (callback = callbacks.shift()) {
+          callback();
         }
       }
 
-      if (doc[addEventListener]) {
-        doc[addEventListener](domContentLoaded, fn = function () {
-          doc.removeEventListener(domContentLoaded, fn, f);
+      if (document.addEventListener) {
+        listener = function () {
+          document.removeEventListener('DOMContentLoaded', listener, false);
           flush();
-        }, f);
-      }
+        }
 
-      if (hack) {
-        doc.attachEvent(onreadystatechange, fn = function () {
-          if (/^c/.test(doc[readyState])) {
-            doc.detachEvent(onreadystatechange, fn);
+        document.addEventListener('DOMContentLoaded', listener, false);
+      } else if (document.attachEvent) {
+        listener = function () {
+          if (/^c/.test(document.readyState)) {
+            document.detachEvent('onreadystatechange', listener);
             flush();
           }
-        });
+        }
+
+        document.attachEvent('onreadystatechange', listener);
       }
 
-      ready = hack;
-
-      if (!!ready) {
-        return function (fn) {
-          if (self !== top) {
+      if (!!ieHack) {
+        ready = function (callback) {
+          if (window.self != window.top) {
+            // We're in an iframe here
             if (loaded) {
-              fn();
+              callback();
             } else {
-              fns.push(fn);
+              callbacks.push(callback);
             }
           } else {
+            // In a top-level window
             (function () {
               try {
-                testEl.doScroll('left');
+                document.documentElement.doScroll('left');
               } catch (e) {
                 return setTimeout(function () {
-                  ready(fn);
+                  ready(callback);
                 }, 50);
               }
-              fn();
+              callback();
             })();
           }
         };
+
       } else {
-        return function (fn) {
+        ready = function (callback) {
           if (loaded) {
-            fn();
+            callback();
           } else {
-            fns.push(fn);
+            callbacks.push(callback);
           }
         };
       }
+
+      return ready;
     })();
 }
 
