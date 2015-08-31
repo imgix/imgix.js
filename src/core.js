@@ -427,7 +427,7 @@ imgix.setElementImage = function (el, imgUrl) {
  * @returns {string} url of an empty image
  */
 imgix.getEmptyImage = function () {
-  return imgix.versionifyUrl('https://assets.imgix.net/pixel.gif');
+  return 'https://assets.imgix.net/pixel.gif?ixjsv=' + imgix.version;
 };
 
 /**
@@ -1470,8 +1470,6 @@ imgix.URL.prototype.getUrl = function () {
     return imgix.getEmptyImage();
   }
 
-  url = imgix.versionifyUrl(url);
-
   return url;
 };
 
@@ -1832,7 +1830,15 @@ imgix.parseUrl = function (url) {
 };
 
 imgix.buildUrl = function (parsed) {
-  var result = parsed.protocol + '://' + parsed.host + parsed.pathname;
+  var result = parsed.protocol + '://' + parsed.host + parsed.pathname,
+      versionParam = 'ixjsv';
+
+  // Add version string, if it doesn't already exist
+  if (!parsed.paramValues[versionParam]) {
+    parsed.params.push(versionParam);
+    parsed.paramValues[versionParam] = imgix.version;
+  }
+
   if (parsed.params.length > 0) {
 
 
@@ -1871,16 +1877,6 @@ imgix.buildUrl = function (parsed) {
   }
 
   return result;
-};
-
-imgix.versionifyUrl = function (url) {
-  var parsed = imgix.parseUrl(url),
-      versionParam = 'ixjsv';
-
-  parsed.params.push(versionParam);
-  parsed.paramValues[versionParam] = imgix.version;
-
-  return imgix.buildUrl(parsed);
 };
 
 imgix.isDef = function (obj) {
