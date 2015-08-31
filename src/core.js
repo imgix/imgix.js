@@ -2052,40 +2052,43 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     pixelStep = this.options.pixelStep,
     elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
     elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
-    elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
-    i = new imgix.URL(imgix.helpers.getImgSrc(elem));
+    elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep);
 
-  i.setHeight('');
-  i.setWidth('');
+  if (!elem.url) {
+    elem.url = new imgix.URL(imgix.helpers.getImgSrc(elem));
+  }
+
+  elem.url.setHeight('');
+  elem.url.setWidth('');
 
   elemWidth = Math.min(elemWidth, this.options.maxWidth);
   elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
   if (dpr !== 1 && !this.options.ignoreDPR) {
-    i.setDPR(dpr);
+    elem.url.setDPR(dpr);
   }
 
   if (this.options.highDPRAutoScaleQuality && dpr > 1) {
-    i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
+    elem.url.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
   }
 
   if (this.options.fitImgTagToContainerHeight && this.options.fitImgTagToContainerWidth) {
-    i.setFit('crop');
+    elem.url.setFit('crop');
   }
 
-  if (i.getFit() === 'crop') {
+  if (elem.url.getFit() === 'crop') {
     if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerHeight))) {
-      i.setHeight(elemHeight);
+      elem.url.setHeight(elemHeight);
     }
 
     if (elemWidth > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerWidth))) {
-      i.setWidth(elemWidth);
+      elem.url.setWidth(elemWidth);
     }
   } else {
     if (elemHeight <= elemWidth) {
-      i.setWidth(elemWidth);
+      elem.url.setWidth(elemWidth);
     } else {
-      i.setHeight(elemHeight);
+      elem.url.setHeight(elemHeight);
     }
   }
 
@@ -2097,17 +2100,17 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
 
   var overrides = {};
   if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === 'function') {
-    overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams(), elem);
+    overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, elem.url.getParams(), elem);
   }
 
   for (var k in overrides) {
     if (overrides.hasOwnProperty(k)) {
-      i.setParam(k, overrides[k]);
+      elem.url.setParam(k, overrides[k]);
     }
   }
 
   return {
-    url: i.getURL(),
+    url: elem.url.getURL(),
     width: elemWidth,
     height: elemHeight
   };
