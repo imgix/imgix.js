@@ -137,10 +137,10 @@ module.exports = function(grunt) {
 				src: "dist/imgix.js",
 				dest: docsApiFile,
 				options: {
-					index: false
+					index: false,
+					"sort-by": "name"
 				}
 			}
-
 		},
 
     jshint: {
