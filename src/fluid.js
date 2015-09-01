@@ -1,3 +1,4 @@
+'use strict';
 
 var fluidDefaults = {
   fluidClass: 'imgix-fluid',
