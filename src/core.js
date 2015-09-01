@@ -427,7 +427,7 @@ imgix.setElementImage = function (el, imgUrl) {
  * @returns {string} url of an empty image
  */
 imgix.getEmptyImage = function () {
-  return 'https://assets.imgix.net/pixel.gif?ixjsv=' + imgix.version;
+  return imgix.versionifyUrl('https://assets.imgix.net/pixel.gif');
 };
 
 /**
@@ -1830,18 +1830,12 @@ imgix.parseUrl = function (url) {
 };
 
 imgix.buildUrl = function (parsed) {
-  var result = parsed.protocol + '://' + parsed.host + parsed.pathname,
-      versionParam = 'ixjsv';
+  var result = parsed.protocol + '://' + parsed.host + parsed.pathname;
 
-  // Add version string, if it doesn't already exist
-  if (!parsed.paramValues[versionParam]) {
-    parsed.params.push(versionParam);
-    parsed.paramValues[versionParam] = imgix.version;
-  }
+  // Add version string to this URL
+  imgix.versionifyUrl(parsed);
 
   if (parsed.params.length > 0) {
-
-
     parsed.params = parsed.params.map(function (e) {
       return e.toLowerCase();
     });
@@ -1877,6 +1871,44 @@ imgix.buildUrl = function (parsed) {
   }
 
   return result;
+};
+
+imgix.versionifyUrl = function (target) {
+  var versionParam = 'ixjsv',
+      splitUrl,
+      result;
+
+  if (typeof target === 'string') {
+    return imgix.versionifyStringUrl(target);
+  } else {
+    return imgix.versionifyParsedUrl(target);
+  }
+};
+
+imgix.versionifyStringUrl = function (url) {
+  var versionParam = 'ixjsv',
+      splitUrl,
+      result;
+
+  splitUrl = url.split('?');
+  result = splitUrl[0] + '?' + versionParam + '=' + imgix.version;
+
+  if (!!splitUrl[1]) {
+    result += '&' + splitUrl[1];
+  }
+
+  return result;
+}
+
+imgix.versionifyParsedUrl = function (parsed) {
+  var versionParam = 'ixjsv';
+
+  if (!parsed.paramValues[versionParam]) {
+    parsed.params.push(versionParam);
+  }
+  parsed.paramValues[versionParam] = imgix.version;
+
+  return parsed;
 };
 
 imgix.isDef = function (obj) {
