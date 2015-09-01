@@ -1,34 +1,6 @@
 'use strict';
 
-describe('imgix.onready:', function() {
-  var callbacks = [
-    function() {},
-    function() {}
-  ];
-
-  beforeEach(function(done) {
-    spyOn(callbacks, 0);
-
-    imgix.onready(function() {
-      callbacks[0]();
-      done();
-    });
-  });
-
-  it('files callbacks when ready', function() {
-    expect(callbacks[0]).toHaveBeenCalled();
-  });
-
-  it('files subsequent callbacks immediately', function() {
-    spyOn(callbacks, 1);
-
-    imgix.onready(callbacks[1]);
-
-    expect(callbacks[1]).toHaveBeenCalled();
-  });
-});
-
-describe('imgix.URL():', function() {
+describe('.URL:', function() {
   var baseUrl = 'http://static-a.imgix.net/macaw.png',
       paramString = 'w=500&sepia=33';
 
@@ -583,60 +555,60 @@ describe('imgix.URL():', function() {
       expect(console.warn).toHaveBeenCalled();
     });
   });
-});
 
-describe('imgix.URL() color palettes:', function() {
-  var baseUrl = 'http://static-a.imgix.net/macaw.png',
-      ixURL;
+  describe('color palettes:', function() {
+    var baseUrl = 'http://static-a.imgix.net/macaw.png',
+        ixURL;
 
-  beforeAll(function() {
-    ixURL = new imgix.URL(baseUrl);
-  });
+    beforeAll(function() {
+      ixURL = new imgix.URL(baseUrl);
+    });
 
-  describe('Fetching without a count argument', function() {
-    var colors;
+    describe('Fetching without a count argument', function() {
+      var colors;
 
-    beforeAll(function(done) {
-      ixURL.getColors(function(aColors) {
-        colors = aColors;
-        done();
+      beforeAll(function(done) {
+        ixURL.getColors(function(aColors) {
+          colors = aColors;
+          done();
+        });
+      });
+
+      it('returns color strings', function() {
+        expect(colors).toBeArrayOfStrings();
+      });
+
+      it('returns colors in rgb() format', function() {
+        _.each(colors, function(color) {
+          expect(color).toMatch(/^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/);
+        });
+      });
+
+      it('returns only unique colors', function() {
+        var uniqueColors = _.uniq(colors);
+
+        expect(colors).toBeArrayOfSize(uniqueColors.length);
+      });
+
+      it('returns the right number of colors', function() {
+        expect(colors).toBeArrayOfSize(10);
       });
     });
 
-    it('returns color strings', function() {
-      expect(colors).toBeArrayOfStrings();
-    });
+    describe('Fetching with a count argument', function() {
+      var colors,
+          num = 3;
 
-    it('returns colors in rgb() format', function() {
-      _.each(colors, function(color) {
-        expect(color).toMatch(/^rgb\(\d{1,3}, \d{1,3}, \d{1,3}\)$/);
+      beforeAll(function(done) {
+        ixURL.getColors(num, function(aColors) {
+          colors = aColors;
+          done();
+        });
       });
-    });
 
-    it('returns only unique colors', function() {
-      var uniqueColors = _.uniq(colors);
-
-      expect(colors).toBeArrayOfSize(uniqueColors.length);
-    });
-
-    it('returns the right number of colors', function() {
-      expect(colors).toBeArrayOfSize(10);
-    });
-  });
-
-  describe('Fetching with a count argument', function() {
-    var colors,
-        num = 3;
-
-    beforeAll(function(done) {
-      ixURL.getColors(num, function(aColors) {
-        colors = aColors;
-        done();
+      it('returns the right number of colors', function() {
+        expect(colors).toBeArrayOfSize(num);
       });
-    });
-
-    it('returns the right number of colors', function() {
-      expect(colors).toBeArrayOfSize(num);
     });
   });
 });

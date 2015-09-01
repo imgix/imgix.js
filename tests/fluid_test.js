@@ -2,7 +2,7 @@
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10 * 1000; // 10 second default interval
 
-describe('imgix.fluid():', function() {
+describe('.fluid', function() {
   describe('Setting config keys', function() {
     beforeEach(function() {
       spyOn(console, 'warn');
@@ -65,18 +65,18 @@ describe('imgix.fluid():', function() {
 
       options = {
         onLoad: function() {
-            callbacks[callbackCount]();
-            callbackCount++;
+          callbacks[callbackCount]();
+          callbackCount++;
 
-            img.addEventListener('load', function() {
-              fluidSet.updateSrc(img);
-            }, false);
-            img.src = baseUrl + '&mono=ff0000';
+          img.addEventListener('load', function() {
+            fluidSet.updateSrc(img);
+          }, false);
+          img.src = baseUrl + '&mono=ff0000';
 
-            if (testCount === callbackCount) {
-              done();
-            }
+          if (testCount === callbackCount) {
+            done();
           }
+        }
       };
 
       fluidSet = imgix.fluid(options);
