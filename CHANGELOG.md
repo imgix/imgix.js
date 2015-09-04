@@ -1,3 +1,14 @@
+# new imgix.js 1.1.3
+
+## Features
+
+N/A
+
+## Bug Fixes
+
+* Optimized scroll-handing when using `lazyLoad` property of `imgix.fluid()`.
+
+
 # new imgix.js 1.1.2
 
 ## Features
