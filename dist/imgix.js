@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.1.2 - 2015-06-11 
+/*! http://www.imgix.com imgix.js - v1.1.2 - 2015-09-04 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1966,8 +1966,6 @@ imgix.URL.prototype.getUrl = function () {
     return imgix.getEmptyImage();
   }
 
-  url = imgix.versionifyUrl(url);
-
   return url;
 };
 
@@ -2328,10 +2326,16 @@ imgix.parseUrl = function (url) {
 };
 
 imgix.buildUrl = function (parsed) {
-  var result = parsed.protocol + '://' + parsed.host + parsed.pathname;
+  var result = parsed.protocol + '://' + parsed.host;
+  if (parsed.port !== '80' && parsed.port !== '443') {
+    result += ':' + parsed.port;
+  }
+  result += parsed.pathname;
+
+  // Add version string to this URL
+  imgix.versionifyUrl(parsed);
+
   if (parsed.params.length > 0) {
-
-
     parsed.params = parsed.params.map(function (e) {
       return e.toLowerCase();
     });
@@ -2369,14 +2373,42 @@ imgix.buildUrl = function (parsed) {
   return result;
 };
 
-imgix.versionifyUrl = function (url) {
-  var parsed = imgix.parseUrl(url),
-      versionParam = 'ixjsv';
+imgix.versionifyUrl = function (target) {
+  var versionParam = 'ixjsv',
+      splitUrl,
+      result;
 
-  parsed.params.push(versionParam);
+  if (typeof target === 'string') {
+    return imgix.versionifyStringUrl(target);
+  } else {
+    return imgix.versionifyParsedUrl(target);
+  }
+};
+
+imgix.versionifyStringUrl = function (url) {
+  var versionParam = 'ixjsv',
+      splitUrl,
+      result;
+
+  splitUrl = url.split('?');
+  result = splitUrl[0] + '?' + versionParam + '=' + imgix.version;
+
+  if (!!splitUrl[1]) {
+    result += '&' + splitUrl[1];
+  }
+
+  return result;
+}
+
+imgix.versionifyParsedUrl = function (parsed) {
+  var versionParam = 'ixjsv';
+
+  if (!parsed.paramValues[versionParam]) {
+    parsed.params.push(versionParam);
+  }
   parsed.paramValues[versionParam] = imgix.version;
 
-  return imgix.buildUrl(parsed);
+  return parsed;
 };
 
 imgix.isDef = function (obj) {
@@ -2552,40 +2584,43 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     pixelStep = this.options.pixelStep,
     elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
     elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
-    elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep),
-    i = new imgix.URL(imgix.helpers.getImgSrc(elem));
+    elemHeight = imgix.helpers.pixelRound(elemSize.height * zoomMultiplier, pixelStep);
 
-  i.setHeight('');
-  i.setWidth('');
+  if (!elem.url) {
+    elem.url = new imgix.URL(imgix.helpers.getImgSrc(elem));
+  }
+
+  elem.url.setHeight('');
+  elem.url.setWidth('');
 
   elemWidth = Math.min(elemWidth, this.options.maxWidth);
   elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
   if (dpr !== 1 && !this.options.ignoreDPR) {
-    i.setDPR(dpr);
+    elem.url.setDPR(dpr);
   }
 
   if (this.options.highDPRAutoScaleQuality && dpr > 1) {
-    i.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
+    elem.url.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
   }
 
   if (this.options.fitImgTagToContainerHeight && this.options.fitImgTagToContainerWidth) {
-    i.setFit('crop');
+    elem.url.setFit('crop');
   }
 
-  if (i.getFit() === 'crop') {
+  if (elem.url.getFit() === 'crop') {
     if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerHeight))) {
-      i.setHeight(elemHeight);
+      elem.url.setHeight(elemHeight);
     }
 
     if (elemWidth > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerWidth))) {
-      i.setWidth(elemWidth);
+      elem.url.setWidth(elemWidth);
     }
   } else {
     if (elemHeight <= elemWidth) {
-      i.setWidth(elemWidth);
+      elem.url.setWidth(elemWidth);
     } else {
-      i.setHeight(elemHeight);
+      elem.url.setHeight(elemHeight);
     }
   }
 
@@ -2597,17 +2632,17 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
 
   var overrides = {};
   if (this.options.onChangeParamOverride !== null && typeof this.options.onChangeParamOverride === 'function') {
-    overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, i.getParams(), elem);
+    overrides = this.options.onChangeParamOverride(elemWidth, elemHeight, elem.url.getParams(), elem);
   }
 
   for (var k in overrides) {
     if (overrides.hasOwnProperty(k)) {
-      i.setParam(k, overrides[k]);
+      elem.url.setParam(k, overrides[k]);
     }
   }
 
   return {
-    url: i.getURL(),
+    url: elem.url.getURL(),
     width: elemWidth,
     height: elemHeight
   };
@@ -2918,8 +2953,6 @@ if (typeof window !== 'undefined') {
 }
 
 // DOCS BELOW ARE AUTO GENERATED. DO NOT EDIT BY HAND
-
-
 
 
 /**
