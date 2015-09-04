@@ -155,15 +155,7 @@ module.exports = function(grunt) {
 		fileCopy(srcPath('core.js'), buildDir);
 	});
 
-	grunt.registerTask('test', 'run tests', function() {
-		var configPath = path.join(__dirname, '/tests/config.js');
-		if (!fs.existsSync(configPath)) {
-			throw grunt.util.error("\n\nconfig.js does not exist. Required for tests! (signing)\n");
-		} else {
-			grunt.task.run(['build', 'karma']);
-		}
-	});
-
+	grunt.registerTask('test', ['build', 'karma:unit']);
 	grunt.registerTask('test:quick', ['build', 'karma:unitquick']);
 
 	grunt.registerTask('doc-cleanup', 'clean up output', function() {
