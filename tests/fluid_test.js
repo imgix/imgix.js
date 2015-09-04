@@ -325,7 +325,7 @@ describe('.fluid', function() {
 
   describe('Setting `fitImgTagToContainerWidth` to true', function() {
     var img,
-        baseUrl = 'http://static-a.imgix.net/macaw.png',
+        baseUrl = 'http://static-a.imgix.net/macaw.png?fit=crop',
         parentSize,
         options;
 
@@ -339,7 +339,8 @@ describe('.fluid', function() {
 
       options = {
         fitImgTagToContainerWidth: true,
-        onLoad: done
+        pixelStep: 1,
+        onLoad: done,
       };
 
       imgix.fluid(options);
@@ -360,7 +361,7 @@ describe('.fluid', function() {
 
   describe('Setting `fitImgTagToContainerHeight` to true', function() {
     var img,
-        baseUrl = 'http://static-a.imgix.net/macaw.png',
+        baseUrl = 'http://static-a.imgix.net/macaw.png?fit=crop',
         parentSize,
         options;
 
@@ -374,7 +375,8 @@ describe('.fluid', function() {
 
       options = {
         fitImgTagToContainerHeight: true,
-        onLoad: done
+        pixelStep: 1,
+        onLoad: done,
       };
 
       imgix.fluid(options);
