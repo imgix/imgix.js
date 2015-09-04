@@ -68,13 +68,11 @@ describe('.fluid', function() {
           callbacks[callbackCount]();
           callbackCount++;
 
-          img.addEventListener('load', function() {
-            fluidSet.updateSrc(img);
-          }, false);
-          img.src = baseUrl + '&mono=ff0000';
-
           if (testCount === callbackCount) {
             done();
+          } else {
+            // Pass in pinchzoom = 2 here to trigger a request for a new size of image
+            fluidSet.updateSrc(img, 2);
           }
         }
       };
