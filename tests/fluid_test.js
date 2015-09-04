@@ -465,88 +465,85 @@ describe('.fluid', function() {
     });
   });
 
-  describe('Lazy-loading images', function() {
-    var topImg,
-        bottomImg,
-        baseUrl = 'http://static-a.imgix.net/macaw.png',
-        height = 4000,
-        options,
-        delay = 2 * 1000;
+  // Since PhantomJS doesn't properly handle viewport things like window.innerHeight and scrolling,
+  // testing lazyLoad features on Phantom is useless.
+  if (!/PhantomJS/.test(window.navigator.userAgent)) {
+    describe('Lazy-loading images', function() {
+      var topImg,
+          bottomImg,
+          baseUrl = 'http://static-a.imgix.net/macaw.png',
+          height = 4000,
+          options,
+          delay = 2 * 1000;
 
-    beforeAll(function() {
-      document.body.style.position = 'relative';
-      document.body.style.height = height + 'px';
+      beforeAll(function() {
+        document.body.style.position = 'relative';
+        document.body.style.height = height + 'px';
+      });
+
+      beforeEach(function() {
+        document.body.style.position = 'relative';
+        document.body.style.height = height + 'px';
+
+        topImg = document.createElement('img');
+        topImg.setAttribute('data-src', baseUrl);
+        topImg.setAttribute('class', 'imgix-fluid');
+        topImg.style.position = 'absolute';
+        topImg.style.top = 0;
+        topImg.style.width = '500px';
+        document.body.appendChild(topImg);
+
+        bottomImg = document.createElement('img');
+        bottomImg.setAttribute('data-src', baseUrl + '?mono=00ff00');
+        bottomImg.setAttribute('class', 'imgix-fluid');
+        bottomImg.style.position = 'absolute';
+        bottomImg.style.bottom = 0;
+        bottomImg.style.width = '500px';
+        document.body.appendChild(bottomImg);
+
+        options = {
+          lazyLoad: true,
+          fitImgTagToContainerWidth: false
+        };
+
+        imgix.fluid(options);
+      });
+
+      it('loads the image at the top of the page', function(done) {
+        // Wait a few seconds for the images to get a chance to load
+        _.delay(function() {
+          expect(topImg.src).toMatch(baseUrl);
+          done();
+        }, delay);
+      });
+
+      it('does not load the image at the bottom of the page', function(done) {
+        // Wait a few seconds for the images to get a chance to load
+        _.delay(function() {
+          expect(bottomImg.src).toBeFalsy();
+          done();
+        }, delay);
+      });
+
+      it('loads the image at the bottom of the page after scrolling to it', function(done) {
+        window.scrollBy(0, height);
+
+        _.delay(function() {
+          expect(bottomImg.src).toMatch(baseUrl);
+          done();
+        }, delay);
+      });
+
+      afterEach(function() {
+        document.body.removeChild(topImg);
+        document.body.removeChild(bottomImg);
+        document.body.style.position = 'static';
+        document.body.style.height = 'auto';
+
+        window.scrollTo(0, 0);
+      });
     });
-
-    beforeEach(function() {
-      document.body.style.position = 'relative';
-      document.body.style.height = height + 'px';
-
-      topImg = document.createElement('img');
-      topImg.setAttribute('data-src', baseUrl);
-      topImg.setAttribute('class', 'imgix-fluid');
-      topImg.style.position = 'absolute';
-      topImg.style.top = 0;
-      topImg.style.width = '500px';
-      document.body.appendChild(topImg);
-
-      bottomImg = document.createElement('img');
-      bottomImg.setAttribute('data-src', baseUrl + '?mono=00ff00');
-      bottomImg.setAttribute('class', 'imgix-fluid');
-      bottomImg.style.position = 'absolute';
-      bottomImg.style.bottom = 0;
-      bottomImg.style.width = '500px';
-      document.body.appendChild(bottomImg);
-
-      options = {
-        lazyLoad: true,
-        fitImgTagToContainerWidth: false
-      };
-
-      imgix.fluid(options);
-    });
-
-    it('loads the image at the top of the page', function(done) {
-      // Wait a few seconds for the images to get a chance to load
-      _.delay(function() {
-        expect(topImg.src).toMatch(baseUrl);
-        done();
-      }, delay);
-    });
-
-    it('does not load the image at the bottom of the page', function(done) {
-      // Wait a few seconds for the images to get a chance to load
-      _.delay(function() {
-        expect(bottomImg.src).toBeFalsy();
-        done();
-      }, delay);
-    });
-
-    it('loads the image at the bottom of the page after scrolling to it', function(done) {
-      var event;
-
-      window.scrollBy(0, height);
-
-      // // Trigger a scroll event, in case the above doesn't
-      // event = document.createEvent("UIEvents");
-      // event.initUIEvent("scroll", true, true, window, height);
-      // document.body.dispatchEvent(event);
-
-      _.delay(function() {
-        expect(bottomImg.src).toMatch(baseUrl);
-        done();
-      }, delay);
-    });
-
-    afterEach(function() {
-      document.body.removeChild(topImg);
-      document.body.removeChild(bottomImg);
-      document.body.style.position = 'static';
-      document.body.style.height = 'auto';
-
-      window.scrollTo(0, 0);
-    });
-  });
+  }
 
   describe('Using lazyLoadColor', function() {
     var img,
