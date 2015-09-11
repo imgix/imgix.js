@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.1.2 - 2015-09-04 
+/*! http://www.imgix.com imgix.js - v1.1.2 - 2015-09-11 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -2327,7 +2327,7 @@ imgix.parseUrl = function (url) {
 
 imgix.buildUrl = function (parsed) {
   var result = parsed.protocol + '://' + parsed.host;
-  if (parsed.port !== '80' && parsed.port !== '443') {
+  if (parsed.port !== null && parsed.port !== '80' && parsed.port !== '443') {
     result += ':' + parsed.port;
   }
   result += parsed.pathname;
