@@ -5,6 +5,7 @@ imgix.js [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master
 
 The Javascript client library for [imgix](http://www.imgix.com).
 
+* [Installation](#installation)
 * [Getting Started](#getting-started)
 * [Examples](#examples)
 * [Documentation](#docs)
@@ -12,6 +13,15 @@ The Javascript client library for [imgix](http://www.imgix.com).
 * [Browser Support](#browser-support)
 * [Polyfills](#polyfills)
 * [Dependencies](#dependencies)
+
+<a name="installation"></a>
+Installation
+---------------
+
++ **npm**: `npm install imgix.js`
++ **bower**: `bower install imgix.js`
++ **Manual**: [Download](https://github.com/imgix/imgix.js/archive/master.zip) and use `dist/imgix.js`
+
 
 <a name="getting-started"></a>
 Getting Started
