@@ -379,6 +379,10 @@ imgix.setElementImageAfterLoad = function (el, imgUrl, callback) {
       callback(el, imgUrl);
     }
   };
+  if (el.hasAttribute('crossorigin')) {
+    img.setAttribute('crossorigin', el.getAttribute('crossorigin'));
+  }
+
   img.src = imgUrl;
 };
 
@@ -1353,11 +1357,10 @@ imgix.URL.prototype._handleAutoUpdate = function () {
     if (!(imgUrl in imgToEls)) {
       imgToEls[imgUrl] = [];
       (function () {
-        var img = document.createElement('img'),
+        var img = new Image(),
           curV = imgix.updateVersion[curSel],
           startTime = (new Date()).getTime();
 
-        img.src = imgUrl;
         img.onload = img.onerror = function () {
           if (!isVersionFresh(curV)) {
             // console.log(curV + ' is an old version -- not updating');
@@ -1382,6 +1385,11 @@ imgix.URL.prototype._handleAutoUpdate = function () {
             }
           }
         };
+        if (el.hasAttribute('crossorigin')) {
+          img.setAttribute('crossorigin', el.getAttribute('crossorigin'));
+        }
+
+        img.src = imgUrl;
       })();
     }
 
