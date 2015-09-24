@@ -10,6 +10,7 @@ The Javascript client library for [imgix](http://www.imgix.com).
 * [Examples](#examples)
 * [Documentation](#docs)
 * [jQuery Plugin](#jquery)
+* [Other Libraries](#other-libraries)
 * [Browser Support](#browser-support)
 * [Polyfills](#polyfills)
 * [Dependencies](#dependencies)
@@ -167,6 +168,13 @@ For example, if you wanted to add a text watermark to all your gallery images:
 ```javascript
 $('.gallery').imgix().setParams({txt: 'Copyright Chester 2015', txtclr: 'f00', txtsize:20});
 ```
+
+<a name="other-libraries"></a>
+Other Libraries
+---------------
+
+* [react-imgix](https://github.com/frederickfogerty/react-imgix) A React component for Imgix images, uses imgix.js for building urls.
+
 
 <a name="browser-support"></a>
 Legacy Browser Support
