@@ -921,7 +921,7 @@ imgix.getAllParams = function () {
 
     // Trim
     'trim',
-    'trimcolor',
+    'trimcol',
     'trimmd',
 
     // Watermark
