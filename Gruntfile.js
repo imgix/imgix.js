@@ -84,6 +84,13 @@ module.exports = function(grunt) {
 					srcPath('prefix.js'),
 					srcPath('polyfills.js'),
 					buildPath('core.js'),
+					srcPath('params.js'),
+					srcPath('helpers.js'),
+					srcPath('url.js'),
+					srcPath('fluid.js'),
+					srcPath('onready.js'),
+					srcPath('colors.js'),
+					srcPath('xpath.js'),
 					srcPath('suffix.js')
 				],
 				dest: jsFile
@@ -93,6 +100,13 @@ module.exports = function(grunt) {
 				src: [
 					srcPath('prefix.js'),
 					buildPath('core.js'),
+					srcPath('params.js'),
+					srcPath('helpers.js'),
+					srcPath('url.js'),
+					srcPath('fluid.js'),
+					srcPath('onready.js'),
+					srcPath('colors.js'),
+					srcPath('xpath.js'),
 					srcPath('suffix.js')
 				],
 				dest: jsFile
