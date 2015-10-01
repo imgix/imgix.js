@@ -13,8 +13,7 @@ module.exports = function(config) {
 		files: [
 			'dist/imgix.min.js',
 			'node_modules/lodash/index.js',
-			'tests/test.js'
+			'tests/*.js'
 		]
-
 	});
 };
