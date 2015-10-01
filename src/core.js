@@ -1838,7 +1838,12 @@ imgix.parseUrl = function (url) {
 };
 
 imgix.buildUrl = function (parsed) {
-  var result = parsed.protocol + '://' + parsed.host + parsed.pathname;
+  var result = parsed.protocol + '://' + parsed.host;
+
+  if (parsed.port !== null && parsed.port !== '80' && parsed.port !== '443') {
+    result += ':' + parsed.port;
+  }
+  result += parsed.pathname;
 
   // Add version string to this URL
   imgix.versionifyUrl(parsed);
