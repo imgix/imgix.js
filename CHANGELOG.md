@@ -1,3 +1,16 @@
+# new imgix.js 1.1.4
+
+## Features
+
+* Broke core.js up into separate components
+* Broke tests up into different files
+
+## Bug Fixes
+
+* Fixed a bug in `imgix.buildUrl()` that was causing port numbers to be ignored
+* Fixed a bug where `imgix.fluid()` would ignore the `crossorigin` attribute on its targets
+
+
 # new imgix.js 1.1.3
 
 ## Features
