@@ -1,3 +1,15 @@
+# new imgix.js 1.2.0
+
+## Features
+
+* Removed several unnecessary polyfills, shaving 4kB off of the minified file size.
+* Updated `imgix.URL.getColors()` method to use simple AJAX instead of CSS-injection. As a result of this, colors are being returned from lightest to darkest, rather than from darkest to lightest as they were previously. This change was made to bring the behavior of this method in line with the `palette=json` image API, which it now uses.
+
+## Bug Fixes
+
+* Continuous integration tests are now being done against the library both with and without polyfills.
+
+
 # new imgix.js 1.1.4
 
 ## Features
