@@ -68,8 +68,5 @@
     // Environments
     "browser"       : true,     // Web Browser (window, document, etc)
     "devel"         : true,     // Development/debugging (alert, confirm, etc)
-    "browserify"    : true,
-
-    // Custom Globals
-    "globals"       : {"Promise": true}        // additional predefined global variables
+    "browserify"    : true
 }
