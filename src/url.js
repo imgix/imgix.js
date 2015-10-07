@@ -90,9 +90,62 @@ var cssColorCache = {};
  * @param {colorsCallback} callback handles the response of colors
  */
 imgix.URL.prototype.getColors = function (num, callback) {
-  var clone = new imgix.URL(this.getUrl()),
-    paletteClass = imgix.makeCssClass(this.getUrl());
+  var DEFAULT_COLOR_COUNT = 10,
+      paletteUrlObj = new imgix.URL(this.getUrl()),
+      jsonUrl;
 
+  function processPaletteData(data) {
+    var colors = [],
+        i,
+        rgb;
+
+    if (!data || !data.colors) {
+      return undefined;
+    }
+
+    for (i = 0; i < data.colors.length; i++) {
+      rgb = [
+        Math.round(data.colors[i].red * 255),
+        Math.round(data.colors[i].green * 255),
+        Math.round(data.colors[i].blue * 255),
+      ];
+
+      colors.push('rgb(' + rgb.join(', ') + ')');
+    }
+
+    return colors;
+  }
+
+  function requestPaletteData() {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      var data;
+
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          data = JSON.parse(xhr.response);
+        } else {
+          data = {
+              colors: [{
+                  red: 1,
+                  green: 1,
+                  blue: 1
+                }]
+              };
+        }
+
+        cssColorCache[jsonUrl] = processPaletteData(data);
+
+        callback(cssColorCache[jsonUrl]);
+      }
+    };
+
+    xhr.open('get', jsonUrl, true);
+    xhr.send();
+  }
+
+  // Wrangle the arguments, if only one is provided
   if (typeof num === 'function') {
     if (typeof callback === 'number') {
       var tmpNum = callback;
@@ -100,98 +153,24 @@ imgix.URL.prototype.getColors = function (num, callback) {
       num = tmpNum;
     } else {
       callback = num;
-      num = 10;
+      num = DEFAULT_COLOR_COUNT;
     }
   }
 
-  clone.setPaletteColorNumber(num);
-  clone.setPalette('css');
-  clone.setPaletteClass(paletteClass);
+  // Set parameters, then get a URL for an AJAX request
+  paletteUrlObj.setPaletteColorNumber(num);
+  paletteUrlObj.setPalette('json');
+  jsonUrl = paletteUrlObj.getUrl();
 
-  var cssUrl = clone.getUrl();
-
-  imgix.injectStyleSheet(cssUrl);
-
-  var lookForLoadedCss = function () {
-    if (!imgix.findInjectedStyleSheet(cssUrl)) {
-      setTimeout(lookForLoadedCss, 100);
-    } else {
-      var lastColor = null;
-
-      setTimeout(function () {
-        var promises = [],
-          maxTries = 100;
-
-        for (var i = 1; i <= num; i++) {
-
-          (function (i) {
-            var tmps = document.createElement('span');
-            tmps.id = paletteClass + '-' + i;
-            tmps.className = paletteClass + '-fg-' + i;
-            document.body.appendChild(tmps);
-
-            promises.push(
-              new Promise(function (resolve, reject) {
-                var attempts = 0,
-                    checkLoaded;
-
-                checkLoaded = function () {
-                  var c = imgix.getCssPropertyById(tmps.id, 'color');
-                  if (c !== lastColor) {
-                    document.body.removeChild(tmps);
-                    resolve({'num': i, 'color': c});
-                    lastColor = c;
-                  } else {
-                    if (++attempts < maxTries) {
-                      setTimeout(checkLoaded, 50);
-                    } else {
-                      document.body.removeChild(tmps);
-                      resolve({'num': i, 'color': 'rgb(255, 255, 255)'});
-                    }
-                  }
-                };
-
-                setTimeout(checkLoaded, 300);
-              })
-            );
-          })(i);
-
-        } // end loop
-
-        Promise.all(promises).then(function (values) {
-          var resultColors = [];
-
-          values = values.sort(function (a, b) {
-            return a.num - b.num;
-          });
-
-          for (var x = 0; x < values.length; x++) {
-            resultColors.push(imgix.hexToRGB(values[x].color));
-          }
-
-          if (resultColors && resultColors.length > 1) {
-            if (imgix.getColorBrightness(resultColors[resultColors.length - 1]) < imgix.getColorBrightness(resultColors[0])) {
-              resultColors.reverse();
-            }
-          }
-
-          cssColorCache[cssUrl] = resultColors;
-          if (callback) {
-            callback(resultColors);
-          }
-        });
-
-
-      }, 10);
-    }
-  };
-
-  if (cssColorCache.hasOwnProperty(cssUrl)) {
+  // Return the cached colors, if available
+  if (cssColorCache.hasOwnProperty(jsonUrl)) {
     if (callback) {
-      callback(cssColorCache[cssUrl]);
+      callback(cssColorCache[jsonUrl]);
     }
+
+  // If no cache is available, do it the hard way
   } else {
-    lookForLoadedCss();
+    requestPaletteData();
   }
 };
 /**
