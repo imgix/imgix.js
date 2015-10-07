@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.1.4 - 2015-10-02 
+/*! http://www.imgix.com imgix.js - v1.2.0 - 2015-10-07 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -24,52 +24,6 @@
 		if (!Object.freeze) {
 			Object.freeze = function freeze(object) {
 				return object;
-			};
-		}
-
-		// Console-polyfill. MIT license.
-		// https://github.com/paulmillr/console-polyfill
-		// Make it safe to do console.log() always.
-		(function(con) {
-			var prop, method;
-			var empty = {};
-			var dummy = function() {};
-			var properties = 'memory'.split(',');
-			var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
-			'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
-			'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
-			while (prop = properties.pop()) {
-				con[prop] = con[prop] || empty;
-			}
-			while (method = methods.pop()) {
-				con[method] = con[method] || dummy;
-			}
-		})(window.console || {}); // Using `this` for web workers.
-
-		// mozilla's Function.bind polyfill
-		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
-		if (!Function.prototype.bind) {
-			Function.prototype.bind = function (oThis) {
-				if (typeof this !== "function") {
-					// closest thing possible to the ECMAScript 5
-					// internal IsCallable function
-					throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
-				}
-
-				var aArgs = Array.prototype.slice.call(arguments, 1),
-					fToBind = this,
-					fNOP = function () {},
-					fBound = function () {
-						return fToBind.apply(this instanceof fNOP && oThis
-							? this
-							: oThis,
-							aArgs.concat(Array.prototype.slice.call(arguments)));
-					};
-
-				fNOP.prototype = this.prototype;
-				fBound.prototype = new fNOP();
-
-				return fBound;
 			};
 		}
 
@@ -299,195 +253,6 @@
 
 			return getComputedStyle;
 		})(window));
-
-		// PROMISE
-
-		(function() {
-			var root;
-
-			if (typeof window === 'object' && window) {
-				root = window;
-			} else {
-				root = global;
-			}
-
-			if (typeof module !== 'undefined' && module.exports) {
-				module.exports = root.Promise ? root.Promise : Promise;
-			} else if (!root.Promise) {
-				root.Promise = Promise;
-			}
-
-			// Use polyfill for setImmediate for performance gains
-			var asap = root.setImmediate || function(fn) { setTimeout(fn, 1); };
-
-			// Polyfill for Function.prototype.bind
-			function bind(fn, thisArg) {
-				return function() {
-					fn.apply(thisArg, arguments);
-				}
-			}
-
-			var isArray = Array.isArray || function(value) { return Object.prototype.toString.call(value) === "[object Array]" };
-
-			function Promise(fn) {
-				if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
-				if (typeof fn !== 'function') throw new TypeError('not a function');
-				this._state = null;
-				this._value = null;
-				this._deferreds = []
-
-				doResolve(fn, bind(resolve, this), bind(reject, this))
-			}
-
-			function handle(deferred) {
-				var me = this;
-				if (this._state === null) {
-					this._deferreds.push(deferred);
-					return
-				}
-				asap(function() {
-					var cb = me._state ? deferred.onFulfilled : deferred.onRejected
-					if (cb === null) {
-						(me._state ? deferred.resolve : deferred.reject)(me._value);
-						return;
-					}
-					var ret;
-					try {
-						ret = cb(me._value);
-					}
-					catch (e) {
-						deferred.reject(e);
-						return;
-					}
-					deferred.resolve(ret);
-				})
-			}
-
-			function resolve(newValue) {
-				try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
-					if (newValue === this) throw new TypeError('A promise cannot be resolved with itself.');
-					if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
-						var then = newValue.then;
-						if (typeof then === 'function') {
-							doResolve(bind(then, newValue), bind(resolve, this), bind(reject, this));
-							return;
-						}
-					}
-					this._state = true;
-					this._value = newValue;
-					finale.call(this);
-				} catch (e) { reject.call(this, e); }
-			}
-
-			function reject(newValue) {
-				this._state = false;
-				this._value = newValue;
-				finale.call(this);
-			}
-
-			function finale() {
-				for (var i = 0, len = this._deferreds.length; i < len; i++) {
-					handle.call(this, this._deferreds[i]);
-				}
-				this._deferreds = null;
-			}
-
-			function Handler(onFulfilled, onRejected, resolve, reject){
-				this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-				this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-				this.resolve = resolve;
-				this.reject = reject;
-			}
-
-			/**
-			 * Take a potentially misbehaving resolver function and make sure
-			 * onFulfilled and onRejected are only called once.
-			 *
-			 * Makes no guarantees about asynchrony.
-			 */
-			function doResolve(fn, onFulfilled, onRejected) {
-				var done = false;
-				try {
-					fn(function (value) {
-						if (done) return;
-						done = true;
-						onFulfilled(value);
-					}, function (reason) {
-						if (done) return;
-						done = true;
-						onRejected(reason);
-					})
-				} catch (ex) {
-					if (done) return;
-					done = true;
-					onRejected(ex);
-				}
-			}
-
-			Promise.prototype['catch'] = function (onRejected) {
-				return this.then(null, onRejected);
-			};
-
-			Promise.prototype.then = function(onFulfilled, onRejected) {
-				var me = this;
-				return new Promise(function(resolve, reject) {
-					handle.call(me, new Handler(onFulfilled, onRejected, resolve, reject));
-				})
-			};
-
-			Promise.all = function () {
-				var args = Array.prototype.slice.call(arguments.length === 1 && isArray(arguments[0]) ? arguments[0] : arguments);
-
-				return new Promise(function (resolve, reject) {
-					if (args.length === 0) return resolve([]);
-					var remaining = args.length;
-					function res(i, val) {
-						try {
-							if (val && (typeof val === 'object' || typeof val === 'function')) {
-								var then = val.then;
-								if (typeof then === 'function') {
-									then.call(val, function (val) { res(i, val) }, reject);
-									return;
-								}
-							}
-							args[i] = val;
-							if (--remaining === 0) {
-								resolve(args);
-							}
-						} catch (ex) {
-							reject(ex);
-						}
-					}
-					for (var i = 0; i < args.length; i++) {
-						res(i, args[i]);
-					}
-				});
-			};
-
-			Promise.resolve = function (value) {
-				if (value && typeof value === 'object' && value.constructor === Promise) {
-					return value;
-				}
-
-				return new Promise(function (resolve) {
-					resolve(value);
-				});
-			};
-
-			Promise.reject = function (value) {
-				return new Promise(function (resolve, reject) {
-					reject(value);
-				});
-			};
-
-			Promise.race = function (values) {
-				return new Promise(function (resolve, reject) {
-					for(var i = 0, len = values.length; i < len; i++) {
-						values[i].then(resolve, reject);
-					}
-				});
-			};
-		})();
 	}
 
 	if (typeof window !== 'undefined') {
@@ -504,7 +269,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '1.1.4'
+  version: '1.2.0'
 };
 
 // expose imgix to browser or node
@@ -741,31 +506,6 @@ imgix.getXPathClass = function (xpath) {
   }
 
   return 'imgix-el-' + suffix;
-};
-
-imgix.makeCssClass = function (url) {
-  return 'tmp_' + imgix.hashCode(url);
-};
-
-imgix.injectStyleSheet = function (url) {
-  var ss = document.createElement('link');
-  ss.type = 'text/css';
-  ss.rel = 'stylesheet';
-  ss.href = url;
-
-  document.getElementsByTagName('head')[0].appendChild(ss);
-};
-
-imgix.findInjectedStyleSheet = function (url) {
-  if (document.styleSheets) {
-    for (var i = 0; i < document.styleSheets.length; i++) {
-      if (document.styleSheets[i].href === url) {
-        return true;
-      }
-    }
-  }
-
-  return false;
 };
 
 imgix.getElementImageSize = function (el) {
@@ -2542,9 +2282,62 @@ var cssColorCache = {};
  * @param {colorsCallback} callback handles the response of colors
  */
 imgix.URL.prototype.getColors = function (num, callback) {
-  var clone = new imgix.URL(this.getUrl()),
-    paletteClass = imgix.makeCssClass(this.getUrl());
+  var DEFAULT_COLOR_COUNT = 10,
+      paletteUrlObj = new imgix.URL(this.getUrl()),
+      jsonUrl;
 
+  function processPaletteData(data) {
+    var colors = [],
+        i,
+        rgb;
+
+    if (!data || !data.colors) {
+      return undefined;
+    }
+
+    for (i = 0; i < data.colors.length; i++) {
+      rgb = [
+        Math.round(data.colors[i].red * 255),
+        Math.round(data.colors[i].green * 255),
+        Math.round(data.colors[i].blue * 255),
+      ];
+
+      colors.push('rgb(' + rgb.join(', ') + ')');
+    }
+
+    return colors;
+  }
+
+  function requestPaletteData() {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      var data;
+
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          data = JSON.parse(xhr.response);
+        } else {
+          data = {
+              colors: [{
+                  red: 1,
+                  green: 1,
+                  blue: 1
+                }]
+              };
+        }
+
+        cssColorCache[jsonUrl] = processPaletteData(data);
+
+        callback(cssColorCache[jsonUrl]);
+      }
+    };
+
+    xhr.open('get', jsonUrl, true);
+    xhr.send();
+  }
+
+  // Wrangle the arguments, if only one is provided
   if (typeof num === 'function') {
     if (typeof callback === 'number') {
       var tmpNum = callback;
@@ -2552,98 +2345,24 @@ imgix.URL.prototype.getColors = function (num, callback) {
       num = tmpNum;
     } else {
       callback = num;
-      num = 10;
+      num = DEFAULT_COLOR_COUNT;
     }
   }
 
-  clone.setPaletteColorNumber(num);
-  clone.setPalette('css');
-  clone.setPaletteClass(paletteClass);
+  // Set parameters, then get a URL for an AJAX request
+  paletteUrlObj.setPaletteColorNumber(num);
+  paletteUrlObj.setPalette('json');
+  jsonUrl = paletteUrlObj.getUrl();
 
-  var cssUrl = clone.getUrl();
-
-  imgix.injectStyleSheet(cssUrl);
-
-  var lookForLoadedCss = function () {
-    if (!imgix.findInjectedStyleSheet(cssUrl)) {
-      setTimeout(lookForLoadedCss, 100);
-    } else {
-      var lastColor = null;
-
-      setTimeout(function () {
-        var promises = [],
-          maxTries = 100;
-
-        for (var i = 1; i <= num; i++) {
-
-          (function (i) {
-            var tmps = document.createElement('span');
-            tmps.id = paletteClass + '-' + i;
-            tmps.className = paletteClass + '-fg-' + i;
-            document.body.appendChild(tmps);
-
-            promises.push(
-              new Promise(function (resolve, reject) {
-                var attempts = 0,
-                    checkLoaded;
-
-                checkLoaded = function () {
-                  var c = imgix.getCssPropertyById(tmps.id, 'color');
-                  if (c !== lastColor) {
-                    document.body.removeChild(tmps);
-                    resolve({'num': i, 'color': c});
-                    lastColor = c;
-                  } else {
-                    if (++attempts < maxTries) {
-                      setTimeout(checkLoaded, 50);
-                    } else {
-                      document.body.removeChild(tmps);
-                      resolve({'num': i, 'color': 'rgb(255, 255, 255)'});
-                    }
-                  }
-                };
-
-                setTimeout(checkLoaded, 300);
-              })
-            );
-          })(i);
-
-        } // end loop
-
-        Promise.all(promises).then(function (values) {
-          var resultColors = [];
-
-          values = values.sort(function (a, b) {
-            return a.num - b.num;
-          });
-
-          for (var x = 0; x < values.length; x++) {
-            resultColors.push(imgix.hexToRGB(values[x].color));
-          }
-
-          if (resultColors && resultColors.length > 1) {
-            if (imgix.getColorBrightness(resultColors[resultColors.length - 1]) < imgix.getColorBrightness(resultColors[0])) {
-              resultColors.reverse();
-            }
-          }
-
-          cssColorCache[cssUrl] = resultColors;
-          if (callback) {
-            callback(resultColors);
-          }
-        });
-
-
-      }, 10);
-    }
-  };
-
-  if (cssColorCache.hasOwnProperty(cssUrl)) {
+  // Return the cached colors, if available
+  if (cssColorCache.hasOwnProperty(jsonUrl)) {
     if (callback) {
-      callback(cssColorCache[cssUrl]);
+      callback(cssColorCache[jsonUrl]);
     }
+
+  // If no cache is available, do it the hard way
   } else {
-    lookForLoadedCss();
+    requestPaletteData();
   }
 };
 /**
@@ -3488,9 +3207,11 @@ var scrollInstances = {},
   resizeInstances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function () {
+  var th = this;
+
   scrollInstances[this.namespace] = imgix.helpers.throttler(function () {
-    this.reload();
-  }.bind(this), this.options.throttle);
+    th.reload();
+  }, this.options.throttle);
 
   if (document.addEventListener) {
     window.addEventListener('scroll', scrollInstances[this.namespace], false);
@@ -3502,11 +3223,13 @@ imgix.FluidSet.prototype.attachScrollListener = function () {
 };
 
 imgix.FluidSet.prototype.attachWindowResizer = function () {
+  var th = this;
+
   resizeInstances[this.namespace] = imgix.helpers.debouncer(function () {
     if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
-      this.reload();
+      th.reload();
     }
-  }.bind(this), this.options.debounce);
+  }, this.options.debounce);
 
   if (window.addEventListener) {
     window.addEventListener('resize', resizeInstances[this.namespace], false);
