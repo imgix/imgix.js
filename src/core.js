@@ -247,31 +247,6 @@ imgix.getXPathClass = function (xpath) {
   return 'imgix-el-' + suffix;
 };
 
-imgix.makeCssClass = function (url) {
-  return 'tmp_' + imgix.hashCode(url);
-};
-
-imgix.injectStyleSheet = function (url) {
-  var ss = document.createElement('link');
-  ss.type = 'text/css';
-  ss.rel = 'stylesheet';
-  ss.href = url;
-
-  document.getElementsByTagName('head')[0].appendChild(ss);
-};
-
-imgix.findInjectedStyleSheet = function (url) {
-  if (document.styleSheets) {
-    for (var i = 0; i < document.styleSheets.length; i++) {
-      if (document.styleSheets[i].href === url) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-};
-
 imgix.getElementImageSize = function (el) {
   var w = 0,
     h = 0;
