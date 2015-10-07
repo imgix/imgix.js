@@ -10,4 +10,6 @@ install:
   - npm config set loglevel http
   - npm install
 before_script: grunt build
-script: karma start karma-travis.conf.js
+script:
+  - grunt test:travis
+  - grunt test:travis --no-polyfills

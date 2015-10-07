@@ -245,9 +245,11 @@ var scrollInstances = {},
   resizeInstances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function () {
+  var th = this;
+
   scrollInstances[this.namespace] = imgix.helpers.throttler(function () {
-    this.reload();
-  }.bind(this), this.options.throttle);
+    th.reload();
+  }, this.options.throttle);
 
   if (document.addEventListener) {
     window.addEventListener('scroll', scrollInstances[this.namespace], false);
@@ -259,11 +261,13 @@ imgix.FluidSet.prototype.attachScrollListener = function () {
 };
 
 imgix.FluidSet.prototype.attachWindowResizer = function () {
+  var th = this;
+
   resizeInstances[this.namespace] = imgix.helpers.debouncer(function () {
     if (this.windowLastWidth !== imgix.helpers.getWindowWidth() || this.windowLastHeight !== imgix.helpers.getWindowHeight()) {
-      this.reload();
+      th.reload();
     }
-  }.bind(this), this.options.debounce);
+  }, this.options.debounce);
 
   if (window.addEventListener) {
     window.addEventListener('resize', resizeInstances[this.namespace], false);

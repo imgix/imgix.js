@@ -129,6 +129,10 @@ module.exports = function(grunt) {
 
 			unitquick: {
 				configFile: 'karma-quick.conf.js'
+			},
+
+			ci: {
+				configFile: 'karma-travis.conf.js'
 			}
 		},
 
@@ -171,6 +175,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('test', ['build', 'karma:unit']);
 	grunt.registerTask('test:quick', ['build', 'karma:unitquick']);
+	grunt.registerTask('test:travis', ['build', 'karma:ci']);
 
 	grunt.registerTask('doc-cleanup', 'clean up output', function() {
 		var contents = fs.readFileSync(docsApiFile, 'UTF-8');
