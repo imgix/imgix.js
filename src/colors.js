@@ -106,7 +106,7 @@ imgix.hexToRGB = function (hex) {
     g = parseInt(hex.slice(2, 4), 16);
     b = parseInt(hex.slice(4, 6), 16);
   } else {
-    window.console && window.console.warn('invalid hex color:', hex);
+    imgix.helpers.warn('invalid hex color:', hex);
   }
 
   return 'rgb(' + r + ', ' + g + ', ' + b + ')';

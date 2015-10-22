@@ -301,5 +301,11 @@ imgix.helpers = {
   matchesSelector: function (elem, selector) {
     var children = (elem.parentNode || document).querySelectorAll(selector);
     return Array.prototype.slice.call(children).indexOf(elem) > -1;
+  },
+
+  warn: function(message) {
+    if (window.console) {
+      window.console.warn(message);
+    }
   }
 };
