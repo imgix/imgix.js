@@ -34,7 +34,7 @@ imgix.URL = function (url, imgParams) {
 imgix.URL.prototype.attachGradientTo = function (elemOrSel, baseColor, callback) {
   this.getColors(16, function (colors) {
     if (colors && colors.length < 9) {
-      window.console && window.console.warn('not enough colors to create a gradient');
+      imgix.helpers.warn('not enough colors to create a gradient');
       if (callback && typeof callback === 'function') {
         callback(false);
       }
@@ -374,7 +374,7 @@ imgix.URL.prototype.clearParams = function (runUpdate) {
  */
 imgix.URL.prototype.setParams = function (dict, doOverride) {
   if (imgix.instanceOfImgixURL(dict)) {
-    window.console && window.console.warn('setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead');
+    imgix.helpers.warn('setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead');
     return;
   }
   for (var k in dict) {
@@ -410,7 +410,7 @@ imgix.URL.prototype.setParam = function (param, value, doOverride, noUpdate) {
 
   // TODO: handle aliases -- only need on build?
   if (imgix.getAllParams().indexOf(param) === -1) {
-    window.console && window.console.warn('\'' + param + '\' is an invalid imgix param');
+    imgix.helpers.warn('\'' + param + '\' is an invalid imgix param');
     return this;
   }
 
