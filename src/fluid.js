@@ -86,7 +86,7 @@ imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
 
         i.getColors(16, function (colors) {
           if (!colors) {
-            console.warn('No colors found for', i.getURL(), 'for element', elem);
+            window.console && window.console.warn('No colors found for', i.getURL(), 'for element', elem);
             return;
           }
 
@@ -380,7 +380,7 @@ imgix.fluid = function () {
 
     for (var i = 0; i < passedKeys.length; i++) {
       if (goodKeys.indexOf(passedKeys[i]) === -1) {
-        console.warn('\'' + passedKeys[i] + '\' is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.');
+        window.console && window.console.warn('\'' + passedKeys[i] + '\' is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.');
       }
     }
 
