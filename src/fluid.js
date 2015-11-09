@@ -147,7 +147,7 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     return;
   }
 
-  var dpr = imgix.helpers.getDPR(elem),
+  var dpr = imgix.helpers.getWindowDPR(),
     pixelStep = this.options.pixelStep,
     elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
     elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),

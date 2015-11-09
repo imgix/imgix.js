@@ -191,7 +191,7 @@ imgix.helpers = {
     return z;
   },
 
-  getDPR: function () {
+  getWindowDPR: function () {
     var dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
     if (dpr % 1 !== 0) {
