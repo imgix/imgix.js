@@ -121,18 +121,18 @@ describe('Color functions:', function() {
     it('sets a hex color when using a getter and passing an RGB color string', function() {
       var result;
 
-      ixURL.setBlend(knownRGB);
-      result = ixURL.getBlend();
+      ixURL.setParam('blend', knownRGB);
+      result = ixURL.getParam('blend');
 
       expect(result).toBeString();
       expect(result).toMatch(hexRegex);
     });
 
-    it('sets a hex color when using setParams() and passing an RGB color string', function() {
+    it('sets a hex color when using setParam() and passing an RGB color string', function() {
       var result;
 
-      ixURL.setParams({mono: knownRGB});
-      result = ixURL.getMonochrome();
+      ixURL.setParam('mono', knownRGB);
+      result = ixURL.getParam('mono');
 
       expect(result).toBeString();
       expect(result).toMatch(hexRegex);

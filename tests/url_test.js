@@ -60,11 +60,6 @@ describe('.URL:', function() {
       expect(ixURL.getParam('w')).toEqual('500');
       expect(ixURL.getParam('sepia')).toEqual('33');
     });
-
-    it('returns the correct values via param-specific getters', function() {
-      expect(ixURL.getWidth()).toEqual('500');
-      expect(ixURL.getSepia()).toEqual('33');
-    });
   });
 
   describe('Parsing a params-only string passed into the constructor', function() {
@@ -87,11 +82,6 @@ describe('.URL:', function() {
     it('returns the correct values via .getParam()', function() {
       expect(ixURL.getParam('w')).toEqual('500');
       expect(ixURL.getParam('sepia')).toEqual('33');
-    });
-
-    it('returns the correct values via param-specific getters', function() {
-      expect(ixURL.getWidth()).toEqual('500');
-      expect(ixURL.getSepia()).toEqual('33');
     });
   });
 
@@ -118,11 +108,6 @@ describe('.URL:', function() {
     it('returns the correct values via .getParam()', function() {
       expect(ixURL.getParam('w')).toEqual('500');
       expect(ixURL.getParam('sepia')).toEqual('33');
-    });
-
-    it('returns the correct values via param-specific getters', function() {
-      expect(ixURL.getWidth()).toEqual('500');
-      expect(ixURL.getSepia()).toEqual('33');
     });
   });
 
@@ -175,7 +160,7 @@ describe('.URL:', function() {
 
     beforeAll(function() {
       ixURL = new imgix.URL(baseUrl);
-      ixURL.setRotate(30);
+      ixURL.setParam('rot', 30);
     });
 
     it('shows up in the params list', function() {
@@ -190,10 +175,6 @@ describe('.URL:', function() {
       expect(ixURL.getParam('rot')).toEqual('30');
     });
 
-    it('returns the new value via a param-specific getter', function() {
-      expect(ixURL.getRotate()).toEqual('30');
-    });
-
     it('contains the new value in the full URL', function() {
       expect(ixURL.getUrl()).toMatch('rot=30');
     });
@@ -206,15 +187,11 @@ describe('.URL:', function() {
 
     beforeAll(function() {
       ixURL = new imgix.URL(baseUrl);
-      ixURL.setText(string);
+      ixURL.setParam('txt', string);
     });
 
     it('returns the new value via .getParam()', function() {
       expect(ixURL.getParam('txt')).toEqual(encodedString);
-    });
-
-    it('returns the new value via a param-specific getter', function() {
-      expect(ixURL.getText()).toEqual(encodedString);
     });
 
     it('contains the new value in the full URL', function() {
@@ -248,11 +225,6 @@ describe('.URL:', function() {
       expect(ixURL.getParam('rot')).toEqual('30');
     });
 
-    it('returns the new values via param-specific getters', function() {
-      expect(ixURL.getDPR()).toEqual('2');
-      expect(ixURL.getRotate()).toEqual('30');
-    });
-
     it('contains the new values in the full URL', function() {
       var fullUrl = ixURL.getUrl();
 
@@ -266,7 +238,10 @@ describe('.URL:', function() {
 
     beforeAll(function() {
       ixURL = new imgix.URL(baseUrl);
-      ixURL.setDPR(2).setRotate(30);
+      ixURL.setParams({
+        dpr: 2,
+        rot: 30
+      });
     });
 
     it('reports all new parameters in the params list', function() {
@@ -282,11 +257,6 @@ describe('.URL:', function() {
     it('returns the new values via .getParam()', function() {
       expect(ixURL.getParam('dpr')).toEqual('2');
       expect(ixURL.getParam('rot')).toEqual('30');
-    });
-
-    it('returns the new values via param-specific getters', function() {
-      expect(ixURL.getDPR()).toEqual('2');
-      expect(ixURL.getRotate()).toEqual('30');
     });
 
     it('contains the new values in the full URL', function() {
@@ -320,10 +290,6 @@ describe('.URL:', function() {
       expect(ixURL.getParam('sepia')).not.toBeDefined();
     });
 
-    it('does not return the new value via a param-specific getter', function() {
-      expect(ixURL.getSepia()).not.toBeDefined();
-    });
-
     it('does not contain the new value in the full URL', function() {
       expect(ixURL.getUrl()).not.toMatch('sepia=33');
     });
@@ -340,7 +306,7 @@ describe('.URL:', function() {
       ixURL = new imgix.URL(baseUrl, {
         sepia: 33
       });
-      ixURL.setSepia(null);
+      ixURL.setParam('sepia', null);
     });
 
     it('does not show up in the params list', function() {
@@ -353,10 +319,6 @@ describe('.URL:', function() {
 
     it('does not return the new value via .getParam()', function() {
       expect(ixURL.getParam('sepia')).not.toBeDefined();
-    });
-
-    it('does not return the new value via a param-specific getter', function() {
-      expect(ixURL.getSepia()).not.toBeDefined();
     });
 
     it('does not contain the new value in the full URL', function() {
@@ -387,11 +349,6 @@ describe('.URL:', function() {
     it('does not return any values via .getParam()', function() {
       expect(ixURL.getParam('w')).not.toBeDefined();
       expect(ixURL.getParam('sepia')).not.toBeDefined();
-    });
-
-    it('does not return any values via param-specific getters', function() {
-      expect(ixURL.getWidth()).not.toBeDefined();
-      expect(ixURL.getSepia()).not.toBeDefined();
     });
 
     it('does not any values in the full URL', function() {
@@ -431,11 +388,6 @@ describe('.URL:', function() {
       expect(ixURL.getParam('sepia')).not.toBeDefined();
     });
 
-    it('does not return the intial values via param-specific getters', function() {
-      expect(ixURL.getWidth()).not.toBeDefined();
-      expect(ixURL.getSepia()).not.toBeDefined();
-    });
-
     it('does not include initial values in the full URL', function() {
       var fullUrl = ixURL.getUrl();
 
@@ -458,11 +410,6 @@ describe('.URL:', function() {
       expect(ixURL.getParam('rot')).toEqual('30');
     });
 
-    it('returns the new values via param-specific getters', function() {
-      expect(ixURL.getDPR()).toEqual('2');
-      expect(ixURL.getRotate()).toEqual('30');
-    });
-
     it('contains the new values in the full URL', function() {
       var fullUrl = ixURL.getUrl();
 
@@ -477,7 +424,7 @@ describe('.URL:', function() {
 
       beforeAll(function() {
         ixURL = new imgix.URL(baseUrl + '?w=200');
-        ixURL.setWidth(100);
+        ixURL.setParam('w', 100);
       });
 
       it('includes the new value in the urlParts.paramValues hash', function() {
@@ -487,10 +434,6 @@ describe('.URL:', function() {
       it('returns the new value via .getParam()', function() {
         expect(ixURL.getParam('w')).toEqual('100');
       });
-
-      it('returns the new value via a param-specific getter', function() {
-        expect(ixURL.getWidth()).toEqual('100');
-      });
     });
 
     describe('with an already-set parameter and `doOverride = false`', function() {
@@ -498,7 +441,7 @@ describe('.URL:', function() {
 
       beforeAll(function() {
         ixURL = new imgix.URL(baseUrl + '?w=200');
-        ixURL.setWidth(100, false);
+        ixURL.setParam('w', 100, false);
       });
 
       it('does not include the new value in the urlParts.paramValues hash', function() {
@@ -508,10 +451,6 @@ describe('.URL:', function() {
       it('does not return the new value via .getParam()', function() {
         expect(ixURL.getParam('w')).not.toEqual('100');
       });
-
-      it('does not return the new value via a param-specific getter', function() {
-        expect(ixURL.getWidth()).not.toEqual('100');
-      });
     });
 
     describe('with an unset parameter and `doOverride = false`', function() {
@@ -519,7 +458,7 @@ describe('.URL:', function() {
 
       beforeAll(function() {
         ixURL = new imgix.URL(baseUrl + '?w=200');
-        ixURL.setHeight(100, false);
+        ixURL.setParam('h', 100, false);
       });
 
       it('includes the new value in the urlParts.paramValues hash', function() {
@@ -529,30 +468,6 @@ describe('.URL:', function() {
       it('returns the new value via .getParam()', function() {
         expect(ixURL.getParam('h')).toEqual('100');
       });
-
-      it('returns the new value via a param-specific getter', function() {
-        expect(ixURL.getHeight()).toEqual('100');
-      });
-    });
-  });
-
-  describe('Setting invalid parameters', function() {
-    var ixURL;
-
-    beforeAll(function() {
-      ixURL = new imgix.URL(baseUrl);
-    });
-
-    it('warns in console when trying to set an invalid parameter name', function() {
-      spyOn(console, 'warn');
-      ixURL.setParam('jasdlkfja', 1);
-      expect(console.warn).toHaveBeenCalled();
-    });
-
-    it('warns in console when trying to set an invalid parameter object', function() {
-      spyOn(console, 'warn');
-      ixURL.setParams(ixURL);
-      expect(console.warn).toHaveBeenCalled();
     });
   });
 
