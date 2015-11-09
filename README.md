@@ -98,8 +98,8 @@ A simple example of creating an imgix URL with param setters.
 
 ```javascript
 var ix = new imgix.URL('http://assets.imgix.net/examples/butterfly.jpg');
-ix.setSepia(50);
-ix.setRotate(20);
+ix.setParam('sepia', 50);
+ix.setParam('rot', 20);
 ix.getURL(); // equals http://assets.imgix.net/examples/butterfly.jpg?sepia=50&rot=20
 ```
 
