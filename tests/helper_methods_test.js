@@ -8,12 +8,6 @@ describe('.helpers', function() {
     });
   });
 
-  describe('.getZoom', function() {
-    it('correctly reports zoom level', function() {
-      expect(imgix.helpers.getZoom()).toEqual(1);
-    });
-  });
-
   describe('.pixelRound', function() {
     it('correctly rounds up to the nearest step', function() {
       expect(imgix.helpers.pixelRound(3, 5)).toEqual(5);

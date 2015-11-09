@@ -173,24 +173,6 @@ imgix.helpers = {
     return !isNaN(parseFloat(value)) && isFinite(value);
   },
 
-  // From http://stackoverflow.com/a/16091319/24998
-  getZoom: function () {
-    var svg,
-        ns = 'http://www.w3.org/2000/svg',
-        z = 1;
-
-    if (document.createElementNS) {
-      svg = document.createElementNS(ns, 'svg');
-      svg.setAttribute('xmlns', ns);
-      svg.setAttribute('version', '1.1');
-      document.body.appendChild(svg);
-      z = svg.currentScale || 1;
-      document.body.removeChild(svg);
-    }
-
-    return z;
-  },
-
   getWindowDPR: function () {
     var dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
