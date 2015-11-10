@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v1.2.0 - 2015-10-07 
+/*! http://www.imgix.com imgix.js - v2.0.0 - 2015-11-10 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -269,7 +269,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '1.2.0'
+  version: '2.0.0'
 };
 
 // expose imgix to browser or node
@@ -595,1295 +595,6 @@ imgix.hashCode = function (str) {
 // DOCS BELOW ARE AUTO GENERATED. DO NOT EDIT BY HAND
 
 
-
-/**
-	Apply the "bri" imgix param to the image url. Same as doing .setParam('bri', val)
-	@param val the value to set for bri
-	@name imgix.URL#setBrightness
-	@function
-*/
-
-/**
-	Apply the "con" imgix param to the image url. Same as doing .setParam('con', val)
-	@param val the value to set for con
-	@name imgix.URL#setContrast
-	@function
-*/
-
-/**
-	Apply the "exp" imgix param to the image url. Same as doing .setParam('exp', val)
-	@param val the value to set for exp
-	@name imgix.URL#setExposure
-	@function
-*/
-
-/**
-	Apply the "gam" imgix param to the image url. Same as doing .setParam('gam', val)
-	@param val the value to set for gam
-	@name imgix.URL#setGamma
-	@function
-*/
-
-/**
-	Apply the "high" imgix param to the image url. Same as doing .setParam('high', val)
-	@param val the value to set for high
-	@name imgix.URL#setHighlight
-	@function
-*/
-
-/**
-	Apply the "hue" imgix param to the image url. Same as doing .setParam('hue', val)
-	@param val the value to set for hue
-	@name imgix.URL#setHue
-	@function
-*/
-
-/**
-	Apply the "invert" imgix param to the image url. Same as doing .setParam('invert', val)
-	@param val the value to set for invert
-	@name imgix.URL#setInvert
-	@function
-*/
-
-/**
-	Apply the "sat" imgix param to the image url. Same as doing .setParam('sat', val)
-	@param val the value to set for sat
-	@name imgix.URL#setSaturation
-	@function
-*/
-
-/**
-	Apply the "shad" imgix param to the image url. Same as doing .setParam('shad', val)
-	@param val the value to set for shad
-	@name imgix.URL#setShadow
-	@function
-*/
-
-/**
-	Apply the "sharp" imgix param to the image url. Same as doing .setParam('sharp', val)
-	@param val the value to set for sharp
-	@name imgix.URL#setSharpness
-	@function
-*/
-
-/**
-	Apply the "usm" imgix param to the image url. Same as doing .setParam('usm', val)
-	@param val the value to set for usm
-	@name imgix.URL#setUnsharpMask
-	@function
-*/
-
-/**
-	Apply the "usmrad" imgix param to the image url. Same as doing .setParam('usmrad', val)
-	@param val the value to set for usmrad
-	@name imgix.URL#setUnsharpMaskRadius
-	@function
-*/
-
-/**
-	Apply the "vib" imgix param to the image url. Same as doing .setParam('vib', val)
-	@param val the value to set for vib
-	@name imgix.URL#setVibrance
-	@function
-*/
-
-/**
-	Apply the "auto" imgix param to the image url. Same as doing .setParam('auto', val)
-	@param val the value to set for auto
-	@name imgix.URL#setAuto
-	@function
-*/
-
-/**
-	Apply the "bg" imgix param to the image url. Same as doing .setParam('bg', val)
-	@param val the value to set for bg
-	@name imgix.URL#setBackground
-	@function
-*/
-
-/**
-	Apply the "ba" imgix param to the image url. Same as doing .setParam('ba', val)
-	@param val the value to set for ba
-	@name imgix.URL#setBlendAlign
-	@function
-*/
-
-/**
-	Apply the "balph" imgix param to the image url. Same as doing .setParam('balph', val)
-	@param val the value to set for balph
-	@name imgix.URL#setBlendAlpha
-	@function
-*/
-
-/**
-	Apply the "bc" imgix param to the image url. Same as doing .setParam('bc', val)
-	@param val the value to set for bc
-	@name imgix.URL#setBlendCrop
-	@function
-*/
-
-/**
-	Apply the "bf" imgix param to the image url. Same as doing .setParam('bf', val)
-	@param val the value to set for bf
-	@name imgix.URL#setBlendFit
-	@function
-*/
-
-/**
-	Apply the "bh" imgix param to the image url. Same as doing .setParam('bh', val)
-	@param val the value to set for bh
-	@name imgix.URL#setBlendHeight
-	@function
-*/
-
-/**
-	Apply the "blend" imgix param to the image url. Same as doing .setParam('blend', val)
-	@param val the value to set for blend
-	@name imgix.URL#setBlend
-	@function
-*/
-
-/**
-	Apply the "bm" imgix param to the image url. Same as doing .setParam('bm', val)
-	@param val the value to set for bm
-	@name imgix.URL#setBlendMode
-	@function
-*/
-
-/**
-	Apply the "bp" imgix param to the image url. Same as doing .setParam('bp', val)
-	@param val the value to set for bp
-	@name imgix.URL#setBlendPadding
-	@function
-*/
-
-/**
-	Apply the "bs" imgix param to the image url. Same as doing .setParam('bs', val)
-	@param val the value to set for bs
-	@name imgix.URL#setBlendSize
-	@function
-*/
-
-/**
-	Apply the "bw" imgix param to the image url. Same as doing .setParam('bw', val)
-	@param val the value to set for bw
-	@name imgix.URL#setBlendWidth
-	@function
-*/
-
-/**
-	Apply the "border" imgix param to the image url. Same as doing .setParam('border', val)
-	@param val the value to set for border
-	@name imgix.URL#setBorder
-	@function
-*/
-
-/**
-	Apply the "pad" imgix param to the image url. Same as doing .setParam('pad', val)
-	@param val the value to set for pad
-	@name imgix.URL#setPad
-	@function
-*/
-
-/**
-	Apply the "dl" imgix param to the image url. Same as doing .setParam('dl', val)
-	@param val the value to set for dl
-	@name imgix.URL#setDownload
-	@function
-*/
-
-/**
-	Apply the "fm" imgix param to the image url. Same as doing .setParam('fm', val)
-	@param val the value to set for fm
-	@name imgix.URL#setFormat
-	@function
-*/
-
-/**
-	Apply the "q" imgix param to the image url. Same as doing .setParam('q', val)
-	@param val the value to set for q
-	@name imgix.URL#setQuality
-	@function
-*/
-
-/**
-	Apply the "mask" imgix param to the image url. Same as doing .setParam('mask', val)
-	@param val the value to set for mask
-	@name imgix.URL#setMask
-	@function
-*/
-
-/**
-	Apply the "nr" imgix param to the image url. Same as doing .setParam('nr', val)
-	@param val the value to set for nr
-	@name imgix.URL#setNoiseReduction
-	@function
-*/
-
-/**
-	Apply the "nrs" imgix param to the image url. Same as doing .setParam('nrs', val)
-	@param val the value to set for nrs
-	@name imgix.URL#setNoiseReductionSharpen
-	@function
-*/
-
-/**
-	Apply the "palette" imgix param to the image url. Same as doing .setParam('palette', val)
-	@param val the value to set for palette
-	@name imgix.URL#setPalette
-	@function
-*/
-
-/**
-	Apply the "class" imgix param to the image url. Same as doing .setParam('class', val)
-	@param val the value to set for class
-	@name imgix.URL#setPaletteClass
-	@function
-*/
-
-/**
-	Apply the "prefix" imgix param to the image url. Same as doing .setParam('prefix', val)
-	@param val the value to set for prefix
-	@name imgix.URL#setPalettePrefix
-	@function
-*/
-
-/**
-	Apply the "colors" imgix param to the image url. Same as doing .setParam('colors', val)
-	@param val the value to set for colors
-	@name imgix.URL#setPaletteColorNumber
-	@function
-*/
-
-/**
-	Apply the "page" imgix param to the image url. Same as doing .setParam('page', val)
-	@param val the value to set for page
-	@name imgix.URL#setPage
-	@function
-*/
-
-/**
-	Apply the "dpr" imgix param to the image url. Same as doing .setParam('dpr', val)
-	@param val the value to set for dpr
-	@name imgix.URL#setDPR
-	@function
-*/
-
-/**
-	Apply the "flip" imgix param to the image url. Same as doing .setParam('flip', val)
-	@param val the value to set for flip
-	@name imgix.URL#setFlip
-	@function
-*/
-
-/**
-	Apply the "or" imgix param to the image url. Same as doing .setParam('or', val)
-	@param val the value to set for or
-	@name imgix.URL#setOrient
-	@function
-*/
-
-/**
-	Apply the "rot" imgix param to the image url. Same as doing .setParam('rot', val)
-	@param val the value to set for rot
-	@name imgix.URL#setRotate
-	@function
-*/
-
-/**
-	Apply the "crop" imgix param to the image url. Same as doing .setParam('crop', val)
-	@param val the value to set for crop
-	@name imgix.URL#setCrop
-	@function
-*/
-
-/**
-	Apply the "fit" imgix param to the image url. Same as doing .setParam('fit', val)
-	@param val the value to set for fit
-	@name imgix.URL#setFit
-	@function
-*/
-
-/**
-	Apply the "h" imgix param to the image url. Same as doing .setParam('h', val)
-	@param val the value to set for h
-	@name imgix.URL#setHeight
-	@function
-*/
-
-/**
-	Apply the "rect" imgix param to the image url. Same as doing .setParam('rect', val)
-	@param val the value to set for rect
-	@name imgix.URL#setRectangle
-	@function
-*/
-
-/**
-	Apply the "w" imgix param to the image url. Same as doing .setParam('w', val)
-	@param val the value to set for w
-	@name imgix.URL#setWidth
-	@function
-*/
-
-/**
-	Apply the "blur" imgix param to the image url. Same as doing .setParam('blur', val)
-	@param val the value to set for blur
-	@name imgix.URL#setBlur
-	@function
-*/
-
-/**
-	Apply the "htn" imgix param to the image url. Same as doing .setParam('htn', val)
-	@param val the value to set for htn
-	@name imgix.URL#setHalftone
-	@function
-*/
-
-/**
-	Apply the "mono" imgix param to the image url. Same as doing .setParam('mono', val)
-	@param val the value to set for mono
-	@name imgix.URL#setMonochrome
-	@function
-*/
-
-/**
-	Apply the "px" imgix param to the image url. Same as doing .setParam('px', val)
-	@param val the value to set for px
-	@name imgix.URL#setPixelate
-	@function
-*/
-
-/**
-	Apply the "sepia" imgix param to the image url. Same as doing .setParam('sepia', val)
-	@param val the value to set for sepia
-	@name imgix.URL#setSepia
-	@function
-*/
-
-/**
-	Apply the "txt" imgix param to the image url. Same as doing .setParam('txt', val)
-	@param val the value to set for txt
-	@name imgix.URL#setText
-	@function
-*/
-
-/**
-	Apply the "txtalign" imgix param to the image url. Same as doing .setParam('txtalign', val)
-	@param val the value to set for txtalign
-	@name imgix.URL#setTextAlign
-	@function
-*/
-
-/**
-	Apply the "txtclip" imgix param to the image url. Same as doing .setParam('txtclip', val)
-	@param val the value to set for txtclip
-	@name imgix.URL#setTextClip
-	@function
-*/
-
-/**
-	Apply the "txtclr" imgix param to the image url. Same as doing .setParam('txtclr', val)
-	@param val the value to set for txtclr
-	@name imgix.URL#setTextColor
-	@function
-*/
-
-/**
-	Apply the "txtfit" imgix param to the image url. Same as doing .setParam('txtfit', val)
-	@param val the value to set for txtfit
-	@name imgix.URL#setTextFit
-	@function
-*/
-
-/**
-	Apply the "txtfont" imgix param to the image url. Same as doing .setParam('txtfont', val)
-	@param val the value to set for txtfont
-	@name imgix.URL#setTextFont
-	@function
-*/
-
-/**
-	Apply the "txtline" imgix param to the image url. Same as doing .setParam('txtline', val)
-	@param val the value to set for txtline
-	@name imgix.URL#setTextLine
-	@function
-*/
-
-/**
-	Apply the "txtlineclr" imgix param to the image url. Same as doing .setParam('txtlineclr', val)
-	@param val the value to set for txtlineclr
-	@name imgix.URL#setTextLineColor
-	@function
-*/
-
-/**
-	Apply the "txtpad" imgix param to the image url. Same as doing .setParam('txtpad', val)
-	@param val the value to set for txtpad
-	@name imgix.URL#setTextPad
-	@function
-*/
-
-/**
-	Apply the "txtsize" imgix param to the image url. Same as doing .setParam('txtsize', val)
-	@param val the value to set for txtsize
-	@name imgix.URL#setTextSize
-	@function
-*/
-
-/**
-	Apply the "txtshad" imgix param to the image url. Same as doing .setParam('txtshad', val)
-	@param val the value to set for txtshad
-	@name imgix.URL#setTextShadow
-	@function
-*/
-
-/**
-	Apply the "trim" imgix param to the image url. Same as doing .setParam('trim', val)
-	@param val the value to set for trim
-	@name imgix.URL#setTrim
-	@function
-*/
-
-/**
-	Apply the "trimcolor" imgix param to the image url. Same as doing .setParam('trimcolor', val)
-	@param val the value to set for trimcolor
-	@name imgix.URL#setTrimColor
-	@function
-*/
-
-/**
-	Apply the "trimmd" imgix param to the image url. Same as doing .setParam('trimmd', val)
-	@param val the value to set for trimmd
-	@name imgix.URL#setTrimMeanDifference
-	@function
-*/
-
-/**
-	Apply the "mark" imgix param to the image url. Same as doing .setParam('mark', val)
-	@param val the value to set for mark
-	@name imgix.URL#setWatermark
-	@function
-*/
-
-/**
-	Apply the "markalign" imgix param to the image url. Same as doing .setParam('markalign', val)
-	@param val the value to set for markalign
-	@name imgix.URL#setWatermarkAlign
-	@function
-*/
-
-/**
-	Apply the "markalpha" imgix param to the image url. Same as doing .setParam('markalpha', val)
-	@param val the value to set for markalpha
-	@name imgix.URL#setWatermarkAlpha
-	@function
-*/
-
-/**
-	Apply the "markfit" imgix param to the image url. Same as doing .setParam('markfit', val)
-	@param val the value to set for markfit
-	@name imgix.URL#setWatermarkFit
-	@function
-*/
-
-/**
-	Apply the "markh" imgix param to the image url. Same as doing .setParam('markh', val)
-	@param val the value to set for markh
-	@name imgix.URL#setWatermarkHeight
-	@function
-*/
-
-/**
-	Apply the "markpad" imgix param to the image url. Same as doing .setParam('markpad', val)
-	@param val the value to set for markpad
-	@name imgix.URL#setWatermarkPadding
-	@function
-*/
-
-/**
-	Apply the "markscale" imgix param to the image url. Same as doing .setParam('markscale', val)
-	@param val the value to set for markscale
-	@name imgix.URL#setWatermarkScale
-	@function
-*/
-
-/**
-	Apply the "markw" imgix param to the image url. Same as doing .setParam('markw', val)
-	@param val the value to set for markw
-	@name imgix.URL#setWatermarkWidth
-	@function
-*//**
-	Get the value of the "bri" imgix param currently on the image url. Same as doing .getParam('bri')
-	@name imgix.URL#getBrightness
-	@function
-*/
-
-/**
-	Get the value of the "con" imgix param currently on the image url. Same as doing .getParam('con')
-	@name imgix.URL#getContrast
-	@function
-*/
-
-/**
-	Get the value of the "exp" imgix param currently on the image url. Same as doing .getParam('exp')
-	@name imgix.URL#getExposure
-	@function
-*/
-
-/**
-	Get the value of the "gam" imgix param currently on the image url. Same as doing .getParam('gam')
-	@name imgix.URL#getGamma
-	@function
-*/
-
-/**
-	Get the value of the "high" imgix param currently on the image url. Same as doing .getParam('high')
-	@name imgix.URL#getHighlight
-	@function
-*/
-
-/**
-	Get the value of the "hue" imgix param currently on the image url. Same as doing .getParam('hue')
-	@name imgix.URL#getHue
-	@function
-*/
-
-/**
-	Get the value of the "invert" imgix param currently on the image url. Same as doing .getParam('invert')
-	@name imgix.URL#getInvert
-	@function
-*/
-
-/**
-	Get the value of the "sat" imgix param currently on the image url. Same as doing .getParam('sat')
-	@name imgix.URL#getSaturation
-	@function
-*/
-
-/**
-	Get the value of the "shad" imgix param currently on the image url. Same as doing .getParam('shad')
-	@name imgix.URL#getShadow
-	@function
-*/
-
-/**
-	Get the value of the "sharp" imgix param currently on the image url. Same as doing .getParam('sharp')
-	@name imgix.URL#getSharpness
-	@function
-*/
-
-/**
-	Get the value of the "usm" imgix param currently on the image url. Same as doing .getParam('usm')
-	@name imgix.URL#getUnsharpMask
-	@function
-*/
-
-/**
-	Get the value of the "usmrad" imgix param currently on the image url. Same as doing .getParam('usmrad')
-	@name imgix.URL#getUnsharpMaskRadius
-	@function
-*/
-
-/**
-	Get the value of the "vib" imgix param currently on the image url. Same as doing .getParam('vib')
-	@name imgix.URL#getVibrance
-	@function
-*/
-
-/**
-	Get the value of the "auto" imgix param currently on the image url. Same as doing .getParam('auto')
-	@name imgix.URL#getAuto
-	@function
-*/
-
-/**
-	Get the value of the "bg" imgix param currently on the image url. Same as doing .getParam('bg')
-	@name imgix.URL#getBackground
-	@function
-*/
-
-/**
-	Get the value of the "ba" imgix param currently on the image url. Same as doing .getParam('ba')
-	@name imgix.URL#getBlendAlign
-	@function
-*/
-
-/**
-	Get the value of the "balph" imgix param currently on the image url. Same as doing .getParam('balph')
-	@name imgix.URL#getBlendAlpha
-	@function
-*/
-
-/**
-	Get the value of the "bc" imgix param currently on the image url. Same as doing .getParam('bc')
-	@name imgix.URL#getBlendCrop
-	@function
-*/
-
-/**
-	Get the value of the "bf" imgix param currently on the image url. Same as doing .getParam('bf')
-	@name imgix.URL#getBlendFit
-	@function
-*/
-
-/**
-	Get the value of the "bh" imgix param currently on the image url. Same as doing .getParam('bh')
-	@name imgix.URL#getBlendHeight
-	@function
-*/
-
-/**
-	Get the value of the "blend" imgix param currently on the image url. Same as doing .getParam('blend')
-	@name imgix.URL#getBlend
-	@function
-*/
-
-/**
-	Get the value of the "bm" imgix param currently on the image url. Same as doing .getParam('bm')
-	@name imgix.URL#getBlendMode
-	@function
-*/
-
-/**
-	Get the value of the "bp" imgix param currently on the image url. Same as doing .getParam('bp')
-	@name imgix.URL#getBlendPadding
-	@function
-*/
-
-/**
-	Get the value of the "bs" imgix param currently on the image url. Same as doing .getParam('bs')
-	@name imgix.URL#getBlendSize
-	@function
-*/
-
-/**
-	Get the value of the "bw" imgix param currently on the image url. Same as doing .getParam('bw')
-	@name imgix.URL#getBlendWidth
-	@function
-*/
-
-/**
-	Get the value of the "border" imgix param currently on the image url. Same as doing .getParam('border')
-	@name imgix.URL#getBorder
-	@function
-*/
-
-/**
-	Get the value of the "pad" imgix param currently on the image url. Same as doing .getParam('pad')
-	@name imgix.URL#getPad
-	@function
-*/
-
-/**
-	Get the value of the "dl" imgix param currently on the image url. Same as doing .getParam('dl')
-	@name imgix.URL#getDownload
-	@function
-*/
-
-/**
-	Get the value of the "fm" imgix param currently on the image url. Same as doing .getParam('fm')
-	@name imgix.URL#getFormat
-	@function
-*/
-
-/**
-	Get the value of the "q" imgix param currently on the image url. Same as doing .getParam('q')
-	@name imgix.URL#getQuality
-	@function
-*/
-
-/**
-	Get the value of the "mask" imgix param currently on the image url. Same as doing .getParam('mask')
-	@name imgix.URL#getMask
-	@function
-*/
-
-/**
-	Get the value of the "nr" imgix param currently on the image url. Same as doing .getParam('nr')
-	@name imgix.URL#getNoiseReduction
-	@function
-*/
-
-/**
-	Get the value of the "nrs" imgix param currently on the image url. Same as doing .getParam('nrs')
-	@name imgix.URL#getNoiseReductionSharpen
-	@function
-*/
-
-/**
-	Get the value of the "palette" imgix param currently on the image url. Same as doing .getParam('palette')
-	@name imgix.URL#getPalette
-	@function
-*/
-
-/**
-	Get the value of the "class" imgix param currently on the image url. Same as doing .getParam('class')
-	@name imgix.URL#getPaletteClass
-	@function
-*/
-
-/**
-	Get the value of the "prefix" imgix param currently on the image url. Same as doing .getParam('prefix')
-	@name imgix.URL#getPalettePrefix
-	@function
-*/
-
-/**
-	Get the value of the "colors" imgix param currently on the image url. Same as doing .getParam('colors')
-	@name imgix.URL#getPaletteColorNumber
-	@function
-*/
-
-/**
-	Get the value of the "page" imgix param currently on the image url. Same as doing .getParam('page')
-	@name imgix.URL#getPage
-	@function
-*/
-
-/**
-	Get the value of the "dpr" imgix param currently on the image url. Same as doing .getParam('dpr')
-	@name imgix.URL#getDPR
-	@function
-*/
-
-/**
-	Get the value of the "flip" imgix param currently on the image url. Same as doing .getParam('flip')
-	@name imgix.URL#getFlip
-	@function
-*/
-
-/**
-	Get the value of the "or" imgix param currently on the image url. Same as doing .getParam('or')
-	@name imgix.URL#getOrient
-	@function
-*/
-
-/**
-	Get the value of the "rot" imgix param currently on the image url. Same as doing .getParam('rot')
-	@name imgix.URL#getRotate
-	@function
-*/
-
-/**
-	Get the value of the "crop" imgix param currently on the image url. Same as doing .getParam('crop')
-	@name imgix.URL#getCrop
-	@function
-*/
-
-/**
-	Get the value of the "fit" imgix param currently on the image url. Same as doing .getParam('fit')
-	@name imgix.URL#getFit
-	@function
-*/
-
-/**
-	Get the value of the "h" imgix param currently on the image url. Same as doing .getParam('h')
-	@name imgix.URL#getHeight
-	@function
-*/
-
-/**
-	Get the value of the "rect" imgix param currently on the image url. Same as doing .getParam('rect')
-	@name imgix.URL#getRectangle
-	@function
-*/
-
-/**
-	Get the value of the "w" imgix param currently on the image url. Same as doing .getParam('w')
-	@name imgix.URL#getWidth
-	@function
-*/
-
-/**
-	Get the value of the "blur" imgix param currently on the image url. Same as doing .getParam('blur')
-	@name imgix.URL#getBlur
-	@function
-*/
-
-/**
-	Get the value of the "htn" imgix param currently on the image url. Same as doing .getParam('htn')
-	@name imgix.URL#getHalftone
-	@function
-*/
-
-/**
-	Get the value of the "mono" imgix param currently on the image url. Same as doing .getParam('mono')
-	@name imgix.URL#getMonochrome
-	@function
-*/
-
-/**
-	Get the value of the "px" imgix param currently on the image url. Same as doing .getParam('px')
-	@name imgix.URL#getPixelate
-	@function
-*/
-
-/**
-	Get the value of the "sepia" imgix param currently on the image url. Same as doing .getParam('sepia')
-	@name imgix.URL#getSepia
-	@function
-*/
-
-/**
-	Get the value of the "txt" imgix param currently on the image url. Same as doing .getParam('txt')
-	@name imgix.URL#getText
-	@function
-*/
-
-/**
-	Get the value of the "txtalign" imgix param currently on the image url. Same as doing .getParam('txtalign')
-	@name imgix.URL#getTextAlign
-	@function
-*/
-
-/**
-	Get the value of the "txtclip" imgix param currently on the image url. Same as doing .getParam('txtclip')
-	@name imgix.URL#getTextClip
-	@function
-*/
-
-/**
-	Get the value of the "txtclr" imgix param currently on the image url. Same as doing .getParam('txtclr')
-	@name imgix.URL#getTextColor
-	@function
-*/
-
-/**
-	Get the value of the "txtfit" imgix param currently on the image url. Same as doing .getParam('txtfit')
-	@name imgix.URL#getTextFit
-	@function
-*/
-
-/**
-	Get the value of the "txtfont" imgix param currently on the image url. Same as doing .getParam('txtfont')
-	@name imgix.URL#getTextFont
-	@function
-*/
-
-/**
-	Get the value of the "txtline" imgix param currently on the image url. Same as doing .getParam('txtline')
-	@name imgix.URL#getTextLine
-	@function
-*/
-
-/**
-	Get the value of the "txtlineclr" imgix param currently on the image url. Same as doing .getParam('txtlineclr')
-	@name imgix.URL#getTextLineColor
-	@function
-*/
-
-/**
-	Get the value of the "txtpad" imgix param currently on the image url. Same as doing .getParam('txtpad')
-	@name imgix.URL#getTextPad
-	@function
-*/
-
-/**
-	Get the value of the "txtsize" imgix param currently on the image url. Same as doing .getParam('txtsize')
-	@name imgix.URL#getTextSize
-	@function
-*/
-
-/**
-	Get the value of the "txtshad" imgix param currently on the image url. Same as doing .getParam('txtshad')
-	@name imgix.URL#getTextShadow
-	@function
-*/
-
-/**
-	Get the value of the "trim" imgix param currently on the image url. Same as doing .getParam('trim')
-	@name imgix.URL#getTrim
-	@function
-*/
-
-/**
-	Get the value of the "trimcolor" imgix param currently on the image url. Same as doing .getParam('trimcolor')
-	@name imgix.URL#getTrimColor
-	@function
-*/
-
-/**
-	Get the value of the "trimmd" imgix param currently on the image url. Same as doing .getParam('trimmd')
-	@name imgix.URL#getTrimMeanDifference
-	@function
-*/
-
-/**
-	Get the value of the "mark" imgix param currently on the image url. Same as doing .getParam('mark')
-	@name imgix.URL#getWatermark
-	@function
-*/
-
-/**
-	Get the value of the "markalign" imgix param currently on the image url. Same as doing .getParam('markalign')
-	@name imgix.URL#getWatermarkAlign
-	@function
-*/
-
-/**
-	Get the value of the "markalpha" imgix param currently on the image url. Same as doing .getParam('markalpha')
-	@name imgix.URL#getWatermarkAlpha
-	@function
-*/
-
-/**
-	Get the value of the "markfit" imgix param currently on the image url. Same as doing .getParam('markfit')
-	@name imgix.URL#getWatermarkFit
-	@function
-*/
-
-/**
-	Get the value of the "markh" imgix param currently on the image url. Same as doing .getParam('markh')
-	@name imgix.URL#getWatermarkHeight
-	@function
-*/
-
-/**
-	Get the value of the "markpad" imgix param currently on the image url. Same as doing .getParam('markpad')
-	@name imgix.URL#getWatermarkPadding
-	@function
-*/
-
-/**
-	Get the value of the "markscale" imgix param currently on the image url. Same as doing .getParam('markscale')
-	@name imgix.URL#getWatermarkScale
-	@function
-*/
-
-/**
-	Get the value of the "markw" imgix param currently on the image url. Same as doing .getParam('markw')
-	@name imgix.URL#getWatermarkWidth
-	@function
-*/
-'use strict';
-
-/**
- * Returns a font lookup. Pretty Name => name to use with imgix
- * Example: 'American Typewriter Bold' => 'American Typewriter,bold',
- * @memberof imgix
- * @static
- * @returns {object} pretty font name to imgix font param value
- */
-imgix.getFontLookup = function () {
-  return {
-    'American Typewriter': 'American Typewriter',
-    'American Typewriter Bold': 'American Typewriter,bold',
-    'American Typewriter Condensed': 'American Typewriter Condensed',
-    'American Typewriter Condensed Bold': 'American Typewriter Condensed,bold',
-    'American Typewriter Condensed Light': 'American Typewriter Condensed Light',
-    'American Typewriter Light': 'American Typewriter Light',
-    'Andale Mono': 'Andale Mono',
-    'Arial': 'Arial',
-    'Arial Black': 'Arial Black',
-    'Arial Bold': 'Arial,bold',
-    'Arial Bold Italic': 'Arial,bold,italic',
-    'Arial Italic': 'Arial,italic',
-    'Baskerville': 'Baskerville',
-    'Big Caslon': 'Big Caslon',
-    'Brush Script MT': 'Brush Script MT',
-    'Cochin': 'Cochin',
-    'Copperplate': 'Copperplate',
-    'Courier': 'Courier',
-    'Courier Bold': 'Courier,bold',
-    'Courier Oblique': 'Courier Oblique',
-    'Didot': 'Didot',
-    'Futura': 'Futura',
-    'Futura Condensed': 'Futura Condensed Medium',
-    'Futura Italic': 'Futura Medium,italic',
-    'Georgia': 'Georgia',
-    'Georgia Bold': 'Georgia,bold',
-    'Georgia Bold Italic': 'Georgia,bold,italic',
-    'Georgia Italic': 'Georgia,italic',
-    'Gill Sans': 'Gill Sans',
-    'Gill Sans Bold': 'Gill Sans,bold',
-    'Gill Sans Bold Italic': 'Gill Sans,bold,italic',
-    'Gill Sans Italic': 'Gill Sans,italic',
-    'Gill Sans Light': 'Gill Sans Light',
-    'Gill Sans Light Italic': 'Gill Sans Light,italic',
-    'Helvetica': 'Helvetica',
-    'Helvetica Bold': 'Helvetica,bold',
-    'Helvetica Light': 'Helvetica Light',
-    'Helvetica Light Oblique': 'Helvetica Light Oblique',
-    'Helvetica Neue': 'Helvetica Neue',
-    'Helvetica Neue Bold': 'Helvetica Neue,bold',
-    'Helvetica Neue Bold Italic': 'Helvetica Neue,bold,italic',
-    'Helvetica Neue Condensed Black': 'Helvetica Neue Condensed Black',
-    'Helvetica Neue Condensed Bold': 'Helvetica Neue Condensed,bold',
-    'Helvetica Neue Light': 'Helvetica Neue Light',
-    'Helvetica Neue Light Italic': 'Helvetica Neue Light,italic',
-    'Helvetica Neue Medium': 'Helvetica Neue Medium',
-    'Helvetica Neue UltraLight': 'Helvetica Neue UltraLight',
-    'Helvetica Neue UltraLight Italic': 'Helvetica Neue UltraLight,italic',
-    'Helvetica Oblique': 'Helvetica Oblique',
-    'Herculanum': 'Herculanum',
-    'Impact': 'Impact',
-    'Marker Felt Thin': 'Marker Felt Thin',
-    'Marker Felt Wide': 'Marker Felt Wide',
-    'Optima': 'Optima',
-    'Optima Bold': 'Optima,bold',
-    'Optima Bold Italic': 'Optima,bold,italic',
-    'Optima ExtraBlack': 'Optima ExtraBlack',
-    'Optima Italic': 'Optima,italic',
-    'Papyrus': 'Papyrus',
-    'Papyrus Condensed': 'Papyrus Condensed',
-    'Times': 'Times',
-    'Times Bold': 'Times,bold',
-    'Times Bold Italic': 'Times,bold,italic',
-    'Times Italic': 'Times,italic',
-    'Times New Roman': 'Times New Roman',
-    'Times New Roman Bold': 'Times New Roman,bold',
-    'Times New Roman Bold Italic': 'Times New Roman,bold,italic',
-    'Times New Roman Italic': 'Times New Roman,italic',
-    'Trebuchet MS': 'Trebuchet MS',
-    'Trebuchet MS Bold': 'Trebuchet MS,bold',
-    'Trebuchet MS Bold Italic': 'Trebuchet MS,bold,italic',
-    'Trebuchet MS Italic': 'Trebuchet MS,italic',
-    'Verdana': 'Verdana',
-    'Verdana Bold': 'Verdana,bold',
-    'Verdana Bold Italic': 'Verdana,bold,italic',
-    'Verdana Italic': 'Verdana,italic',
-    'Zapfino': 'Zapfino'
-  };
-};
-
-/**
- * Get a list of all the fonts supported by imgix
- * @memberof imgix
- * @static
- * @returns {array} An array of strings of the supported font names
- */
-imgix.getFonts = function () {
-  return Object.keys(imgix.getFontLookup());
-};
-
-imgix.searchFonts = function (needle) {
-  needle = needle.toLowerCase();
-  return imgix.getFonts().filter(function (i) { return i.toLowerCase().indexOf(needle) !== -1; });
-};
-
-imgix.isFontAvailable = function (font) {
-  return imgix.isDef(imgix.getFontLookup()[font]);
-};
-
-imgix.getAllParams = function () {
-  return [
-    // Adjustment
-    'bri',
-    'con',
-    'exp',
-    'gam',
-    'high',
-    'hue',
-    'invert',
-    'int', // Deprecated
-    'sat',
-    'shad',
-    'sharp',
-    'usm',
-    'usmrad',
-    'vib',
-
-    // Automatic
-    'auto',
-
-    // Background
-    'bg',
-
-    // Blend
-    'ba',
-    'balph',
-    'bc',
-    'bf',
-    'bh',
-    'blend',
-    'bm',
-    'bp',
-    'bs',
-    'bw',
-
-    // Border & padding
-    'border',
-    'pad',
-
-    // Format
-    'dl',
-    'fm',
-    'q',
-
-    // Mask
-    'mask',
-
-    // Noise
-    'nr',
-    'nrs',
-
-    // Palette
-    'class', // Deprecated
-    'colors',
-    'prefix',
-    'palette',
-
-    // PDF
-    'page',
-
-    // Pixel Density
-    'dpr',
-
-    // Rotation
-    'flip',
-    'or',
-    'rot',
-
-    // Size
-    'crop',
-    'fit',
-    'h',
-    'rect',
-    'w',
-
-    // Stylize
-    'blur',
-    'htn',
-    'mono',
-    'px',
-    'sepia',
-
-    // Text
-    'txt',
-    'txtalign',
-    'txtclip',
-    'txtclr',
-    'txtfit',
-    'txtfont',
-    'txtline',
-    'txtlineclr',
-    'txtpad',
-    'txtshad',
-    'txtsize',
-
-    // Trim
-    'trim',
-    'trimcolor',
-    'trimmd',
-
-    // Watermark
-    'mark',
-    'markalign',
-    'markalpha',
-    'markfit',
-    'markh',
-    'markpad',
-    'markscale',
-    'markw'
-  ];
-};
-
-imgix.getParamAliases = function () {
-  return {
-    t: 'txt',
-    tf: 'txtfont',
-    tsz: 'txtsize',
-    tl: 'txtline',
-    tsh: 'txtshad',
-    tp: 'txtpad',
-    txtlinecolor: 'txtlineclr',
-    ta: 'txtalign',
-    intensity: 'int',
-    monochrome: 'mono',
-    f: 'fit',
-    orient: 'or',
-    m: 'watermark',
-    mf: 'markfit',
-    ms: 'markscale',
-    ma: 'markalign',
-    mp: 'markpad'
-  };
-};
-
-imgix.getDefaultParamValues = function () {
-  return {
-    // Adjustment
-    bri: 0,
-    con: 0,
-    exp: 0,
-    gam: 0,
-    high: 0,
-    hue: 0,
-    sat: 0,
-    shad: 0,
-    sharp: 0,
-    usm: 0,
-    usmrad: 2.5,
-    vib: 0,
-
-    // Blend
-    ba: 'middle,center',
-    balph: 100,
-    bf: 'clip',
-    bp: 0,
-
-    // Border & padding
-    pad: 0,
-
-    // Format
-    q: 75,
-
-    // Noise
-    nr: 20,
-    nrs: 20,
-
-    // Palette
-    colors: 6,
-    prefix: 'image',
-    palette: '',
-
-    // PDF
-    page: 1,
-
-    // Pixel Density
-    dpr: 1,
-
-    // Rotation
-    rot: 0,
-
-    // Size
-    fit: 'clip',
-
-    // Stylize
-    blur: 0,
-    htn: 0,
-    px: 0,
-    sepia: 0,
-
-    // Text
-    txtalign: 'bottom,right',
-    txtclip: 'end',
-    txtclr: '000',
-    txtfont: 'Helvetica',
-    txtline: 0,
-    txtlineclr: 'FFF',
-    txtpad: 10,
-    txtsize: 12,
-
-    // Trim
-    trimmd: 11,
-
-    // Watermark
-    markalign: 'bottom,right',
-    markalpha: 100,
-    markfit: 'clip',
-    markpad: 10
-  };
-};
-
-imgix.getDefaultParamValue = function (param) {
-  return imgix.getDefaultParamValues()[param];
-};
-
-imgix.getDefaultParams = function () {
-  return Object.keys(imgix.getDefaultParamValues());
-};
-
 'use strict';
 
 /**
@@ -2059,25 +770,7 @@ imgix.helpers = {
     return !isNaN(parseFloat(value)) && isFinite(value);
   },
 
-  // From http://stackoverflow.com/a/16091319/24998
-  getZoom: function () {
-    var svg,
-        ns = 'http://www.w3.org/2000/svg',
-        z = 1;
-
-    if (document.createElementNS) {
-      svg = document.createElementNS(ns, 'svg');
-      svg.setAttribute('xmlns', ns);
-      svg.setAttribute('version', '1.1');
-      document.body.appendChild(svg);
-      z = svg.currentScale || 1;
-      document.body.removeChild(svg);
-    }
-
-    return z;
-  },
-
-  getDPR: function () {
+  getWindowDPR: function () {
     var dpr = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
     if (dpr % 1 !== 0) {
@@ -2187,6 +880,12 @@ imgix.helpers = {
   matchesSelector: function (elem, selector) {
     var children = (elem.parentNode || document).querySelectorAll(selector);
     return Array.prototype.slice.call(children).indexOf(elem) > -1;
+  },
+
+  warn: function(message) {
+    if (window.console) {
+      window.console.warn(message);
+    }
   }
 };
 
@@ -2226,7 +925,7 @@ imgix.URL = function (url, imgParams) {
 imgix.URL.prototype.attachGradientTo = function (elemOrSel, baseColor, callback) {
   this.getColors(16, function (colors) {
     if (colors && colors.length < 9) {
-      console.warn('not enough colors to create a gradient');
+      imgix.helpers.warn('not enough colors to create a gradient');
       if (callback && typeof callback === 'function') {
         callback(false);
       }
@@ -2350,8 +1049,10 @@ imgix.URL.prototype.getColors = function (num, callback) {
   }
 
   // Set parameters, then get a URL for an AJAX request
-  paletteUrlObj.setPaletteColorNumber(num);
-  paletteUrlObj.setPalette('json');
+  paletteUrlObj.setParams({
+    palette: 'json',
+    colors: num
+  });
   jsonUrl = paletteUrlObj.getUrl();
 
   // Return the cached colors, if available
@@ -2399,7 +1100,6 @@ imgix.URL.prototype._handleAutoUpdate = function () {
 
         img.onload = img.onerror = function () {
           if (!isVersionFresh(curV)) {
-            // console.log(curV + ' is an old version -- not updating');
             return;
           }
 
@@ -2567,7 +1267,7 @@ imgix.URL.prototype.clearParams = function (runUpdate) {
  */
 imgix.URL.prototype.setParams = function (dict, doOverride) {
   if (imgix.instanceOfImgixURL(dict)) {
-    console.warn('setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead');
+    imgix.helpers.warn('setParams warning: dictionary of imgix params expectd. imgix URL instance passed instead');
     return;
   }
   for (var k in dict) {
@@ -2579,7 +1279,6 @@ imgix.URL.prototype.setParams = function (dict, doOverride) {
   this._handleAutoUpdate();
 };
 
-// TODO: handle public/private status of this -- won't handle aliases if set...
 /**
  * Set a single imgix param value
  * @memberof imgix
@@ -2601,25 +1300,12 @@ imgix.URL.prototype.setParam = function (param, value, doOverride, noUpdate) {
     }
   }
 
-  // TODO: handle aliases -- only need on build?
-  if (imgix.getAllParams().indexOf(param) === -1) {
-    console.warn('\'' + param + '\' is an invalid imgix param');
-    return this;
-  }
-
   if (!doOverride && this.urlParts.paramValues[param]) {
     // we are not overriding because they didn't want to
     return this;
   }
 
-  if (param === 'txtfont' && imgix.isFontAvailable(value)) {
-    var tmp = imgix.getFontLookup()[value];
-    if (tmp) {
-      value = tmp;
-    }
-  }
-
-  if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null || value.length === 0) {
+  if (!imgix.isDef(value) || value === null || value.length === 0) {
     this.removeParam(param);
     return this;
   }
@@ -2701,139 +1387,6 @@ imgix.URL.prototype.getQueryString = function () {
 
   return '';
 };
-
-// 'param name': 'pretty name' (for auto-generated get/set-ers)
-imgix.URL.theGetSetFuncs = Object.freeze({
-  // Adjustment
-  bri: 'Brightness',
-  con: 'Contrast',
-  exp: 'Exposure',
-  gam: 'Gamma',
-  high: 'Highlight',
-  hue: 'Hue',
-  invert: 'Invert',
-  sat: 'Saturation',
-  shad: 'Shadow',
-  sharp: 'Sharpness',
-  usm: 'UnsharpMask',
-  usmrad: 'UnsharpMaskRadius',
-  vib: 'Vibrance',
-
-  // Automatic
-  auto: 'Auto',
-
-  // Background
-  bg: 'Background',
-
-  // Blend
-  ba: 'BlendAlign',
-  balph: 'BlendAlpha',
-  bc: 'BlendCrop',
-  bf: 'BlendFit',
-  bh: 'BlendHeight',
-  blend: 'Blend',
-  bm: 'BlendMode',
-  bp: 'BlendPadding',
-  bs: 'BlendSize',
-  bw: 'BlendWidth',
-
-  // Border & padding
-  border: 'Border',
-  pad: 'Pad',
-
-  // Format
-  dl: 'Download',
-  fm: 'Format',
-  q: 'Quality',
-
-  // Mask
-  mask: 'Mask',
-
-  // Noise
-  nr: 'NoiseReduction',
-  nrs: 'NoiseReductionSharpen',
-
-  // Palette
-  palette: 'Palette',
-  'class': 'PaletteClass',
-  prefix: 'PalettePrefix',
-  colors: 'PaletteColorNumber',
-
-  // PDF
-  page: 'Page',
-
-  // Pixel Density
-  dpr: 'DPR',
-
-  // Rotation
-  flip: 'Flip',
-  or: 'Orient',
-  rot: 'Rotate',
-
-  // Size
-  crop: 'Crop',
-  fit: 'Fit',
-  h: 'Height',
-  rect: 'Rectangle',
-  w: 'Width',
-
-  // Stylize
-  blur: 'Blur',
-  htn: 'Halftone',
-  mono: 'Monochrome',
-  px: 'Pixelate',
-  sepia: 'Sepia',
-
-  // Text
-  txt: 'Text',
-  txtalign: 'TextAlign',
-  txtclip: 'TextClip',
-  txtclr: 'TextColor',
-  txtfit: 'TextFit',
-  txtfont: 'TextFont',
-  txtline: 'TextLine',
-  txtlineclr: 'TextLineColor',
-  txtpad: 'TextPad',
-  txtsize: 'TextSize',
-  txtshad: 'TextShadow',
-
-  // Trim
-  trim: 'Trim',
-  trimcolor: 'TrimColor',
-  trimmd: 'TrimMeanDifference',
-
-  // watermarks
-  mark: 'Watermark',
-  markalign: 'WatermarkAlign',
-  markalpha: 'WatermarkAlpha',
-  markfit: 'WatermarkFit',
-  markh: 'WatermarkHeight',
-  markpad: 'WatermarkPadding',
-  markscale: 'WatermarkScale',
-  markw: 'WatermarkWidth'
-});
-
-
-/**
-  Apply the sepia imgix param to the image url. Same as doing .setParam('sepia', val);
-  @param val the value to set for sepia
-  @name imgix.URL#setSepia
-  @function
-*/
-
-// Dynamically create our param getter and setters
-for (var param in imgix.URL.theGetSetFuncs) {
-  if (imgix.URL.theGetSetFuncs.hasOwnProperty(param)) {
-    (function (tmp) {
-      imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function (v, doOverride) {
-        return this.setParam(tmp, v, doOverride);
-      };
-      imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function () {
-        return this.getParam(tmp);
-      };
-    })(param);
-  }
-}
 
 imgix.parseUrl = function (url) {
   var
@@ -3048,7 +1601,7 @@ imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
 
         i.getColors(16, function (colors) {
           if (!colors) {
-            console.warn('No colors found for', i.getURL(), 'for element', elem);
+            imgix.helpers.warn('No colors found for', i.getURL(), 'for element', elem);
             return;
           }
 
@@ -3109,7 +1662,7 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     return;
   }
 
-  var dpr = imgix.helpers.getDPR(elem),
+  var dpr = imgix.helpers.getWindowDPR(),
     pixelStep = this.options.pixelStep,
     elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
     elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
@@ -3119,37 +1672,39 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     elem.url = new imgix.URL(imgix.helpers.getImgSrc(elem));
   }
 
-  elem.url.setHeight('');
-  elem.url.setWidth('');
+  elem.url.setParams({
+    h: '',
+    w: ''
+  });
 
   elemWidth = Math.min(elemWidth, this.options.maxWidth);
   elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
   if (dpr !== 1 && !this.options.ignoreDPR) {
-    elem.url.setDPR(dpr);
+    elem.url.setParam('dpr', dpr);
   }
 
   if (this.options.highDPRAutoScaleQuality && dpr > 1) {
-    elem.url.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
+    elem.url.setParam('q', Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
   }
 
   if (this.options.fitImgTagToContainerHeight && this.options.fitImgTagToContainerWidth) {
-    elem.url.setFit('crop');
+    elem.url.setParam('fit', 'crop');
   }
 
-  if (elem.url.getFit() === 'crop') {
+  if (elem.url.getParam('fit') === 'crop') {
     if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerHeight))) {
-      elem.url.setHeight(elemHeight);
+      elem.url.setParam('h', elemHeight);
     }
 
     if (elemWidth > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerWidth))) {
-      elem.url.setWidth(elemWidth);
+      elem.url.setParam('w', elemWidth);
     }
   } else {
     if (elemHeight <= elemWidth) {
-      elem.url.setWidth(elemWidth);
+      elem.url.setParam('w', elemWidth);
     } else {
-      elem.url.setHeight(elemHeight);
+      elem.url.setParam('h', elemHeight);
     }
   }
 
@@ -3342,7 +1897,7 @@ imgix.fluid = function () {
 
     for (var i = 0; i < passedKeys.length; i++) {
       if (goodKeys.indexOf(passedKeys[i]) === -1) {
-        console.warn('\'' + passedKeys[i] + '\' is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.');
+        imgix.helpers.warn('\'' + passedKeys[i] + '\' is not a valid imgix.fluid config option. See https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid for a list of valid options.');
       }
     }
 
@@ -3590,7 +2145,7 @@ imgix.hexToRGB = function (hex) {
     g = parseInt(hex.slice(2, 4), 16);
     b = parseInt(hex.slice(4, 6), 16);
   } else {
-    console.warn('invalid hex color:', hex);
+    imgix.helpers.warn('invalid hex color:', hex);
   }
 
   return 'rgb(' + r + ', ' + g + ', ' + b + ')';
