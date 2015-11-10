@@ -301,7 +301,7 @@ describe('Element manipulation:', function() {
         done();
       });
 
-      ixURL.setRotate(30);
+      ixURL.setParam('rot', 30);
     });
 
     describe('Callback data', function() {

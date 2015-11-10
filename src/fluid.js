@@ -147,7 +147,7 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     return;
   }
 
-  var dpr = imgix.helpers.getDPR(elem),
+  var dpr = imgix.helpers.getWindowDPR(),
     pixelStep = this.options.pixelStep,
     elemSize = imgix.helpers.calculateElementSize(imgix.isImageElement(elem) ? elem.parentNode : elem),
     elemWidth = imgix.helpers.pixelRound(elemSize.width * zoomMultiplier, pixelStep),
@@ -157,37 +157,39 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
     elem.url = new imgix.URL(imgix.helpers.getImgSrc(elem));
   }
 
-  elem.url.setHeight('');
-  elem.url.setWidth('');
+  elem.url.setParams({
+    h: '',
+    w: ''
+  });
 
   elemWidth = Math.min(elemWidth, this.options.maxWidth);
   elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
   if (dpr !== 1 && !this.options.ignoreDPR) {
-    elem.url.setDPR(dpr);
+    elem.url.setParam('dpr', dpr);
   }
 
   if (this.options.highDPRAutoScaleQuality && dpr > 1) {
-    elem.url.setQuality(Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
+    elem.url.setParam('q', Math.min(Math.max(parseInt((100 / dpr), 10), 30), 75));
   }
 
   if (this.options.fitImgTagToContainerHeight && this.options.fitImgTagToContainerWidth) {
-    elem.url.setFit('crop');
+    elem.url.setParam('fit', 'crop');
   }
 
-  if (elem.url.getFit() === 'crop') {
+  if (elem.url.getParam('fit') === 'crop') {
     if (elemHeight > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerHeight))) {
-      elem.url.setHeight(elemHeight);
+      elem.url.setParam('h', elemHeight);
     }
 
     if (elemWidth > 0 && (!imgix.isImageElement(elem) || (imgix.isImageElement(elem) && this.options.fitImgTagToContainerWidth))) {
-      elem.url.setWidth(elemWidth);
+      elem.url.setParam('w', elemWidth);
     }
   } else {
     if (elemHeight <= elemWidth) {
-      elem.url.setWidth(elemWidth);
+      elem.url.setParam('w', elemWidth);
     } else {
-      elem.url.setHeight(elemHeight);
+      elem.url.setParam('h', elemHeight);
     }
   }
 

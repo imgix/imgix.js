@@ -158,8 +158,10 @@ imgix.URL.prototype.getColors = function (num, callback) {
   }
 
   // Set parameters, then get a URL for an AJAX request
-  paletteUrlObj.setPaletteColorNumber(num);
-  paletteUrlObj.setPalette('json');
+  paletteUrlObj.setParams({
+    palette: 'json',
+    colors: num
+  });
   jsonUrl = paletteUrlObj.getUrl();
 
   // Return the cached colors, if available
@@ -386,7 +388,6 @@ imgix.URL.prototype.setParams = function (dict, doOverride) {
   this._handleAutoUpdate();
 };
 
-// TODO: handle public/private status of this -- won't handle aliases if set...
 /**
  * Set a single imgix param value
  * @memberof imgix
@@ -408,25 +409,12 @@ imgix.URL.prototype.setParam = function (param, value, doOverride, noUpdate) {
     }
   }
 
-  // TODO: handle aliases -- only need on build?
-  if (imgix.getAllParams().indexOf(param) === -1) {
-    imgix.helpers.warn('\'' + param + '\' is an invalid imgix param');
-    return this;
-  }
-
   if (!doOverride && this.urlParts.paramValues[param]) {
     // we are not overriding because they didn't want to
     return this;
   }
 
-  if (param === 'txtfont' && imgix.isFontAvailable(value)) {
-    var tmp = imgix.getFontLookup()[value];
-    if (tmp) {
-      value = tmp;
-    }
-  }
-
-  if (imgix.getDefaultParamValue(param) === value || !imgix.isDef(value) || value === null || value.length === 0) {
+  if (!imgix.isDef(value) || value === null || value.length === 0) {
     this.removeParam(param);
     return this;
   }
@@ -508,139 +496,6 @@ imgix.URL.prototype.getQueryString = function () {
 
   return '';
 };
-
-// 'param name': 'pretty name' (for auto-generated get/set-ers)
-imgix.URL.theGetSetFuncs = Object.freeze({
-  // Adjustment
-  bri: 'Brightness',
-  con: 'Contrast',
-  exp: 'Exposure',
-  gam: 'Gamma',
-  high: 'Highlight',
-  hue: 'Hue',
-  invert: 'Invert',
-  sat: 'Saturation',
-  shad: 'Shadow',
-  sharp: 'Sharpness',
-  usm: 'UnsharpMask',
-  usmrad: 'UnsharpMaskRadius',
-  vib: 'Vibrance',
-
-  // Automatic
-  auto: 'Auto',
-
-  // Background
-  bg: 'Background',
-
-  // Blend
-  ba: 'BlendAlign',
-  balph: 'BlendAlpha',
-  bc: 'BlendCrop',
-  bf: 'BlendFit',
-  bh: 'BlendHeight',
-  blend: 'Blend',
-  bm: 'BlendMode',
-  bp: 'BlendPadding',
-  bs: 'BlendSize',
-  bw: 'BlendWidth',
-
-  // Border & padding
-  border: 'Border',
-  pad: 'Pad',
-
-  // Format
-  dl: 'Download',
-  fm: 'Format',
-  q: 'Quality',
-
-  // Mask
-  mask: 'Mask',
-
-  // Noise
-  nr: 'NoiseReduction',
-  nrs: 'NoiseReductionSharpen',
-
-  // Palette
-  palette: 'Palette',
-  'class': 'PaletteClass',
-  prefix: 'PalettePrefix',
-  colors: 'PaletteColorNumber',
-
-  // PDF
-  page: 'Page',
-
-  // Pixel Density
-  dpr: 'DPR',
-
-  // Rotation
-  flip: 'Flip',
-  or: 'Orient',
-  rot: 'Rotate',
-
-  // Size
-  crop: 'Crop',
-  fit: 'Fit',
-  h: 'Height',
-  rect: 'Rectangle',
-  w: 'Width',
-
-  // Stylize
-  blur: 'Blur',
-  htn: 'Halftone',
-  mono: 'Monochrome',
-  px: 'Pixelate',
-  sepia: 'Sepia',
-
-  // Text
-  txt: 'Text',
-  txtalign: 'TextAlign',
-  txtclip: 'TextClip',
-  txtclr: 'TextColor',
-  txtfit: 'TextFit',
-  txtfont: 'TextFont',
-  txtline: 'TextLine',
-  txtlineclr: 'TextLineColor',
-  txtpad: 'TextPad',
-  txtsize: 'TextSize',
-  txtshad: 'TextShadow',
-
-  // Trim
-  trim: 'Trim',
-  trimcolor: 'TrimColor',
-  trimmd: 'TrimMeanDifference',
-
-  // watermarks
-  mark: 'Watermark',
-  markalign: 'WatermarkAlign',
-  markalpha: 'WatermarkAlpha',
-  markfit: 'WatermarkFit',
-  markh: 'WatermarkHeight',
-  markpad: 'WatermarkPadding',
-  markscale: 'WatermarkScale',
-  markw: 'WatermarkWidth'
-});
-
-
-/**
-  Apply the sepia imgix param to the image url. Same as doing .setParam('sepia', val);
-  @param val the value to set for sepia
-  @name imgix.URL#setSepia
-  @function
-*/
-
-// Dynamically create our param getter and setters
-for (var param in imgix.URL.theGetSetFuncs) {
-  if (imgix.URL.theGetSetFuncs.hasOwnProperty(param)) {
-    (function (tmp) {
-      imgix.URL.prototype['set' + imgix.URL.theGetSetFuncs[tmp]] = function (v, doOverride) {
-        return this.setParam(tmp, v, doOverride);
-      };
-      imgix.URL.prototype['get' + imgix.URL.theGetSetFuncs[tmp]] = function () {
-        return this.getParam(tmp);
-      };
-    })(param);
-  }
-}
 
 imgix.parseUrl = function (url) {
   var
