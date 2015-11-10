@@ -1,3 +1,18 @@
+# new imgix.js 2.0.0
+
+## Features
+
+* Removed all parameter-specific getters and setters from the `imgix.URL` object (i.e. `imgix.URL.getSepia()`, `imgix.URL.setWidth()`, et cetera). Instead, you should use `imgix.URL.getParam()` and `imgix.URL.setParam()`.
+* Removed all methods for listing and sorting image parameters, as they were frequently out of date: `imgix.getAllParams()`, `imgix.getParamAliases()`, `imgix.getDefaultParamValues()`, `imgix.getDefaultParamValue()`, `imgix.getDefaultParams()`.
+* Also removed all methods related to font lookups, including `imgix.getFontLookup()`, `imgix.getFonts()`, `imgix.searchFonts()`, and `imgix.isFontAvailable()`.
+* Removed checks when constructing and manipulating imgix URLs that previously validated parameters names and values.
+* Renamed `imgix.helpers.getDPR()` method to `imgix.helpers.getWindowDPR()`
+
+## Bug Fixes
+
+* Removing parameter-specific getters and setters removes a load of bugs related to various image API parameters throwing validation warnings when constructing and manipulating imgix URLs.
+
+
 # new imgix.js 1.2.0
 
 ## Features
