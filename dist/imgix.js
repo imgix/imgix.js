@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v2.0.0 - 2015-11-10 
+/*! http://www.imgix.com imgix.js - v2.1.0 - 2015-11-30 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -269,7 +269,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '2.0.0'
+  version: '2.1.0'
 };
 
 // expose imgix to browser or node
@@ -382,19 +382,6 @@ imgix.getElementImage = function (el) {
 };
 
 /**
- * Returns the matches for the url on the element's cssText
- * @memberof imgix
- * @static
- * @private
- * @param {Element} el the element to check
- * @todo use cssProperty instead?
- * @returns {string} url of the image on the element
- */
-imgix.getRawBackgroundImage = function (el) {
-  return el.style.cssText.match(/url\(([^\)]+)/);
-};
-
-/**
  * Returns the background image for an element
  * @memberof imgix
  * @static
@@ -402,11 +389,27 @@ imgix.getRawBackgroundImage = function (el) {
  * @returns {string} url of the image on the element
  */
 imgix.getBackgroundImage = function (el) {
-  var raw = imgix.getRawBackgroundImage(el);
-  if (!raw) {
-    return '';
+  // This regex comes from http://stackoverflow.com/a/20054738/506330
+  var regex = /\burl\s*\(\s*["']?([^"'\r\n,]+)["']?\s*\)/gi,
+      style,
+      matches;
+
+  if (window.getComputedStyle) {
+    style = window.getComputedStyle(el);
+  } else if (document.documentElement.currentStyle) {
+    style = el.currentStyle;
+  }
+
+  if (!style || !style.backgroundImage) {
+    style = el.style;
+  }
+
+  matches = regex.exec(style.backgroundImage);
+
+  if (matches && matches.length > 1) {
+    return matches[1];
   } else {
-    return raw.length === 2 ? raw[1] : '';
+    return '';
   }
 };
 
