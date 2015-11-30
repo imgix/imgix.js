@@ -1,3 +1,18 @@
+# new imgix.js 2.1.0
+
+## Features
+
+* Removed unnecessary `imgix.getRawBackgroundImage` method.
+
+## Bug Fixes
+
+* Fixed a bug in `imgix.getBackgroundImage` that was failing to return a proper background-image URL in some corner cases.
+
+
+## Bug Fixes
+
+* Removing parameter-specific getters and setters removes a load of bugs related to various image API parameters throwing validation warnings when constructing and manipulating imgix URLs.
+
 # new imgix.js 2.0.0
 
 ## Features
