@@ -140,10 +140,10 @@ imgix.getBackgroundImage = function (el) {
   }
 
   if (!style || !style.backgroundImage) {
-    return '';
+    style = el.style;
   }
 
-  matches = regex.match(style.backgroundImage);
+  matches = regex.exec(style.backgroundImage);
 
   if (matches && matches.length > 1) {
     return matches[1];
