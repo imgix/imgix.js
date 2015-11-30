@@ -121,19 +121,6 @@ imgix.getElementImage = function (el) {
 };
 
 /**
- * Returns the matches for the url on the element's cssText
- * @memberof imgix
- * @static
- * @private
- * @param {Element} el the element to check
- * @todo use cssProperty instead?
- * @returns {string} url of the image on the element
- */
-imgix.getRawBackgroundImage = function (el) {
-  return el.style.cssText.match(/url\(([^\)]+)/);
-};
-
-/**
  * Returns the background image for an element
  * @memberof imgix
  * @static
@@ -141,11 +128,27 @@ imgix.getRawBackgroundImage = function (el) {
  * @returns {string} url of the image on the element
  */
 imgix.getBackgroundImage = function (el) {
-  var raw = imgix.getRawBackgroundImage(el);
-  if (!raw) {
+  // This regex comes from http://stackoverflow.com/a/20054738/506330
+  var regex = /\burl\s*\(\s*["']?([^"'\r\n,]+)["']?\s*\)/gi,
+      style,
+      matches;
+
+  if (window.getComputedStyle) {
+    style = window.getComputedStyle(el);
+  } else if (document.documentElement.currentStyle) {
+    style = el.currentStyle;
+  }
+
+  if (!style || !style.backgroundImage) {
     return '';
+  }
+
+  matches = regex.match(style.backgroundImage);
+
+  if (matches && matches.length > 1) {
+    return matches[1];
   } else {
-    return raw.length === 2 ? raw[1] : '';
+    return '';
   }
 };
 
