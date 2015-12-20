@@ -5,6 +5,7 @@ var fluidDefaults = {
   updateOnResize: true,
   updateOnResizeDown: false,
   updateOnPinchZoom: false,
+  updateOnDPRChange: false,
   highDPRAutoScaleQuality: true,
   onChangeParamOverride: null,
   autoInsertCSSBestPractices: false,
@@ -46,8 +47,10 @@ imgix.FluidSet = function (options) {
 
   this.windowResizeEventBound = false;
   this.windowScrollEventBound = false;
+  this.windowDPRChangeEventBound = false;
   this.windowLastWidth = 0;
   this.windowLastHeight = 0;
+  this.windowLastDPR = imgix.helpers.getWindowDPR();
 };
 
 imgix.FluidSet.prototype.updateSrc = function (elem, pinchScale) {
@@ -165,8 +168,14 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
   elemWidth = Math.min(elemWidth, this.options.maxWidth);
   elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
-  if (dpr !== 1 && !this.options.ignoreDPR) {
-    elem.url.setParam('dpr', dpr);
+  if (!this.options.ignoreDPR) {
+    var hasDPR = !!elem.url.getParam('dpr');
+
+    if (hasDPR && dpr === 1) {
+      elem.url.removeParam('dpr');
+    } else {
+      elem.url.setParam('dpr', dpr);
+    }
   }
 
   if (this.options.highDPRAutoScaleQuality && dpr > 1) {
@@ -226,6 +235,7 @@ imgix.FluidSet.prototype.reload = function () {
 
   this.windowLastWidth = imgix.helpers.getWindowWidth();
   this.windowLastHeight = imgix.helpers.getWindowHeight();
+  this.windowLastDPR = imgix.helpers.getWindowDPR();
 };
 
 imgix.FluidSet.prototype.attachGestureEvent = function (elem) {
@@ -244,7 +254,8 @@ imgix.FluidSet.prototype.attachGestureEvent = function (elem) {
 };
 
 var scrollInstances = {},
-  resizeInstances = {};
+  resizeInstances = {},
+  animationInstances = {};
 
 imgix.FluidSet.prototype.attachScrollListener = function () {
   var th = this;
@@ -280,6 +291,18 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
   this.windowResizeEventBound = true;
 };
 
+imgix.FluidSet.prototype.attachDPRChangeListener = function () {
+  var th = this;
+
+  animationInstances[this.namespace] = window.requestAnimationFrame(function() {
+    if (this.windowLastDPR !== imgix.helpers.getWindowDPR()) {
+      th.reload();
+    }
+  });
+
+  this.windowDPRChangeEventBound = true;
+};
+
 
 /**
  * Enables fluid (responsive) images for any element(s) with the 'imgix-fluid' class.
@@ -296,6 +319,9 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
 
 `updateOnPinchZoom` __boolean__ should it request a new image when pinching on a mobile
  device<br>
+
+`updateOnDPRChange` __boolean__ should it request a new image when devicePixelRatio changed. Ignored if `ignoreDPR`
+ is set to `true`<br>
 
 `highDPRAutoScaleQuality` __boolean__ should it automatically use a lower quality image on high DPR devices. This is usually nearly undetectable by a human, but offers a significant decrease in file size.<br>
 
@@ -336,6 +362,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
     updateOnResize: true,
     updateOnResizeDown: false,
     updateOnPinchZoom: false,
+    updateOnDPRChange: false,
     highDPRAutoScaleQuality: true,
     onChangeParamOverride: null,
     autoInsertCSSBestPractices: false,
@@ -429,6 +456,10 @@ imgix.fluid = function () {
 
   if (options.updateOnResize && !fluidSet.windowResizeEventBound) {
     fluidSet.attachWindowResizer();
+  }
+
+  if (!options.ignoreDPR && options.updateOnDPRChange && !fluidSet.windowDPRChangeEventBound) {
+    fluidSet.attachDPRChangeListener();
   }
 
   return fluidSet;
