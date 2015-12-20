@@ -395,6 +395,46 @@ describe('.fluid', function() {
     });
   });
 
+  // https://github.com/imgix/imgix.js/issues/76
+  describe('Decrease DPR to 1 and resize', function() {
+    var img,
+        baseUrl = 'http://static-a.imgix.net/macaw.png?dpr=2&fit=crop',
+        parentSize,
+        options;
+
+    beforeEach(function(done) {
+      img = document.createElement('img');
+      img.setAttribute('data-src', baseUrl);
+      img.setAttribute('class', 'imgix-fluid');
+      document.body.appendChild(img);
+
+      window.devicePixelRatio = 2;
+
+      options = {
+        onLoad: done
+      };
+
+      imgix.fluid(options);
+    });
+
+    it('unset image DPR', function(done) {
+      window.devicePixelRatio = 1;
+      window.resizeTo(window.width - 1, window.height - 1);
+
+      setTimeout(function() {
+        var lookup = /dpr=(\d+)/g.exec(img.src);
+        expect(lookup).toBeNull();
+
+        done();
+      }, 2000);
+    });
+
+    afterEach(function() {
+      document.body.removeChild(img);
+      delete window.devicePixelRatio;
+    });
+  });
+
   describe('Setting a maximum width', function() {
     var img,
         baseUrl = 'http://static-a.imgix.net/macaw.png',
@@ -595,4 +635,3 @@ describe('.fluid', function() {
     });
   });
 });
-
