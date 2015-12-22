@@ -403,14 +403,15 @@ describe('.fluid', function() {
         options;
 
     beforeEach(function(done) {
+      window.devicePixelRatio = 2;
+
       img = document.createElement('img');
       img.setAttribute('data-src', baseUrl);
       img.setAttribute('class', 'imgix-fluid');
       document.body.appendChild(img);
 
-      window.devicePixelRatio = 2;
-
       options = {
+        updateOnResizeDown: true,
         onLoad: done
       };
 
@@ -419,20 +420,39 @@ describe('.fluid', function() {
 
     it('unset image DPR', function(done) {
       window.devicePixelRatio = 1;
-      window.resizeTo(window.clientWidth - 1, window.clientHeight - 1);
 
-      setTimeout(function() {
+      setTimeout(function () {
         var lookup = /dpr=(\d+)/g.exec(img.src);
         expect(lookup).toBeNull();
 
         done();
       }, 3000);
+
+      triggerEvent('resize');
     });
 
     afterEach(function() {
       document.body.removeChild(img);
       delete window.devicePixelRatio;
     });
+
+    function isFunc (obj) {
+      return typeof obj === 'function';
+    }
+
+    // Hack for Event constructor while running in Phantomjs <2.0.0 https://github.com/ariya/phantomjs/issues/11289
+    function triggerEvent (name) {
+      var evt;
+
+      if (isFunc(Event) && isFunc(Event.constructor)) {
+        evt = new Event(name);
+      } else {
+        evt = window.document.createEvent('UIEvents');
+        evt.initUIEvent(name, true, false, window, 0);
+      }
+
+      window.dispatchEvent(evt);
+    }
   });
 
   describe('Setting a maximum width', function() {
