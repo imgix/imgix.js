@@ -1,6 +1,6 @@
 'use strict';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 10 * 1000; // 10 second default interval
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 120 * 1000; // 10 second default interval
 
 describe('.fluid', function() {
   describe('Setting config keys', function() {
@@ -419,14 +419,14 @@ describe('.fluid', function() {
 
     it('unset image DPR', function(done) {
       window.devicePixelRatio = 1;
-      window.resizeTo(window.width - 1, window.height - 1);
+      window.resizeTo(window.clientWidth - 1, window.clientHeight - 1);
 
       setTimeout(function() {
         var lookup = /dpr=(\d+)/g.exec(img.src);
         expect(lookup).toBeNull();
 
         done();
-      }, 2000);
+      }, 3000);
     });
 
     afterEach(function() {
