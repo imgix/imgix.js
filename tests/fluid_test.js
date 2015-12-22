@@ -1,6 +1,6 @@
 'use strict';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 120 * 1000; // 10 second default interval
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10 * 1000; // 10 second default interval
 
 describe('.fluid', function() {
   describe('Setting config keys', function() {
