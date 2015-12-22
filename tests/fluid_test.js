@@ -400,7 +400,8 @@ describe('.fluid', function() {
     var img,
         baseUrl = 'http://static-a.imgix.net/macaw.png?dpr=2&fit=crop',
         parentSize,
-        options;
+        options,
+        delay = 2 * 1000;
 
     beforeEach(function(done) {
       window.devicePixelRatio = 2;
@@ -421,20 +422,38 @@ describe('.fluid', function() {
     it('unset image DPR', function(done) {
       window.devicePixelRatio = 1;
 
-      setTimeout(function () {
-        var lookup = /dpr=(\d+)/g.exec(img.src);
-        expect(lookup).toBeNull();
+      once(img, 'load', function () {
+        _.delay(function () {
+          var lookup = /dpr=(\d+)/g.exec(img.src);
 
-        done();
-      }, 3000);
+          expect(lookup).toBeArrayOfSize(2);
+          expect(parseInt(lookup[1], 10)).toEqual(1);
+
+          done();
+        }, delay);
+      });
 
       triggerEvent('resize');
     });
 
-    afterEach(function() {
+    afterEach(function () {
       document.body.removeChild(img);
       delete window.devicePixelRatio;
     });
+
+    function once (target, name, listener) {
+      if (document.addEventListener) {
+        target.addEventListener(name, function wrap (e) {
+          target.removeEventListener(name, wrap, false);
+          listener.call(this, e);
+        }, false);
+      } else {
+        target.attachEvent('on' + name, function wrap (e) {
+          target.detachEvent('on' + name, wrap);
+          listener.call(this, e);
+        });
+      }
+    }
 
     function isFunc (obj) {
       return typeof obj === 'function';
