@@ -543,6 +543,74 @@ describe('.fluid', function() {
         window.scrollTo(0, 0);
       });
     });
+
+    describe('lazy-loading an explicit scroll container', function(){
+      var scrollContainer,
+          leftImage,
+          rightImageImg,
+          baseUrl = 'http://static-a.imgix.net/macaw.png',
+          options,
+          delay = 2 * 1000;
+
+      beforeEach(function() {
+        document.body.style.position = 'relative';
+        document.body.style.height = height + 'px';
+
+        leftImg = document.createElement('img');
+        leftImg.setAttribute('data-src', baseUrl);
+        leftImg.setAttribute('class', 'imgix-fluid');
+        leftImg.style.width = '500px';
+
+        rightImg = document.createElement('img');
+        rightImg.setAttribute('data-src', baseUrl + '?mono=00ff00');
+        rightImg.setAttribute('class', 'imgix-fluid');
+        rightImg.style.width = '500px';
+
+        scrollContainer = document.createElement('div');
+        scrollContainer.style.width = '500px';
+        scrollContainer.style.overflow = 'auto';
+        scrollContainer.style.whiteSpace = 'nowrap';
+        scrollContainer.appendChild(leftImg);
+        scrollContainer.appendChild(rightImg);
+
+        document.body.appendChild(scrollImage);
+
+        options = {
+          lazyLoad: true,
+          lazyLoadScrollContainers: [scrollContainer],
+          fitImgTagToContainerWidth: false
+        };
+
+        imgix.fluid(options);
+      });
+
+      it('loads the image at the left of the container', function() {
+        _.delay(function() {
+          expect(leftImg.src).toMatch(baseUrl);
+          done();
+        }, delay);
+      });
+
+      it('does not load the image at the right of the container', function() {
+        _.delay(function() {
+          expect(bottomImg.src).toBeFalsy();
+          done();
+        }, delay);
+      });
+
+      it('loads the image at the right of the container after scrolling to it', function() {
+        scrollContainer.scrollLeft = 500;
+
+        _.delay(function() {
+          expect(bottomImg.src).toMatch(baseUrl);
+          done();
+        }, delay);
+      });
+
+      afterEach(function() {
+        document.body.removeChild(scrollContainer);
+      });
+    });
   }
 
   describe('Using lazyLoadColor', function() {
