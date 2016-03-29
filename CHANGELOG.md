@@ -1,3 +1,10 @@
+# imgix.js 2.2.0
+
+## Features
+
+* Added `lazyLoadScrollContainers` option. Adds scroll listeners to the specified elements, in order to trigger lazy-loading on images that are scrolled into view as part of an overflowed container. Defaults to `[window]`, but if this option is specified, `window` is *not* automatically included. Thanks to @joshfrench for making this happen!
+
+
 # new imgix.js 2.1.0
 
 ## Features

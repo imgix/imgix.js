@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v2.1.0 - 2015-11-30 
+/*! http://www.imgix.com imgix.js - v2.2.0 - 2016-03-29 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -1536,6 +1536,7 @@ var fluidDefaults = {
   lazyLoadColor: null,
   lazyLoadOffsetVertical: 20,
   lazyLoadOffsetHorizontal: 20,
+  lazyLoadScrollContainers: [window],
   throttle: 200,
   maxHeight: 5000,
   maxWidth: 5000,
@@ -1771,10 +1772,18 @@ imgix.FluidSet.prototype.attachScrollListener = function () {
     th.reload();
   }, this.options.throttle);
 
+  var handler, event;
+
   if (document.addEventListener) {
-    window.addEventListener('scroll', scrollInstances[this.namespace], false);
+    handler = 'addEventListener';
+    event = 'scroll';
   } else {
-    window.attachEvent('onscroll', scrollInstances[this.namespace]);
+    handler = 'attachEvent';
+    event = 'onscroll';
+  }
+
+  for (var i = 0; i < this.options.lazyLoadScrollContainers.length; i++) {
+    this.options.lazyLoadScrollContainers[i][handler](event, scrollInstances[this.namespace], false);
   }
 
   this.windowScrollEventBound = true;
@@ -1839,6 +1848,8 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
 
 `lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function (`HTMLElement' el, `Array` colors)
 
+`lazyLoadScrollContainers` __array__ Adds scroll listeners to the specified elements, in order to trigger lazy-loading on images that are scrolled into view as part of an overflowed container. Defaults to `[window]`, but if this option is specified `window` is *not* automatically included.<br>
+
 `throttle` __number__ ensures scroll events fire only once every n milliseconds, throttling lazyLoad activity.<br>
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
@@ -1865,6 +1876,7 @@ imgix.FluidSet.prototype.attachWindowResizer = function () {
     lazyLoad: false,
     lazyLoadOffsetVertical: 20,
     lazyLoadOffsetHorizontal: 20,
+    lazyLoadScrollContainers: [window],
     throttle: 200,
     maxWidth: 5000,
     maxHeight: 5000,
