@@ -1536,7 +1536,6 @@ var fluidDefaults = {
   lazyLoadColor: null,
   lazyLoadOffsetVertical: 20,
   lazyLoadOffsetHorizontal: 20,
-  lazyLoadScrollContainers: [window],
   throttle: 200,
   maxHeight: 5000,
   maxWidth: 5000,
@@ -1772,18 +1771,10 @@ imgix.FluidSet.prototype.attachScrollListener = function () {
     th.reload();
   }, this.options.throttle);
 
-  var handler, event;
-
   if (document.addEventListener) {
-    handler = 'addEventListener';
-    event = 'scroll';
+    window.addEventListener('scroll', scrollInstances[this.namespace], false);
   } else {
-    handler = 'attachEvent';
-    event = 'onscroll';
-  }
-
-  for (var i = 0; i < this.options.lazyLoadScrollContainers.length; i++) {
-    this.options.lazyLoadScrollContainers[i][handler](event, scrollInstances[this.namespace], false);
+    window.attachEvent('onscroll', scrollInstances[this.namespace]);
   }
 
   this.windowScrollEventBound = true;
