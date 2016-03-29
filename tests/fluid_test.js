@@ -546,16 +546,13 @@ describe('.fluid', function() {
 
     describe('lazy-loading an explicit scroll container', function(){
       var scrollContainer,
-          leftImage,
-          rightImageImg,
+          leftImg,
+          rightImg,
           baseUrl = 'http://static-a.imgix.net/macaw.png',
           options,
           delay = 2 * 1000;
 
       beforeEach(function() {
-        document.body.style.position = 'relative';
-        document.body.style.height = height + 'px';
-
         leftImg = document.createElement('img');
         leftImg.setAttribute('data-src', baseUrl);
         leftImg.setAttribute('class', 'imgix-fluid');
@@ -573,7 +570,7 @@ describe('.fluid', function() {
         scrollContainer.appendChild(leftImg);
         scrollContainer.appendChild(rightImg);
 
-        document.body.appendChild(scrollImage);
+        document.body.appendChild(scrollContainer);
 
         options = {
           lazyLoad: true,
