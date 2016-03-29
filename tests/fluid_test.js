@@ -590,7 +590,7 @@ describe('.fluid', function() {
 
       it('does not load the image at the right of the container', function() {
         _.delay(function() {
-          expect(bottomImg.src).toBeFalsy();
+          expect(rightImg.src).toBeFalsy();
           done();
         }, delay);
       });
@@ -599,7 +599,7 @@ describe('.fluid', function() {
         scrollContainer.scrollLeft = 500;
 
         _.delay(function() {
-          expect(bottomImg.src).toMatch(baseUrl);
+          expect(rightImg.src).toMatch(baseUrl);
           done();
         }, delay);
       });
