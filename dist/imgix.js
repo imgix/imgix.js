@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v2.2.0 - 2016-03-29 
+/*! http://www.imgix.com imgix.js - v2.2.1 - 2016-04-03 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -269,7 +269,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '2.1.0'
+  version: '2.2.1'
 };
 
 // expose imgix to browser or node

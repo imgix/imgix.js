@@ -1,6 +1,6 @@
 {
     "name": "imgix",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "title": "imgix jQuery Plugin",
     "description": "imgix.js is a javascript library that allows you to easily use the imgix API to make images on your site or app responsive to device size and pixel density. imgix.js allows for intuitive use of imgix features such as text formatting, color palette extraction, color adjustments, effects, and watermarking. imgix.js requires an imgix account to use your own images. Sign up at imgix.com",
     "keywords": [

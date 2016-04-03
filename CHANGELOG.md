@@ -1,3 +1,10 @@
+# imgix.js 2.2.1
+
+## Bug Fixes
+
+* Properly increment version number to 2.2.1 in src/core.js
+
+
 # imgix.js 2.2.0
 
 ## Features
