@@ -1,6 +1,6 @@
 {
   "name": "imgix.js",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "imgix.js is a dependency-free javascript library that allows you to easily use the imgix API to make images on your site or app responsive to device size and pixel density. imgix.js allows for intuitive use of imgix features such as text formatting, color palette extraction, color adjustments, effects, and watermarking. imgix.js requires an imgix account to use your own images. Sign up at imgix.com",
   "main": "dist/imgix.js",
   "directories": {

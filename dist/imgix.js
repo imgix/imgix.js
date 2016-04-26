@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v2.2.1 - 2016-04-03 
+/*! http://www.imgix.com imgix.js - v2.2.2 - 2016-04-25 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -28,7 +28,7 @@
 		}
 
 		// filter polyfill: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-		if (!Array.prototype.filter) {
+		if (!Array.prototype.filter || Array.prototype.filter.name == 'findAll') {
 			Array.prototype.filter = function(fun/*, thisArg*/) {
 				if (this === void 0 || this === null) {
 					throw new TypeError();
@@ -269,7 +269,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '2.2.1'
+  version: '2.2.2'
 };
 
 // expose imgix to browser or node

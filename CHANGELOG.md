@@ -1,3 +1,10 @@
+# imgix.js 2.2.2
+
+## Bug Fixes
+
+* Add a workaround for Prototype.js' `Array.prototype` handling. Thanks to @matiasnombarasco for this PR!
+
+
 # imgix.js 2.2.1
 
 ## Bug Fixes
