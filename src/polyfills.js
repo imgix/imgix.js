@@ -10,7 +10,7 @@
 		}
 
 		// filter polyfill: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-		if (!Array.prototype.filter) {
+		if (!Array.prototype.filter || Array.prototype.filter.name == 'findAll') {
 			Array.prototype.filter = function(fun/*, thisArg*/) {
 				if (this === void 0 || this === null) {
 					throw new TypeError();
