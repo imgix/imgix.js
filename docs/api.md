@@ -9,7 +9,44 @@
 **Kind**: global namespace  
 
 * [imgix](#imgix.js Documentation) : <code>object</code>
-  * [.URL](#imgix.URL)
+    * [.URL](#imgix.URL)
+        * [.attachGradientTo(elemOrSel, baseColor)](#imgix.URL+attachGradientTo)
+        * [.attachImageTo(elemOrSel, callback)](#imgix.URL+attachImageTo)
+        * [.autoUpdateImg(sel, callback)](#imgix.URL+autoUpdateImg)
+        * [.clearParams(runUpdate)](#imgix.URL+clearParams)
+        * [.clearThenSetParams(params)](#imgix.URL+clearThenSetParams)
+        * [.getBaseUrl()](#imgix.URL+getBaseUrl) ⇒ <code>string</code>
+        * [.getColors(num, callback)](#imgix.URL+getColors)
+        * [.getParam(param)](#imgix.URL+getParam) ⇒ <code>string</code>
+        * [.getParams()](#imgix.URL+getParams) ⇒ <code>object</code>
+        * [.getQueryString()](#imgix.URL+getQueryString) ⇒ <code>string</code>
+        * [.getUrl()](#imgix.URL+getUrl) ⇒ <code>string</code>
+        * [new imgix.URL(url, imgParams)](#new_imgix.URL_new)
+        * [.removeParam(param)](#imgix.URL+removeParam)
+        * [.setParam(param, value, doOverride, noUpdate)](#imgix.URL+setParam)
+        * [.setParams(dict, doOverride)](#imgix.URL+setParams)
+    * [.applyAlphaToRGB(color, alpha)](#imgix.applyAlphaToRGB) ⇒ <code>string</code>
+    * [.fluid([rootNode], config)](#imgix.fluid)
+    * [.getBackgroundImage(el)](#imgix.getBackgroundImage) ⇒ <code>string</code>
+    * [.getColorBrightness(color)](#imgix.getColorBrightness) ⇒ <code>Number</code>
+    * [.getElementImage(el)](#imgix.getElementImage) ⇒ <code>string</code>
+    * [.getElementsWithImages()](#imgix.getElementsWithImages) ⇒ <code>NodeList</code>
+    * [.getEmptyImage()](#imgix.getEmptyImage) ⇒ <code>string</code>
+    * [.hasClass(elem, name)](#imgix.hasClass) ⇒ <code>boolean</code>
+    * [.hasImage(el)](#imgix.hasImage) ⇒ <code>boolean</code>
+    * [.helpers](#imgix.helpers) : <code>object</code>
+    * [.hexToRGB(color)](#imgix.hexToRGB) ⇒ <code>string</code>
+    * [.isImageElement(el)](#imgix.isImageElement) ⇒ <code>boolean</code>
+    * [.onready](#imgix.onready)
+    * [.rgbToHex(color)](#imgix.rgbToHex) ⇒ <code>string</code>
+    * [.setElementImage(el, url)](#imgix.setElementImage) ⇒ <code>boolean</code>
+    * [.setElementImageAfterLoad(el, url, callback)](#imgix.setElementImageAfterLoad)
+
+<a name="imgix.URL"></a>
+### imgix.URL
+**Kind**: static class of <code>[imgix](#imgix)</code>  
+
+* [.URL](#imgix.URL)
     * [.attachGradientTo(elemOrSel, baseColor)](#imgix.URL+attachGradientTo)
     * [.attachImageTo(elemOrSel, callback)](#imgix.URL+attachImageTo)
     * [.autoUpdateImg(sel, callback)](#imgix.URL+autoUpdateImg)
@@ -25,43 +62,6 @@
     * [.removeParam(param)](#imgix.URL+removeParam)
     * [.setParam(param, value, doOverride, noUpdate)](#imgix.URL+setParam)
     * [.setParams(dict, doOverride)](#imgix.URL+setParams)
-  * [.applyAlphaToRGB(color, alpha)](#imgix.applyAlphaToRGB) ⇒ <code>string</code>
-  * [.fluid([rootNode], config)](#imgix.fluid)
-  * [.getBackgroundImage(el)](#imgix.getBackgroundImage) ⇒ <code>string</code>
-  * [.getColorBrightness(color)](#imgix.getColorBrightness) ⇒ <code>Number</code>
-  * [.getElementImage(el)](#imgix.getElementImage) ⇒ <code>string</code>
-  * [.getElementsWithImages()](#imgix.getElementsWithImages) ⇒ <code>NodeList</code>
-  * [.getEmptyImage()](#imgix.getEmptyImage) ⇒ <code>string</code>
-  * [.hasClass(elem, name)](#imgix.hasClass) ⇒ <code>boolean</code>
-  * [.hasImage(el)](#imgix.hasImage) ⇒ <code>boolean</code>
-  * [.helpers](#imgix.helpers) : <code>object</code>
-  * [.hexToRGB(color)](#imgix.hexToRGB) ⇒ <code>string</code>
-  * [.isImageElement(el)](#imgix.isImageElement) ⇒ <code>boolean</code>
-  * [.onready](#imgix.onready)
-  * [.rgbToHex(color)](#imgix.rgbToHex) ⇒ <code>string</code>
-  * [.setElementImage(el, url)](#imgix.setElementImage) ⇒ <code>boolean</code>
-  * [.setElementImageAfterLoad(el, url, callback)](#imgix.setElementImageAfterLoad)
-
-<a name="imgix.URL"></a>
-### imgix.URL
-**Kind**: static class of <code>[imgix](#imgix)</code>  
-
-* [.URL](#imgix.URL)
-  * [.attachGradientTo(elemOrSel, baseColor)](#imgix.URL+attachGradientTo)
-  * [.attachImageTo(elemOrSel, callback)](#imgix.URL+attachImageTo)
-  * [.autoUpdateImg(sel, callback)](#imgix.URL+autoUpdateImg)
-  * [.clearParams(runUpdate)](#imgix.URL+clearParams)
-  * [.clearThenSetParams(params)](#imgix.URL+clearThenSetParams)
-  * [.getBaseUrl()](#imgix.URL+getBaseUrl) ⇒ <code>string</code>
-  * [.getColors(num, callback)](#imgix.URL+getColors)
-  * [.getParam(param)](#imgix.URL+getParam) ⇒ <code>string</code>
-  * [.getParams()](#imgix.URL+getParams) ⇒ <code>object</code>
-  * [.getQueryString()](#imgix.URL+getQueryString) ⇒ <code>string</code>
-  * [.getUrl()](#imgix.URL+getUrl) ⇒ <code>string</code>
-  * [new imgix.URL(url, imgParams)](#new_imgix.URL_new)
-  * [.removeParam(param)](#imgix.URL+removeParam)
-  * [.setParam(param, value, doOverride, noUpdate)](#imgix.URL+setParam)
-  * [.setParams(dict, doOverride)](#imgix.URL+setParams)
 
 <a name="imgix.URL+attachGradientTo"></a>
 #### URL.attachGradientTo(elemOrSel, baseColor)
@@ -259,6 +259,8 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
 
 `lazyLoadColor` __boolean__ or __number__ or __function__ When defined the image container's background is set to a color in the image. When value is `true` use first color in the color array, when value is a `number` use that index from the color array, when value is a `function` it uses whatever color is returned by the function (`HTMLElement' el, `Array` colors)
 
+`lazyLoadScrollContainers` __array__ Adds scroll listeners to the specified elements, in order to trigger lazy-loading on images that are scrolled into view as part of an overflowed container. Defaults to `[window]`, but if this option is specified `window` is *not* automatically included.<br>
+
 `throttle` __number__ ensures scroll events fire only once every n milliseconds, throttling lazyLoad activity.<br>
 
 `maxWidth` __number__ Never set the width parameter higher than this value.<br>
@@ -285,6 +287,7 @@ To scope to images within a specific DOM node, pass the enclosing HTML element a
     lazyLoad: false,
     lazyLoadOffsetVertical: 20,
     lazyLoadOffsetHorizontal: 20,
+    lazyLoadScrollContainers: [window],
     throttle: 200,
     maxWidth: 5000,
     maxHeight: 5000,
