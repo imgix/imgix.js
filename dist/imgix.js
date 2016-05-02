@@ -1536,7 +1536,7 @@ var fluidDefaults = {
   lazyLoadColor: null,
   lazyLoadOffsetVertical: 20,
   lazyLoadOffsetHorizontal: 20,
-  lazyLoadScrollContainers: [window],
+  lazyLoadScrollContainers: [typeof window === 'undefined' ? null : window],
   throttle: 200,
   maxHeight: 5000,
   maxWidth: 5000,
