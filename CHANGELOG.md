@@ -1,3 +1,11 @@
+# imgix.js 2.2.3
+
+## Bug Fixes
+
+* Don't reference `window` for `lazyLoadScrollContainers` default value if not present. (See #96, thanks @psfrankie!)
+* Fix Safari double-request issues (See #93, thanks @jordanthomas!)
+
+
 # imgix.js 2.2.2
 
 ## Bug Fixes

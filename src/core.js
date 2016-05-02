@@ -8,7 +8,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '2.2.2'
+  version: '2.2.3'
 };
 
 // expose imgix to browser or node
