@@ -395,6 +395,85 @@ describe('.fluid', function() {
     });
   });
 
+  // https://github.com/imgix/imgix.js/issues/76
+  describe('Decrease DPR to 1 and resize', function() {
+    var img,
+        baseUrl = 'http://static-a.imgix.net/macaw.png?dpr=2&fit=crop',
+        parentSize,
+        options,
+        delay = 2 * 1000;
+
+    beforeEach(function(done) {
+      window.devicePixelRatio = 2;
+
+      img = document.createElement('img');
+      img.setAttribute('data-src', baseUrl);
+      img.setAttribute('class', 'imgix-fluid');
+      document.body.appendChild(img);
+
+      options = {
+        updateOnResizeDown: true,
+        onLoad: done
+      };
+
+      imgix.fluid(options);
+    });
+
+    it('unset image DPR', function(done) {
+      window.devicePixelRatio = 1;
+
+      once(img, 'load', function () {
+        _.delay(function () {
+          var lookup = /dpr=(\d+)/g.exec(img.src);
+
+          expect(lookup).toBeArrayOfSize(2);
+          expect(parseInt(lookup[1], 10)).toEqual(1);
+
+          done();
+        }, delay);
+      });
+
+      triggerEvent('resize');
+    });
+
+    afterEach(function () {
+      document.body.removeChild(img);
+      delete window.devicePixelRatio;
+    });
+
+    function once (target, name, listener) {
+      if (document.addEventListener) {
+        target.addEventListener(name, function wrap (e) {
+          target.removeEventListener(name, wrap, false);
+          listener.call(this, e);
+        }, false);
+      } else {
+        target.attachEvent('on' + name, function wrap (e) {
+          target.detachEvent('on' + name, wrap);
+          listener.call(this, e);
+        });
+      }
+    }
+
+    function isFunc (obj) {
+      return typeof obj === 'function';
+    }
+
+    // Hack for Event constructor while running in Phantomjs <2.0.0 https://github.com/ariya/phantomjs/issues/11289
+    function triggerEvent (name) {
+      var evt;
+
+      if (isFunc(Event) && isFunc(Event.constructor)) {
+        evt = new Event(name);
+      } else {
+        evt = window.document.createEvent('UIEvents');
+        evt.initUIEvent(name, true, false, window, 0);
+      }
+
+      window.dispatchEvent(evt);
+    }
+  });
+
   describe('Setting a maximum width', function() {
     var img,
         baseUrl = 'http://static-a.imgix.net/macaw.png',
@@ -660,4 +739,3 @@ describe('.fluid', function() {
     });
   });
 });
-

@@ -166,7 +166,7 @@ imgix.FluidSet.prototype.getImgDetails = function (elem, zoomMultiplier) {
   elemWidth = Math.min(elemWidth, this.options.maxWidth);
   elemHeight = Math.min(elemHeight, this.options.maxHeight);
 
-  if (dpr !== 1 && !this.options.ignoreDPR) {
+  if (!this.options.ignoreDPR) {
     elem.url.setParam('dpr', dpr);
   }
 
