@@ -3,3 +3,4 @@ build/
 .*/
 node_modules/
 .validate.json
+.DS_Store
