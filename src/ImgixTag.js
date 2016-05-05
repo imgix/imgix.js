@@ -1,3 +1,6 @@
+var util = require('./util.js'),
+    targetWidths = require('./targetWidths.js');
+
 var ImgixTag = (function() {
   function ImgixTag(el) {
     this.el = el;
@@ -17,6 +20,10 @@ var ImgixTag = (function() {
 
     this.baseParams = this._extractBaseParams();
     this.baseUrl = this._buildBaseUrl();
+
+    this.el.setAttribute('sizes', this.sizes());
+    this.el.setAttribute('srcset', this.srcset());
+    this.el.setAttribute('src', this.src());
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
@@ -51,25 +58,47 @@ var ImgixTag = (function() {
     if (this.ixSrcVal) {
       return this.ixSrcVal;
     } else {
-      var protocol = 'http';
+      var path = this.ixPathVal,
+          protocol = 'http';
       imgix.config.useHttps && protocol += 's';
 
+      var url = protocol + '://' + imgix.config.host,
+          hostEndsWithSlash = imgix.config.host.substr(-1) === '/',
+          pathStartsWithSlash = path[0] === '/'
 
-      var url = protocol + '://' + imgix.config.host;
+      // Make sure we don't end up with 2 or 0 slashes between
+      // the host and path portions of the generated URL
+      if (hostEndsWithSlash && pathStartsWithSlash) {
+        url += path.substr(1);
+      } else if (!hostEndsWithSlash && !pathStartsWithSlash) {
+        url += '/' + path;
+      } else {
+        url += path;
+      }
 
+      url += '?'
+      var param;
+      for (var key in this.baseParams) {
+        param = this.baseParams[key];
+        url += encodeURIComponent(key) + '=' + encodeURIComponent(param);
+      }
 
-      return url
+      return url;
     }
   };
 
   ImgixTag.prototype.src = function() {
-    // TODO return the "fallback" `src` attribute
+    return this.baseUrl;
   };
 
   ImgixTag.prototype.srcset = function() {
     // TODO return a comma-separated list of `url widthDescriptor` pairs,
     // scaled appropriately to the same aspect ratio as the base image
     // as appropriate.
+
+    for (var i = 0, targetWidth; i < targetWidths.length; i++) {
+      targetWidth = targetWidths[i];
+    }
   };
 
   ImgixTag.prototype.sizes = function() {

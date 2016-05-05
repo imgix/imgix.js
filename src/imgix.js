@@ -1,6 +1,5 @@
 (function(context) {
-  var targetWidths = require('./targetWidths.js'),
-      ImageTag = require('./ImageTag.js');
+  var ImageTag = require('./ImageTag.js');
 
   context.imgix = {
     init: function() {
