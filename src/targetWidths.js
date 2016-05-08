@@ -119,10 +119,12 @@ function screenWidths() {
 function targetWidths() {
   var allWidths = deviceWidths().concat(screenWidths()),
       selectedWidths = [],
+      dpr = window.devicePixelRatio || 1,
+      maxPossibleWidth = Math.max(window.screen.availWidth, window.screen.availHeight),
       minScreenWidthRequired = SCREEN_STEP,
       maxScreenWidthRequired = typeof window === 'undefined' ?
         Infinity :
-        window.screen.availWidth;
+        maxPossibleWidth * dpr;
 
   var width, i;
   for (i = 0; i < allWidths.length; i++) {
@@ -132,6 +134,8 @@ function targetWidths() {
       selectedWidths.push(width);
     }
   }
+
+  selectedWidths.push(maxScreenWidthRequired);
 
   return util.uniq(selectedWidths).sort(function(x, y) {
     return x - y;

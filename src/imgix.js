@@ -8,20 +8,11 @@ var ImgixTag = require('./ImgixTag.js'),
 
 global.imgix = {
   init: function() {
-    // find all the `img` and `source` tags that need processing
-    // ix-src or ix-path + ix-params
-
     var allImgandSourceTags = document.querySelectorAll(elementQuery);
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
-      el = allImgandSourceTags[i];
-      console.log('hi', allImgandSourceTags[i]);
-
-      new ImgixTag(el);
+      new ImgixTag(allImgandSourceTags[i]);
     }
-
-    // In Coffee, this would be something along the lines of…
-    // `new ImgixTag(el) for el in allImgAndSourceTags`
   },
   config: {
     host: null,

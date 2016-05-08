@@ -8,6 +8,9 @@ module.exports = {
 
     return compactedArr;
   },
+  clone: function(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  },
   uniq: function(arr) {
     var n = {},
         r = [],
@@ -27,9 +30,8 @@ module.exports = {
         b64Str = btoa(encodedUtf8Str);
         urlSafeB64Str = b64Str.replace(/\+/g, '-');
 
-    urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_');
-    urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_');
-    urlSafeB64Str = urlSafeB64Str.replace(/\=+$/, '');
+    urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_')
+      .replace(/\//g, '_').replace(/\=+$/, '');
 
     return urlSafeB64Str;
   },

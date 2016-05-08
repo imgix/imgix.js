@@ -15,11 +15,12 @@ var ImgixTag = (function() {
     this.ixSrcVal = el.getAttribute('ix-src');
 
     if (this.ixPathVal && !imgix.config.host) {
-      throw new Error('You must set a value for `imgix.config.host` to use `ix-path` and `ix-params`');
+      throw new Error('You must set a value for `imgix.config.host` to use `ix-path` and `ix-params`.');
     }
 
     this.baseParams = this._extractBaseParams();
     this.baseUrl = this._buildBaseUrl();
+    this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
 
     this.el.setAttribute('sizes', this.sizes());
     this.el.setAttribute('srcset', this.srcset());
@@ -93,17 +94,36 @@ var ImgixTag = (function() {
     return this.baseUrl;
   };
 
+  // Returns a comma-separated list of `url widthDescriptor` pairs,
+  // scaled appropriately to the same aspect ratio as the base image
+  // as appropriate.
   ImgixTag.prototype.srcset = function() {
-    // TODO return a comma-separated list of `url widthDescriptor` pairs,
-    // scaled appropriately to the same aspect ratio as the base image
-    // as appropriate.
+    var pairs = [];
 
-    for (var i = 0, targetWidth; i < targetWidths.length; i++) {
+    for (var i = 0, targetWidth, clonedParams, url; i < targetWidths.length; i++) {
       targetWidth = targetWidths[i];
+      clonedParams = util.clone(this.baseParams);
+
+      clonedParams.w = targetWidth
+
+      if (this.baseParams.w != null && this.baseParams.h != null) {
+        clonedParams.h = targetWidth * (this.baseParams.h / this.baseParams.w);
+      }
+
+      url = this.baseUrlWithoutQuery + '?';
+      var val,
+          params = [];
+      for (var key in clonedParams) {
+        val = clonedParams[key];
+        params.push(key + '=' + val);
+      }
+
+      url += params.join('&');
+
+      pairs.push(url + ' ' + targetWidth + 'w');
     }
 
-    // Until this is implemented, just returning an empty string
-    return '';
+    return pairs.join(', ');
   };
 
   ImgixTag.prototype.sizes = function() {

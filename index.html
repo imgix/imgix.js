@@ -9,6 +9,13 @@
 
     <title>imgix.js Demo</title>
     <style type="text/css">
+      * {
+        margin: 0;
+        border: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
         font-family: Helvetica Neue, Arial, sans;
         margin-top: 2em;
@@ -18,6 +25,10 @@
       .wrapper {
         margin: 0 auto;
         width: 860px;
+      }
+
+      img {
+        max-width: 100%;
       }
 
       h1 {
@@ -50,6 +61,8 @@
         .wrapper {
           text-align: center;
           width: auto;
+          padding-left: 10px;
+          padding-right: 10px;
         }
 
         p {
@@ -68,7 +81,7 @@
       <img
         ix-src="http://assets.imgix.net/unsplash/lighthouse.jpg?w=400"
         alt="A lighthouse"
-        sizes="(min-width: 400px) 400px, 100vw"
+        sizes="(min-width: 400px) 400px, calc(100vw - 20px)"
       >
 
       <div class="detail">
