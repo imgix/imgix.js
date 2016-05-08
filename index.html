@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="designer" content="imgix">
+    <meta name="developer" content="imgix">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,maximum-scale=1">
+
+    <title>imgix.js Demo</title>
+    <style type="text/css">
+      body {
+        font-family: Helvetica Neue, Arial, sans;
+        margin-top: 2em;
+        background: #FAFAFA;
+      }
+
+      .wrapper {
+        margin: 0 auto;
+        width: 860px;
+      }
+
+      h1 {
+        color: #013C4A;
+        margin-top: 1em;
+        margin-bottom: 1em;
+      }
+
+      p {
+        max-width: 32em;
+        margin-bottom: 1em;
+        color: #23637f;
+        line-height: 1.6em;
+      }
+
+      p:last-of-type {
+        margin-bottom: 2em;
+      }
+
+      a {
+        color: #00C0FA;
+      }
+
+      .ix-link {
+        display: block;
+        margin-bottom: 3em;
+      }
+
+      @media (max-width: 900px) {
+        .wrapper {
+          text-align: center;
+          width: auto;
+        }
+
+        p {
+          margin: 0 auto 1em;
+        }
+
+        .responsive-hint {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <img
+        ix-src="http://assets.imgix.net/unsplash/lighthouse.jpg?w=400"
+        alt="A lighthouse"
+        sizes="(min-width: 400px) 400px, 100vw"
+      >
+
+      <div class="detail">
+        <section>
+          <h1>imgix.js Demo</h1>
+          <p>This is a demo of imgix.js. Alongside <a href="http://imgix.com">imgix</a>, imgix.js makes it super easy to implement responsive images in your websites and webapps.</p>
+          <p class="responsive-hint">(Psst… try resizing your browser!)</p>
+        </section>
+
+        <a href="https://imgix.com" class="ix-link">
+          <img src="https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&amp;fm=png&amp;w=320&amp;dpr=2" width="160" height="60" alt="imgix">
+        </a>
+      </div>
+    </div>
+
+    <script src="dist/imgix.js"></script>
+    <script>
+      imgix.config.host = 'assets.imgix.net';
+      imgix.init();
+    </script>
+  </body>
+</html>

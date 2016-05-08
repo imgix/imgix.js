@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "build": "mkdir -p dist && browserify ./src/imgix.js > ./dist/imgix.js"
   },
   "repository": {
     "type": "git",

@@ -60,7 +60,9 @@ var ImgixTag = (function() {
     } else {
       var path = this.ixPathVal,
           protocol = 'http';
-      imgix.config.useHttps && protocol += 's';
+      if (imgix.config.useHttps) {
+        protocol += 's';
+      }
 
       var url = protocol + '://' + imgix.config.host,
           hostEndsWithSlash = imgix.config.host.substr(-1) === '/',
@@ -99,10 +101,13 @@ var ImgixTag = (function() {
     for (var i = 0, targetWidth; i < targetWidths.length; i++) {
       targetWidth = targetWidths[i];
     }
+
+    // Until this is implemented, just returning an empty string
+    return '';
   };
 
   ImgixTag.prototype.sizes = function() {
-    var existingSizes = el.getAttribute('sizes');
+    var existingSizes = this.el.getAttribute('sizes');
 
     if (existingSizes) {
       return existingSizes;
