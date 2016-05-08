@@ -12,7 +12,7 @@ var ImgixTag = (function() {
     this.el.setAttribute('ix-initialized', 'ix-initialized');
 
     this.ixPathVal = el.getAttribute('ix-path');
-    this.ixParamsVal = el.getAttribute('ix-params');
+    this.ixParamsVal = el.getAttribute('ix-params') || '{}';
     this.ixSrcVal = el.getAttribute('ix-src');
 
     if (this.ixPathVal && !imgix.config.host) {
@@ -25,7 +25,10 @@ var ImgixTag = (function() {
 
     this.el.setAttribute('sizes', this.sizes());
     this.el.setAttribute('srcset', this.srcset());
-    this.el.setAttribute('src', this.src());
+
+    if (this.el.nodeName == 'IMG') {
+      this.el.setAttribute('src', this.src());
+    }
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
@@ -154,20 +157,11 @@ var ImgixTag = require('./ImgixTag.js'),
 
 global.imgix = {
   init: function() {
-    // find all the `img` and `source` tags that need processing
-    // ix-src or ix-path + ix-params
-
     var allImgandSourceTags = document.querySelectorAll(elementQuery);
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
-      el = allImgandSourceTags[i];
-      console.log('hi', allImgandSourceTags[i]);
-
-      new ImgixTag(el);
+      new ImgixTag(allImgandSourceTags[i]);
     }
-
-    // In Coffee, this would be something along the lines of…
-    // `new ImgixTag(el) for el in allImgAndSourceTags`
   },
   config: {
     host: null,
@@ -353,7 +347,7 @@ module.exports = {
   },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
-        b64Str = btoa(encodedUtf8Str);
+        b64Str = btoa(encodedUtf8Str),
         urlSafeB64Str = b64Str.replace(/\+/g, '-');
 
     urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_')

@@ -23,7 +23,7 @@
       }
 
       .wrapper {
-        margin: 0 auto;
+        margin: 0 auto 90px;
         width: 860px;
       }
 
@@ -55,6 +55,18 @@
       .ix-link {
         display: block;
         margin-bottom: 3em;
+      }
+
+      picture {
+        display: block;
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      @media (max-width: 639px) {
+        picture {
+          width: 100%;
+        }
       }
 
       @media (max-width: 900px) {
@@ -95,6 +107,38 @@
           <img src="https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&amp;fm=png&amp;w=320&amp;dpr=2" width="160" height="60" alt="imgix">
         </a>
       </div>
+
+      <picture>
+        <source media="(min-width: 880px)"
+          sizes="430px"
+          ix-path="imgixjs-demo-page/bertandernie.jpg"
+          ix-params='{
+            "w": 300,
+            "h": 300,
+            "fit": "crop",
+            "crop": "left"
+          }'
+        >
+        <source media="(min-width: 640px)"
+          sizes="calc(100vw - 20px - 50%)"
+          ix-path="imgixjs-demo-page/bertandernie.jpg"
+          ix-params='{
+            "w": 300,
+            "h": 300,
+            "fit": "crop",
+            "crop": "right"
+          }'
+        >
+        <source sizes="calc(100vw - 20px)"
+          ix-path="imgixjs-demo-page/bertandernie.jpg"
+          ix-params='{
+            "w": 300,
+            "h": 100,
+            "fit": "crop"
+          }'
+        >
+        <img ix-path="imgixjs-demo-page/bertandernie.jpg">
+      </picture>
     </div>
 
     <script src="dist/imgix.js"></script>

@@ -11,7 +11,7 @@ var ImgixTag = (function() {
     this.el.setAttribute('ix-initialized', 'ix-initialized');
 
     this.ixPathVal = el.getAttribute('ix-path');
-    this.ixParamsVal = el.getAttribute('ix-params');
+    this.ixParamsVal = el.getAttribute('ix-params') || '{}';
     this.ixSrcVal = el.getAttribute('ix-src');
 
     if (this.ixPathVal && !imgix.config.host) {
@@ -24,7 +24,10 @@ var ImgixTag = (function() {
 
     this.el.setAttribute('sizes', this.sizes());
     this.el.setAttribute('srcset', this.srcset());
-    this.el.setAttribute('src', this.src());
+
+    if (this.el.nodeName == 'IMG') {
+      this.el.setAttribute('src', this.src());
+    }
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
