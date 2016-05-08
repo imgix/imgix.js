@@ -27,7 +27,7 @@ module.exports = {
   },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
-        b64Str = btoa(encodedUtf8Str);
+        b64Str = btoa(encodedUtf8Str),
         urlSafeB64Str = b64Str.replace(/\+/g, '-');
 
     urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_')
