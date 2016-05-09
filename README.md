@@ -108,9 +108,43 @@ Here's how the previous example would be written out using `ix-path` and `ix-par
 <a name="picture-tags"></a>
 ### `picture` tags
 
-If you need art-directed images, imgix.js plays nicely with the `picture` tag. This allows you to specify more advanced responsive images, by changing things such as the crop and aspect ratio for different screens.
+If you need art-directed images, imgix.js plays nicely with the `picture` tag. This allows you to specify more advanced responsive images, by changing things such as the crop and aspect ratio for different screens. To get started, just construct a `picture` tag with a `source` attribute for each art-directed image, and a fallback `img` tag. If you're new to using the `picture` tag, you might want to check out our [blog post](https://docs.imgix.com/tutorials/using-imgix-picture-element) on it to learn how it works.
 
-TODO
+The `source` tags can be used with `ix-src` or `ix-path` and `ix-params`, just like `img` tags. The following example will generate HTML that displays Bert _and_ Ernie on small screens, just Bert on medium-sized screens, and just Ernie on large screens.
+
+``` html
+<picture>
+  <source media="(min-width: 880px)"
+    sizes="430px"
+    ix-path="imgixjs-demo-page/bertandernie.jpg"
+    ix-params='{
+      "w": 300,
+      "h": 300,
+      "fit": "crop",
+      "crop": "left"
+    }'
+  >
+  <source media="(min-width: 640px)"
+    sizes="calc(100vw - 20px - 50%)"
+    ix-path="imgixjs-demo-page/bertandernie.jpg"
+    ix-params='{
+      "w": 300,
+      "h": 300,
+      "fit": "crop",
+      "crop": "right"
+    }'
+  >
+  <source sizes="calc(100vw - 20px)"
+    ix-path="imgixjs-demo-page/bertandernie.jpg"
+    ix-params='{
+      "w": 300,
+      "h": 100,
+      "fit": "crop"
+    }'
+  >
+  <img ix-path="imgixjs-demo-page/bertandernie.jpg">
+</picture>
+```
 
 
 <a name="browser-support"></a>
