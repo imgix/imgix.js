@@ -145,8 +145,10 @@ license your work under the same license as that used by the project.
 <a name="developing"></a>
 ### Developing
 
+Here's a quick introduction to getting started with development on imgix.js:
+
 1. `npm install`
-2. Write code (change files under `./src`, **not** `./dist`)
-3. Write tests
+2. Write code (change files under `./src`, **not** `./dist`).
+3. Write tests.
 4. `npm run build && npm test`
-5. Repeat steps 2-4 as necessary
+5. Repeat steps 2-4 as necessary.

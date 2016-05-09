@@ -121,10 +121,3 @@ TODO
 ## Development / Meta
 
 Drift was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/master/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/master/CONTRIBUTING.md) before getting started.
-
-Here's a quick intro to getting started with development on imgix.js:
-
-1. `npm install`
-2. Write code
-3. `npm run build && npm test`
-4. Repeat steps 2 and 3 as necessary
