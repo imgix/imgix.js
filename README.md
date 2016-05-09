@@ -31,7 +31,7 @@ There are several ways to install imgix.js. The appropriate method depends on yo
 2. **Bower**: `bower install --save imgix.js`
 3. **Manual**: [Download the latest release of imgix.js](https://github.com/imgix/imgix.js/releases/latest), and use `dist/imgix.js` or `dist/imgix.min.js`.
 
-After you've included imgix.js on your page, you just have to run it (you'll probably want to put this at the bottom of your page, just before the `</body>` tag). This code will scan the page for `img` and `source` tags that need to be processed, and initialize them:
+After you've included imgix.js on your page, you just have to run it. You'll probably want to put this code at the bottom of your page, just before the `</body>` tag. This will scan the page for `img` and `source` tags that need to be processed, and initialize them:
 
 ``` html
 <script src="imgix.js"></script>
