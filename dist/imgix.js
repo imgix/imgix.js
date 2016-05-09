@@ -6,13 +6,16 @@ var ImgixTag = (function() {
   function ImgixTag(el) {
     this.el = el;
 
+    if (!this.el) {
+      throw new Error('ImgixTag must be passed a DOM element.');
+    }
+
     if (this.el.hasAttribute('ix-initialized')) {
       return;
     }
-    this.el.setAttribute('ix-initialized', 'ix-initialized');
 
     this.ixPathVal = el.getAttribute('ix-path');
-    this.ixParamsVal = el.getAttribute('ix-params') || '{}';
+    this.ixParamsVal = el.getAttribute('ix-params');
     this.ixSrcVal = el.getAttribute('ix-src');
 
     if (this.ixPathVal && !imgix.config.host) {
@@ -29,19 +32,23 @@ var ImgixTag = (function() {
     if (this.el.nodeName == 'IMG') {
       this.el.setAttribute('src', this.src());
     }
+
+    this.el.setAttribute('ix-initialized', 'ix-initialized');
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
-    if (this.ixParamsVal) {
-      var params = JSON.parse(this.ixParamsVal);
+    var params;
+
+    if (this.ixPathVal) {
+      params = JSON.parse(this.ixParamsVal) || {};
     } else {
       // If the user used `ix-src`, we have to extract the base params
       // from that string URL.
       var lastQuestion = this.ixSrcVal.lastIndexOf('?'),
           paramString = this.ixSrcVal.substr(lastQuestion + 1),
-          splitParams = paramString.split('&'),
-          params = {};
+          splitParams = paramString.split('&');
 
+      params = {};
       for (var i = 0, splitParam; i < splitParams.length; i++) {
         splitParam = splitParams[i].split('=');
 
@@ -84,11 +91,14 @@ var ImgixTag = (function() {
       }
 
       url += '?'
-      var param;
+      var params = [],
+          param;
       for (var key in this.baseParams) {
         param = this.baseParams[key];
-        url += encodeURIComponent(key) + '=' + encodeURIComponent(param);
+        params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
       }
+
+      url += params.join('&');
 
       return url;
     }
@@ -290,14 +300,15 @@ function screenWidths() {
 //
 // @return {Array} An array of {Fixnum} instances representing the unique `srcset` URLs to generate.
 function targetWidths() {
-  var allWidths = deviceWidths().concat(screenWidths()),
+  var hasWin = typeof window !== 'undefined',
+      allWidths = deviceWidths().concat(screenWidths()),
       selectedWidths = [],
-      dpr = window.devicePixelRatio || 1,
-      maxPossibleWidth = Math.max(window.screen.availWidth, window.screen.availHeight),
+      dpr = hasWin ? window.devicePixelRatio : 1,
+      maxPossibleWidth = hasWin ?
+        Math.max(window.screen.availWidth, window.screen.availHeight) :
+        Infinity,
       minScreenWidthRequired = SCREEN_STEP,
-      maxScreenWidthRequired = typeof window === 'undefined' ?
-        Infinity :
-        maxPossibleWidth * dpr;
+      maxScreenWidthRequired = hasWin ? maxPossibleWidth * dpr : Infinity;
 
   var width, i;
   for (i = 0; i < allWidths.length; i++) {

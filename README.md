@@ -1,10 +1,16 @@
 # imgix.js
 
+## Development
+
+`npm run build && npm test`
+
+
 ### Resources
 
 * [Srcset and sizes by Eric Portis](https://ericportis.com/posts/2014/srcset-sizes/). A seminal article on `srcset`, `sizes`, and `picture`. Explains why they're necessary, and how they work together.
 * [Using imgix with `<picture>`](https://docs.imgix.com/tutorials/using-imgix-picture-element). Discusses the differences between art direction and resolution switching, and provides examples of how to accomplish art direction with imgix.
 * [Responsive Images with `srcset` and imgix](https://docs.imgix.com/tutorials/responsive-images-srcset-imgix). A look into how imgix can work with `srcset` and `sizes` to serve the right image.
+
 
 ### Compatibility Notes
 
