@@ -121,7 +121,7 @@ var ImgixTag = (function() {
       clonedParams.w = targetWidth
 
       if (this.baseParams.w != null && this.baseParams.h != null) {
-        clonedParams.h = targetWidth * (this.baseParams.h / this.baseParams.w);
+        clonedParams.h = Math.round(targetWidth * (this.baseParams.h / this.baseParams.w));
       }
 
       url = this.baseUrlWithoutQuery + '?';
