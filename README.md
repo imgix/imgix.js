@@ -13,7 +13,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
   * [`ix-path` and `ix-params`](#ix-path-and-ix-params)
   * [`picture` tags](#picture-tags)
 * [Browser Support](#browser-support)
-* [Development / Meta](#development-and-meta)
+* [Meta](#meta)
 
 
 <a name="overview-and-resources"></a>
@@ -88,7 +88,7 @@ This will generate HTML something like the following:
 >
 ```
 
-Since imgix can generate as many derivitive resolutions as needed, imgix.js calculates them programmatically, using the dimensions you specify (note that the `w` and `h` params scale appropriately to maintain the correct aspect ratio). All of this information has been placed into the `srcset` and `sizes` attributes. Because of this, imgix.js no longer needs to watch or change the `img` tag, as all responsiveness will be handled automatically by the browser.
+Since imgix can generate as many derivative resolutions as needed, imgix.js calculates them programmatically, using the dimensions you specify (note that the `w` and `h` params scale appropriately to maintain the correct aspect ratio). All of this information has been placed into the `srcset` and `sizes` attributes. Because of this, imgix.js no longer needs to watch or change the `img` tag, as all responsiveness will be handled automatically by the browser.
 
 
 <a name="ix-path-and-ix-params"></a>
@@ -108,7 +108,7 @@ Here's how the previous example would be written out using `ix-path` and `ix-par
 <a name="picture-tags"></a>
 ### `picture` tags
 
-If you need art directed images, imgix.js plays nicely with the `picture` tag. This allows you to specify more advanced responsive images, by changing things such as the crop and aspect ratio for different screens.
+If you need art-directed images, imgix.js plays nicely with the `picture` tag. This allows you to specify more advanced responsive images, by changing things such as the crop and aspect ratio for different screens.
 
 TODO
 
@@ -119,7 +119,7 @@ TODO
 * If you are using [Base64 variant params](https://docs.imgix.com/apis/url#base64-variants) and need IE <= 9 support, we recommend using a polyfill for `atob`/`btoa`, such as [Base64.js](https://github.com/davidchambers/Base64.js).
 * By default, browsers that don't support [`srcset`](http://caniuse.com/#feat=srcset), [`sizes`](http://caniuse.com/#feat=srcset), or [`picture`](http://caniuse.com/#feat=picture) will gracefully fall back to the default `img` `src` when appropriate. If you want these browsers to display responsive images in these cases instead, we recommend using [Picturefill](https://github.com/scottjehl/picturefill).
 
-<a name="development-and-meta"></a>
-## Development / Meta
+<a name="meta"></a>
+## Meta
 
-Drift was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/master/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/master/CONTRIBUTING.md) before getting started.
+imgix.js was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/master/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/master/CONTRIBUTING.md) before getting started.
