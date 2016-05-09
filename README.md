@@ -27,7 +27,10 @@ After you've included imgix.js on your page, you just have to run it (you'll pro
 Now that everything's set, you can start creating responsive images. There are a few ways to do this. First of all, you can use an `img` tag with the `ix-src` attribute:
 
 ``` html
-<img ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right" alt="A hot air balloon on a sunny day">
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  alt="A hot air balloon on a sunny day"
+>
 ```
 
 This will generate HTML something like the following:
