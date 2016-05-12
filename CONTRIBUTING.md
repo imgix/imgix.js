@@ -96,11 +96,11 @@ project:
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone git@github.com:<YOUR_USERNAME>/luminous.git
+   git clone git@github.com:<YOUR_USERNAME>/imgix.js.git
    # Navigate to the newly cloned directory
-   cd luminous
+   cd imgix.js
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/imgix/luminous
+   git remote add upstream https://github.com/imgix/imgix.js
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:

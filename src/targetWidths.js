@@ -31,7 +31,7 @@ var IPAD_3_LANDSCAPE = { cssWidth: 1024, dpr: 2 };
 var IPAD_PRO = { cssWidth: 1024, dpr: 2 };
 var IPAD_PRO_LANDSCAPE = { cssWidth: 1366, dpr: 2 };
 
-// Bootstrap breapoints
+// Bootstrap breakpoints
 var BOOTSTRAP_SM = { cssWidth: 576, dpr: 1 };
 var BOOTSTRAP_SM_2X = { cssWidth: 576, dpr: 2 };
 var BOOTSTRAP_MD = { cssWidth: 720, dpr: 1 };
