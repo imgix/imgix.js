@@ -96,6 +96,8 @@ Since imgix can generate as many derivative resolutions as needed, imgix.js calc
 
 Here's how the previous example would be written out using `ix-path` and `ix-params` instead of `ix-src`. Regardless of which method you choose, the end result in-browser will be the same.
 
+**Please note**: `ix-params` must be a valid JSON string. This means that keys and string values must be surrounded by double quotes, e.g., `"fit": "crop"`.
+
 ``` html
 <img ix-path="unsplash/hotairballoon.jpg" ix-params='{
   "w": 300,
@@ -150,8 +152,8 @@ The `source` tags can be used with `ix-src` or `ix-path` and `ix-params`, just l
 <a name="browser-support"></a>
 ### Browser Support
 
+* By default, browsers that don't support [`srcset`](http://caniuse.com/#feat=srcset), [`sizes`](http://caniuse.com/#feat=srcset), or [`picture`](http://caniuse.com/#feat=picture) will gracefully fall back to the default `img` `src` when appropriate. If you want to provide a fully-responsive experience for these browsers, imgix.js works great alongside [Picturefill](https://github.com/scottjehl/picturefill)!
 * If you are using [Base64 variant params](https://docs.imgix.com/apis/url#base64-variants) and need IE <= 9 support, we recommend using a polyfill for `atob`/`btoa`, such as [Base64.js](https://github.com/davidchambers/Base64.js).
-* By default, browsers that don't support [`srcset`](http://caniuse.com/#feat=srcset), [`sizes`](http://caniuse.com/#feat=srcset), or [`picture`](http://caniuse.com/#feat=picture) will gracefully fall back to the default `img` `src` when appropriate. If you want these browsers to display responsive images in these cases instead, we recommend using [Picturefill](https://github.com/scottjehl/picturefill).
 
 <a name="meta"></a>
 ## Meta
