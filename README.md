@@ -2,6 +2,8 @@
 
 # imgix.js [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js) [![Slack Status](http://slack.imgix.com/badge.svg)](http://slack.imgix.com)
 
+**This documentation is for imgix.js version `3.0.0` and up. Those using imgix.js `2.x.x` can find documentation in that version's [readme](https://github.com/imgix/imgix.js/tree/2.2.3) and [API reference](https://github.com/imgix/imgix.js/blob/2.2.3/docs/api.md).**
+
 imgix.js allows developers to easily generate responsive images using the `srcset` and `sizes` attributes, and the `picture` element. This lets you write a single image URL that is parsed and used to make images look great at any screen size, by using [imgix](https://imgix.com) to process and resize your images on the fly.
 
 Responsive images in the browser, simplified. Pure JavaScript with zero dependencies. About 2 KB minified and gzipped.
