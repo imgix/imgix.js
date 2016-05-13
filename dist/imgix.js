@@ -333,9 +333,11 @@ function targetWidths() {
       dpr = hasWin ? window.devicePixelRatio : 1,
       maxPossibleWidth = hasWin ?
         Math.max(window.screen.availWidth, window.screen.availHeight) :
-        Infinity,
+        MAXIMUM_SCREEN_WIDTH,
       minScreenWidthRequired = SCREEN_STEP,
-      maxScreenWidthRequired = hasWin ? maxPossibleWidth * dpr : Infinity;
+      maxScreenWidthRequired = hasWin ?
+        maxPossibleWidth * dpr :
+        MAXIMUM_SCREEN_WIDTH;
 
   var width, i;
   for (i = 0; i < allWidths.length; i++) {
