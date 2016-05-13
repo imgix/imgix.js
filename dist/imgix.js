@@ -190,7 +190,21 @@ global.imgix = {
   }
 };
 
-util.domReady(global.imgix.init);
+util.domReady(function() {
+  var hostMeta = document.querySelector('meta[property="ix:host"]'),
+      httpsMeta = document.querySelector('meta[property="ix:useHttps"]');
+
+  if (hostMeta) {
+    global.imgix.config.host = hostMeta.getAttribute('content');
+  }
+
+  if (httpsMeta) {
+    var useHttps = httpsMeta.getAttribute('content') === 'true';
+    global.imgix.config.useHttps = useHttps ? true : false;
+  }
+
+  global.imgix.init();
+});
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./ImgixTag.js":1,"./util.js":4}],3:[function(require,module,exports){

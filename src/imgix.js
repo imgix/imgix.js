@@ -29,4 +29,18 @@ global.imgix = {
   }
 };
 
-util.domReady(global.imgix.init);
+util.domReady(function() {
+  var hostMeta = document.querySelector('meta[property="ix:host"]'),
+      httpsMeta = document.querySelector('meta[property="ix:useHttps"]');
+
+  if (hostMeta) {
+    global.imgix.config.host = hostMeta.getAttribute('content');
+  }
+
+  if (httpsMeta) {
+    var useHttps = httpsMeta.getAttribute('content') === 'true';
+    global.imgix.config.useHttps = useHttps ? true : false;
+  }
+
+  global.imgix.init();
+});
