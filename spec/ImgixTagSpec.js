@@ -76,6 +76,20 @@ describe('ImgixTag', function() {
 
       expect(tag.ixHostVal).toEqual('my-source.imgix.net');
     });
+
+    it('does not re-run initialization if passed element has `ix-initialized`', function() {
+      global.mockElement['ix-initialized'] = 'ix-initialized';
+
+      var tag = new ImgixTag(global.mockElement);
+      expect(tag.baseUrl).not.toBeDefined();
+    });
+
+    it('re-runs initialization if passed element has `ix-initialized` and `force: true` option is passed', function() {
+      global.mockElement['ix-initialized'] = 'ix-initialized';
+
+      var tag = new ImgixTag(global.mockElement, {force: true});
+      expect(tag.baseUrl).toBeDefined();
+    });
   });
 
   describe('#_extractBaseParams', function() {

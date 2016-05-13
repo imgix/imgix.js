@@ -2,14 +2,15 @@ var util = require('./util.js'),
     targetWidths = require('./targetWidths.js');
 
 var ImgixTag = (function() {
-  function ImgixTag(el) {
+  function ImgixTag(el, opts) {
     this.el = el;
+    this.settings = opts || {};
 
     if (!this.el) {
       throw new Error('ImgixTag must be passed a DOM element.');
     }
 
-    if (this.el.hasAttribute('ix-initialized')) {
+    if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
       return;
     }
 
@@ -116,7 +117,7 @@ var ImgixTag = (function() {
 
     for (var i = 0, targetWidth, clonedParams, url; i < targetWidths.length; i++) {
       targetWidth = targetWidths[i];
-      clonedParams = util.clone(this.baseParams);
+      clonedParams = util.shallowClone(this.baseParams);
 
       clonedParams.w = targetWidth
 

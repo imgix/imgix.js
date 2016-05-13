@@ -3,14 +3,15 @@ var util = require('./util.js'),
     targetWidths = require('./targetWidths.js');
 
 var ImgixTag = (function() {
-  function ImgixTag(el) {
+  function ImgixTag(el, opts) {
     this.el = el;
+    this.settings = opts || {};
 
     if (!this.el) {
       throw new Error('ImgixTag must be passed a DOM element.');
     }
 
-    if (this.el.hasAttribute('ix-initialized')) {
+    if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
       return;
     }
 
@@ -117,7 +118,7 @@ var ImgixTag = (function() {
 
     for (var i = 0, targetWidth, clonedParams, url; i < targetWidths.length; i++) {
       targetWidth = targetWidths[i];
-      clonedParams = util.clone(this.baseParams);
+      clonedParams = util.shallowClone(this.baseParams);
 
       clonedParams.w = targetWidth
 
@@ -159,20 +160,28 @@ module.exports = ImgixTag;
 },{"./targetWidths.js":3,"./util.js":4}],2:[function(require,module,exports){
 (function (global){
 var ImgixTag = require('./ImgixTag.js'),
-    util = require('./util.js'),
-    elementQuery = [
-      'img[ix-src]',
-      'source[ix-src]',
-      'img[ix-path]',
-      'source[ix-path]',
-    ].join(',');
+    util = require('./util.js');
+
+var ELEMENT_QUERY = [
+  'img[ix-src]',
+  'source[ix-src]',
+  'img[ix-path]',
+  'source[ix-path]',
+].join(',');
+
+var INIT_DEFAULTS = {
+  force: false
+};
 
 global.imgix = {
-  init: function() {
-    var allImgandSourceTags = document.querySelectorAll(elementQuery);
+  init: function(opts) {
+    var allImgandSourceTags = document.querySelectorAll(ELEMENT_QUERY),
+        settings = util.shallowClone(INIT_DEFAULTS);
+
+    util.extend(settings, opts || {});
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
-      new ImgixTag(allImgandSourceTags[i]);
+      new ImgixTag(allImgandSourceTags[i], settings);
     }
   },
   config: {
@@ -343,8 +352,21 @@ module.exports = {
 
     return compactedArr;
   },
-  clone: function(obj) {
-    return JSON.parse(JSON.stringify(obj));
+  shallowClone: function(obj) {
+    var clone = {};
+
+    for (var key in obj) {
+      clone[key] = obj[key];
+    }
+
+    return clone;
+  },
+  extend: function(dest, source) {
+    for (var key in source) {
+      dest[key] = source[key];
+    }
+
+    return dest;
   },
   uniq: function(arr) {
     var n = {},
