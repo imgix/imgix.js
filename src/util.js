@@ -8,8 +8,21 @@ module.exports = {
 
     return compactedArr;
   },
-  clone: function(obj) {
-    return JSON.parse(JSON.stringify(obj));
+  shallowClone: function(obj) {
+    var clone = {};
+
+    for (var key in obj) {
+      clone[key] = obj[key];
+    }
+
+    return clone;
+  },
+  extend: function(dest, source) {
+    for (var key in source) {
+      dest[key] = source[key];
+    }
+
+    return dest;
   },
   uniq: function(arr) {
     var n = {},
@@ -41,5 +54,18 @@ module.exports = {
         str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
+  },
+  domReady: function(cb) {
+    if (document.readyState === 'complete') {
+      setTimeout(cb, 0);
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', cb, false);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState === 'complete') {
+          cb();
+        }
+      });
+    }
   }
 }

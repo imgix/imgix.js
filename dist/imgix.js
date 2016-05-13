@@ -3,23 +3,25 @@ var util = require('./util.js'),
     targetWidths = require('./targetWidths.js');
 
 var ImgixTag = (function() {
-  function ImgixTag(el) {
+  function ImgixTag(el, opts) {
     this.el = el;
+    this.settings = opts || {};
 
     if (!this.el) {
       throw new Error('ImgixTag must be passed a DOM element.');
     }
 
-    if (this.el.hasAttribute('ix-initialized')) {
+    if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
       return;
     }
 
     this.ixPathVal = el.getAttribute('ix-path');
     this.ixParamsVal = el.getAttribute('ix-params');
     this.ixSrcVal = el.getAttribute('ix-src');
+    this.ixHostVal = el.getAttribute('ix-host') || imgix.config.host;
 
-    if (this.ixPathVal && !imgix.config.host) {
-      throw new Error('You must set a value for `imgix.config.host` to use `ix-path` and `ix-params`.');
+    if (this.ixPathVal && !this.ixHostVal) {
+      throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
     }
 
     this.baseParams = this._extractBaseParams();
@@ -76,7 +78,7 @@ var ImgixTag = (function() {
         protocol += 's';
       }
 
-      var url = protocol + '://' + imgix.config.host,
+      var url = protocol + '://' + this.ixHostVal,
           hostEndsWithSlash = imgix.config.host.substr(-1) === '/',
           pathStartsWithSlash = path[0] === '/'
 
@@ -116,7 +118,7 @@ var ImgixTag = (function() {
 
     for (var i = 0, targetWidth, clonedParams, url; i < targetWidths.length; i++) {
       targetWidth = targetWidths[i];
-      clonedParams = util.clone(this.baseParams);
+      clonedParams = util.shallowClone(this.baseParams);
 
       clonedParams.w = targetWidth
 
@@ -158,19 +160,28 @@ module.exports = ImgixTag;
 },{"./targetWidths.js":3,"./util.js":4}],2:[function(require,module,exports){
 (function (global){
 var ImgixTag = require('./ImgixTag.js'),
-    elementQuery = [
-      'img[ix-src]',
-      'source[ix-src]',
-      'img[ix-path]',
-      'source[ix-path]',
-    ].join(',');
+    util = require('./util.js');
+
+var ELEMENT_QUERY = [
+  'img[ix-src]',
+  'source[ix-src]',
+  'img[ix-path]',
+  'source[ix-path]',
+].join(',');
+
+var INIT_DEFAULTS = {
+  force: false
+};
 
 global.imgix = {
-  init: function() {
-    var allImgandSourceTags = document.querySelectorAll(elementQuery);
+  init: function(opts) {
+    var allImgandSourceTags = document.querySelectorAll(ELEMENT_QUERY),
+        settings = util.shallowClone(INIT_DEFAULTS);
+
+    util.extend(settings, opts || {});
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
-      new ImgixTag(allImgandSourceTags[i]);
+      new ImgixTag(allImgandSourceTags[i], settings);
     }
   },
   config: {
@@ -179,8 +190,24 @@ global.imgix = {
   }
 };
 
+util.domReady(function() {
+  var hostMeta = document.querySelector('meta[property="ix:host"]'),
+      httpsMeta = document.querySelector('meta[property="ix:useHttps"]');
+
+  if (hostMeta) {
+    global.imgix.config.host = hostMeta.getAttribute('content');
+  }
+
+  if (httpsMeta) {
+    var useHttps = httpsMeta.getAttribute('content') === 'true';
+    global.imgix.config.useHttps = useHttps ? true : false;
+  }
+
+  global.imgix.init();
+});
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ImgixTag.js":1}],3:[function(require,module,exports){
+},{"./ImgixTag.js":1,"./util.js":4}],3:[function(require,module,exports){
 var util = require('./util.js');
 
 var MAXIMUM_SCREEN_WIDTH = 2560 * 2;
@@ -339,8 +366,21 @@ module.exports = {
 
     return compactedArr;
   },
-  clone: function(obj) {
-    return JSON.parse(JSON.stringify(obj));
+  shallowClone: function(obj) {
+    var clone = {};
+
+    for (var key in obj) {
+      clone[key] = obj[key];
+    }
+
+    return clone;
+  },
+  extend: function(dest, source) {
+    for (var key in source) {
+      dest[key] = source[key];
+    }
+
+    return dest;
   },
   uniq: function(arr) {
     var n = {},
@@ -372,6 +412,19 @@ module.exports = {
         str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
+  },
+  domReady: function(cb) {
+    if (document.readyState === 'complete') {
+      setTimeout(cb, 0);
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', cb, false);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState === 'complete') {
+          cb();
+        }
+      });
+    }
   }
 }
 
