@@ -39,6 +39,43 @@ describe('ImgixTag', function() {
         new ImgixTag(global.mockElement);
       }).not.toThrow();
     });
+
+    it('errors if neither `imgix.host` or `ix-host` are specified, but the passed element has `ix-path`', function() {
+      delete global.imgix.config.host;
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      expect(function() {
+        new ImgixTag(global.mockElement);
+      }).toThrow();
+    });
+
+    it('does not error if `imgix.host` is specified and the passed element has `ix-path`', function() {
+      global.imgix.config.host = 'my-source.imgix.net';
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      expect(function() {
+        new ImgixTag(global.mockElement);
+      }).not.toThrow();
+    });
+
+    it('does not error if `ix-host` is specified and the passed element has `ix-path`', function() {
+      delete global.imgix.config.host;
+      global.mockElement['ix-host'] = 'my-source.imgix.net';
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      expect(function() {
+        new ImgixTag(global.mockElement);
+      }).not.toThrow();
+    });
+
+    it('prefers the `ix-host` attribute over `imgix.host` config', function() {
+      global.mockElement['ix-host'] = 'my-source.imgix.net';
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      var tag = new ImgixTag(global.mockElement);
+
+      expect(tag.ixHostVal).toEqual('my-source.imgix.net');
+    });
   });
 
   describe('#_extractBaseParams', function() {
