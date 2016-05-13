@@ -41,5 +41,18 @@ module.exports = {
         str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
+  },
+  domReady: function(cb) {
+    if (document.readyState === 'complete') {
+      setTimeout(cb, 0);
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', cb, false);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState === 'complete') {
+          cb();
+        }
+      });
+    }
   }
 }

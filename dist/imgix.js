@@ -158,6 +158,7 @@ module.exports = ImgixTag;
 },{"./targetWidths.js":3,"./util.js":4}],2:[function(require,module,exports){
 (function (global){
 var ImgixTag = require('./ImgixTag.js'),
+    util = require('./util.js'),
     elementQuery = [
       'img[ix-src]',
       'source[ix-src]',
@@ -179,8 +180,10 @@ global.imgix = {
   }
 };
 
+util.domReady(global.imgix.init);
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ImgixTag.js":1}],3:[function(require,module,exports){
+},{"./ImgixTag.js":1,"./util.js":4}],3:[function(require,module,exports){
 var util = require('./util.js');
 
 var MAXIMUM_SCREEN_WIDTH = 2560 * 2;
@@ -372,6 +375,19 @@ module.exports = {
         str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
+  },
+  domReady: function(cb) {
+    if (document.readyState === 'complete') {
+      setTimeout(cb, 0);
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', cb, false);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState === 'complete') {
+          cb();
+        }
+      });
+    }
   }
 }
 

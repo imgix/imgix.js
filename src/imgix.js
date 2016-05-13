@@ -1,4 +1,5 @@
 var ImgixTag = require('./ImgixTag.js'),
+    util = require('./util.js'),
     elementQuery = [
       'img[ix-src]',
       'source[ix-src]',
@@ -19,3 +20,5 @@ global.imgix = {
     useHttps: true
   }
 };
+
+util.domReady(global.imgix.init);
