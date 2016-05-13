@@ -176,7 +176,7 @@ The `source` tags can be used with `ix-src` or `ix-path` and `ix-params`, just l
 <a name="manually-re-running-imgix-js"></a>
 ### Manually Re-running imgix.js
 
-If you need to process `img` or `source` tags added after the initial page load (for example, on an infinite scrolling website), you can simply call `imgix.init()`. By default, this is idempotent: `img` and `source` tags that have already been processed by imgix.js will not be re-initialized. If you would like to re-initialize _all_ imgix.js-formatted `img` and `source` tags, simply pass the `force: true` option: `imgix.init({force: true})`.
+If you need to process `img` or `source` tags added after the initial page load (for example, on an infinite scrolling website or single-page application), you can simply call `imgix.init()`. By default, this is idempotent: `img` and `source` tags that have already been processed by imgix.js will not be re-initialized. If you would like to re-initialize _all_ imgix.js-formatted `img` and `source` tags, simply pass the `force: true` option: `imgix.init({force: true})`.
 
 <a name="overriding-ix-host"></a>
 ### Overriding `ix-host`
