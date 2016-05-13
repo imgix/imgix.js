@@ -24,7 +24,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
 <a name="overview-and-resources"></a>
 ## Overview / Resources
 
-Before you get started with imgix.js, it's _highly recommended_ that you read Eric Portis' [seminal article on `srcset` and `sizes`](https://ericportis.com/posts/2014/srcset-sizes/). This article explains the history of responsive images in responsive design, why they're necessary, and how all these technologies work together to save bandwidth and provide a better experience for users. The primary goal of imgix.js is to make these tools easier for developers to implement, so having an understanding of how they work will significantly improve you imgix.js experience.
+**Before you get started with imgix.js**, it's _highly recommended_ that you read Eric Portis' [seminal article on `srcset` and `sizes`](https://ericportis.com/posts/2014/srcset-sizes/). This article explains the history of responsive images in responsive design, why they're necessary, and how all these technologies work together to save bandwidth and provide a better experience for users. The primary goal of imgix.js is to make these tools easier for developers to implement, so having an understanding of how they work will significantly improve you imgix.js experience.
 
 Below are some other articles that help explain responsive imagery, and how it can work alongside imgix:
 
