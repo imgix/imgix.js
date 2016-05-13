@@ -1,5 +1,6 @@
 var ImgixTag = require('../src/ImgixTag.js'),
-    btoa = require('btoa');
+    btoa = require('btoa'),
+    targetWidths = require('../src/targetWidths');
 
 describe('ImgixTag', function() {
   beforeEach(function() {
@@ -153,8 +154,25 @@ describe('ImgixTag', function() {
   });
 
   describe('#srcset', function() {
-    it('returns the expected number of `url widthDescriptor` pairs');
-    it('correctly calculates `h` to maintain aspect ratio, when specified');
+    it('returns the expected number of `url widthDescriptor` pairs', function() {
+      var tag = new ImgixTag(global.mockElement);
+
+      expect(tag.srcset().split(',').length).toEqual(targetWidths.length);
+    });
+
+    it('correctly calculates `h` to maintain aspect ratio, when specified', function() {
+      global.mockElement['ix-src'] ='https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&h=300';
+      var tag = new ImgixTag(global.mockElement),
+          srcsetPairs = tag.srcset().split(',');
+
+      for (var i = 0, srcsetPair, w, h; i < srcsetPairs.length; i++) {
+        srcsetPair = srcsetPairs[i];
+        w = parseInt(srcsetPair.match(/w=(\d+)/)[1], 10);
+        h = parseInt(srcsetPair.match(/h=(\d+)/)[1], 10);
+
+        expect(Math.round(w / 2)).toEqual(h);
+      }
+    });
   });
 
   describe('#sizes', function() {
