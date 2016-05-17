@@ -78,7 +78,7 @@ var ImgixTag = (function() {
       }
 
       var url = protocol + '://' + this.ixHostVal,
-          hostEndsWithSlash = imgix.config.host.substr(-1) === '/',
+          hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
           pathStartsWithSlash = path[0] === '/'
 
       // Make sure we don't end up with 2 or 0 slashes between
