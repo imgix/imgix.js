@@ -70,39 +70,56 @@ var ImgixTag = (function() {
   ImgixTag.prototype._buildBaseUrl = function() {
     if (this.ixSrcVal) {
       return this.ixSrcVal;
-    } else {
-      var path = this.ixPathVal,
-          protocol = 'http';
-      if (imgix.config.useHttps) {
-        protocol += 's';
-      }
-
-      var url = protocol + '://' + this.ixHostVal,
-          hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
-          pathStartsWithSlash = path[0] === '/'
-
-      // Make sure we don't end up with 2 or 0 slashes between
-      // the host and path portions of the generated URL
-      if (hostEndsWithSlash && pathStartsWithSlash) {
-        url += path.substr(1);
-      } else if (!hostEndsWithSlash && !pathStartsWithSlash) {
-        url += '/' + path;
-      } else {
-        url += path;
-      }
-
-      url += '?'
-      var params = [],
-          param;
-      for (var key in this.baseParams) {
-        param = this.baseParams[key];
-        params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
-      }
-
-      url += params.join('&');
-
-      return url;
     }
+
+    var path = this.ixPathVal,
+        protocol = imgix.config.useHttps ? 'https' : 'http',
+        url = protocol + '://' + this.ixHostVal,
+        hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
+        pathStartsWithSlash = path[0] === '/';
+
+    // Make sure we don't end up with 2 or 0 slashes between
+    // the host and path portions of the generated URL
+    if (hostEndsWithSlash && pathStartsWithSlash) {
+      url += path.substr(1);
+    } else if (!hostEndsWithSlash && !pathStartsWithSlash) {
+      url += '/' + path;
+    } else {
+      url += path;
+    }
+
+    url += '?'
+    var params = [],
+        param;
+    for (var key in this.baseParams) {
+      param = this.baseParams[key];
+      params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
+    }
+
+    url += params.join('&');
+
+    return url;
+  };
+
+  ImgixTag.prototype._buildSrcsetPair = function(targetWidth) {
+    var clonedParams = util.shallowClone(this.baseParams);
+    clonedParams.w = targetWidth
+
+    if (this.baseParams.w != null && this.baseParams.h != null) {
+      clonedParams.h = Math.round(targetWidth * (this.baseParams.h / this.baseParams.w));
+    }
+
+    var url = this.baseUrlWithoutQuery + '?',
+        val,
+        params = [];
+    for (var key in clonedParams) {
+      val = clonedParams[key];
+      params.push(key + '=' + val);
+    }
+
+    url += params.join('&');
+
+    return url + ' ' + targetWidth + 'w'
   };
 
   ImgixTag.prototype.src = function() {
@@ -115,27 +132,8 @@ var ImgixTag = (function() {
   ImgixTag.prototype.srcset = function() {
     var pairs = [];
 
-    for (var i = 0, targetWidth, clonedParams, url; i < targetWidths.length; i++) {
-      targetWidth = targetWidths[i];
-      clonedParams = util.shallowClone(this.baseParams);
-
-      clonedParams.w = targetWidth
-
-      if (this.baseParams.w != null && this.baseParams.h != null) {
-        clonedParams.h = Math.round(targetWidth * (this.baseParams.h / this.baseParams.w));
-      }
-
-      url = this.baseUrlWithoutQuery + '?';
-      var val,
-          params = [];
-      for (var key in clonedParams) {
-        val = clonedParams[key];
-        params.push(key + '=' + val);
-      }
-
-      url += params.join('&');
-
-      pairs.push(url + ' ' + targetWidth + 'w');
+    for (var i = 0; i < targetWidths.length; i++) {
+      pairs.push(this._buildSrcsetPair(targetWidths[i]));
     }
 
     return pairs.join(', ');
