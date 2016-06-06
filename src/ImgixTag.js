@@ -55,12 +55,12 @@ var ImgixTag = (function() {
 
         params[splitParam[0]] = splitParam[1];
       }
-    }
 
-    // Encode any passed Base64 variant params
-    for (var key in params) {
-      if (key.substr(-2) === '64') {
-        params[key] = util.encode64(params[key]);
+      // Encode any passed Base64 variant params
+      for (var key in params) {
+        if (key.substr(-2) === '64') {
+          params[key] = util.encode64(params[key]);
+        }
       }
     }
 
