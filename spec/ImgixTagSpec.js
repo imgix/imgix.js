@@ -152,6 +152,18 @@ describe('ImgixTag', function() {
     });
   });
 
+  it('does not encode base64 variant parameters specified in `ix-src`', function() {
+    global.mockElement['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&txt64=gibberish';
+
+    var tag = new ImgixTag(global.mockElement);
+
+    expect(tag._extractBaseParams()).toEqual({
+      page: '3',
+      w: '600',
+      txt64: 'gibberish'
+    });
+  });
+
   describe('#_buildBaseUrl', function() {
     it('uses `ix-src` directly when specified', function() {
       var tag = new ImgixTag(global.mockElement);

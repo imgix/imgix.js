@@ -4,7 +4,10 @@
 
 **This documentation is for imgix.js version `3.0.0` and up. Those using imgix.js `2.x.x` can find documentation in that version's [readme](https://github.com/imgix/imgix.js/tree/2.2.3) and [API reference](https://github.com/imgix/imgix.js/blob/2.2.3/docs/api.md).**
 
-imgix.js allows developers to easily generate responsive images using the `srcset` and `sizes` attributes, and the `picture` element. This lets you write a single image URL that is parsed and used to make images look great at any screen size, by using [imgix](https://imgix.com) to process and resize your images on the fly.
+**Note:** If you're looking for a Javascript library just to generate imgix URLs, check out [imgix-core-js](https://github.com/imgix/imgix-core-js).
+
+
+imgix.js allows developers to easily generate responsive images using the `srcset` and `sizes` attributes, or the `picture` element. This lets you write a single image URL that is parsed and used to make images look great at any screen size, by using [imgix](https://imgix.com) to process and resize your images on the fly.
 
 Responsive images in the browser, simplified. Pure JavaScript with zero dependencies. About 2 KB minified and gzipped.
 
@@ -25,7 +28,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
 <a name="overview-and-resources"></a>
 ## Overview / Resources
 
-**Before you get started with imgix.js**, it's _highly recommended_ that you read Eric Portis' [seminal article on `srcset` and `sizes`](https://ericportis.com/posts/2014/srcset-sizes/). This article explains the history of responsive images in responsive design, why they're necessary, and how all these technologies work together to save bandwidth and provide a better experience for users. The primary goal of imgix.js is to make these tools easier for developers to implement, so having an understanding of how they work will significantly improve you imgix.js experience.
+**Before you get started with imgix.js**, it's _highly recommended_ that you read Eric Portis' [seminal article on `srcset` and `sizes`](https://ericportis.com/posts/2014/srcset-sizes/). This article explains the history of responsive images in responsive design, why they're necessary, and how all these technologies work together to save bandwidth and provide a better experience for users. The primary goal of imgix.js is to make these tools easier for developers to implement, so having an understanding of how they work will significantly improve your imgix.js experience.
 
 Below are some other articles that help explain responsive imagery, and how it can work alongside imgix:
 
@@ -109,7 +112,7 @@ This will generate HTML something like the following:
 >
 ```
 
-Since imgix can generate as many derivative resolutions as needed, imgix.js calculates them programmatically, using the dimensions you specify (note that the `w` and `h` params scale appropriately to maintain the correct aspect ratio). All of this information has been placed into the `srcset` and `sizes` attributes. Because of this, imgix.js no longer needs to watch or change the `img` tag, as all responsiveness will be handled automatically by the browser.
+Since imgix can generate as many derivative resolutions as needed, imgix.js calculates them programmatically, using the dimensions you specify (note that the `w` and `h` params scale appropriately to maintain the correct aspect ratio). All of this information has been placed into the `srcset` and `sizes` attributes. Because of this, imgix.js no longer needs to watch or change the `img` tag, as all responsiveness will be handled automatically by the browser as the page is resized.
 
 
 <a name="ix-path-and-ix-params"></a>
@@ -135,7 +138,7 @@ Here's how the previous example would be written out using `ix-path` and `ix-par
 <a name="picture-tags"></a>
 ### `picture` tags
 
-If you need art-directed images, imgix.js plays nicely with the `picture` tag. This allows you to specify more advanced responsive images, by changing things such as the crop and aspect ratio for different screens. To get started, just construct a `picture` tag with a `source` attribute for each art-directed image, and a fallback `img` tag. If you're new to using the `picture` tag, you might want to check out our [blog post](https://docs.imgix.com/tutorials/using-imgix-picture-element) to learn how it works.
+If you need art-directed images, imgix.js plays nicely with the `picture` tag. This allows you to specify more advanced responsive images, by changing things such as the crop and aspect ratio for different screens. To get started, just construct a `picture` tag with a `source` attribute for each art-directed image, and a fallback `img` tag. If you're new to using the `picture` tag, you might want to check out our [tutorial](https://docs.imgix.com/tutorials/using-imgix-picture-element) to learn how it works.
 
 The `source` tags can be used with `ix-src` or `ix-path` and `ix-params`, just like `img` tags. The following example will generate HTML that displays Bert _and_ Ernie on small screens, just Bert on medium-sized screens, and just Ernie on large screens.
 
