@@ -13,9 +13,16 @@ describe('ImgixTag', function() {
       }
     };
 
+    global.imgixTagDefaultConfig = {
+      force: false,
+      srcAttribute: 'src',
+      srcsetAttribute: 'srcset',
+      sizesAttribute: 'sizes'
+    }
+
     global.mockElement = {
       setAttribute: function(attr, val) {
-        return this.attr = val;
+        return this[attr] = val;
       },
       getAttribute: function(attr) {
         return this[attr] != null ? this[attr] : null;
@@ -39,6 +46,24 @@ describe('ImgixTag', function() {
       expect(function() {
         new ImgixTag(global.mockElement);
       }).not.toThrow();
+    });
+
+    it('sets custom `srcAttribute` value', function() {
+      global.imgixTagDefaultConfig.srcAttribute = 'src-attribute-test'
+      new ImgixTag(global.mockElement, global.imgixTagDefaultConfig);
+      expect(global.mockElement['src-attribute-test']).toBeDefined();
+    });
+
+    it('sets custom `srcsetAttribute` value', function() {
+      global.imgixTagDefaultConfig.srcsetAttribute = 'srcset-attribute-test'
+      new ImgixTag(global.mockElement, global.imgixTagDefaultConfig);
+      expect(global.mockElement['srcset-attribute-test']).toBeDefined();
+    });
+
+    it('sets custom `sizesAttribute` value', function() {
+      global.imgixTagDefaultConfig.sizesAttribute = 'sizes-attribute-test'
+      new ImgixTag(global.mockElement, global.imgixTagDefaultConfig);
+      expect(global.mockElement['sizes-attribute-test']).toBeDefined();
     });
 
     it('errors if neither `imgix.host` or `ix-host` are specified, but the passed element has `ix-path`', function() {

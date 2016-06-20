@@ -27,11 +27,11 @@ var ImgixTag = (function() {
     this.baseUrl = this._buildBaseUrl();
     this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
 
-    this.el.setAttribute('sizes', this.sizes());
-    this.el.setAttribute('srcset', this.srcset());
+    this.el.setAttribute(this.settings.sizesAttribute, this.sizes());
+    this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
 
     if (this.el.nodeName == 'IMG') {
-      this.el.setAttribute('src', this.src());
+      this.el.setAttribute(this.settings.srcAttribute, this.src());
     }
 
     this.el.setAttribute('ix-initialized', 'ix-initialized');

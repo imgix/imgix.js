@@ -16,6 +16,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
   * [`picture` tags](#picture-tags)
 * [Advanced Usage](#advanced-usage)
   * [Manually Re-running imgix.js](#manually-re-running-imgix-js)
+  * [Lazy Loading With lazysizes](#lazy-loading-with-lazysizes)
   * [Overriding `ix-host`](#overriding-ix-host)
 * [Browser Support](#browser-support)
 * [Meta](#meta)
@@ -182,6 +183,19 @@ The `source` tags can be used with `ix-src` or `ix-path` and `ix-params`, just l
 ### Manually Re-running imgix.js
 
 If you need to process `img` or `source` tags added after the initial page load (for example, on an infinite scrolling website or single-page application), you can simply call `imgix.init()`. By default, this is idempotent: `img` and `source` tags that have already been processed by imgix.js will not be re-initialized. If you would like to re-initialize _all_ imgix.js-formatted `img` and `source` tags, simply pass the `force: true` option: `imgix.init({force: true})`.
+
+<a name="lazy-loading-with-lazysizes"></a>
+### Lazy Loading With lazysizes
+
+If you'd like to lazy load images, we recommend using [lazysizes](https://github.com/aFarkas/lazysizes). In order to use imgix.js with lazysizes, you can simply tell it to generate lazysizes-compatible attributes instead of the standard `src`, `srcset`, and `sizes`:
+
+``` javascript
+imgix.init({
+  srcAttribute: 'data-src',
+  srcsetAttribute: 'data-srcset',
+  sizesAttribute: 'data-sizes'
+})
+```
 
 <a name="overriding-ix-host"></a>
 ### Overriding `ix-host`

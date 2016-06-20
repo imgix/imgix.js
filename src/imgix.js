@@ -9,7 +9,10 @@ var ELEMENT_QUERY = [
 ].join(',');
 
 var INIT_DEFAULTS = {
-  force: false
+  force: false,
+  srcAttribute: 'src',
+  srcsetAttribute: 'srcset',
+  sizesAttribute: 'sizes'
 };
 
 global.imgix = {
