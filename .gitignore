@@ -1,5 +1,2 @@
-config.js # visor token var config = {visorToken: "tokenishere"};
-build/
-.*/
 node_modules/
-.validate.json
+.DS_Store

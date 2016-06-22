@@ -1,13 +1,14 @@
 {
   "name": "imgix.js",
   "version": "2.2.3",
-  "description": "imgix.js is a dependency-free javascript library that allows you to easily use the imgix API to make images on your site or app responsive to device size and pixel density. imgix.js allows for intuitive use of imgix features such as text formatting, color palette extraction, color adjustments, effects, and watermarking. imgix.js requires an imgix account to use your own images. Sign up at imgix.com",
+  "description": "imgix.js is a dependency-free JavaScript library that allows you to easily use the imgix API to make images on your site or app responsive to device size and pixel density. imgix.js allows for intuitive use of imgix features such as text formatting, color palette extraction, color adjustments, effects, and watermarking. imgix.js requires an imgix account to use your own images. Sign up at imgix.com",
   "main": "dist/imgix.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "./node_modules/jasmine/bin/jasmine.js",
+    "build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js"
   },
   "repository": {
     "type": "git",
@@ -19,30 +20,13 @@
     "url": "https://github.com/imgix/imgix.js/issues"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-concat": "~0.5.1",
-    "grunt-contrib-jshint": "^0.11.2",
-    "grunt-contrib-uglify": "~0.9.1",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-jscs": "^1.8.0",
-    "grunt-jsdoc-to-markdown": "^1.1.1",
-    "grunt-karma": "~0.11.0",
-    "jasmine": "^2.3.1",
-    "jit-grunt": "^0.9.1",
-    "jscs": "^1.13.1",
-    "jsdoc": "^3.3.0",
-    "jshint": "^2.8.0",
-    "karma": "~0.12.36",
-    "karma-chrome-launcher": "~0.1.12",
-    "karma-firefox-launcher": "~0.1.6",
-    "karma-jasmine": "^0.3.6",
-    "karma-jasmine-matchers": "^2.0.0-beta1",
-    "karma-phantomjs-launcher": "~0.2.0",
-    "karma-requirejs": "~0.2.2",
-    "karma-safari-launcher": "^0.1.1",
-    "lodash": "^3.9.3",
-    "precommit-hook": "^2.0.1",
-    "reporter-plus": "git://github.com/jayeb/reporter-plus.git",
-    "time-grunt": "^1.2.1"
+    "atob": "^2.0.3",
+    "browserify": "^13.0.0",
+    "btoa": "^1.1.2",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.3",
+    "jasmine": "^2.4.1",
+    "uglify-js": "^2.6.2"
   }
 }

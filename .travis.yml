@@ -1,15 +1,16 @@
 language: node_js
 node_js:
-  - '0.10'
-  - '0.12'
   - '4'
-
-before_install: npm install -g grunt-cli
 install:
-  - npm config set spin false
-  - npm config set loglevel http
   - npm install
-before_script: grunt build
 script:
-  - grunt test:travis
-  - grunt test:travis --no-polyfills
+  - npm test
+# See https://docs.travis-ci.com/user/languages/javascript-with-nodejs#Node.js-v4-(or-io.js-v3)-compiler-requirements
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8

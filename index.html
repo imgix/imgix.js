@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="designer" content="imgix">
+    <meta name="developer" content="imgix">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,maximum-scale=1">
+
+    <meta property="ix:host" content="assets.imgix.net">
+
+    <title>imgix.js Demo</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        border: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Helvetica Neue, Arial, sans;
+        margin-top: 2em;
+        background: #FAFAFA;
+      }
+
+      .wrapper {
+        margin: 0 auto 90px;
+        width: 860px;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      h1 {
+        color: #013C4A;
+        margin-top: 1em;
+        margin-bottom: 1em;
+      }
+
+      p {
+        max-width: 32em;
+        margin-bottom: 1em;
+        color: #23637f;
+        line-height: 1.6em;
+      }
+
+      p:last-of-type {
+        margin-bottom: 2em;
+      }
+
+      a {
+        color: #00C0FA;
+      }
+
+      .ix-link {
+        display: block;
+        margin-bottom: 3em;
+      }
+
+      picture {
+        display: block;
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      @media (max-width: 639px) {
+        picture {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .wrapper {
+          text-align: center;
+          width: auto;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        p {
+          margin: 0 auto 1em;
+        }
+
+        .responsive-hint {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <img
+        ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+        alt="A lighthouse"
+        sizes="(min-width: 300px) 300px, calc(100vw - 20px)"
+      >
+
+      <div class="detail">
+        <section>
+          <h1>imgix.js Demo</h1>
+          <p>This is a demo of imgix.js. Alongside <a href="http://imgix.com">imgix</a>, imgix.js makes it super easy to implement responsive images in your websites and webapps.</p>
+          <p class="responsive-hint">(Psst… try resizing your browser!)</p>
+        </section>
+
+        <a href="https://imgix.com" class="ix-link">
+          <img src="https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&amp;fm=png&amp;w=320&amp;dpr=2" width="160" height="60" alt="imgix">
+        </a>
+      </div>
+
+      <picture>
+        <source media="(min-width: 880px)"
+          sizes="430px"
+          ix-path="imgixjs-demo-page/bertandernie.jpg"
+          ix-params='{
+            "w": 300,
+            "h": 300,
+            "fit": "crop",
+            "crop": "left"
+          }'
+        >
+        <source media="(min-width: 640px)"
+          sizes="calc(100vw - 20px - 50%)"
+          ix-path="imgixjs-demo-page/bertandernie.jpg"
+          ix-params='{
+            "w": 300,
+            "h": 300,
+            "fit": "crop",
+            "crop": "right"
+          }'
+        >
+        <source sizes="calc(100vw - 20px)"
+          ix-path="imgixjs-demo-page/bertandernie.jpg"
+          ix-params='{
+            "w": 300,
+            "h": 100,
+            "fit": "crop"
+          }'
+        >
+        <img ix-path="imgixjs-demo-page/bertandernie.jpg">
+      </picture>
+    </div>
+
+    <script src="dist/imgix.js"></script>
+  </body>
+</html>
