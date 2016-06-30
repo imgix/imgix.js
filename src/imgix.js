@@ -1,5 +1,6 @@
 var ImgixTag = require('./ImgixTag.js'),
-    util = require('./util.js');
+    util = require('./util.js'),
+    defaultConfig = require('./defaultConfig');
 
 var ELEMENT_QUERY = [
   'img[ix-src]',
@@ -26,15 +27,14 @@ global.imgix = {
       new ImgixTag(allImgandSourceTags[i], settings);
     }
   },
-  config: {
-    host: null,
-    useHttps: true
-  }
+  config: defaultConfig,
+  VERSION: '3.0.0'
 };
 
 util.domReady(function() {
   var hostMeta = document.querySelector('meta[property="ix:host"]'),
-      httpsMeta = document.querySelector('meta[property="ix:useHttps"]');
+      httpsMeta = document.querySelector('meta[property="ix:useHttps"]'),
+      libParamMeta = document.querySelector('meta[property="ix:includeLibraryParam"]');
 
   if (hostMeta) {
     global.imgix.config.host = hostMeta.getAttribute('content');
@@ -43,6 +43,11 @@ util.domReady(function() {
   if (httpsMeta) {
     var useHttps = httpsMeta.getAttribute('content') === 'true';
     global.imgix.config.useHttps = useHttps ? true : false;
+  }
+
+  if (libParamMeta) {
+    var includeLibraryParam = libParamMeta.getAttribute('content') === 'true';
+    global.imgix.config.includeLibraryParam = includeLibraryParam ? true : false;
   }
 
   global.imgix.init();

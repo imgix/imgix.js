@@ -65,6 +65,10 @@ var ImgixTag = (function() {
       }
     }
 
+    if (imgix.config.includeLibraryParam) {
+      params.ixlib = 'imgixjs-' + imgix.VERSION;
+    }
+
     return params;
   };
 
@@ -155,10 +159,18 @@ var ImgixTag = (function() {
 
 module.exports = ImgixTag;
 
-},{"./targetWidths.js":3,"./util.js":4}],2:[function(require,module,exports){
+},{"./targetWidths.js":4,"./util.js":5}],2:[function(require,module,exports){
+module.exports = {
+  host: null,
+  useHttps: true,
+  includeLibraryParam: true
+};
+
+},{}],3:[function(require,module,exports){
 (function (global){
 var ImgixTag = require('./ImgixTag.js'),
-    util = require('./util.js');
+    util = require('./util.js'),
+    defaultConfig = require('./defaultConfig');
 
 var ELEMENT_QUERY = [
   'img[ix-src]',
@@ -185,15 +197,14 @@ global.imgix = {
       new ImgixTag(allImgandSourceTags[i], settings);
     }
   },
-  config: {
-    host: null,
-    useHttps: true
-  }
+  config: defaultConfig,
+  VERSION: '3.0.0'
 };
 
 util.domReady(function() {
   var hostMeta = document.querySelector('meta[property="ix:host"]'),
-      httpsMeta = document.querySelector('meta[property="ix:useHttps"]');
+      httpsMeta = document.querySelector('meta[property="ix:useHttps"]'),
+      libParamMeta = document.querySelector('meta[property="ix:includeLibraryParam"]');
 
   if (hostMeta) {
     global.imgix.config.host = hostMeta.getAttribute('content');
@@ -204,11 +215,16 @@ util.domReady(function() {
     global.imgix.config.useHttps = useHttps ? true : false;
   }
 
+  if (libParamMeta) {
+    var includeLibraryParam = libParamMeta.getAttribute('content') === 'true';
+    global.imgix.config.includeLibraryParam = includeLibraryParam ? true : false;
+  }
+
   global.imgix.init();
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ImgixTag.js":1,"./util.js":4}],3:[function(require,module,exports){
+},{"./ImgixTag.js":1,"./defaultConfig":2,"./util.js":5}],4:[function(require,module,exports){
 var util = require('./util.js');
 
 var MAXIMUM_SCREEN_WIDTH = 2560 * 2;
@@ -358,7 +374,7 @@ function targetWidths() {
 
 module.exports = targetWidths();
 
-},{"./util.js":4}],4:[function(require,module,exports){
+},{"./util.js":5}],5:[function(require,module,exports){
 module.exports = {
   compact: function(arr) {
     var compactedArr = [];
@@ -431,4 +447,4 @@ module.exports = {
   }
 }
 
-},{}]},{},[2]);
+},{}]},{},[3]);

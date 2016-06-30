@@ -21,6 +21,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
   * [Manually Re-running imgix.js](#manually-re-running-imgix-js)
   * [Lazy Loading With lazysizes](#lazy-loading-with-lazysizes)
   * [Overriding `ix-host`](#overriding-ix-host)
+  * [What is the `ixlib` param?](#what-is-the-ixlib-param)
 * [Browser Support](#browser-support)
 * [Meta](#meta)
 
@@ -218,6 +219,12 @@ If you need to display images from multiple imgix Sources, the `host` option can
   alt="A hot air balloon on a sunny day"
 >
 ```
+
+
+<a name="what-is-the-ixlib-param"></a>
+### What is the `ixlib` param?
+
+For security and diagnostic purposes, we default to signing all requests with the language and version of library used to generate the URL. This can be disabled by setting `imgix.includeLibraryParam = false;`.
 
 
 <a name="browser-support"></a>
