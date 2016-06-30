@@ -9,7 +9,8 @@ describe('ImgixTag', function() {
     global.imgix = {
       config: {
         host: 'assets.imgix.net',
-        useHttps: true
+        useHttps: true,
+        includeLibraryParam: false
       }
     };
 
@@ -149,6 +150,19 @@ describe('ImgixTag', function() {
       expect(tag._extractBaseParams()).toEqual({
         txt64: 'SSBjYW5uw7h0IGJlbMOuw6l24oiRIGl0IHdvcu-jv3MhIPCfmLE'
       });
+    });
+  });
+
+  it('includes the `ixjsv` parameter when `imgix.config.includeLibraryParam` is `true`', function() {
+    global.imgix.VERSION = '3test';
+    global.imgix.config.includeLibraryParam = true;
+
+    var tag = new ImgixTag(global.mockElement);
+
+    expect(tag._extractBaseParams()).toEqual({
+      page: '3',
+      w: '600',
+      ixlib: 'imgixjs-3test'
     });
   });
 

@@ -28,8 +28,10 @@ global.imgix = {
   },
   config: {
     host: null,
-    useHttps: true
-  }
+    useHttps: true,
+    includeLibraryParam: true
+  },
+  VERSION: '3.0.0'
 };
 
 util.domReady(function() {
