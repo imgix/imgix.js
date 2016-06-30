@@ -2,6 +2,8 @@ var ImgixTag = require('./ImgixTag.js'),
     util = require('./util.js'),
     defaultConfig = require('./defaultConfig');
 
+var VERSION = '3.0.1';
+
 var ELEMENT_QUERY = [
   'img[ix-src]',
   'source[ix-src]',
@@ -28,7 +30,7 @@ global.imgix = {
     }
   },
   config: defaultConfig,
-  VERSION: '3.0.0'
+  VERSION: VERSION
 };
 
 util.domReady(function() {

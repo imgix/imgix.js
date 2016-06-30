@@ -1,3 +1,9 @@
+# imgix.js 3.0.1
+
+* Adds the `ixlib` diagnostic parameter, and associated `imgix.config.includeLibraryParam` option.
+* The current library version number is now accessible under `imgix.VERSION`.
+
+
 # imgix.js 3.0.0
 
 * This is a full rewrite of imgix.js. It now plays nicely with `srcset`, `sizes`, `picture`, and other modern responsive imagery techniques. You can learn more in [the readme](https://github.com/imgix/imgix.js)!
