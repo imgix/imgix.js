@@ -224,7 +224,13 @@ If you need to display images from multiple imgix Sources, the `host` option can
 <a name="what-is-the-ixlib-param"></a>
 ### What is the `ixlib` param?
 
-For security and diagnostic purposes, we default to signing all requests with the language and version of library used to generate the URL. This can be disabled by setting `imgix.includeLibraryParam = false;`.
+For security and diagnostic purposes, we default to signing all requests with the language and version of library used to generate the URL. This can be disabled by setting `imgix.includeLibraryParam = false;`, or via a `meta` tag:
+
+``` html
+<head>
+  <meta property="ix:includeLibraryParam" content="false">
+</head>
+```
 
 
 <a name="browser-support"></a>
