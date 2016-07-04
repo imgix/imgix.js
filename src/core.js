@@ -44,8 +44,8 @@ imgix.isImageElement = function (el) {
  */
 imgix.setElementImageAfterLoad = function (el, imgUrl, callback) {
   var img = new Image();
-  img.onload = function () {
-    el.onload = function() {
+  img.onload = img.onerror = function () {
+    el.onload = el.onerror = function() {
       if (typeof callback === 'function') {
         callback(el, imgUrl);
       }
