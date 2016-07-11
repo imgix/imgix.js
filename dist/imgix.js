@@ -1,4 +1,4 @@
-/*! http://www.imgix.com imgix.js - v2.2.3 - 2016-05-02 
+/*! http://www.imgix.com imgix.js - v2.2.4 - 2016-07-11 
  _                    _             _
 (_)                  (_)           (_)
  _  _ __ ___    __ _  _ __  __      _  ___
@@ -269,7 +269,7 @@ var root = this;
  * @namespace imgix
  */
 var imgix = {
-  version: '2.2.3'
+  version: '2.2.4'
 };
 
 // expose imgix to browser or node
@@ -305,14 +305,23 @@ imgix.isImageElement = function (el) {
  */
 imgix.setElementImageAfterLoad = function (el, imgUrl, callback) {
   var img = new Image();
-  img.onload = function () {
-    el.onload = function() {
+  img.onload = img.onerror = function () {
+    var isImageElement = imgix.isImageElement(el);
+    if (isImageElement) {
+      el.onload = img.onerror = function () {
+        if (typeof callback === 'function') {
+          callback(el, imgUrl);
+        }
+      };
+    }
+
+    imgix.setElementImage(el, imgUrl);
+
+    if (!isImageElement) {
       if (typeof callback === 'function') {
         callback(el, imgUrl);
       }
-    };
-
-    imgix.setElementImage(el, imgUrl);
+    }
   };
   if (el.hasAttribute('crossorigin')) {
     img.setAttribute('crossorigin', el.getAttribute('crossorigin'));

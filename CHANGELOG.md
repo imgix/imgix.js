@@ -1,3 +1,10 @@
+# imgix.js 2.2.4
+
+## Bug Fixes
+
+* Fix an issue with iOS UIWebViews, `crossorigin=anonymous`, and `imgix.fluid()`. (See #105, thanks @sebcante!)
+
+
 # imgix.js 2.2.3
 
 ## Bug Fixes
