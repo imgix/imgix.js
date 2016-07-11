@@ -44,14 +44,23 @@ imgix.isImageElement = function (el) {
  */
 imgix.setElementImageAfterLoad = function (el, imgUrl, callback) {
   var img = new Image();
-  img.onload = function () {
-    el.onload = function() {
+  img.onload = img.onerror = function () {
+    var isImageElement = imgix.isImageElement(el);
+    if (isImageElement) {
+      el.onload = img.onerror = function () {
+        if (typeof callback === 'function') {
+          callback(el, imgUrl);
+        }
+      };
+    }
+
+    imgix.setElementImage(el, imgUrl);
+
+    if (!isImageElement) {
       if (typeof callback === 'function') {
         callback(el, imgUrl);
       }
-    };
-
-    imgix.setElementImage(el, imgUrl);
+    }
   };
   if (el.hasAttribute('crossorigin')) {
     img.setAttribute('crossorigin', el.getAttribute('crossorigin'));
