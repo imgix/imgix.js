@@ -1,3 +1,8 @@
+# imgix.js 3.0.2
+
+* Fixes an issue in browsers without the `window.devicePixelRatio` property.
+
+
 # imgix.js 3.0.1
 
 * Adds the `ixlib` diagnostic parameter, and associated `imgix.config.includeLibraryParam` option.
