@@ -174,7 +174,7 @@ describe('ImgixTag', function() {
     expect(tag._extractBaseParams()).toEqual({
       page: '3',
       w: '600',
-      txt64: 'gibberish'
+      txt64: 'Z2liYmVyaXNo'
     });
   });
 
