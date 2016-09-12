@@ -43,13 +43,6 @@ var ImgixTag = (function() {
 
     if (this.ixPathVal) {
       params = JSON.parse(this.ixParamsVal) || {};
-
-      // Encode any passed Base64 variant params
-      for (var key in params) {
-        if (key.substr(-2) === '64') {
-          params[key] = util.encode64(params[key]);
-        }
-      }
     } else {
       // If the user used `ix-src`, we have to extract the base params
       // from that string URL.
@@ -62,6 +55,13 @@ var ImgixTag = (function() {
         splitParam = splitParams[i].split('=');
 
         params[splitParam[0]] = splitParam[1];
+      }
+    }
+
+    // Encode any passed Base64 variant params
+    for (var key in params) {
+      if (key.substr(-2) === '64') {
+        params[key] = util.encode64(params[key]);
       }
     }
 
