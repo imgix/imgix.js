@@ -2,7 +2,7 @@ var ImgixTag = require('./ImgixTag.js'),
     util = require('./util.js'),
     defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.0.2';
+var VERSION = '3.0.3';
 
 var ELEMENT_QUERY = [
   'img[ix-src]',

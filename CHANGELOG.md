@@ -1,3 +1,8 @@
+# imgix.js 3.0.3
+
+* Properly encode Base64 variant params from `ix-src`.
+
+
 # imgix.js 3.0.2
 
 * Fixes an issue in browsers without the `window.devicePixelRatio` property.
