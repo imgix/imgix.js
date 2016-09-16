@@ -46,7 +46,7 @@ There are several ways to install imgix.js. The appropriate method depends on yo
 2. **Bower**: `bower install --save imgix.js`
 3. **Manual**: [Download the latest release of imgix.js](https://github.com/imgix/imgix.js/releases/latest), and use `dist/imgix.js` or `dist/imgix.min.js`.
 
-If your build process will re-run dist/imgix.js or dist/imgix.min.js through Browserify, you'll need to add `noParse: ['imgix.js']` to your Browserify config. If you skip this, Browserify will attempt to re-require imgix.js' dependencies, which have already been inlined.
+If your build process will re-run `dist/imgix.js` or `dist/imgix.min.js` through Browserify, you'll need to add `noParse: ['imgix.js']` to your Browserify config. If you skip this, Browserify will attempt to re-require imgix.js' dependencies, which have already been inlined.
 
 After you've included imgix.js on your page, it will automatically run once, after the `DOMContentLoaded` event fires. This will detect and process all `img` and `source` tags on the page that are set up to use imgix.js as described in the [Usage](#usage) section of this README.
 
