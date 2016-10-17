@@ -15,10 +15,10 @@ var ImgixTag = (function() {
       return;
     }
 
-    this.ixPathVal = el.getAttribute('ix-path');
-    this.ixParamsVal = el.getAttribute('ix-params');
-    this.ixSrcVal = el.getAttribute('ix-src');
-    this.ixHostVal = el.getAttribute('ix-host') || imgix.config.host;
+    this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
+    this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
+    this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
+    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || imgix.config.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
       throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
@@ -174,26 +174,30 @@ var ImgixTag = require('./ImgixTag.js'),
 
 var VERSION = '3.0.3';
 
-var ELEMENT_QUERY = [
-  'img[ix-src]',
-  'source[ix-src]',
-  'img[ix-path]',
-  'source[ix-path]',
-].join(',');
-
 var INIT_DEFAULTS = {
   force: false,
   srcAttribute: 'src',
   srcsetAttribute: 'srcset',
-  sizesAttribute: 'sizes'
+  sizesAttribute: 'sizes',
+  srcInputAttribute: 'ix-src',
+  pathInputAttribute: 'ix-path',
+  paramsInputAttribute: 'ix-params',
+  hostInputAttribute: 'ix-host'
 };
 
 global.imgix = {
   init: function(opts) {
-    var allImgandSourceTags = document.querySelectorAll(ELEMENT_QUERY),
-        settings = util.shallowClone(INIT_DEFAULTS);
-
+    var settings = util.shallowClone(INIT_DEFAULTS);
     util.extend(settings, opts || {});
+
+    var elementQuery = [
+      'img[' + settings.srcInputAttribute + ']',
+      'source[' + settings.srcInputAttribute + ']',
+      'img[' + settings.pathInputAttribute + ']',
+      'source[' + settings.pathInputAttribute + ']'
+    ].join(',');
+
+    var allImgandSourceTags = document.querySelectorAll(elementQuery);
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
       new ImgixTag(allImgandSourceTags[i], settings);

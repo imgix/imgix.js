@@ -4,26 +4,30 @@ var ImgixTag = require('./ImgixTag.js'),
 
 var VERSION = '3.0.3';
 
-var ELEMENT_QUERY = [
-  'img[ix-src]',
-  'source[ix-src]',
-  'img[ix-path]',
-  'source[ix-path]',
-].join(',');
-
 var INIT_DEFAULTS = {
   force: false,
   srcAttribute: 'src',
   srcsetAttribute: 'srcset',
-  sizesAttribute: 'sizes'
+  sizesAttribute: 'sizes',
+  srcInputAttribute: 'ix-src',
+  pathInputAttribute: 'ix-path',
+  paramsInputAttribute: 'ix-params',
+  hostInputAttribute: 'ix-host'
 };
 
 global.imgix = {
   init: function(opts) {
-    var allImgandSourceTags = document.querySelectorAll(ELEMENT_QUERY),
-        settings = util.shallowClone(INIT_DEFAULTS);
-
+    var settings = util.shallowClone(INIT_DEFAULTS);
     util.extend(settings, opts || {});
+
+    var elementQuery = [
+      'img[' + settings.srcInputAttribute + ']',
+      'source[' + settings.srcInputAttribute + ']',
+      'img[' + settings.pathInputAttribute + ']',
+      'source[' + settings.pathInputAttribute + ']'
+    ].join(',');
+
+    var allImgandSourceTags = document.querySelectorAll(elementQuery);
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
       new ImgixTag(allImgandSourceTags[i], settings);
