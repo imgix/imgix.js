@@ -1,3 +1,8 @@
+# imgix.js 3.0.4
+
+* Allow customization of the attributes used to define images. See the readme for details: https://github.com/imgix/imgix.js#custom-input-attributes.
+
+
 # imgix.js 3.0.3
 
 * Properly encode Base64 variant params from `ix-src`.
