@@ -20,6 +20,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
 * [Advanced Usage](#advanced-usage)
   * [Manually Re-running imgix.js](#manually-re-running-imgix-js)
   * [Lazy Loading With lazysizes](#lazy-loading-with-lazysizes)
+  * [Custom input attributes](#custom-input-attributes)
   * [Overriding `ix-host`](#overriding-ix-host)
   * [What is the `ixlib` param?](#what-is-the-ixlib-param)
 * [Browser Support](#browser-support)
@@ -200,7 +201,21 @@ imgix.init({
   srcAttribute: 'data-src',
   srcsetAttribute: 'data-srcset',
   sizesAttribute: 'data-sizes'
-})
+});
+```
+
+<a name="custom-input-attributes"></a>
+### Custom Input Attributes
+
+imgix.js defaults to pulling its data from the `ix-src`, `ix-path`, `ix-params`, and `ix-host` attributes. If you'd like to use custom input attributes, you can specify them when calling `imgix.init`. This can be useful if you're concerned about W3C compliance:
+
+``` javascript
+imgix.init({
+  srcInputAttribute: 'data-ix-src',
+  pathInputAttribute: 'data-ix-path',
+  paramsInputAttribute: 'data-ix-params',
+  hostInputAttribute: 'data-ix-host'
+});
 ```
 
 <a name="overriding-ix-host"></a>

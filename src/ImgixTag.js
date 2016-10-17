@@ -14,10 +14,10 @@ var ImgixTag = (function() {
       return;
     }
 
-    this.ixPathVal = el.getAttribute('ix-path');
-    this.ixParamsVal = el.getAttribute('ix-params');
-    this.ixSrcVal = el.getAttribute('ix-src');
-    this.ixHostVal = el.getAttribute('ix-host') || imgix.config.host;
+    this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
+    this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
+    this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
+    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || imgix.config.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
       throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
