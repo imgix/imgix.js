@@ -95,8 +95,11 @@ The simplest way to use imgix.js is to create an `img` tag with the `ix-src` att
 <img
   ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
   alt="A hot air balloon on a sunny day"
+  sizes="100vw"
 >
 ```
+
+**Please note:** `100vw` is an appropriate `sizes` value for a full-bleed image. If your image is not full-bleed, you should use a different value for `sizes`. [Eric Portis' "Srcset and sizes"](https://ericportis.com/posts/2014/srcset-sizes/) article goes into depth on how to use the `sizes` attribute.
 
 This will generate HTML something like the following:
 
