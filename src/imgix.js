@@ -2,7 +2,7 @@ var ImgixTag = require('./ImgixTag.js'),
     util = require('./util.js'),
     defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.0.4';
+var VERSION = '3.1.0';
 
 var INIT_DEFAULTS = {
   force: false,

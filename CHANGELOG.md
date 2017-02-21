@@ -1,3 +1,7 @@
+# imgix.js 3.1.0
+
+* Values for base-64 parameters provided in the `ix-src` attribute will no longer be automatically encoded. For complete notes about this change, see [PR #114](https://github.com/imgix/imgix.js/pull/114).
+
 # imgix.js 3.0.4
 
 * Allow customization of the attributes used to define images. See the readme for details: https://github.com/imgix/imgix.js#custom-input-attributes.

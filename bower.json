@@ -1,5 +1,6 @@
 {
   "name": "imgix.js",
+  "version": "3.1.0",
   "homepage": "http://www.imgix.com/imgix-js",
   "authors": [
     "imgix"
