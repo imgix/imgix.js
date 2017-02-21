@@ -240,6 +240,33 @@ If you need to display images from multiple imgix Sources, the `host` option can
 >
 ```
 
+<a name="base-64-encoded-parameters"></a>
+### Base-64 encoded parameters
+
+All of imgix's API parameters can be provided as [Base64 variants](https://docs.imgix.com/apis/url#base64-variants). This is especially useful when providing text for the `txt` parameter, or URLs for parameters such as `mark` or `blend`.
+
+When providing parameters to imgix.js via the `ix-params` attribute, note that the values for any Base64 variant parameters will be automatically base64-encoded by imgix.js, and can therefore be provided *unencoded*.
+
+``` html
+<img
+  ix-path="unsplash/hotairballoon.jpg"
+  ix-params='{
+    "txt64": "Hello, World!"
+  }'
+  alt="A hot air balloon on a sunny day"
+>
+```
+
+When providing a URL with parameters to imgix.js via the `ix-src` attribute, note that the values for any Base64 variant parameters will *not* be automatically base64-encoded by imgix.js.
+
+``` html
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?txt64=SGVsbG8sIFdvcmxkIQ"
+  alt="A hot air balloon on a sunny day"
+  sizes="100vw"
+>
+```
+
 
 <a name="what-is-the-ixlib-param"></a>
 ### What is the `ixlib` param?
