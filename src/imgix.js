@@ -4,20 +4,24 @@ var ImgixTag = require('./ImgixTag.js'),
 
 var VERSION = '3.1.0';
 
-var INIT_DEFAULTS = {
-  force: false,
-  srcAttribute: 'src',
-  srcsetAttribute: 'srcset',
-  sizesAttribute: 'sizes',
-  srcInputAttribute: 'ix-src',
-  pathInputAttribute: 'ix-path',
-  paramsInputAttribute: 'ix-params',
-  hostInputAttribute: 'ix-host'
-};
+function getMetaTagValue(propertyName) {
+  var metaTag = document.querySelector('meta[property="ix:' + propertyName + '"]'),
+      metaTagContent = metaTag ? metaTag.getAttribute('content') : null;
+
+  if (metaTagContent === 'true') {
+    return true;
+  } else if (metaTagContent === 'false') {
+    return false;
+  } else if (metaTagContent === '' || metaTagContent === 'null') {
+    return null;
+  } else {
+    return metaTagContent;
+  }
+}
 
 global.imgix = {
   init: function(opts) {
-    var settings = util.shallowClone(INIT_DEFAULTS);
+    var settings = util.shallowClone(this.config);
     util.extend(settings, opts || {});
 
     var elementQuery = [
@@ -38,23 +42,20 @@ global.imgix = {
 };
 
 util.domReady(function() {
-  var hostMeta = document.querySelector('meta[property="ix:host"]'),
-      httpsMeta = document.querySelector('meta[property="ix:useHttps"]'),
-      libParamMeta = document.querySelector('meta[property="ix:includeLibraryParam"]');
+  util.objectEach(defaultConfig, function(defaultValue, key) {
+    var metaTagValue = getMetaTagValue(key);
 
-  if (hostMeta) {
-    global.imgix.config.host = hostMeta.getAttribute('content');
+    if (metaTagValue !== null) {
+      // Only allow boolean values for boolean configs
+      if (typeof defaultConfig[key] === 'boolean') {
+        global.imgix.config[key] = !!metaTagValue;
+      } else {
+        global.imgix.config[key] = metaTagValue;
+      }
+    }
+  });
+
+  if (getMetaTagValue('autoInit') !== false) {
+    global.imgix.init();
   }
-
-  if (httpsMeta) {
-    var useHttps = httpsMeta.getAttribute('content') === 'true';
-    global.imgix.config.useHttps = useHttps ? true : false;
-  }
-
-  if (libParamMeta) {
-    var includeLibraryParam = libParamMeta.getAttribute('content') === 'true';
-    global.imgix.config.includeLibraryParam = includeLibraryParam ? true : false;
-  }
-
-  global.imgix.init();
 });

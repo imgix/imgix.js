@@ -17,7 +17,7 @@ var ImgixTag = (function() {
     this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
     this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
     this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
-    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || imgix.config.host;
+    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
       throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
@@ -64,7 +64,7 @@ var ImgixTag = (function() {
       }
     }
 
-    if (imgix.config.includeLibraryParam) {
+    if (this.settings.includeLibraryParam) {
       params.ixlib = 'imgixjs-' + imgix.VERSION;
     }
 
@@ -77,7 +77,7 @@ var ImgixTag = (function() {
     }
 
     var path = this.ixPathVal,
-        protocol = imgix.config.useHttps ? 'https' : 'http',
+        protocol = this.settings.useHttps ? 'https' : 'http',
         url = protocol + '://' + this.ixHostVal,
         hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
         pathStartsWithSlash = path[0] === '/';
