@@ -38,6 +38,13 @@ module.exports = {
 
     return r;
   },
+  objectEach: function(obj, iterator) {
+    for (var key in obj) {
+      if(obj.hasOwnProperty(key)) {
+        iterator(obj[key], key);
+      }
+    }
+  },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
         b64Str = btoa(encodedUtf8Str),
