@@ -18,7 +18,7 @@ var ImgixTag = (function() {
     this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
     this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
     this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
-    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || imgix.config.host;
+    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
       throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
@@ -65,7 +65,7 @@ var ImgixTag = (function() {
       }
     }
 
-    if (imgix.config.includeLibraryParam) {
+    if (this.settings.includeLibraryParam) {
       params.ixlib = 'imgixjs-' + imgix.VERSION;
     }
 
@@ -78,7 +78,7 @@ var ImgixTag = (function() {
     }
 
     var path = this.ixPathVal,
-        protocol = imgix.config.useHttps ? 'https' : 'http',
+        protocol = this.settings.useHttps ? 'https' : 'http',
         url = protocol + '://' + this.ixHostVal,
         hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
         pathStartsWithSlash = path[0] === '/';
@@ -161,9 +161,21 @@ module.exports = ImgixTag;
 
 },{"./targetWidths.js":4,"./util.js":5}],2:[function(require,module,exports){
 module.exports = {
+  // URL assembly
   host: null,
   useHttps: true,
-  includeLibraryParam: true
+  includeLibraryParam: true,
+
+  // Output element attributes
+  srcAttribute: 'src',
+  srcsetAttribute: 'srcset',
+  sizesAttribute: 'sizes',
+
+  // Input element attributes
+  srcInputAttribute: 'ix-src',
+  pathInputAttribute: 'ix-path',
+  paramsInputAttribute: 'ix-params',
+  hostInputAttribute: 'ix-host'
 };
 
 },{}],3:[function(require,module,exports){
@@ -174,20 +186,24 @@ var ImgixTag = require('./ImgixTag.js'),
 
 var VERSION = '3.1.0';
 
-var INIT_DEFAULTS = {
-  force: false,
-  srcAttribute: 'src',
-  srcsetAttribute: 'srcset',
-  sizesAttribute: 'sizes',
-  srcInputAttribute: 'ix-src',
-  pathInputAttribute: 'ix-path',
-  paramsInputAttribute: 'ix-params',
-  hostInputAttribute: 'ix-host'
-};
+function getMetaTagValue(propertyName) {
+  var metaTag = document.querySelector('meta[property="ix:' + propertyName + '"]'),
+      metaTagContent = metaTag ? metaTag.getAttribute('content') : null;
+
+  if (metaTagContent === 'true') {
+    return true;
+  } else if (metaTagContent === 'false') {
+    return false;
+  } else if (metaTagContent === '' || metaTagContent === 'null') {
+    return null;
+  } else {
+    return metaTagContent;
+  }
+}
 
 global.imgix = {
   init: function(opts) {
-    var settings = util.shallowClone(INIT_DEFAULTS);
+    var settings = util.shallowClone(this.config);
     util.extend(settings, opts || {});
 
     var elementQuery = [
@@ -208,25 +224,22 @@ global.imgix = {
 };
 
 util.domReady(function() {
-  var hostMeta = document.querySelector('meta[property="ix:host"]'),
-      httpsMeta = document.querySelector('meta[property="ix:useHttps"]'),
-      libParamMeta = document.querySelector('meta[property="ix:includeLibraryParam"]');
+  util.objectEach(defaultConfig, function(defaultValue, key) {
+    var metaTagValue = getMetaTagValue(key);
 
-  if (hostMeta) {
-    global.imgix.config.host = hostMeta.getAttribute('content');
+    if (metaTagValue !== null) {
+      // Only allow boolean values for boolean configs
+      if (typeof defaultConfig[key] === 'boolean') {
+        global.imgix.config[key] = !!metaTagValue;
+      } else {
+        global.imgix.config[key] = metaTagValue;
+      }
+    }
+  });
+
+  if (getMetaTagValue('autoInit') !== false) {
+    global.imgix.init();
   }
-
-  if (httpsMeta) {
-    var useHttps = httpsMeta.getAttribute('content') === 'true';
-    global.imgix.config.useHttps = useHttps ? true : false;
-  }
-
-  if (libParamMeta) {
-    var includeLibraryParam = libParamMeta.getAttribute('content') === 'true';
-    global.imgix.config.includeLibraryParam = includeLibraryParam ? true : false;
-  }
-
-  global.imgix.init();
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
@@ -420,6 +433,13 @@ module.exports = {
     }
 
     return r;
+  },
+  objectEach: function(obj, iterator) {
+    for (var key in obj) {
+      if(obj.hasOwnProperty(key)) {
+        iterator(obj[key], key);
+      }
+    }
   },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),

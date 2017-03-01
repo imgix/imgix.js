@@ -1,3 +1,17 @@
+# imgix.js 3.2.0
+
+* The following configuration options have been made global, and thus can be set using `<meta property="ix:foo"/>` tags or by updating the `imgix.config` object:
+  - `srcAttribute`
+  - `srcAttribute`
+  - `srcsetAttribute`
+  - `sizesAttribute`
+  - `srcInputAttribute`
+  - `pathInputAttribute`
+  - `paramsInputAttribute`
+  - `hostInputAttribute`
+* Any global configuration options can be overridden by providing an options object when calling `imgix.init()`
+* Automatic initialization of `<img>` and `<source>` tags can be disabled by including `<meta property="ix:autoInit" content="false">` in the document's `<head>`.
+
 # imgix.js 3.1.0
 
 * Values for base-64 parameters provided in the `ix-src` attribute will no longer be automatically encoded. For complete notes about this change, see [PR #114](https://github.com/imgix/imgix.js/pull/114).
