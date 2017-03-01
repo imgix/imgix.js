@@ -36,6 +36,23 @@ describe('utility methods', function() {
     });
   });
 
+  describe('objectEach', function() {
+    it('calls the given iterator function once for each property of the given object', function() {
+      var iterator = jasmine.createSpy('iterator'),
+          object = {
+            a: 1,
+            b: 2,
+            c: 3
+          };
+
+      util.objectEach(object, iterator);
+
+      expect(iterator).toHaveBeenCalledWith(object.a, 'a');
+      expect(iterator).toHaveBeenCalledWith(object.b, 'b');
+      expect(iterator).toHaveBeenCalledWith(object.c, 'c');
+    });
+  });
+
   describe('encode64', function() {
     it('correctly encodes multibyte characters', function() {
       expect(util.encode64('Hello, world! 👌💞')).toEqual('SGVsbG8sIHdvcmxkISDwn5GM8J-Sng');
