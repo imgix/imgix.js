@@ -1,6 +1,6 @@
 ![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=120)
 
-# imgix.js [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js) [![Slack Status](http://slack.imgix.com/badge.svg)](http://slack.imgix.com)
+# imgix.js [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js) 
 
 **This documentation is for imgix.js version `3.0.0` and up. Those using imgix.js `2.x.x` can find documentation in that version's [readme](https://github.com/imgix/imgix.js/tree/2.2.3) and [API reference](https://github.com/imgix/imgix.js/blob/2.2.3/docs/api.md).**
 
