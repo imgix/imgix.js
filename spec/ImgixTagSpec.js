@@ -69,6 +69,36 @@ describe('ImgixTag', function() {
       expect(global.mockElement['sizes-attribute-test']).toBeDefined();
     });
 
+    it('does not set custom `sizesAttribute` value if config.sizesAttribute is falsy', function() {
+      spyOn(global.mockElement, 'setAttribute').and.callThrough();
+
+      global.imgix.config.sizesAttribute = null;
+      new ImgixTag(global.mockElement, global.imgix.config);
+
+      expect(global.mockElement.setAttribute.calls.count()).toEqual(3);
+      expect(global.mockElement.setAttribute).not.toHaveBeenCalledWith('sizes');
+    });
+
+    it('does not set custom `srcAttribute` value if config.srcAttribute is falsy', function() {
+      spyOn(global.mockElement, 'setAttribute').and.callThrough();
+
+      global.imgix.config.srcAttribute = null;
+      new ImgixTag(global.mockElement, global.imgix.config);
+
+      expect(global.mockElement.setAttribute.calls.count()).toEqual(3);
+      expect(global.mockElement.setAttribute).not.toHaveBeenCalledWith('src');
+    });
+
+    it('does not set custom `srcsetAttribute` value if config.srcsetAttribute is falsy', function() {
+      spyOn(global.mockElement, 'setAttribute').and.callThrough();
+
+      global.imgix.config.srcsetAttribute = null;
+      new ImgixTag(global.mockElement, global.imgix.config);
+
+      expect(global.mockElement.setAttribute.calls.count()).toEqual(3);
+      expect(global.mockElement.setAttribute).not.toHaveBeenCalledWith('srcset');
+    });
+
     it('pulls from specified `srcInputAttribute` value', function() {
       global.imgix.config.srcInputAttribute = 'data-src-input-test';
 
