@@ -45,13 +45,11 @@ util.domReady(function() {
   util.objectEach(defaultConfig, function(defaultValue, key) {
     var metaTagValue = getMetaTagValue(key);
 
-    if (metaTagValue !== null) {
-      // Only allow boolean values for boolean configs
-      if (typeof defaultConfig[key] === 'boolean') {
-        global.imgix.config[key] = !!metaTagValue;
-      } else {
-        global.imgix.config[key] = metaTagValue;
-      }
+    // Only allow boolean values for boolean configs
+    if (typeof defaultConfig[key] === 'boolean') {
+      global.imgix.config[key] = !!metaTagValue;
+    } else {
+      global.imgix.config[key] = metaTagValue;
     }
   });
 
