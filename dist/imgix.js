@@ -28,10 +28,15 @@ var ImgixTag = (function() {
     this.baseUrl = this._buildBaseUrl();
     this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
 
-    this.el.setAttribute(this.settings.sizesAttribute, this.sizes());
-    this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
+    if (util.isString(this.settings.sizesAttribute)) {
+      this.el.setAttribute(this.settings.sizesAttribute, this.sizes());
+    }
 
-    if (this.el.nodeName == 'IMG') {
+    if (util.isString(this.settings.srcsetAttribute)) {
+      this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
+    }
+
+    if (util.isString(this.settings.srcAttribute) && this.el.nodeName == 'IMG') {
       this.el.setAttribute(this.settings.srcAttribute, this.src());
     }
 
@@ -184,11 +189,17 @@ var ImgixTag = require('./ImgixTag.js'),
     util = require('./util.js'),
     defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.2.0';
+var VERSION = '3.3.0';
 
 function getMetaTagValue(propertyName) {
   var metaTag = document.querySelector('meta[property="ix:' + propertyName + '"]'),
-      metaTagContent = metaTag ? metaTag.getAttribute('content') : null;
+      metaTagContent;
+
+  if (!metaTag) {
+    return;
+  }
+
+  metaTagContent = metaTag.getAttribute('content');
 
   if (metaTagContent === 'true') {
     return true;
@@ -227,7 +238,7 @@ util.domReady(function() {
   util.objectEach(defaultConfig, function(defaultValue, key) {
     var metaTagValue = getMetaTagValue(key);
 
-    if (metaTagValue !== null) {
+    if (typeof metaTagValue !== 'undefined') {
       // Only allow boolean values for boolean configs
       if (typeof defaultConfig[key] === 'boolean') {
         global.imgix.config[key] = !!metaTagValue;
@@ -440,6 +451,9 @@ module.exports = {
         iterator(obj[key], key);
       }
     }
+  },
+  isString: function(value) {
+    return typeof value === 'string';
   },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),

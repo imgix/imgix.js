@@ -1,7 +1,13 @@
+# imgix.js 3.3.0
+
+* The following configuration options can now be set to `null`, which will prevent the corresponding output attribute from being set on elements processed by imgix.js:
+  - `srcAttribute`
+  - `srcsetAttribute`
+  - `sizesAttribute`
+
 # imgix.js 3.2.0
 
 * The following configuration options have been made global, and thus can be set using `<meta property="ix:foo"/>` tags or by updating the `imgix.config` object:
-  - `srcAttribute`
   - `srcAttribute`
   - `srcsetAttribute`
   - `sizesAttribute`
