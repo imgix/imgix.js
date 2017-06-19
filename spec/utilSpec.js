@@ -53,6 +53,36 @@ describe('utility methods', function() {
     });
   });
 
+  describe('isString', function() {
+    it('returns true when given a string value', function() {
+      expect(util.isString('Hello, world!')).toEqual(true);
+    });
+
+    it('returns false when given a number value', function() {
+      expect(util.isString(10)).toEqual(false);
+    });
+
+    it('returns false when given a boolean value', function() {
+      expect(util.isString(true)).toEqual(false);
+    });
+
+    it('returns false when given a null value', function() {
+      expect(util.isString(null)).toEqual(false);
+    });
+
+    it('returns false when given an object value', function() {
+      expect(util.isString({hello: 'world'})).toEqual(false);
+    });
+
+    it('returns false when given an array value', function() {
+      expect(util.isString(['Hello world!'])).toEqual(false);
+    });
+
+    it('returns false when given no value', function() {
+      expect(util.isString()).toEqual(false);
+    });
+  });
+
   describe('encode64', function() {
     it('correctly encodes multibyte characters', function() {
       expect(util.encode64('Hello, world! 👌💞')).toEqual('SGVsbG8sIHdvcmxkISDwn5GM8J-Sng');

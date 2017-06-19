@@ -1,6 +1,6 @@
 ![imgix logo](https://assets.imgix.net/imgix-logo-web-2014.pdf?page=2&fm=png&w=120)
 
-# imgix.js [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js) 
+# imgix.js [![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js)
 
 **This documentation is for imgix.js version `3.0.0` and up. Those using imgix.js `2.x.x` can find documentation in that version's [readme](https://github.com/imgix/imgix.js/tree/2.2.3) and [API reference](https://github.com/imgix/imgix.js/blob/2.2.3/docs/api.md).**
 
@@ -25,6 +25,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
   * [`imgix.init()` idempotency](#imgix-init-idempotency)
   * [Lazy loading With lazysizes](#lazy-loading-with-lazysizes)
   * [Custom input attributes](#custom-input-attributes)
+  * [Null output attributes](#null-output-attributes)
   * [Base-64 encoded parameters](#base-64-encoded-parameters)
   * [What is the `ixlib` param?](#what-is-the-ixlib-param)
 * [Browser Support](#browser-support)
@@ -300,6 +301,29 @@ imgix.config.srcInputAttribute = 'data-ix-src';
 imgix.config.pathInputAttribute = 'data-ix-path';
 imgix.config.paramsInputAttribute = 'data-ix-params';
 imgix.config.hostInputAttribute = 'data-ix-host';
+```
+
+<a name="null-output-attributes"></a>
+### Null Output Attributes
+
+In rare cases, it may be undesirable to have imgix.js modify the `src`, `srcset`, or `sizes` attributes of the `<img>` elements it's targeting. In such cases, you can override the default behavior by setting some configuration values to null:
+
+Using `<meta>` tags:
+
+``` html
+<head>
+  <meta property="ix:srcAttribute" content="">
+  <meta property="ix:srcsetAttribute" content="">
+  <meta property="ix:sizesAttribute" content="">
+</head>
+```
+
+Using JavaScript:
+
+``` javascript
+imgix.config.srcAttribute = null;
+imgix.config.srcsetAttribute = null;
+imgix.config.sizesAttribute = null;
 ```
 
 <a name="base-64-encoded-parameters"></a>

@@ -6,7 +6,13 @@ var VERSION = '3.2.0';
 
 function getMetaTagValue(propertyName) {
   var metaTag = document.querySelector('meta[property="ix:' + propertyName + '"]'),
-      metaTagContent = metaTag ? metaTag.getAttribute('content') : null;
+      metaTagContent;
+
+  if (!metaTag) {
+    return;
+  }
+
+  metaTagContent = metaTag.getAttribute('content');
 
   if (metaTagContent === 'true') {
     return true;
@@ -45,7 +51,7 @@ util.domReady(function() {
   util.objectEach(defaultConfig, function(defaultValue, key) {
     var metaTagValue = getMetaTagValue(key);
 
-    if (metaTagValue !== null) {
+    if (typeof metaTagValue !== 'undefined') {
       // Only allow boolean values for boolean configs
       if (typeof defaultConfig[key] === 'boolean') {
         global.imgix.config[key] = !!metaTagValue;
