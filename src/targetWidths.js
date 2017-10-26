@@ -126,7 +126,7 @@ function targetWidths() {
         MAXIMUM_SCREEN_WIDTH,
       minScreenWidthRequired = SCREEN_STEP,
       maxScreenWidthRequired = hasWin ?
-        maxPossibleWidth * dpr :
+        Math.floor(maxPossibleWidth * dpr) :
         MAXIMUM_SCREEN_WIDTH;
 
   var width, i;
