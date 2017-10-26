@@ -189,7 +189,7 @@ var ImgixTag = require('./ImgixTag.js'),
     util = require('./util.js'),
     defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.3.0';
+var VERSION = '3.3.1';
 
 function getMetaTagValue(propertyName) {
   var metaTag = document.querySelector('meta[property="ix:' + propertyName + '"]'),
@@ -383,7 +383,7 @@ function targetWidths() {
         MAXIMUM_SCREEN_WIDTH,
       minScreenWidthRequired = SCREEN_STEP,
       maxScreenWidthRequired = hasWin ?
-        maxPossibleWidth * dpr :
+        Math.floor(maxPossibleWidth * dpr) :
         MAXIMUM_SCREEN_WIDTH;
 
   var width, i;

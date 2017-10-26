@@ -1,3 +1,7 @@
+# imgix.js 3.3.1
+
+* Fixed an issue where some browsers with a fractional window.devicePixelRatio value would chunder errors into the browser console.
+
 # imgix.js 3.3.0
 
 * The following configuration options can now be set to `null`, which will prevent the corresponding output attribute from being set on elements processed by imgix.js:
