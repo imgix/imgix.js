@@ -21,19 +21,25 @@ describe('ImgixTag', function() {
       }
     };
 
-    global.mockElement = {
-      setAttribute: function(attr, val) {
-        return this[attr] = val;
-      },
-      getAttribute: function(attr) {
-        return this[attr] != null ? this[attr] : null;
-      },
-      hasAttribute: function(attr) {
-        return this[attr] != null;
-      },
-      nodeName: 'IMG',
-      'ix-src': 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600'
-    }
+    global.MockElement = function() {
+      this.nodeName = 'IMG';
+      return this;
+    };
+
+    global.MockElement.prototype.setAttribute = function(attr, val) {
+      return this[attr] = val;
+    };
+
+    global.MockElement.prototype.getAttribute = function(attr) {
+      return this[attr] != null ? this[attr] : null;
+    };
+
+    global.MockElement.prototype.hasAttribute = function(attr) {
+      return this[attr] != null;
+    };
+
+    global.mockElement = new global.MockElement();
+    global.mockElement['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600';
   });
 
   describe('#initialize', function() {
@@ -206,11 +212,11 @@ describe('ImgixTag', function() {
     });
 
     it('correctly extracts baseParams specified in `ix-params`', function() {
-      delete global.mockElement['ix-src'];
-      global.mockElement['ix-path'] = 'presskit/imgix-presskit.pdf';
-      global.mockElement['ix-params'] = '{"page": 4, "w": 450}';
+      var mock = new global.MockElement();
+      mock['ix-path'] = 'presskit/imgix-presskit.pdf';
+      mock['ix-params'] = '{"page": 4, "w": 450}';
 
-      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      var tag = new ImgixTag(mock, global.imgix.config);
       expect(tag._extractBaseParams()).toEqual({
         page: 4,
         w: 450
@@ -218,11 +224,11 @@ describe('ImgixTag', function() {
     });
 
     it('correctly encodes Base64 variant parameters specified in `ix-params`', function() {
-      delete global.mockElement['ix-src'];
-      global.mockElement['ix-path'] = '~text';
-      global.mockElement['ix-params'] = '{"txt64": "I cannøt belîév∑ it wors! 😱"}';
+      var mock = new global.MockElement();
+      mock['ix-path'] = '~text';
+      mock['ix-params'] = '{"txt64": "I cannøt belîév∑ it wors! 😱"}';
 
-      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      var tag = new ImgixTag(mock, global.imgix.config);
 
       expect(tag._extractBaseParams()).toEqual({
         txt64: 'SSBjYW5uw7h0IGJlbMOuw6l24oiRIGl0IHdvcu-jv3MhIPCfmLE'
@@ -230,7 +236,7 @@ describe('ImgixTag', function() {
     });
   });
 
-  it('includes the `ixjsv` parameter when `imgix.config.includeLibraryParam` is `true`', function() {
+  it('includes the `ixlib` parameter when `imgix.config.includeLibraryParam` is `true`', function() {
     global.imgix.VERSION = '3test';
     global.imgix.config.includeLibraryParam = true;
 
@@ -244,15 +250,25 @@ describe('ImgixTag', function() {
   });
 
   it('does not encode base64 variant parameters specified in `ix-src`', function() {
-    global.mockElement['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&txt64=gibberish';
+    var mock = new global.MockElement();
+    mock['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&txt64=gibberish';
 
-    var tag = new ImgixTag(global.mockElement, global.imgix.config);
+    var tag = new ImgixTag(mock, global.imgix.config);
 
     expect(tag._extractBaseParams()).toEqual({
       page: '3',
       w: '600',
       txt64: 'gibberish'
     });
+  });
+
+  it('returns an empty object when the path given in the ix-src attribute has no query params', function() {
+    var mock = new global.MockElement();
+    mock['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf';
+
+    var tag = new ImgixTag(mock, global.imgix.config);
+
+    expect(tag._extractBaseParams()).toEqual({});
   });
 
   describe('#_buildBaseUrl', function() {
