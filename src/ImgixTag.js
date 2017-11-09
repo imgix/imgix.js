@@ -106,7 +106,12 @@ var ImgixTag = (function() {
         param;
     for (var key in this.baseParams) {
       param = this.baseParams[key];
-      params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
+
+      if (typeof param === 'undefined') {
+        params.push(encodeURIComponent(key));
+      } else {
+        params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
+      }
     }
 
     url += params.join('&');
