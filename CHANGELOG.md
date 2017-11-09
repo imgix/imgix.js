@@ -1,3 +1,7 @@
+# imgix.js 3.3.2
+
+* Fixed a bug that was adding an unintended extra query parameter to URLs generated from an `ix-src` attribute with no base parameters. For full details, see [PR #128](https://github.com/imgix/imgix.js/pull/128).
+
 # imgix.js 3.3.1
 
 * Fixed an issue where some browsers with a fractional window.devicePixelRatio value would chunder errors into the browser console.
