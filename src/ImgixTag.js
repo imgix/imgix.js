@@ -57,15 +57,19 @@ var ImgixTag = (function() {
     } else {
       // If the user used `ix-src`, we have to extract the base params
       // from that string URL.
-      var lastQuestion = this.ixSrcVal.lastIndexOf('?'),
-          paramString = this.ixSrcVal.substr(lastQuestion + 1),
-          splitParams = paramString.split('&');
+      var lastQuestion = this.ixSrcVal.lastIndexOf('?');
 
       params = {};
-      for (var i = 0, splitParam; i < splitParams.length; i++) {
-        splitParam = splitParams[i].split('=');
 
-        params[splitParam[0]] = splitParam[1];
+      if (lastQuestion > -1) {
+        var paramString = this.ixSrcVal.substr(lastQuestion + 1),
+            splitParams = paramString.split('&');
+
+        for (var i = 0, splitParam; i < splitParams.length; i++) {
+          splitParam = splitParams[i].split('=');
+
+          params[splitParam[0]] = splitParam[1];
+        }
       }
     }
 
