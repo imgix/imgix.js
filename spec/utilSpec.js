@@ -1,6 +1,6 @@
 var util = require('../src/util.js'),
-    btoa = require('btoa'),
-    atob = require('atob');
+  btoa = require('btoa'),
+  atob = require('atob');
 
 describe('utility methods', function() {
   beforeEach(function() {
@@ -39,11 +39,11 @@ describe('utility methods', function() {
   describe('objectEach', function() {
     it('calls the given iterator function once for each property of the given object', function() {
       var iterator = jasmine.createSpy('iterator'),
-          object = {
-            a: 1,
-            b: 2,
-            c: 3
-          };
+        object = {
+          a: 1,
+          b: 2,
+          c: 3
+        };
 
       util.objectEach(object, iterator);
 
@@ -71,7 +71,7 @@ describe('utility methods', function() {
     });
 
     it('returns false when given an object value', function() {
-      expect(util.isString({hello: 'world'})).toEqual(false);
+      expect(util.isString({ hello: 'world' })).toEqual(false);
     });
 
     it('returns false when given an array value', function() {
@@ -85,13 +85,17 @@ describe('utility methods', function() {
 
   describe('encode64', function() {
     it('correctly encodes multibyte characters', function() {
-      expect(util.encode64('Hello, world! 👌💞')).toEqual('SGVsbG8sIHdvcmxkISDwn5GM8J-Sng');
+      expect(util.encode64('Hello, world! 👌💞')).toEqual(
+        'SGVsbG8sIHdvcmxkISDwn5GM8J-Sng'
+      );
     });
   });
 
   describe('decode64', function() {
     it('correctly decodes multibyte characters', function() {
-      expect(util.decode64('SGVsbG8sIHdvcmxkISDwn5GM8J-Sng')).toEqual('Hello, world! 👌💞');
+      expect(util.decode64('SGVsbG8sIHdvcmxkISDwn5GM8J-Sng')).toEqual(
+        'Hello, world! 👌💞'
+      );
     });
-  })
+  });
 });

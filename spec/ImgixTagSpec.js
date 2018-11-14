@@ -1,6 +1,6 @@
 var ImgixTag = require('../src/ImgixTag.js'),
-    btoa = require('btoa'),
-    targetWidths = require('../src/targetWidths');
+  btoa = require('btoa'),
+  targetWidths = require('../src/targetWidths');
 
 describe('ImgixTag', function() {
   beforeEach(function() {
@@ -27,7 +27,7 @@ describe('ImgixTag', function() {
     };
 
     global.MockElement.prototype.setAttribute = function(attr, val) {
-      return this[attr] = val;
+      return (this[attr] = val);
     };
 
     global.MockElement.prototype.getAttribute = function(attr) {
@@ -39,7 +39,8 @@ describe('ImgixTag', function() {
     };
 
     global.mockElement = new global.MockElement();
-    global.mockElement['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600';
+    global.mockElement['ix-src'] =
+      'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600';
   });
 
   describe('#initialize', function() {
@@ -102,13 +103,18 @@ describe('ImgixTag', function() {
       new ImgixTag(global.mockElement, global.imgix.config);
 
       expect(global.mockElement.setAttribute.calls.count()).toEqual(3);
-      expect(global.mockElement.setAttribute).not.toHaveBeenCalledWith('srcset');
+      expect(global.mockElement.setAttribute).not.toHaveBeenCalledWith(
+        'srcset'
+      );
     });
 
     it('pulls from specified `srcInputAttribute` value', function() {
       global.imgix.config.srcInputAttribute = 'data-src-input-test';
 
-      global.mockElement.setAttribute('data-src-input-test', 'https://fake.com/image.png');
+      global.mockElement.setAttribute(
+        'data-src-input-test',
+        'https://fake.com/image.png'
+      );
 
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
 
@@ -118,7 +124,10 @@ describe('ImgixTag', function() {
     it('pulls from specified `pathInputAttribute` value', function() {
       global.imgix.config.pathInputAttribute = 'data-path-input-test';
 
-      global.mockElement.setAttribute('data-path-input-test', 'stuff/things.jpg');
+      global.mockElement.setAttribute(
+        'data-path-input-test',
+        'stuff/things.jpg'
+      );
 
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
 
@@ -128,7 +137,10 @@ describe('ImgixTag', function() {
     it('pulls from specified `paramsInputAttribute` value', function() {
       global.imgix.config.paramsInputAttribute = 'data-params-input-test';
 
-      global.mockElement.setAttribute('data-params-input-test', '{"cat": "dog"}');
+      global.mockElement.setAttribute(
+        'data-params-input-test',
+        '{"cat": "dog"}'
+      );
       global.mockElement.setAttribute('ix-path', 'lorem.jpg');
       delete global.mockElement['ix-src'];
 
@@ -140,7 +152,10 @@ describe('ImgixTag', function() {
     it('pulls from specified `hostInputAttribute` value', function() {
       global.imgix.config.hostInputAttribute = 'data-host-input-test';
 
-      global.mockElement.setAttribute('data-host-input-test', 'different-source.imgix.net');
+      global.mockElement.setAttribute(
+        'data-host-input-test',
+        'different-source.imgix.net'
+      );
 
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
 
@@ -251,7 +266,8 @@ describe('ImgixTag', function() {
 
   it('does not encode base64 variant parameters specified in `ix-src`', function() {
     var mock = new global.MockElement();
-    mock['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&txt64=gibberish';
+    mock['ix-src'] =
+      'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&txt64=gibberish';
 
     var tag = new ImgixTag(mock, global.imgix.config);
 
@@ -285,7 +301,9 @@ describe('ImgixTag', function() {
 
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
 
-      expect(tag._buildBaseUrl()).toEqual('https://assets.imgix.net/presskit/imgix-presskit.pdf?page=4&w=450');
+      expect(tag._buildBaseUrl()).toEqual(
+        'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=4&w=450'
+      );
     });
   });
 
@@ -305,9 +323,10 @@ describe('ImgixTag', function() {
     });
 
     it('correctly calculates `h` to maintain aspect ratio, when specified', function() {
-      global.mockElement['ix-src'] ='https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&h=300';
+      global.mockElement['ix-src'] =
+        'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&h=300';
       var tag = new ImgixTag(global.mockElement, global.imgix.config),
-          srcsetPairs = tag.srcset().split(',');
+        srcsetPairs = tag.srcset().split(',');
 
       for (var i = 0, srcsetPair, w, h; i < srcsetPairs.length; i++) {
         srcsetPair = srcsetPairs[i];
