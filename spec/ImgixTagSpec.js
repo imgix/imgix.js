@@ -215,6 +215,25 @@ describe('ImgixTag', function() {
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
       expect(tag.baseUrl).toBeDefined();
     });
+
+    it(`uses http if 'useHttps' is set to false`, function() {
+      global.imgix.config.useHttps = false;
+      delete global.mockElement['ix-src'];
+      global.mockElement['ix-host'] = 'my-source.imgix.net/';
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag.el.src.startsWith('http://')).toBe(true);
+    });
+
+    it(`uses https if 'useHttps' is set to true`, function() {
+      global.imgix.config.useHttps = true;
+      delete global.mockElement['ix-src'];
+      global.mockElement['ix-host'] = 'my-source.imgix.net/';
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag.el.src.startsWith('https://'));
   });
 
   describe('#_extractBaseParams', function() {
