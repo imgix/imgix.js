@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "./node_modules/jasmine/bin/jasmine.js",
-		"build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
-		"pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\""
+    "build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
+    "pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,8 @@
     "jasmine": "^2.4.1",
     "prettier": "^1.15.2",
     "uglify-js": "^2.6.2"
+  },
+  "dependencies": {
+    "imgix-core-js": "^1.2.0"
   }
 }

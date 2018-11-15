@@ -1,5 +1,6 @@
-var util = require('./util.js'),
-  targetWidths = require('./targetWidths.js');
+var util = require('./util.js');
+var targetWidths = require('./targetWidths.js');
+var ImgixClient = require('imgix-core-js');
 
 var ImgixTag = (function() {
   function ImgixTag(el, opts) {
@@ -24,6 +25,17 @@ var ImgixTag = (function() {
       throw new Error(
         'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.'
       );
+    }
+
+    if (this.ixHostVal) {
+      this.imgixClient = new ImgixClient({
+        domains: this.ixHostVal,
+        useHTTPS: this.settings.useHttps,
+        includeLibraryParam: false,
+        libraryParam: this.settings.includeLibraryParam
+          ? 'imgixjs-' + imgix.VERSION
+          : undefined
+      });
     }
 
     this.baseParams = this._extractBaseParams();
@@ -97,30 +109,7 @@ var ImgixTag = (function() {
       hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
       pathStartsWithSlash = path[0] === '/';
 
-    // Make sure we don't end up with 2 or 0 slashes between
-    // the host and path portions of the generated URL
-    if (hostEndsWithSlash && pathStartsWithSlash) {
-      url += path.substr(1);
-    } else if (!hostEndsWithSlash && !pathStartsWithSlash) {
-      url += '/' + path;
-    } else {
-      url += path;
-    }
-
-    url += '?';
-    var params = [],
-      param;
-    for (var key in this.baseParams) {
-      param = this.baseParams[key];
-
-      if (typeof param === 'undefined') {
-        params.push(encodeURIComponent(key));
-      } else {
-        params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
-      }
-    }
-
-    url += params.join('&');
+    var url = this.imgixClient.buildURL(path, this.baseParams);
 
     return url;
   };
