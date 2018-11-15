@@ -236,6 +236,23 @@ describe('ImgixTag', function() {
       expect(tag.el.src.startsWith('https://'));
   });
 
+    it(`handles hosts with a trailing slash, and paths with a starting slash`, function() {
+      global.mockElement['ix-host'] = 'my-source.imgix.net/';
+      global.mockElement['ix-path'] = '/dogs.jpg';
+
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag.el.src.includes('my-source.imgix.net/dogs.jpg'));
+    });
+
+    it(`handles hosts with no trailing slash, and paths with no starting slash`, function() {
+      global.mockElement['ix-host'] = 'my-source.imgix.net';
+      global.mockElement['ix-path'] = 'dogs.jpg';
+
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag.el.src.includes('my-source.imgix.net/dogs.jpg'));
+    });
+  });
+
   describe('#_extractBaseParams', function() {
     it('correctly extracts baseParams specified in `ix-src`', function() {
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
