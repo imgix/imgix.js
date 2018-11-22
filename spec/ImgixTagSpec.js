@@ -359,7 +359,7 @@ describe('ImgixTag', function() {
       global.mockElement['ix-src'] =
         'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&h=300';
       var tag = new ImgixTag(global.mockElement, global.imgix.config),
-        srcsetPairs = tag.srcset().split(',');
+        srcsetPairs = tag.el.srcset.split(',');
 
       for (var i = 0, srcsetPair, w, h; i < srcsetPairs.length; i++) {
         srcsetPair = srcsetPairs[i];
