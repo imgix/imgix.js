@@ -301,7 +301,7 @@ describe('ImgixTag', function() {
   });
 
   describe('#srcset', function() {
-    it('the rendered element should have a srcSet set correctly', async () => {
+    it('the rendered element should have a srcSet set correctly', () => {
       const tag = new ImgixTag(global.mockElement, global.imgix.config);
 
       const srcset = tag.el.srcset;
