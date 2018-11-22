@@ -49,10 +49,14 @@ var ImgixTag = (function() {
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
-    var params;
+		var params = {};
+
+		if (this.settings.defaultParams) {
+			params = Object.assign({}, this.settings.defaultParams);
+		}
 
     if (this.ixPathVal) {
-      params = JSON.parse(this.ixParamsVal) || {};
+      params = Object.assign({}, params, JSON.parse(this.ixParamsVal) || {});
 
       // Encode any passed Base64 variant params
       for (var key in params) {
@@ -64,8 +68,6 @@ var ImgixTag = (function() {
       // If the user used `ix-src`, we have to extract the base params
       // from that string URL.
       var lastQuestion = this.ixSrcVal.lastIndexOf('?');
-
-      params = {};
 
       if (lastQuestion > -1) {
         var paramString = this.ixSrcVal.substr(lastQuestion + 1),
