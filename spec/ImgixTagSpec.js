@@ -2,6 +2,9 @@ var ImgixTag = require('../src/ImgixTag.js'),
     btoa = require('btoa'),
     targetWidths = require('../src/targetWidths');
 
+const src = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600';
+const srcWithoutQuery = src.slice(0, src.indexOf('?'));
+
 describe('ImgixTag', function() {
   beforeEach(function() {
     global.btoa = btoa;
@@ -39,7 +42,7 @@ describe('ImgixTag', function() {
     };
 
     global.mockElement = new global.MockElement();
-    global.mockElement['ix-src'] = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600';
+    global.mockElement['ix-src'] = src;
   });
 
   describe('#initialize', function() {
@@ -298,16 +301,65 @@ describe('ImgixTag', function() {
   });
 
   describe('#srcset', function() {
+    it('the rendered element should have a srcSet set correctly', async () => {
+      const tag = new ImgixTag(global.mockElement, global.imgix.config);
+
+      const srcset = tag.el.srcset;
+      expect(srcset).not.toBeUndefined();
+      expect(srcset.split(', ')[0].split(' ').length).toBe(2);
+      const aSrcFromSrcSet = srcset.split(', ')[0].split(' ')[0];
+      expect(aSrcFromSrcSet).toContain(srcWithoutQuery);
+      const aWidthFromSrcSet = srcset.split(', ')[0].split(' ')[1];
+      expect(aWidthFromSrcSet).toMatch(/^\d+w$/);
+    });
     it('returns the expected number of `url widthDescriptor` pairs', function() {
       var tag = new ImgixTag(global.mockElement, global.imgix.config);
 
       expect(tag.srcset().split(',').length).toEqual(targetWidths.length);
     });
 
+    it('should not exceed the bounds of [100, 8192]', () => {
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+
+      const srcsetWidths = tag.el.srcset
+        .split(', ')
+        .map(srcset => srcset.split(' ')[1])
+        .map(width => width.slice(0, -1))
+        .map(Number.parseFloat);
+
+      const min = Math.min(...srcsetWidths);
+      const max = Math.max(...srcsetWidths);
+
+      expect(min).not.toBeLessThan(100);
+      expect(min).not.toBeGreaterThan(8192);
+    });
+
+    // 18% used to allow +-1% for rounding
+    it('should not increase more than 18% every iteration', () => {
+      const INCREMENT_ALLOWED = 0.18;
+
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+
+      const srcsetWidths = tag.el.srcset
+        .split(', ')
+        .map(srcset => srcset.split(' ')[1])
+        .map(width => width.slice(0, -1))
+        .map(Number.parseFloat);
+
+      let prev = srcsetWidths[0];
+
+      for (let index = 1; index < srcsetWidths.length; index++) {
+        const element = srcsetWidths[index];
+        expect(element / prev).toBeLessThan(1 + INCREMENT_ALLOWED);
+        prev = element;
+      }
+    });
+
     it('correctly calculates `h` to maintain aspect ratio, when specified', function() {
-      global.mockElement['ix-src'] ='https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&h=300';
+      global.mockElement['ix-src'] =
+        'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600&h=300';
       var tag = new ImgixTag(global.mockElement, global.imgix.config),
-          srcsetPairs = tag.srcset().split(',');
+        srcsetPairs = tag.srcset().split(',');
 
       for (var i = 0, srcsetPair, w, h; i < srcsetPairs.length; i++) {
         srcsetPair = srcsetPairs[i];
