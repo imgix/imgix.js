@@ -1,5 +1,5 @@
 var util = require('./util.js'),
-    targetWidths = require('./targetWidths.js');
+  targetWidths = require('./targetWidths.js');
 
 var ImgixTag = (function() {
   function ImgixTag(el, opts) {
@@ -17,10 +17,13 @@ var ImgixTag = (function() {
     this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
     this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
     this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
-    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
+    this.ixHostVal =
+      el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
-      throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
+      throw new Error(
+        'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.'
+      );
     }
 
     this.baseParams = this._extractBaseParams();
@@ -35,7 +38,10 @@ var ImgixTag = (function() {
       this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
     }
 
-    if (util.isString(this.settings.srcAttribute) && this.el.nodeName == 'IMG') {
+    if (
+      util.isString(this.settings.srcAttribute) &&
+      this.el.nodeName == 'IMG'
+    ) {
       this.el.setAttribute(this.settings.srcAttribute, this.src());
     }
 
@@ -63,7 +69,7 @@ var ImgixTag = (function() {
 
       if (lastQuestion > -1) {
         var paramString = this.ixSrcVal.substr(lastQuestion + 1),
-            splitParams = paramString.split('&');
+          splitParams = paramString.split('&');
 
         for (var i = 0, splitParam; i < splitParams.length; i++) {
           splitParam = splitParams[i].split('=');
@@ -86,10 +92,10 @@ var ImgixTag = (function() {
     }
 
     var path = this.ixPathVal,
-        protocol = this.settings.useHttps ? 'https' : 'http',
-        url = protocol + '://' + this.ixHostVal,
-        hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
-        pathStartsWithSlash = path[0] === '/';
+      protocol = this.settings.useHttps ? 'https' : 'http',
+      url = protocol + '://' + this.ixHostVal,
+      hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
+      pathStartsWithSlash = path[0] === '/';
 
     // Make sure we don't end up with 2 or 0 slashes between
     // the host and path portions of the generated URL
@@ -101,9 +107,9 @@ var ImgixTag = (function() {
       url += path;
     }
 
-    url += '?'
+    url += '?';
     var params = [],
-        param;
+      param;
     for (var key in this.baseParams) {
       param = this.baseParams[key];
 
@@ -121,15 +127,17 @@ var ImgixTag = (function() {
 
   ImgixTag.prototype._buildSrcsetPair = function(targetWidth) {
     var clonedParams = util.shallowClone(this.baseParams);
-    clonedParams.w = targetWidth
+    clonedParams.w = targetWidth;
 
     if (this.baseParams.w != null && this.baseParams.h != null) {
-      clonedParams.h = Math.round(targetWidth * (this.baseParams.h / this.baseParams.w));
+      clonedParams.h = Math.round(
+        targetWidth * (this.baseParams.h / this.baseParams.w)
+      );
     }
 
     var url = this.baseUrlWithoutQuery + '?',
-        val,
-        params = [];
+      val,
+      params = [];
     for (var key in clonedParams) {
       val = clonedParams[key];
       params.push(key + '=' + val);
@@ -137,7 +145,7 @@ var ImgixTag = (function() {
 
     url += params.join('&');
 
-    return url + ' ' + targetWidth + 'w'
+    return url + ' ' + targetWidth + 'w';
   };
 
   ImgixTag.prototype.src = function() {
@@ -168,6 +176,6 @@ var ImgixTag = (function() {
   };
 
   return ImgixTag;
-}());
+})();
 
 module.exports = ImgixTag;

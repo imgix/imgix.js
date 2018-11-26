@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '4'
+  - 'stable'
 install:
   - npm install
 script:
@@ -14,3 +14,8 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+
+branches:
+  only:
+    - master
+    - /release.*/
