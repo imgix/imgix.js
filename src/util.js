@@ -26,8 +26,8 @@ module.exports = {
   },
   uniq: function(arr) {
     var n = {},
-        r = [],
-        i;
+      r = [],
+      i;
 
     for (i = 0; i < arr.length; i++) {
       if (!n[arr[i]]) {
@@ -40,7 +40,7 @@ module.exports = {
   },
   objectEach: function(obj, iterator) {
     for (var key in obj) {
-      if(obj.hasOwnProperty(key)) {
+      if (obj.hasOwnProperty(key)) {
         iterator(obj[key], key);
       }
     }
@@ -50,18 +50,20 @@ module.exports = {
   },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
-        b64Str = btoa(encodedUtf8Str),
-        urlSafeB64Str = b64Str.replace(/\+/g, '-');
+      b64Str = btoa(encodedUtf8Str),
+      urlSafeB64Str = b64Str.replace(/\+/g, '-');
 
-    urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_')
-      .replace(/\//g, '_').replace(/\=+$/, '');
+    urlSafeB64Str = urlSafeB64Str
+      .replace(/\//g, '_')
+      .replace(/\//g, '_')
+      .replace(/\=+$/, '');
 
     return urlSafeB64Str;
   },
   decode64: function(urlSafeB64Str) {
     var b64Str = urlSafeB64Str.replace(/-/g, '+').replace(/_/g, '/'),
-        encodedUtf8Str = atob(b64Str),
-        str = decodeURIComponent(escape(encodedUtf8Str));
+      encodedUtf8Str = atob(b64Str),
+      str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
   },
@@ -78,4 +80,4 @@ module.exports = {
       });
     }
   }
-}
+};

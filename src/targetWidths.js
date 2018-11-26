@@ -118,16 +118,16 @@ function screenWidths() {
 // @return {Array} An array of {Fixnum} instances representing the unique `srcset` URLs to generate.
 function targetWidths() {
   var hasWin = typeof window !== 'undefined',
-      allWidths = deviceWidths().concat(screenWidths()),
-      selectedWidths = [],
-      dpr = hasWin && window.devicePixelRatio ? window.devicePixelRatio : 1,
-      maxPossibleWidth = hasWin ?
-        Math.max(window.screen.availWidth, window.screen.availHeight) :
-        MAXIMUM_SCREEN_WIDTH,
-      minScreenWidthRequired = SCREEN_STEP,
-      maxScreenWidthRequired = hasWin ?
-        Math.floor(maxPossibleWidth * dpr) :
-        MAXIMUM_SCREEN_WIDTH;
+    allWidths = deviceWidths().concat(screenWidths()),
+    selectedWidths = [],
+    dpr = hasWin && window.devicePixelRatio ? window.devicePixelRatio : 1,
+    maxPossibleWidth = hasWin
+      ? Math.max(window.screen.availWidth, window.screen.availHeight)
+      : MAXIMUM_SCREEN_WIDTH,
+    minScreenWidthRequired = SCREEN_STEP,
+    maxScreenWidthRequired = hasWin
+      ? Math.floor(maxPossibleWidth * dpr)
+      : MAXIMUM_SCREEN_WIDTH;
 
   var width, i;
   for (i = 0; i < allWidths.length; i++) {
