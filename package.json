@@ -2,23 +2,23 @@
   "name": "imgix.js",
   "version": "3.3.2",
   "description": "imgix.js is a dependency-free JavaScript library that allows you to easily use the imgix API to make images on your site or app responsive to device size and pixel density. imgix.js allows for intuitive use of imgix features such as text formatting, color palette extraction, color adjustments, effects, and watermarking. imgix.js requires an imgix account to use your own images. Sign up at imgix.com",
+  "license": "BSD-2",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/imgix/imgix.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/imgix/imgix.js/issues"
+  },
+  "author": "imgix",
   "main": "dist/imgix.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "./node_modules/jasmine/bin/jasmine.js",
-		"build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
-		"pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\""
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/imgix/imgix.js.git"
-  },
-  "author": "imgix",
-  "license": "BSD-2",
-  "bugs": {
-    "url": "https://github.com/imgix/imgix.js/issues"
+    "build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
+    "pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\"",
+    "test": "./node_modules/jasmine/bin/jasmine.js"
   },
   "devDependencies": {
     "atob": "^2.0.3",
