@@ -18,12 +18,14 @@
   "scripts": {
     "build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
     "pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\"",
-    "test": "./node_modules/jasmine/bin/jasmine.js"
+    "test": "./node_modules/jasmine/bin/jasmine.js",
+    "test:watch": "chokidar \"src/*.js\" \"spec/*.js\" -c \"npm run test\""
   },
   "devDependencies": {
     "atob": "^2.0.3",
     "browserify": "^13.0.0",
     "btoa": "^1.1.2",
+    "chokidar-cli": "^1.2.1",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.5.3",
