@@ -83,7 +83,7 @@ var ImgixTag = (function() {
 
     if (this.settings.includeLibraryParam) {
       params.ixlib = 'imgixjs-' + imgix.VERSION;
-    }
+		}
 
     return params;
   };

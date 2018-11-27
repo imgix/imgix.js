@@ -2,7 +2,8 @@ module.exports = {
   // URL assembly
   host: null,
   useHttps: true,
-  includeLibraryParam: true,
+	includeLibraryParam: true,
+	defaultParams: {},
 
   // Output element attributes
   srcAttribute: 'src',
