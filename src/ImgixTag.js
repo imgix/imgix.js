@@ -49,11 +49,11 @@ var ImgixTag = (function() {
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
-		var params = {};
+    var params = {};
 
-		if (this.settings.defaultParams) {
-			params = Object.assign({}, this.settings.defaultParams);
-		}
+    if (this.settings.defaultParams) {
+      params = Object.assign({}, this.settings.defaultParams);
+    }
 
     if (this.ixPathVal) {
       params = Object.assign({}, params, JSON.parse(this.ixParamsVal) || {});
@@ -83,7 +83,7 @@ var ImgixTag = (function() {
 
     if (this.settings.includeLibraryParam) {
       params.ixlib = 'imgixjs-' + imgix.VERSION;
-		}
+    }
 
     return params;
   };
