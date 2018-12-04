@@ -51,7 +51,11 @@ var ImgixTag = (function() {
   ImgixTag.prototype._extractBaseParams = function() {
     var params = {};
 
-    if (this.settings.defaultParams) {
+    if (
+      this.settings.defaultParams &&
+      typeof this.settings.defaultParams === 'object' &&
+      this.settings.defaultParams !== null
+    ) {
       params = Object.assign({}, this.settings.defaultParams);
     }
 
