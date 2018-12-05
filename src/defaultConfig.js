@@ -3,6 +3,7 @@ module.exports = {
   host: null,
   useHttps: true,
   includeLibraryParam: true,
+  defaultParams: {},
 
   // Output element attributes
   srcAttribute: 'src',

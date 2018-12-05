@@ -27,6 +27,7 @@ Responsive images in the browser, simplified. Pure JavaScript with zero dependen
   * [Custom input attributes](#custom-input-attributes)
   * [Null output attributes](#null-output-attributes)
   * [Base-64 encoded parameters](#base-64-encoded-parameters)
+  * [Default Parameters](#default-parameters)
   * [What is the `ixlib` param?](#what-is-the-ixlib-param)
 * [Browser Support](#browser-support)
 * [Meta](#meta)
@@ -353,6 +354,28 @@ When providing a URL with parameters to imgix.js via the `ix-src` attribute, not
 >
 ```
 
+<a name="default-parameters"></a>
+### Default parameters
+
+If the same parameters are being used again and again, they can be extracted out into a global config using `imgix.defaultParameters`. These settings will become the default paramters for each imgix tag globally, before any specific params are loaded from `ix-params` or `ix-src`
+
+```js
+// setup
+imgix.config.defaultParams = {
+	auto: 'format,compress',
+	fit: 'crop'
+}
+
+// later
+<img
+  ix-path="hero.png"
+  ix-params='{"fit":"clip"}'
+>
+
+// becomes
+<img src=".../hero.png?auto=format,compress&fit=clip">
+
+```
 
 <a name="what-is-the-ixlib-param"></a>
 ### What is the `ixlib` param?

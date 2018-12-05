@@ -251,6 +251,33 @@ describe('ImgixTag', function() {
         txt64: 'SSBjYW5uw7h0IGJlbMOuw6l24oiRIGl0IHdvcu-jv3MhIPCfmLE'
       });
     });
+
+    it('uses global parameters', function() {
+      var mock = new global.MockElement();
+      mock['ix-path'] = 'path';
+      var tag = new ImgixTag(mock, global.imgix.config);
+      global.imgix.config.defaultParams = {
+        auto: 'format,compress'
+      };
+
+      expect(tag._extractBaseParams()).toEqual({
+        auto: 'format,compress'
+      });
+    });
+    it('ix-params overrides global parameters', function() {
+      var mock = new global.MockElement();
+      mock['ix-path'] = 'path';
+      mock['ix-params'] = '{"auto": "format"}';
+
+      var tag = new ImgixTag(mock, global.imgix.config);
+      global.imgix.config.defaultParams = {
+        auto: 'format,compress'
+      };
+
+      expect(tag._extractBaseParams()).toEqual({
+        auto: 'format'
+      });
+    });
   });
 
   it('includes the `ixlib` parameter when `imgix.config.includeLibraryParam` is `true`', function() {
