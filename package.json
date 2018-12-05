@@ -18,6 +18,7 @@
   "scripts": {
     "build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
     "pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\"",
+    "release": "npm run build && git add dist src/imgix.js && standard-version -a",
     "test": "./node_modules/jasmine/bin/jasmine.js",
     "test:watch": "chokidar \"src/*.js\" \"spec/*.js\" -c \"npm run test\""
   },
@@ -31,6 +32,7 @@
     "gulp-uglify": "^1.5.3",
     "jasmine": "^2.4.1",
     "prettier": "^1.15.2",
+    "standard-version": "^4.4.0",
     "uglify-js": "^2.6.2"
   }
 }
