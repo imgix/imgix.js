@@ -2,7 +2,7 @@ var ImgixTag = require('./ImgixTag.js'),
   util = require('./util.js'),
   defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.3.2';
+var VERSION = '3.4.0';
 
 function getMetaTagValue(propertyName) {
   var metaTag = document.querySelector(

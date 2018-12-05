@@ -1,6 +1,6 @@
 {
   "name": "imgix.js",
-  "version": "3.3.2",
+  "version": "3.4.0",
   "homepage": "http://www.imgix.com/imgix-js",
   "authors": [
     "imgix"
@@ -9,25 +9,25 @@
   "main": "dist/imgix.min.js",
   "keywords": [
     "cdn",
-  "cross-domain",
-  "cross-site",
-  "effects",
-  "file",
-  "fluid",
-  "image",
-  "images",
-  "imgix",
-  "jquery",
-  "manipulation",
-  "photo",
-  "photos",
-  "picture",
-  "pictures",
-  "preview",
-  "responsive",
-  "thumbnail",
-  "thumbnails",
-  "transformations"
+    "cross-domain",
+    "cross-site",
+    "effects",
+    "file",
+    "fluid",
+    "image",
+    "images",
+    "imgix",
+    "jquery",
+    "manipulation",
+    "photo",
+    "photos",
+    "picture",
+    "pictures",
+    "preview",
+    "responsive",
+    "thumbnail",
+    "thumbnails",
+    "transformations"
   ],
   "license": "BSD-2"
 }

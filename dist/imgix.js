@@ -1,6 +1,6 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 var util = require('./util.js'),
-    targetWidths = require('./targetWidths.js');
+  targetWidths = require('./targetWidths.js');
 
 var ImgixTag = (function() {
   function ImgixTag(el, opts) {
@@ -18,10 +18,13 @@ var ImgixTag = (function() {
     this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
     this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
     this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
-    this.ixHostVal = el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
+    this.ixHostVal =
+      el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
-      throw new Error('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
+      throw new Error(
+        'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.'
+      );
     }
 
     this.baseParams = this._extractBaseParams();
@@ -36,7 +39,10 @@ var ImgixTag = (function() {
       this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
     }
 
-    if (util.isString(this.settings.srcAttribute) && this.el.nodeName == 'IMG') {
+    if (
+      util.isString(this.settings.srcAttribute) &&
+      this.el.nodeName == 'IMG'
+    ) {
       this.el.setAttribute(this.settings.srcAttribute, this.src());
     }
 
@@ -44,10 +50,18 @@ var ImgixTag = (function() {
   }
 
   ImgixTag.prototype._extractBaseParams = function() {
-    var params;
+    var params = {};
+
+    if (
+      this.settings.defaultParams &&
+      typeof this.settings.defaultParams === 'object' &&
+      this.settings.defaultParams !== null
+    ) {
+      params = Object.assign({}, this.settings.defaultParams);
+    }
 
     if (this.ixPathVal) {
-      params = JSON.parse(this.ixParamsVal) || {};
+      params = Object.assign({}, params, JSON.parse(this.ixParamsVal) || {});
 
       // Encode any passed Base64 variant params
       for (var key in params) {
@@ -60,11 +74,9 @@ var ImgixTag = (function() {
       // from that string URL.
       var lastQuestion = this.ixSrcVal.lastIndexOf('?');
 
-      params = {};
-
       if (lastQuestion > -1) {
         var paramString = this.ixSrcVal.substr(lastQuestion + 1),
-            splitParams = paramString.split('&');
+          splitParams = paramString.split('&');
 
         for (var i = 0, splitParam; i < splitParams.length; i++) {
           splitParam = splitParams[i].split('=');
@@ -87,10 +99,10 @@ var ImgixTag = (function() {
     }
 
     var path = this.ixPathVal,
-        protocol = this.settings.useHttps ? 'https' : 'http',
-        url = protocol + '://' + this.ixHostVal,
-        hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
-        pathStartsWithSlash = path[0] === '/';
+      protocol = this.settings.useHttps ? 'https' : 'http',
+      url = protocol + '://' + this.ixHostVal,
+      hostEndsWithSlash = this.ixHostVal.substr(-1) === '/',
+      pathStartsWithSlash = path[0] === '/';
 
     // Make sure we don't end up with 2 or 0 slashes between
     // the host and path portions of the generated URL
@@ -102,17 +114,16 @@ var ImgixTag = (function() {
       url += path;
     }
 
-    url += '?'
+    url += '?';
     var params = [],
-        param;
+      param;
     for (var key in this.baseParams) {
       param = this.baseParams[key];
-
-      if (typeof param === 'undefined') {
-        params.push(encodeURIComponent(key));
-      } else {
-        params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
+      if (param == null) {
+        continue;
       }
+
+      params.push(encodeURIComponent(key) + '=' + encodeURIComponent(param));
     }
 
     url += params.join('&');
@@ -122,15 +133,17 @@ var ImgixTag = (function() {
 
   ImgixTag.prototype._buildSrcsetPair = function(targetWidth) {
     var clonedParams = util.shallowClone(this.baseParams);
-    clonedParams.w = targetWidth
+    clonedParams.w = targetWidth;
 
     if (this.baseParams.w != null && this.baseParams.h != null) {
-      clonedParams.h = Math.round(targetWidth * (this.baseParams.h / this.baseParams.w));
+      clonedParams.h = Math.round(
+        targetWidth * (this.baseParams.h / this.baseParams.w)
+      );
     }
 
     var url = this.baseUrlWithoutQuery + '?',
-        val,
-        params = [];
+      val,
+      params = [];
     for (var key in clonedParams) {
       val = clonedParams[key];
       params.push(key + '=' + val);
@@ -138,7 +151,7 @@ var ImgixTag = (function() {
 
     url += params.join('&');
 
-    return url + ' ' + targetWidth + 'w'
+    return url + ' ' + targetWidth + 'w';
   };
 
   ImgixTag.prototype.src = function() {
@@ -169,7 +182,7 @@ var ImgixTag = (function() {
   };
 
   return ImgixTag;
-}());
+})();
 
 module.exports = ImgixTag;
 
@@ -179,6 +192,7 @@ module.exports = {
   host: null,
   useHttps: true,
   includeLibraryParam: true,
+  defaultParams: {},
 
   // Output element attributes
   srcAttribute: 'src',
@@ -195,14 +209,16 @@ module.exports = {
 },{}],3:[function(require,module,exports){
 (function (global){
 var ImgixTag = require('./ImgixTag.js'),
-    util = require('./util.js'),
-    defaultConfig = require('./defaultConfig');
+  util = require('./util.js'),
+  defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.3.2';
+var VERSION = '3.4.0';
 
 function getMetaTagValue(propertyName) {
-  var metaTag = document.querySelector('meta[property="ix:' + propertyName + '"]'),
-      metaTagContent;
+  var metaTag = document.querySelector(
+      'meta[property="ix:' + propertyName + '"]'
+    ),
+    metaTagContent;
 
   if (!metaTag) {
     return;
@@ -248,9 +264,12 @@ util.domReady(function() {
     var metaTagValue = getMetaTagValue(key);
 
     if (typeof metaTagValue !== 'undefined') {
+      const defaultConfigType = typeof defaultConfig[key];
       // Only allow boolean values for boolean configs
-      if (typeof defaultConfig[key] === 'boolean') {
+      if (defaultConfigType === 'boolean') {
         global.imgix.config[key] = !!metaTagValue;
+      } else if (defaultConfigType === 'object' && defaultConfig[key] != null) {
+        global.imgix.config[key] = JSON.parse(metaTagValue) || {};
       } else {
         global.imgix.config[key] = metaTagValue;
       }
@@ -264,156 +283,27 @@ util.domReady(function() {
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./ImgixTag.js":1,"./defaultConfig":2,"./util.js":5}],4:[function(require,module,exports){
-var util = require('./util.js');
-
-var MAXIMUM_SCREEN_WIDTH = 2560 * 2;
-var SCREEN_STEP = 100;
-
-// Screen data from http://mydevice.io/devices/
-
-// Phones
-var IPHONE = { cssWidth: 320, dpr: 1 };
-var IPHONE_4 = { cssWidth: 320, dpr: 2 };
-var IPHONE_6 = { cssWidth: 375, dpr: 2 };
-var LG_G3 = { cssWidth: 360, dpr: 4 };
-
-// Phablets
-var IPHONE_6_PLUS = { cssWidth: 414, dpr: 3 };
-var IPHONE_6_PLUS_LANDSCAPE = { cssWidth: 736, dpr: 3 };
-var MOTO_NEXUS_6 = { cssWidth: 412, dpr: 3.5 };
-var MOTO_NEXUS_6_LANDSCAPE = { cssWidth: 690, dpr: 3.5 };
-var LUMIA_1520 = { cssWidth: 432, dpr: 2.5 };
-var LUMIA_1520_LANDSCAPE = { cssWidth: 768, dpr: 2.5 };
-var GALAXY_NOTE_3 = { cssWidth: 360, dpr: 3 };
-var GALAXY_NOTE_3_LANDSCAPE = { cssWidth: 640, dpr: 3 };
-var GALAXY_NOTE_4 = { cssWidth: 360, dpr: 4 };
-var GALAXY_NOTE_4_LANDSCAPE = { cssWidth: 640, dpr: 4 };
-
-// Tablets
-var IPAD = { cssWidth: 768, dpr: 1 };
-var IPAD_LANDSCAPE = { cssWidth: 1024, dpr: 1 };
-var IPAD_3 = { cssWidth: 768, dpr: 2 };
-var IPAD_3_LANDSCAPE = { cssWidth: 1024, dpr: 2 };
-var IPAD_PRO = { cssWidth: 1024, dpr: 2 };
-var IPAD_PRO_LANDSCAPE = { cssWidth: 1366, dpr: 2 };
-
-// Bootstrap breakpoints
-var BOOTSTRAP_SM = { cssWidth: 576, dpr: 1 };
-var BOOTSTRAP_SM_2X = { cssWidth: 576, dpr: 2 };
-var BOOTSTRAP_MD = { cssWidth: 720, dpr: 1 };
-var BOOTSTRAP_MD_2X = { cssWidth: 720, dpr: 2 };
-var BOOTSTRAP_LG = { cssWidth: 940, dpr: 1 };
-var BOOTSTRAP_LG_2X = { cssWidth: 940, dpr: 2 };
-var BOOTSTRAP_XL = { cssWidth: 1140, dpr: 1 };
-var BOOTSTRAP_XL_2X = { cssWidth: 1140, dpr: 2 };
-
-var PHONES = [IPHONE, IPHONE_4, IPHONE_6, LG_G3];
-
-var TABLETS = [
-  IPAD,
-  IPAD_LANDSCAPE,
-  IPAD_3,
-  IPAD_3_LANDSCAPE,
-  IPAD_PRO,
-  IPAD_PRO_LANDSCAPE
-];
-
-var PHABLETS = [
-  IPHONE_6_PLUS,
-  IPHONE_6_PLUS_LANDSCAPE,
-  MOTO_NEXUS_6,
-  MOTO_NEXUS_6_LANDSCAPE,
-  LUMIA_1520,
-  LUMIA_1520_LANDSCAPE,
-  GALAXY_NOTE_3,
-  GALAXY_NOTE_3_LANDSCAPE,
-  GALAXY_NOTE_4,
-  GALAXY_NOTE_4_LANDSCAPE
-];
-
-var BOOTSTRAP_BREAKS = [
-  BOOTSTRAP_SM,
-  BOOTSTRAP_SM_2X,
-  BOOTSTRAP_MD,
-  BOOTSTRAP_MD_2X,
-  BOOTSTRAP_LG,
-  BOOTSTRAP_LG_2X,
-  BOOTSTRAP_XL,
-  BOOTSTRAP_XL_2X
-];
-
-function devices() {
-  return PHONES.concat(PHABLETS, TABLETS, BOOTSTRAP_BREAKS);
-}
-
-function deviceWidths() {
-  var device, i, len;
-  var ref = devices();
-  var widths = [];
-
-  for (i = 0, len = ref.length; i < len; i++) {
-    device = ref[i];
-    widths.push(device.cssWidth * device.dpr);
-  }
-
-  return widths;
-}
-
-// Generates an array of physical screen widths to represent
-// the different potential viewport sizes.
-//
-// We step by `SCREEN_STEP` to give some sanity to the amount
-// of widths we output.
-//
-// The upper bound is the widest known screen on the planet.
-// @return {Array} An array of {Fixnum} instances
-function screenWidths() {
-  var widths = [];
-
-  for (var i = SCREEN_STEP; i < MAXIMUM_SCREEN_WIDTH; i += SCREEN_STEP) {
-    widths.push(i);
-  }
-  widths.push(MAXIMUM_SCREEN_WIDTH);
-
-  return widths;
-}
-
-// Return the widths to generate given the input `sizes`
-// attribute.
-//
-// @return {Array} An array of {Fixnum} instances representing the unique `srcset` URLs to generate.
 function targetWidths() {
-  var hasWin = typeof window !== 'undefined',
-      allWidths = deviceWidths().concat(screenWidths()),
-      selectedWidths = [],
-      dpr = hasWin && window.devicePixelRatio ? window.devicePixelRatio : 1,
-      maxPossibleWidth = hasWin ?
-        Math.max(window.screen.availWidth, window.screen.availHeight) :
-        MAXIMUM_SCREEN_WIDTH,
-      minScreenWidthRequired = SCREEN_STEP,
-      maxScreenWidthRequired = hasWin ?
-        Math.floor(maxPossibleWidth * dpr) :
-        MAXIMUM_SCREEN_WIDTH;
+  var resolutions = [];
+  var prev = 100;
+  var INCREMENT_PERCENTAGE = 8;
+  var MAX_SIZE = 8192;
 
-  var width, i;
-  for (i = 0; i < allWidths.length; i++) {
-    width = allWidths[i];
-
-    if (width <= maxScreenWidthRequired && width >= minScreenWidthRequired) {
-      selectedWidths.push(width);
-    }
+  function ensureEven(n) {
+    return 2 * Math.round(n / 2);
   }
 
-  selectedWidths.push(maxScreenWidthRequired);
+  while (prev <= MAX_SIZE) {
+    resolutions.push(ensureEven(prev));
+    prev *= 1 + (INCREMENT_PERCENTAGE / 100) * 2;
+  }
 
-  return util.uniq(selectedWidths).sort(function(x, y) {
-    return x - y;
-  });
+  return resolutions;
 }
 
 module.exports = targetWidths();
 
-},{"./util.js":5}],5:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 module.exports = {
   compact: function(arr) {
     var compactedArr = [];
@@ -442,8 +332,8 @@ module.exports = {
   },
   uniq: function(arr) {
     var n = {},
-        r = [],
-        i;
+      r = [],
+      i;
 
     for (i = 0; i < arr.length; i++) {
       if (!n[arr[i]]) {
@@ -456,7 +346,7 @@ module.exports = {
   },
   objectEach: function(obj, iterator) {
     for (var key in obj) {
-      if(obj.hasOwnProperty(key)) {
+      if (obj.hasOwnProperty(key)) {
         iterator(obj[key], key);
       }
     }
@@ -466,18 +356,20 @@ module.exports = {
   },
   encode64: function(str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
-        b64Str = btoa(encodedUtf8Str),
-        urlSafeB64Str = b64Str.replace(/\+/g, '-');
+      b64Str = btoa(encodedUtf8Str),
+      urlSafeB64Str = b64Str.replace(/\+/g, '-');
 
-    urlSafeB64Str = urlSafeB64Str.replace(/\//g, '_')
-      .replace(/\//g, '_').replace(/\=+$/, '');
+    urlSafeB64Str = urlSafeB64Str
+      .replace(/\//g, '_')
+      .replace(/\//g, '_')
+      .replace(/\=+$/, '');
 
     return urlSafeB64Str;
   },
   decode64: function(urlSafeB64Str) {
     var b64Str = urlSafeB64Str.replace(/-/g, '+').replace(/_/g, '/'),
-        encodedUtf8Str = atob(b64Str),
-        str = decodeURIComponent(escape(encodedUtf8Str));
+      encodedUtf8Str = atob(b64Str),
+      str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
   },
@@ -494,6 +386,6 @@ module.exports = {
       });
     }
   }
-}
+};
 
 },{}]},{},[3]);
