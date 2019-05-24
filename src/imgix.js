@@ -54,7 +54,7 @@ util.domReady(function() {
     var metaTagValue = getMetaTagValue(key);
 
     if (typeof metaTagValue !== 'undefined') {
-      const defaultConfigType = typeof defaultConfig[key];
+      var defaultConfigType = typeof defaultConfig[key];
       // Only allow boolean values for boolean configs
       if (defaultConfigType === 'boolean') {
         global.imgix.config[key] = !!metaTagValue;
