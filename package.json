@@ -23,16 +23,16 @@
     "test:watch": "chokidar \"src/*.js\" \"spec/*.js\" -c \"npm run test\""
   },
   "devDependencies": {
-    "atob": "^2.0.3",
-    "browserify": "^13.0.0",
-    "btoa": "^1.1.2",
-    "chokidar-cli": "^1.2.1",
-    "gulp": "^3.9.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.5.3",
-    "jasmine": "^2.4.1",
-    "prettier": "^1.15.2",
-    "standard-version": "^4.4.0",
-    "uglify-js": "^2.6.2"
+    "atob": "2.1.2",
+    "browserify": "13.3.0",
+    "btoa": "1.2.1",
+    "chokidar-cli": "1.2.1",
+    "gulp": "3.9.1",
+    "gulp-rename": "1.4.0",
+    "gulp-uglify": "1.5.4",
+    "jasmine": "2.99.0",
+    "prettier": "1.15.2",
+    "standard-version": "4.4.0",
+    "uglify-js": "2.8.29"
   }
 }
