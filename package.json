@@ -32,7 +32,7 @@
     "gulp-uglify": "1.5.4",
     "jasmine": "3.4.0",
     "prettier": "1.18.2",
-    "standard-version": "4.4.0",
+    "standard-version": "6.0.1",
     "uglify-js": "2.8.29"
   }
 }
