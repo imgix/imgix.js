@@ -27,7 +27,7 @@
     "browserify": "13.3.0",
     "btoa": "1.2.1",
     "chokidar-cli": "1.2.2",
-    "gulp": "3.9.1",
+    "gulp": "4.0.2",
     "gulp-rename": "1.4.0",
     "gulp-uglify": "1.5.4",
     "jasmine": "2.99.0",
