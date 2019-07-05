@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "atob": "2.1.2",
-    "browserify": "16.2.3",
+    "browserify": "16.3.0",
     "btoa": "1.2.1",
     "chokidar-cli": "1.2.2",
     "gulp": "4.0.2",
