@@ -30,7 +30,7 @@
     "gulp": "4.0.2",
     "gulp-rename": "1.4.0",
     "gulp-uglify": "3.0.2",
-    "jasmine": "3.4.0",
+    "jasmine": "3.5.0",
     "prettier": "1.18.2",
     "standard-version": "7.0.0",
     "uglify-js": "3.6.0"
