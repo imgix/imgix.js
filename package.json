@@ -26,7 +26,7 @@
     "atob": "2.1.2",
     "browserify": "16.5.0",
     "btoa": "1.2.1",
-    "chokidar-cli": "2.0.0",
+    "chokidar-cli": "2.1.0",
     "gulp": "4.0.2",
     "gulp-rename": "1.4.0",
     "gulp-uglify": "3.0.2",
