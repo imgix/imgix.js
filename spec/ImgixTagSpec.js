@@ -171,7 +171,8 @@ describe('ImgixTag', function() {
 
     it('errors if neither `imgix.host` or `ix-host` are specified, but the passed element has `ix-path`', function() {
       global.mockElement['ix-path'] = 'dogs.jpg';
-      var expected_warning = 'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.';
+      var expected_warning =
+        'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.';
 
       stub = sinon.stub(console, 'warn').callsFake(function(warning) {
         expect(warning).toEqual(expected_warning);
@@ -182,7 +183,8 @@ describe('ImgixTag', function() {
 
     it('errors if `ix-src` is passed an empty string', function() {
       global.mockElement['ix-src'] = '';
-      var expected_warning = '`ix-src` cannot accept a value of empty string ""';
+      var expected_warning =
+        '`ix-src` cannot accept a value of empty string ""';
 
       stub = sinon.stub(console, 'warn').callsFake(function(warning) {
         expect(warning).toEqual(expected_warning);
@@ -193,7 +195,8 @@ describe('ImgixTag', function() {
 
     it('errors if `ix-path` is passed an empty string', function() {
       global.mockElement['ix-path'] = '';
-      var expected_warning = '`ix-path` cannot accept a value of empty string ""';
+      var expected_warning =
+        '`ix-path` cannot accept a value of empty string ""';
 
       stub = sinon.stub(console, 'warn').callsFake(function(warning) {
         expect(warning).toEqual(expected_warning);

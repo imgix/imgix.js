@@ -8,8 +8,7 @@ var ImgixTag = (function() {
 
     if (!this.el) {
       console.warn('ImgixTag must be passed a DOM element.');
-    }
-    else {
+    } else {
       if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
         return;
       }
@@ -21,15 +20,20 @@ var ImgixTag = (function() {
         el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
 
       if (this.ixPathVal && !this.ixHostVal) {
-        console.warn('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
-      }
-      else if (typeof this.ixPathVal === 'string' && this.ixPathVal.length == 0) {
+        console.warn(
+          'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.'
+        );
+      } else if (
+        typeof this.ixPathVal === 'string' &&
+        this.ixPathVal.length == 0
+      ) {
         console.warn('`ix-path` cannot accept a value of empty string ""');
-      }
-      else if (typeof this.ixSrcVal === 'string' && this.ixSrcVal.length == 0) {
+      } else if (
+        typeof this.ixSrcVal === 'string' &&
+        this.ixSrcVal.length == 0
+      ) {
         console.warn('`ix-src` cannot accept a value of empty string ""');
-      }
-      else{
+      } else {
         this.baseParams = this._extractBaseParams();
         this.baseUrl = this._buildBaseUrl();
         this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
