@@ -7,45 +7,51 @@ var ImgixTag = (function() {
     this.settings = opts || {};
 
     if (!this.el) {
-      throw new Error('ImgixTag must be passed a DOM element.');
+      console.warn('ImgixTag must be passed a DOM element.');
     }
+    else {
+      if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
+        return;
+      }
 
-    if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
-      return;
+      this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
+      this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
+      this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
+      this.ixHostVal =
+        el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
+
+      if (this.ixPathVal && !this.ixHostVal) {
+        console.warn('You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.');
+      }
+      else if (typeof this.ixPathVal === 'string' && this.ixPathVal.length == 0) {
+        console.warn('`ix-path` cannot accept a value of empty string ""');
+      }
+      else if (typeof this.ixSrcVal === 'string' && this.ixSrcVal.length == 0) {
+        console.warn('`ix-src` cannot accept a value of empty string ""');
+      }
+      else{
+        this.baseParams = this._extractBaseParams();
+        this.baseUrl = this._buildBaseUrl();
+        this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
+
+        if (util.isString(this.settings.sizesAttribute)) {
+          this.el.setAttribute(this.settings.sizesAttribute, this.sizes());
+        }
+
+        if (util.isString(this.settings.srcsetAttribute)) {
+          this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
+        }
+
+        if (
+          util.isString(this.settings.srcAttribute) &&
+          this.el.nodeName == 'IMG'
+        ) {
+          this.el.setAttribute(this.settings.srcAttribute, this.src());
+        }
+
+        this.el.setAttribute('ix-initialized', 'ix-initialized');
+      }
     }
-
-    this.ixPathVal = el.getAttribute(this.settings.pathInputAttribute);
-    this.ixParamsVal = el.getAttribute(this.settings.paramsInputAttribute);
-    this.ixSrcVal = el.getAttribute(this.settings.srcInputAttribute);
-    this.ixHostVal =
-      el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
-
-    if (this.ixPathVal && !this.ixHostVal) {
-      throw new Error(
-        'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.'
-      );
-    }
-
-    this.baseParams = this._extractBaseParams();
-    this.baseUrl = this._buildBaseUrl();
-    this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
-
-    if (util.isString(this.settings.sizesAttribute)) {
-      this.el.setAttribute(this.settings.sizesAttribute, this.sizes());
-    }
-
-    if (util.isString(this.settings.srcsetAttribute)) {
-      this.el.setAttribute(this.settings.srcsetAttribute, this.srcset());
-    }
-
-    if (
-      util.isString(this.settings.srcAttribute) &&
-      this.el.nodeName == 'IMG'
-    ) {
-      this.el.setAttribute(this.settings.srcAttribute, this.src());
-    }
-
-    this.el.setAttribute('ix-initialized', 'ix-initialized');
   }
 
   ImgixTag.prototype._extractBaseParams = function() {

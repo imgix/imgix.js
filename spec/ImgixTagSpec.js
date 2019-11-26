@@ -1,6 +1,7 @@
 var ImgixTag = require('../src/ImgixTag.js'),
   btoa = require('btoa'),
-  targetWidths = require('../src/targetWidths');
+  targetWidths = require('../src/targetWidths'),
+  sinon = require('sinon');
 
 const src = 'https://assets.imgix.net/presskit/imgix-presskit.pdf?page=3&w=600';
 const srcWithoutQuery = src.slice(0, src.indexOf('?'));
@@ -47,9 +48,13 @@ describe('ImgixTag', function() {
 
   describe('#initialize', function() {
     it('errors if initialized without a DOM element', function() {
-      expect(function() {
-        new ImgixTag();
-      }).toThrow();
+      var expected_warning = 'ImgixTag must be passed a DOM element.';
+
+      stub = sinon.stub(console, 'warn').callsFake(function(warning) {
+        expect(warning).toEqual(expected_warning);
+      });
+      new ImgixTag();
+      stub.restore();
     });
 
     it('does not error if initialized with a DOM element', function() {
@@ -165,12 +170,36 @@ describe('ImgixTag', function() {
     });
 
     it('errors if neither `imgix.host` or `ix-host` are specified, but the passed element has `ix-path`', function() {
-      delete global.imgix.config.host;
       global.mockElement['ix-path'] = 'dogs.jpg';
+      var expected_warning = 'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.';
 
-      expect(function() {
-        new ImgixTag(global.mockElement, global.imgix.config);
-      }).toThrow();
+      stub = sinon.stub(console, 'warn').callsFake(function(warning) {
+        expect(warning).toEqual(expected_warning);
+      });
+      new ImgixTag(global.mockElement, global.imgix.config);
+      stub.restore();
+    });
+
+    it('errors if `ix-src` is passed an empty string', function() {
+      global.mockElement['ix-src'] = '';
+      var expected_warning = '`ix-src` cannot accept a value of empty string ""';
+
+      stub = sinon.stub(console, 'warn').callsFake(function(warning) {
+        expect(warning).toEqual(expected_warning);
+      });
+      new ImgixTag(global.mockElement, global.imgix.config);
+      stub.restore();
+    });
+
+    it('errors if `ix-path` is passed an empty string', function() {
+      global.mockElement['ix-path'] = '';
+      var expected_warning = '`ix-path` cannot accept a value of empty string ""';
+
+      stub = sinon.stub(console, 'warn').callsFake(function(warning) {
+        expect(warning).toEqual(expected_warning);
+      });
+      new ImgixTag(global.mockElement, global.imgix.config);
+      stub.restore();
     });
 
     it('does not error if `imgix.host` is specified and the passed element has `ix-path`', function() {
