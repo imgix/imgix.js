@@ -8,7 +8,8 @@ var ImgixTag = (function() {
     this.settings = opts || {};
 
     if (!this.el) {
-      throw new Error('ImgixTag must be passed a DOM element.');
+      console.warn('ImgixTag must be passed a DOM element.');
+      return;
     }
 
     if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
@@ -22,9 +23,20 @@ var ImgixTag = (function() {
       el.getAttribute(this.settings.hostInputAttribute) || this.settings.host;
 
     if (this.ixPathVal && !this.ixHostVal) {
-      throw new Error(
+      console.warn(
         'You must set a value for `imgix.config.host` or specify an `ix-host` attribute to use `ix-path` and `ix-params`.'
       );
+      return;
+    }
+
+    if (typeof this.ixPathVal === 'string' && this.ixPathVal.length == 0) {
+      console.warn('`ix-path` cannot accept a value of empty string ""');
+      return;
+    }
+
+    if (typeof this.ixSrcVal === 'string' && this.ixSrcVal.length == 0) {
+      console.warn('`ix-src` cannot accept a value of empty string ""');
+      return;
     }
 
     this.baseParams = this._extractBaseParams();
@@ -212,7 +224,7 @@ var ImgixTag = require('./ImgixTag.js'),
   util = require('./util.js'),
   defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.4.1';
+var VERSION = '3.4.2';
 
 function getMetaTagValue(propertyName) {
   var metaTag = document.querySelector(
