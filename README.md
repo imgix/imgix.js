@@ -17,31 +17,29 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-  - [ix-src](#ix-src)
-  - [ix-path and ix-params](#ix-path-and-ix-params)
-  - [picture tags](#picture-tags)
+  - [`ix-src`](#ix-src)
+  - [`ix-path` and `ix-params`](#ix-path-and-ix-params)
+  - [`picture` tags](#picture-tags)
 - [Advanced Usage](#advanced-usage)
-  - [Overriding ix-host](#overriding-ix-host)
+  - [Overriding `ix-host`](#overriding-ix-host)
   - [Disabling auto-initialization](#disabling-auto-initialization)
   - [Manually initializing imgix.js](#manually-initializing-imgixjs)
-  - [imgix.init() idempotency](#imgixinit-idempotency)
+  - [`imgix.init()` idempotency](#imgixinit-idempotency)
   - [Lazy Loading With lazysizes](#lazy-loading-with-lazysizes)
   - [Custom Input Attributes](#custom-input-attributes)
   - [Null Output Attributes](#null-output-attributes)
   - [Base-64 encoded parameters](#base-64-encoded-parameters)
   - [Default parameters](#default-parameters)
-  - [What is the ixlib param?](#what-is-the-ixlib-param)
+  - [What is the `ixlib` param?](#what-is-the-ixlib-param)
 - [Browser Support](#browser-support)
 - [Meta](#meta)
 
 <a name="overview-and-resources"></a>
 ## Overview / Resources
 
-**This documentation is for imgix.js version `3.0.0` and up. Those using imgix.js `2.x.x` can find documentation in the corresponding version's [readme](https://github.com/imgix/imgix.js/tree/2.2.3) and [API reference](https://github.com/imgix/imgix.js/blob/2.2.3/docs/api.md).**
-
-**Note:** If a Javascript library for generating imgix URLs is desired, consider using [imgix-core-js](https://github.com/imgix/imgix-core-js) instead.
-
 `imgix.js` allows developers to easily generate responsive images using the `srcset` and `sizes` attributes, or the `picture` element. This lets you write a single image URL that is parsed and used to make images look great at any screen size, by using [imgix](https://imgix.com) to process and resize your images on the fly.
+
+**Note:** imgix.js is designed to run in the browser, manipulating existing `<img>` elements on an HTML page. If you're looking for a JavaScript library that can programmatically generate imgix URLs, consider using [imgix-core-js](https://github.com/imgix/imgix-core-js) instead.
 
 **Before getting started with imgix.js**, it is _highly recommended_ that you read Eric Portis' [seminal article on `srcset` and `sizes`](https://ericportis.com/posts/2014/srcset-sizes/). This article explains the history of responsive images in responsive design, why they're necessary, and how all these technologies work together to save bandwidth and provide a better experience for users. The primary goal of `imgix.js` is to make these tools easier for developers to implement, so having an understanding of how they work will significantly improve your `imgix.js` experience.
 
