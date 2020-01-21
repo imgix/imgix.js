@@ -34,7 +34,6 @@
 - [Browser Support](#browser-support)
 - [Meta](#meta)
 
-<a name="overview-and-resources"></a>
 ## Overview / Resources
 
 `imgix.js` allows developers to easily generate responsive images using the `srcset` and `sizes` attributes, or the `picture` element. This lets you write a single image URL that is parsed and used to make images look great at any screen size, by using [imgix](https://imgix.com) to process and resize your images on the fly.
@@ -48,7 +47,6 @@ Below are some other articles that help explain responsive imagery, and how it c
 - [Using imgix with `<picture>`](https://docs.imgix.com/tutorials/using-imgix-picture-element). Discusses the differences between art direction and resolution switching, and provides examples of how to accomplish art direction with imgix.
 - [Responsive Images with `srcset` and imgix](https://docs.imgix.com/tutorials/responsive-images-srcset-imgix). A look into how imgix can work with `srcset` and `sizes` to serve the right image.
 
-<a name="installation"></a>
 ## Installation
 
 There are several ways to install `imgix.js`. The appropriate method depends on your project.
@@ -61,7 +59,6 @@ If your build process will re-run `dist/imgix.js` or `dist/imgix.min.js` through
 
 Once `imgix.js` has been included on the page, it will automatically run once, after the `DOMContentLoaded` event fires. This will detect and process all `img`, `picture`, and `source` tags on the page that are set up to use `imgix.js` as described in the [Usage](#usage) section of this README.
 
-<a name="configuration"></a>
 ## Configuration
 
 `imgix.js` has two important global options:
@@ -88,12 +85,10 @@ The other way is to manually set these options on the `imgix.config` object. Not
 </script>
 ```
 
-<a name="usage"></a>
 ## Usage
 
 After installation and set up are complete, one can begin adding responsive images to the page through one of few ways:
 
-<a name="ix-src"></a>
 ### `ix-src`
 
 Creates an `img` tag with the `ix-src` attribute:
@@ -128,7 +123,6 @@ This will generate HTML something like the following:
 
 Since imgix can generate as many derivative resolutions as needed, `imgix.js` calculates them programmatically, using the dimensions you specify (note that the `w` and `h` params scale appropriately to maintain the correct aspect ratio). All of this information has been placed into the `srcset` and `sizes` attributes. Because of this, imgix.js no longer needs to watch or change the `img` tag, as all responsiveness will be handled automatically by the browser as the page is resized.
 
-<a name="ix-path-and-ix-params"></a>
 ### `ix-path` and `ix-params`
 
 If [configured](#configuration) with a global `host` option, `imgix.js` can use the `ix-path` and `ix-params` attributes instead of `ix-src`. The `ix-path` attribute is used to specify the path to an image, and the `ix-params` attribute is used to define the [imgix URL API parameters](https://docs.imgix.com/apis/url) to be applied to the image. Using these two attributes instead of `ix-src` has several advantages:
@@ -154,7 +148,6 @@ Here's how the previous example would be written out using `ix-path` and `ix-par
 
 **Please note**: `ix-params` must be a valid JSON string. This means that keys and string values must be surrounded by double quotes, e.g., `"fit": "crop"`.
 
-<a name="picture-tags"></a>
 ### `picture` tags
 
 If an art-directed image is desired, `imgix.js` plays nicely with the `picture` tag. This allows for specifying more advanced responsive images, by changing properties such as the crop and aspect ratio for different screens. To get started, construct a `picture` tag with a `source` attribute for each art-directed image, and a fallback `img` tag. If new to using the `picture` tag, consider reading our [tutorial](https://docs.imgix.com/tutorials/using-imgix-picture-element) to learn more about how it works.
@@ -198,10 +191,8 @@ The `source` tags can be used with `ix-src` or `ix-path` and `ix-params`, just l
 </picture>
 ```
 
-<a name="advanced-usage"></a>
 ## Advanced Usage
 
-<a name="overriding-ix-host"></a>
 ### Overriding `ix-host`
 
 When displaying images between multiple imgix Sources, the `host` option can be overridden on any `img` or `source` tag by specifying an `ix-host` attribute in the tag:
@@ -220,7 +211,6 @@ When displaying images between multiple imgix Sources, the `host` option can be 
 >
 ```
 
-<a name="disabling-auto-initialization"></a>
 ### Disabling auto-initialization
 
 By default, `imgix.js` will automatically run as soon as the `DOMContentLoaded` event fires, immediately processing all `img` and `source` tags on the page that are set up to use `imgix.js`. This auto-initialization behavior can be disabled by including the following `meta` tag in the document's `head`:
@@ -231,7 +221,6 @@ By default, `imgix.js` will automatically run as soon as the `DOMContentLoaded` 
 </head>
 ```
 
-<a name="manually-initializing-imgix-js"></a>
 ### Manually initializing imgix.js
 
 If auto-initialization is disabled as [described above](#disabling-auto-initialization), `imgix.js` will need to be run manually in order to process the `img` and `source` tags on the page. This can be done by invoking `imgix.init()`.
@@ -245,7 +234,6 @@ imgix.init({
 });
 ```
 
-<a name="imgix-init-idempotency"></a>
 ### `imgix.init()` idempotency
 
 Whether `imgix.init()` is run automatically when the `DOMContentLoaded` event fires or [manually initialized](#manually-initializing-imgix-js), it will always be **idempotent**. This means that `img` and `source` tags that have already been processed by imgix.js will not be re-processed by subsequent calls.
@@ -258,7 +246,6 @@ imgix.init({
 })
 ```
 
-<a name="lazy-loading-with-lazysizes"></a>
 ### Lazy Loading With [lazysizes](https://github.com/aFarkas/lazysizes)
 
 If lazy loading images is desired, we recommend using [lazysizes](https://github.com/aFarkas/lazysizes). In order to use `imgix.js` with lazysizes, generate images using lazysizes-compatible attributes instead of the standard `src`, `srcset`, and `sizes` by changing some configuration settings:
@@ -281,7 +268,6 @@ imgix.config.srcsetAttribute = 'data-srcset';
 imgix.config.sizesAttribute = 'data-sizes';
 ```
 
-<a name="custom-input-attributes"></a>
 ### Custom Input Attributes
 
 `imgix.js` defaults to pulling its data from the `ix-src`, `ix-path`, `ix-params`, and `ix-host` attributes. If custom input attributes are desired, they can be specified by changing some configuration settings. This can be useful if, say, there is a concern about W3C compliance.
@@ -306,7 +292,6 @@ imgix.config.paramsInputAttribute = 'data-ix-params';
 imgix.config.hostInputAttribute = 'data-ix-host';
 ```
 
-<a name="null-output-attributes"></a>
 ### Null Output Attributes
 
 In rare cases, it may be undesirable to have `imgix.js` modify the `src`, `srcset`, or `sizes` attributes of the `<img>` elements it's targeting. In such cases, the default behavior can be overriden by setting some configuration values to `null`:
@@ -329,7 +314,6 @@ imgix.config.srcsetAttribute = null;
 imgix.config.sizesAttribute = null;
 ```
 
-<a name="base-64-encoded-parameters"></a>
 ### Base-64 encoded parameters
 
 All of imgix's API parameters can be provided as [Base64 variants](https://docs.imgix.com/apis/url#base64-variants). This is especially useful when providing text for the `txt` parameter, or URLs for parameters such as `mark` or `blend`.
@@ -356,7 +340,6 @@ When providing a URL with parameters via the `ix-src` attribute, note that the v
 >
 ```
 
-<a name="default-parameters"></a>
 ### Default parameters
 
 If a default set of parameters are desired, they can be extracted out into a global config using `imgix.defaultParameters`. These settings will become the default paramters for each imgix tag globally, before any specific parameters are loaded from `ix-params` or `ix-src`
@@ -379,7 +362,6 @@ imgix.config.defaultParams = {
 
 ```
 
-<a name="what-is-the-ixlib-param"></a>
 ### What is the `ixlib` param?
 
 For security and diagnostic purposes, we default to signing all requests with the language and version of library used to generate the URL. This can be disabled by setting the `includeLibraryParam` configuration option to `false`.
@@ -398,14 +380,11 @@ Using JavaScript:
 imgix.config.includeLibraryParam = false;
 ```
 
-
-<a name="browser-support"></a>
 ## Browser Support
 
 - By default, browsers that don't support [`srcset`](http://caniuse.com/#feat=srcset), [`sizes`](http://caniuse.com/#feat=srcset), or [`picture`](http://caniuse.com/#feat=picture) will gracefully fall back to the default `img` `src` when appropriate. If you want to provide a fully-responsive experience for these browsers, `imgix.js` works great alongside [Picturefill](https://github.com/scottjehl/picturefill)!
 - If using [Base64 variant params](https://docs.imgix.com/apis/url#base64-variants) and require IE <= 9 support, we recommend using a polyfill for `atob`/`btoa`, such as [Base64.js](https://github.com/davidchambers/Base64.js).
 
-<a name="meta"></a>
 ## Meta
 
 `imgix.js` was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/master/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/master/CONTRIBUTING.md) before getting started.
