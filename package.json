@@ -33,7 +33,7 @@
     "jasmine": "3.5.0",
     "prettier": "2.0.5",
     "sinon": "9.0.2",
-    "standard-version": "8.0.1",
+    "standard-version": "8.0.2",
     "uglify-js": "3.10.0"
   }
 }
