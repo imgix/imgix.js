@@ -4,10 +4,10 @@
 `imgix.js` is a dependency-free JavaScript library for the browser that allows for easy integration of [imgix](https://www.imgix.com) into websites.
 
 [![NPM Version](https://img.shields.io/npm/v/imgix.js.svg)](https://www.npmjs.com/package/imgix.js)
-[![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=master)](https://travis-ci.org/imgix/imgix.js)
+[![Build Status](https://travis-ci.org/imgix/imgix.js.svg?branch=main)](https://travis-ci.org/imgix/imgix.js)
 [![Monthly Downloads](https://img.shields.io/npm/dm/imgix.js.svg)](https://www.npmjs.com/package/imgix.js)
 [![Minified Size](https://img.shields.io/bundlephobia/min/imgix.js)](https://bundlephobia.com/result?p=imgix.js)
-[![License](https://img.shields.io/github/license/imgix/imgix.js)](https://github.com/imgix/imgix.js/blob/master/LICENSE.md)
+[![License](https://img.shields.io/github/license/imgix/imgix.js)](https://github.com/imgix/imgix.js/blob/main/LICENSE.md)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ---
@@ -387,4 +387,4 @@ imgix.config.includeLibraryParam = false;
 
 ## Meta
 
-`imgix.js` was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/master/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/master/CONTRIBUTING.md) before getting started.
+`imgix.js` was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/main/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/main/CONTRIBUTING.md) before getting started.
