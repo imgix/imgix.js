@@ -483,7 +483,7 @@ N/A
 
 ## Features
 
-* `fluid` now accepts an element to operate on as an optional first parameter, instead of the entire document ([See docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid)).
+* `fluid` now accepts an element to operate on as an optional first parameter, instead of the entire document ([See docs](https://github.com/imgix/imgix.js/blob/main/docs/api.md#imgix.fluid)).
 
 ## Bug Fixes
 
@@ -505,7 +505,7 @@ This release fixes a race condition when using the `onLoad` callback with `imgix
 
 ## Features
 
-* `attachGradientTo` no longer requires a base color to be passed. `rgba` colors are now valid as well.  [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.URL#attachGradientTo)
+* `attachGradientTo` no longer requires a base color to be passed. `rgba` colors are now valid as well.  [see docs](https://github.com/imgix/imgix.js/blob/main/docs/api.md#imgix.URL#attachGradientTo)
 
 ## Bug Fixes
 
@@ -516,9 +516,9 @@ N/A
 
 ## Features
 
-* `attachGradientTo` added to `imgix.URL` [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.URL#attachGradientTo)
-* `lazyColorSet` config option added to `imgix.fluid` [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid)
-* `onLoad` config callback added to `imgix.fluid` [see docs](https://github.com/imgix/imgix.js/blob/master/docs/api.md#imgix.fluid)
+* `attachGradientTo` added to `imgix.URL` [see docs](https://github.com/imgix/imgix.js/blob/main/docs/api.md#imgix.URL#attachGradientTo)
+* `lazyColorSet` config option added to `imgix.fluid` [see docs](https://github.com/imgix/imgix.js/blob/main/docs/api.md#imgix.fluid)
+* `onLoad` config callback added to `imgix.fluid` [see docs](https://github.com/imgix/imgix.js/blob/main/docs/api.md#imgix.fluid)
 
 ## Bug Fixes
 
