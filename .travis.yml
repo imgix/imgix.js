@@ -17,5 +17,5 @@ addons:
 
 branches:
   only:
-    - master
+    - main
     - /release.*/
