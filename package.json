@@ -32,7 +32,7 @@
     "gulp-uglify": "3.0.2",
     "jasmine": "3.6.1",
     "prettier": "2.0.5",
-    "sinon": "9.0.2",
+    "sinon": "9.0.3",
     "standard-version": "9.0.0",
     "uglify-js": "3.10.1"
   }
