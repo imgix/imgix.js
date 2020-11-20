@@ -31,7 +31,7 @@
     "gulp-rename": "2.0.0",
     "gulp-uglify": "3.0.2",
     "jasmine": "3.6.3",
-    "prettier": "2.1.2",
+    "prettier": "2.2.0",
     "sinon": "9.2.1",
     "standard-version": "9.0.0",
     "uglify-js": "3.11.6"
