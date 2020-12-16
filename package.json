@@ -34,6 +34,6 @@
     "prettier": "2.2.1",
     "sinon": "9.2.2",
     "standard-version": "9.0.0",
-    "uglify-js": "3.12.1"
+    "uglify-js": "3.12.2"
   }
 }
