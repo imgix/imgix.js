@@ -9,6 +9,7 @@
 [![Minified Size](https://img.shields.io/bundlephobia/min/imgix.js)](https://bundlephobia.com/result?p=imgix.js)
 [![License](https://img.shields.io/github/license/imgix/imgix.js)](https://github.com/imgix/imgix.js/blob/main/LICENSE.md)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fimgix.js.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fimgix.js?ref=badge_shield)
 
 ---
 <!-- /ix-docs-ignore -->
@@ -17,22 +18,23 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-  - [`ix-src`](#ix-src)
-  - [`ix-path` and `ix-params`](#ix-path-and-ix-params)
-  - [`picture` tags](#picture-tags)
+    * [`ix-src`](#ix-src)
+    * [`ix-path` and `ix-params`](#ix-path-and-ix-params)
+    * [`picture` tags](#picture-tags)
 - [Advanced Usage](#advanced-usage)
-  - [Overriding `ix-host`](#overriding-ix-host)
-  - [Disabling auto-initialization](#disabling-auto-initialization)
-  - [Manually initializing imgix.js](#manually-initializing-imgixjs)
-  - [`imgix.init()` idempotency](#imgixinit-idempotency)
-  - [Lazy Loading With lazysizes](#lazy-loading-with-lazysizes)
-  - [Custom Input Attributes](#custom-input-attributes)
-  - [Null Output Attributes](#null-output-attributes)
-  - [Base-64 encoded parameters](#base-64-encoded-parameters)
-  - [Default parameters](#default-parameters)
-  - [What is the `ixlib` param?](#what-is-the-ixlib-param)
+    * [Overriding `ix-host`](#overriding-ix-host)
+    * [Disabling auto-initialization](#disabling-auto-initialization)
+    * [Manually initializing imgix.js](#manually-initializing-imgixjs)
+    * [`imgix.init()` idempotency](#imgixinit-idempotency)
+    * [Lazy Loading With [lazysizes](https://github.com/aFarkas/lazysizes)](#lazy-loading-with-lazysizeshttpsgithubcomafarkaslazysizes)
+    * [Custom Input Attributes](#custom-input-attributes)
+    * [Null Output Attributes](#null-output-attributes)
+    * [Base-64 encoded parameters](#base-64-encoded-parameters)
+    * [Default parameters](#default-parameters)
+    * [What is the `ixlib` param?](#what-is-the-ixlib-param)
 - [Browser Support](#browser-support)
 - [Meta](#meta)
+- [License](#license)
 
 ## Overview / Resources
 
@@ -388,3 +390,6 @@ imgix.config.includeLibraryParam = false;
 ## Meta
 
 `imgix.js` was made by [imgix](http://imgix.com). It's licensed under the BSD 2-Clause license (see the [license file](https://github.com/imgix/imgix.js/blob/main/LICENSE.md) for more info). Any contribution is absolutely welcome, but please review the [contribution guidelines](https://github.com/imgix/imgix.js/blob/main/CONTRIBUTING.md) before getting started.
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fimgix%2Fimgix.js.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fimgix%2Fimgix.js?ref=badge_large)
