@@ -4,31 +4,8 @@ var ImgixTag = require('./ImgixTag.js'),
 
 var VERSION = '3.4.2';
 
-function getMetaTagValue(propertyName) {
-  var metaTag = document.querySelector(
-      'meta[property="ix:' + propertyName + '"]'
-    ),
-    metaTagContent;
-
-  if (!metaTag) {
-    return;
-  }
-
-  metaTagContent = metaTag.getAttribute('content');
-
-  if (metaTagContent === 'true') {
-    return true;
-  } else if (metaTagContent === 'false') {
-    return false;
-  } else if (metaTagContent === '' || metaTagContent === 'null') {
-    return null;
-  } else {
-    return metaTagContent;
-  }
-}
-
 global.imgix = {
-  init: function(opts) {
+  init: function (opts) {
     var settings = util.shallowClone(this.config);
     util.extend(settings, opts || {});
 
@@ -36,7 +13,7 @@ global.imgix = {
       'img[' + settings.srcInputAttribute + ']',
       'source[' + settings.srcInputAttribute + ']',
       'img[' + settings.pathInputAttribute + ']',
-      'source[' + settings.pathInputAttribute + ']'
+      'source[' + settings.pathInputAttribute + ']',
     ].join(',');
 
     var allImgandSourceTags = document.querySelectorAll(elementQuery);
@@ -46,12 +23,12 @@ global.imgix = {
     }
   },
   config: defaultConfig,
-  VERSION: VERSION
+  VERSION: VERSION,
 };
 
-util.domReady(function() {
-  util.objectEach(defaultConfig, function(defaultValue, key) {
-    var metaTagValue = getMetaTagValue(key);
+util.domReady(function () {
+  util.objectEach(defaultConfig, function (defaultValue, key) {
+    var metaTagValue = util.getMetaTagValue(key);
 
     if (typeof metaTagValue !== 'undefined') {
       var defaultConfigType = typeof defaultConfig[key];
@@ -66,7 +43,7 @@ util.domReady(function() {
     }
   });
 
-  if (getMetaTagValue('autoInit') !== false) {
+  if (util.getMetaTagValue('autoInit') !== false) {
     global.imgix.init();
   }
 });
