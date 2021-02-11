@@ -1,5 +1,5 @@
 module.exports = {
-  compact: function(arr) {
+  compact: function (arr) {
     var compactedArr = [];
 
     for (var i = 0; i < arr.length; i++) {
@@ -8,7 +8,7 @@ module.exports = {
 
     return compactedArr;
   },
-  shallowClone: function(obj) {
+  shallowClone: function (obj) {
     var clone = {};
 
     for (var key in obj) {
@@ -17,14 +17,14 @@ module.exports = {
 
     return clone;
   },
-  extend: function(dest, source) {
+  extend: function (dest, source) {
     for (var key in source) {
       dest[key] = source[key];
     }
 
     return dest;
   },
-  uniq: function(arr) {
+  uniq: function (arr) {
     var n = {},
       r = [],
       i;
@@ -38,17 +38,17 @@ module.exports = {
 
     return r;
   },
-  objectEach: function(obj, iterator) {
+  objectEach: function (obj, iterator) {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
         iterator(obj[key], key);
       }
     }
   },
-  isString: function(value) {
+  isString: function (value) {
     return typeof value === 'string';
   },
-  encode64: function(str) {
+  encode64: function (str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
       b64Str = btoa(encodedUtf8Str),
       urlSafeB64Str = b64Str.replace(/\+/g, '-');
@@ -60,24 +60,46 @@ module.exports = {
 
     return urlSafeB64Str;
   },
-  decode64: function(urlSafeB64Str) {
+  decode64: function (urlSafeB64Str) {
     var b64Str = urlSafeB64Str.replace(/-/g, '+').replace(/_/g, '/'),
       encodedUtf8Str = atob(b64Str),
       str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
   },
-  domReady: function(cb) {
+  domReady: function (cb) {
     if (document.readyState === 'complete') {
       setTimeout(cb, 0);
     } else if (document.addEventListener) {
       document.addEventListener('DOMContentLoaded', cb, false);
     } else {
-      document.attachEvent('onreadystatechange', function() {
+      document.attachEvent('onreadystatechange', function () {
         if (document.readyState === 'complete') {
           cb();
         }
       });
     }
-  }
+  },
+  getMetaTagValue: function (propertyName) {
+    var metaTag = document.querySelector(
+        'meta[property="ix:' + propertyName + '"]'
+      ),
+      metaTagContent;
+
+    if (!metaTag) {
+      return;
+    }
+
+    metaTagContent = metaTag.getAttribute('content');
+
+    if (metaTagContent === 'true') {
+      return true;
+    } else if (metaTagContent === 'false') {
+      return false;
+    } else if (metaTagContent === '' || metaTagContent === 'null') {
+      return null;
+    } else {
+      return metaTagContent;
+    }
+  },
 };

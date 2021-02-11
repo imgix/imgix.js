@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <script src="../../dist/imgix.min.js"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="ix:host" content="assets.imgix.net" />
+    <!-- setting https to false for testing, not reccomended -->
+    <meta property="ix:useHttps" content="false" />
+    <meta property="ix:srcInputAttribute" content="test-src" />
+    <meta property="ix:pathInputAttribute" content="test-path" />
+    <meta property="ix:paramsInputAttribute" content="test-params" />
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <style>
+      .example {
+        display: block;
+        vertical-align: top;
+        text-align: center;
+        padding: 1em;
+      }
+      .example img {
+        margin-bottom: 1em;
+        max-width: 100%;
+      }
+      article figure img {
+        max-width: 100%;
+      }
+    </style>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+    <!-- https://assets.imgix.net/base.png?txtsize=20&txtpad=25&txtfont=avenir-black&txtalign=center&txt=A+comparison+of+animals.&markpad=0&markalign=top&ba=top&bx=0&bm=multiply&q=100&fm=pjpg&chromasub=444&usm=10&w=1000&h=400&fit=crop&mark=https%3A%2F%2Fexampletext.imgix.net%2Fimgix-puffins.jpg%3Fw%3D500%26txt%3DPUFFINS&blend=https%3A%2F%2Fexampletext.imgix.net%2Fmothphoto.jpg%3Fw%3D500%26h%3D333%26fit%3Dcrop%26txt%3DMOTH+CREATURE&border=2%2CEF40E7&pad=2&txtclr=EF40E7 -->
+    <div class="example">
+      <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        test-path="/base.png"
+        test-params='{
+          "w": "1000",
+          "h": "400",
+          "q": "100",
+          "fm": "pjpg",
+          "fit": "crop",
+          "usm": "10",
+          "txt-size": "20",
+          "txt-pad": "25",
+          "txt-font": "avenir-black",
+          "txt-align": "center",
+          "txt": "A+comparison of animals.",
+          "markpad": "0",
+          "markalign": "top",
+          "ba": "top",
+          "bx": "0",
+          "bm": "multiply",
+          "chromasub": "444",
+          "mark": "https://exampletext.imgix.net/imgix-puffins.jpg?w=500&txt=PUFFINS",
+          "blend": "https://exampletext.imgix.net/mothphoto.jpg?w=500&h=333&fit=crop&txt=MOTH+CREATURE",
+          "pad": "2",
+          "txtclr": "EF40E7"
+        }'
+      />
+      <br />
+      <a
+        href="https://sandbox.imgix.com/view?url=https%3A%2F%2Fassets.imgix.net%2Fbase.png%3Fbm%3Dmultiply%26h%3D400%26markalign%3Dtop%26txtfont%3Davenir-black%26usm%3D10%26chromasub%3D444%26mark%3Dhttps%253A%252F%252Fexampletext.imgix.net%252Fimgix-puffins.jpg%253Fw%253D500%2526txt%253DPUFFINS%26ba%3Dtop%26fit%3Dcrop%26border%3D2%252CEF40E7%26txtsize%3D20%26q%3D100%26bx%3D0%26txt%3DA%2Bcomparison%2Bof%2Banimals.%26pad%3D2%26txtalign%3Dcenter%26markpad%3D0%26w%3D1000%26txtclr%3DEF40E7%26blend%3Dhttps%253A%252F%252Fexampletext.imgix.net%252Fmothphoto.jpg%253Fw%253D500%2526h%253D333%2526fit%253Dcrop%2526txt%253DMOTH%2BCREATURE%26txtpad%3D25%26fm%3Dpjpg"
+        class="button"
+        target="_blank"
+        >View Parameters</a
+      >
+    </div>
+    <section class="content">
+      <article>
+        <h1>Complex Operations w/ Defaults</h1>
+        <p>
+          Here are two examples of how to create very complex operations,
+          multiple watermarks and blends using multiple imgix sources and hidden
+          default parameters.
+        </p>
+        <p></p>
+        <p>
+          The "g" watermarks are defaults of the exampletext.imgix.net sources,
+          as well as the text formatting. Since these are constant, only the
+          variable aspects of the images get exposed in the URL. Click the
+          button below each image to view the parameter breakdown using imgix
+          <a href="https://sandbox.imgix.com">sandbox</a>.
+        </p>
+        <figure>
+          <img
+            src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+            test-path="/base.png"
+            test-params='{
+              "txtsize": "20",
+              "txtpad": "25",
+              "txtfont": "avenir-black",
+              "txtalign": "center",
+              "txt": "Comparison of two images side by side.",
+              "markpad": "0",
+              "markalign": "top",
+              "ba": "top",
+              "bx": "0",
+              "bm": "multiply",
+              "q": "80",
+              "fm": "pjpg",
+              "chromasub": "444",
+              "usm": "10",
+              "w": "1000",
+              "h": "400",
+              "fit": "crop",
+              "mark": "https://exampletext.imgix.net/one.jpeg?w=500&txt=GREAT+KITCHEN",
+              "blend": "https://exampletext.imgix.net/two.jpeg?w=500&txt=AWESOME+PLACE",
+              "pad": "1",
+              "txtclr": "222"
+            }'
+          />
+          <pre class="single-line sandbox">
+        <a href="https://sandbox.imgix.com/view?url=https%3A%2F%2Fassets.imgix.net%2Fbase.png%3Fbm%3Dmultiply%26h%3D400%26markalign%3Dtop%26txtfont%3Davenir-black%26usm%3D10%26chromasub%3D444%26mark%3Dhttps%253A%252F%252Fexampletext.imgix.net%252Fone.jpeg%253Fw%253D500%2526txt%253DGREAT%2BKITCHEN%26ba%3Dtop%26fit%3Dcrop%26border%3D1%252C777%26txtsize%3D20%26q%3D80%26bx%3D0%26txt%3DComparison%2Bof%2Btwo%2Bimages%2Bside%2Bby%2Bside.%26pad%3D1%26txtalign%3Dcenter%26markpad%3D0%26w%3D1000%26txtclr%3D222%26blend%3Dhttps%253A%252F%252Fexampletext.imgix.net%252Ftwo.jpeg%253Fw%253D500%2526txt%253DAWESOME%2BPLACE%26txtpad%3D25%26fm%3Dpjpg" class="sandbox-link" title="View in Sandbox" target="_blank">View in Sandbox</a>
+        <code>https://assets.imgix.net/base.png?txtsize=20&txtpad=25&txtfont=avenir-black&txtalign=center&txt=A+comparison+of+animals.&markpad=0&markalign=top&ba=top&bx=0&bm=multiply&q=100&fm=pjpg&chromasub=444&usm=10&w=1000&h=400&fit=crop&mark=https%3A%2F%2Fexampletext.imgix.net%2Fimgix-puffins.jpg%3Fw%3D500%26txt%3DPUFFINS&blend=https%3A%2F%2Fexampletext.imgix.net%2Fmothphoto.jpg%3Fw%3D500%26h%3D333%26fit%3Dcrop%26txt%3DMOTH+CREATURE&border=2%2CEF40E7&pad=2&txtclr=EF40E7</code>
+      </pre>
+          <figcaption>
+            Click the IX to view parameter breakdown in sandbox.
+          </figcaption>
+        </figure>
+        <div class="button-group">
+          <a
+            href="https://www.imgix.com/docs/reference"
+            class="button"
+            target="_blank"
+            >View API documentation</a
+          >
+          <a href="https://imgix.com" target="_blank" class="button"
+            >Visit imgix.com</a
+          >
+        </div>
+      </article>
+    </section>
+    <script src="" async defer></script>
+  </body>
+  <footer>
+    <hr />
+    <a href="https://imgix.com"
+      ><img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        test-path="/presskit/imgix-presskit.pdf?page=3&fm=png&w=320&dpr=2"
+        width="160"
+        height="60"
+    /></a>
+  </footer>
+</html>
