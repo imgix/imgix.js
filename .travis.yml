@@ -14,8 +14,3 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-
-branches:
-  only:
-    - main
-    - /release.*/
