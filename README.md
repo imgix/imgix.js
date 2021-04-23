@@ -26,7 +26,7 @@
     * [Disabling auto-initialization](#disabling-auto-initialization)
     * [Manually initializing imgix.js](#manually-initializing-imgixjs)
     * [`imgix.init()` idempotency](#imgixinit-idempotency)
-    * [Lazy Loading With [lazysizes](https://github.com/aFarkas/lazysizes)](#lazy-loading-with-lazysizeshttpsgithubcomafarkaslazysizes)
+    * [Lazy Loading With lazysizes](#lazy-loading-with-lazysizeshttpsgithubcomafarkaslazysizes)
     * [Custom Input Attributes](#custom-input-attributes)
     * [Null Output Attributes](#null-output-attributes)
     * [Base-64 encoded parameters](#base-64-encoded-parameters)
