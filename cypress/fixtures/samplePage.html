@@ -11,12 +11,14 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="ix:host" content="assets.imgix.net" />
+    <!-- <meta property="ix:host" content="assets.imgix.net" /> -->
     <!-- setting https to false for testing, not reccomended -->
-    <meta property="ix:useHttps" content="false" />
+    <!-- <meta property="ix:useHttps" content="false" />
     <meta property="ix:srcInputAttribute" content="test-src" />
     <meta property="ix:pathInputAttribute" content="test-path" />
     <meta property="ix:paramsInputAttribute" content="test-params" />
+    <meta property="ix:sizesInputAttribute" content="sizes" /> -->
+    <!-- <meta property="ix:autoInit" content="false" /> -->
     <link rel="stylesheet" href="" />
   </head>
   <body>
@@ -44,6 +46,7 @@
     <!-- https://assets.imgix.net/base.png?txtsize=20&txtpad=25&txtfont=avenir-black&txtalign=center&txt=A+comparison+of+animals.&markpad=0&markalign=top&ba=top&bx=0&bm=multiply&q=100&fm=pjpg&chromasub=444&usm=10&w=1000&h=400&fit=crop&mark=https%3A%2F%2Fexampletext.imgix.net%2Fimgix-puffins.jpg%3Fw%3D500%26txt%3DPUFFINS&blend=https%3A%2F%2Fexampletext.imgix.net%2Fmothphoto.jpg%3Fw%3D500%26h%3D333%26fit%3Dcrop%26txt%3DMOTH+CREATURE&border=2%2CEF40E7&pad=2&txtclr=EF40E7 -->
     <div class="example">
       <img
+        id="sizes-test"
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         test-path="/base.png"
         test-params='{
@@ -69,6 +72,7 @@
           "pad": "2",
           "txtclr": "EF40E7"
         }'
+        sizes="auto"
       />
       <br />
       <a
@@ -143,7 +147,17 @@
         </div>
       </article>
     </section>
-    <script src="" async defer></script>
+    <script>
+      imgix.init({
+        force: true,
+        useHttps: false,
+        host: 'assets.imgix.net',
+        srcInputAttribute: 'test-src',
+        pathInputAttribute: 'test-path',
+        paramsInputAttribute: 'test-params',
+        sizesInputAttribute: 'sizes',
+      });
+    </script>
   </body>
   <footer>
     <hr />

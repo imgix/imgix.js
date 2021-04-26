@@ -27,5 +27,6 @@ module.exports = {
     pathInputAttribute: 'ix-path',
     paramsInputAttribute: 'ix-params',
     hostInputAttribute: 'ix-host',
+    sizesInputAttribute: 'sizes',
   },
 }
