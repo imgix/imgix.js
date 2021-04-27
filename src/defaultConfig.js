@@ -14,5 +14,9 @@ module.exports = {
   srcInputAttribute: 'ix-src',
   pathInputAttribute: 'ix-path',
   paramsInputAttribute: 'ix-params',
-  hostInputAttribute: 'ix-host'
+  hostInputAttribute: 'ix-host',
+
+  // DOM nodes
+  document: typeof document !== 'undefined' ? document : null,
+  window: typeof window !== 'undefined' ? window : null,
 };
