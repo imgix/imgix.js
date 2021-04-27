@@ -5,8 +5,8 @@ var util = require('./util.js'),
 var ImgixTag = (function () {
   function ImgixTag(el, opts) {
     this.el = el;
-    this.window = opts.window;
     this.settings = opts || {};
+    this.window = this.settings.window ? this.settings.window : null;
 
     if (!this.el) {
       console.warn('ImgixTag must be passed a DOM element.');
@@ -185,26 +185,32 @@ var ImgixTag = (function () {
   };
 
   ImgixTag.prototype.sizes = function () {
-    var existingSizes = this.el.getAttribute('sizes');
+    var existingSizes = this.el.getAttribute(this.settings.sizesAttribute);
 
-    const _window = window ? window : this.window;
-    _window.addEventListener('resize', () => {
-      if (existingSizes === 'auto') {
-        if (autoSize.imgCanBeSized({ img: this.el })) {
-          autoSize.setImageSize({ img: this.el });
-        } else {
-          console.warn('Could not set `sizes` attribute');
-        }
-      }
-    });
     if (existingSizes === 'auto') {
+      // if access to window, add resize listener
+      if (this.window) {
+        this.window.addEventListener('resize', () => {
+          if (existingSizes === 'auto') {
+            if (autoSize.imgCanBeSized({ img: this.el })) {
+              autoSize.setImageSize({ img: this.el, existingSizes });
+            }
+          }
+        });
+      }
+
       if (autoSize.imgCanBeSized({ img: this.el })) {
         autoSize.setImageSize({ img: this.el });
       } else {
         console.warn('Could not set `sizes` attribute');
       }
+      // respect hard coded sizes values
+    } else if (existingSizes) {
+      return existingSizes;
+      // if no sizes value, use browser default
     } else {
-      this.el.setAttribute('sizes', '100vw');
+      this.el.setAttribute(this.settings.sizesAttribute, '100vw');
+      return '100vw';
     }
   };
 
