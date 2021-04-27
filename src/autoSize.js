@@ -4,18 +4,36 @@ const IMG_REGEX = /^img$/i;
 
 /*
  *
+ *
+ * - `rAF` requestAnimationFrame implementation that queues up calls to rAF
+ *
  * - `getElementSize` function that given an html element,
  *    determines its rendered size
  *
- * - `imgCanBeSized` function that determines if the `img` tag has
- *    necessary attributes(`src-set`, `src`) to have its`siz``es`
- *    automatically set
+ * - `imgCanBeSized` Verify that the img has attributes. If it does, check
+ *    that one of those is`sizes` and that its value is set to "auto".
+ *
+ * - `imgCanBeSized` function that determines if the `img` tag: 1) is an
+ *    `img`, has finished loading, and if it has attributes that can be
+ *     reassigned. This function is also exported.
  *
  * - `imageLoaded` function that determines if the `img` in question
  *    was rendered on the page
  *
- * - `setImgSize` function that updates an `img` tag’s `sizes`
- *    attribute to the best size for the given screen size
+ * - `getWidth` function checks if the element has a width. If it does,
+ *    is it less than the minimum? If it is, get it's parent node's
+ *    width instead.
+ *
+ * - `setElementSize` function that sets the element's size attribute if:
+ *    1) it has a parent node and 2) the attr has changed.
+ *
+ * - `resizeElement` function that uses rAF enqueuer to set an element's
+ *    `size` attr and store the previous size on the element as `ixImgSize`
+ *
+ *
+ * - `setImgSize` function that sets an elements `size` attribute if
+ *    `imgCanBeSized` by calling the `setElementSize` function.
+ *    This function is exported.
  *
  */
 
@@ -110,8 +128,7 @@ const imageLoaded = ({ img }) => {
 };
 
 const imgCanBeSized = ({ img }) => {
-  // if the img is an `<img>` tag, has loaded, and has the sizes=auto attribute,
-  // then its size can be set
+  // true if the img is an `<img>` tag, has loaded, and has attributes.
   let canBeSized = false;
 
   const loaded = imageLoaded({ img });
@@ -134,6 +151,8 @@ const imgCanBeSized = ({ img }) => {
   return canBeSized;
 };
 
+// Checks if the element has a width. If it does, is it less than the minimum?
+// If it is, get it's parent node's width instead.
 const getWidth = function ({ img, parent, width }) {
   let elementWidth = width || img.offsetWidth;
 
@@ -145,6 +164,7 @@ const getWidth = function ({ img, parent, width }) {
   return elementWidth;
 };
 
+// Set the element's size attribute if: 1) it has a parent node, 2) the attr has changed.
 const setElementSize = ({ img }) => {
   const parent = img.parentNode;
 
