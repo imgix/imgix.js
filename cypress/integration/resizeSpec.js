@@ -11,23 +11,10 @@ describe('On a page with meta tag imgix paramaters', () => {
     });
 
     it('Have meta tag paramters correctly applied', () => {
-      cy.get('@config').then((config) => {
-        // applpy the config params from the meta tags
-        cy.get('meta')
-          .each(($el) => {
-            const property = $el.attr('property');
-            const content = $el.attr('content');
-            if (!!property && property.includes('ix')) {
-              config[property.split('ix:')[1]] = content;
-            }
-          })
-          .then(() => {
-            cy.get('#sizes-test').each(($el) => {
-              const imgSize = $el.attr('sizes');
-              console.info($el, imgSize);
-              expect(imgSize).to.equal('984px');
-            });
-          });
+      cy.get('#sizes-test').each(($el) => {
+        const imgSize = $el.attr('sizes');
+        console.info($el, imgSize);
+        expect(imgSize).to.equal('984px');
       });
     });
   });
