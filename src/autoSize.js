@@ -154,33 +154,37 @@ const imgCanBeSized = ({ img }) => {
 // Checks if the element has a width. If it does, is it less than the minimum?
 // If it is, get it's parent node's width instead.
 const getWidth = function ({ img, parent, width }) {
-  let elementWidth = width || img.offsetWidth;
+  let elementWidth = width !== undefined ? width : img.attributes.offsetWidth;
 
   while (elementWidth < WIDTH_MIN_SIZE && parent && !img._ixWidth) {
     elementWidth = parent.offsetWidth;
     parent = parent.parentNode;
   }
 
+  console.log(elementWidth, width, img.attributes);
   return elementWidth;
 };
 
 // Set the element's size attribute if: 1) it has a parent node, 2) the attr has changed.
-const setElementSize = ({ img }) => {
+const setElementSize = ({ img, existingSizes }) => {
+  let result = existingSizes ? existingSizes : WIDTH_MIN_SIZE;
+  let width = img.offsetWidth;
   const parent = img.parentNode;
 
   if (parent) {
-    let width = img.offsetWidth;
     width = getWidth({ img, parent, width });
 
-    if (width && width !== img._ixWidth) {
-      resizeElement({ img, parent, width });
+    if (!!width && width !== img._ixWidth) {
+      result = resizeElement({ img, parent, width });
     }
   }
+  return result;
 };
 
 const resizeElement = ({ img, parent, width }) => {
   // use the rAFIt helper to avoid incurring performance hit
   return rAF(function () {
+    let result;
     let sources, i;
     // store the value of width before it's stringified so it can be compared later
     img.setAttribute('_ixSizesWidth', width);
@@ -189,6 +193,8 @@ const resizeElement = ({ img, parent, width }) => {
 
     img.setAttribute('sizes', width);
 
+    result = width;
+
     // parent node is a <picture> element, so set sizes for each `<source>`
     if (PICTURE_REGEX.test(parent.nodeName || '')) {
       sources = parent.getElementsByTagName('source');
@@ -196,16 +202,17 @@ const resizeElement = ({ img, parent, width }) => {
         sources[i].setAttribute('sizes', width);
       }
     }
+
+    return result;
   });
 };
 
-const setImgSize = ({ img }) => {
-  let result = false;
+const setImageSize = ({ img, existingSizes }) => {
+  let result = existingSizes;
   const canBeSized = imgCanBeSized({ img });
 
   if (canBeSized) {
-    setElementSize({ img });
-    result = true;
+    result = setElementSize({ img, existingSizes });
   } else {
     console.warn('Image could not be resized.');
   }
@@ -214,7 +221,7 @@ const setImgSize = ({ img }) => {
 };
 
 const autoSize = {
-  setImageSize: setImgSize,
+  setImageSize: setImageSize,
   imgCanBeSized: imgCanBeSized,
 };
 
