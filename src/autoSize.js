@@ -73,6 +73,7 @@ const rAF = (function () {
       if (!waiting) {
         waiting = true;
         // if browser does not support rAF, use setTimeout, otherwise use rAF
+        // TODO(luis): this will break on SRR. Fix this.
         (document.hidden ? setTimeout : requestAnimationFrame)(run);
       }
     }
