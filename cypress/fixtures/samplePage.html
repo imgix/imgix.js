@@ -11,14 +11,13 @@
     <title></title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!-- <meta property="ix:host" content="assets.imgix.net" /> -->
+    <meta property="ix:host" content="assets.imgix.net" />
     <!-- setting https to false for testing, not reccomended -->
-    <!-- <meta property="ix:useHttps" content="false" />
+    <meta property="ix:useHttps" content="false" />
     <meta property="ix:srcInputAttribute" content="test-src" />
     <meta property="ix:pathInputAttribute" content="test-path" />
     <meta property="ix:paramsInputAttribute" content="test-params" />
-    <meta property="ix:sizesInputAttribute" content="sizes" /> -->
-    <!-- <meta property="ix:autoInit" content="false" /> -->
+    <meta property="ix:sizesInputAttribute" content="sizes" />
     <link rel="stylesheet" href="" />
   </head>
   <body>
@@ -147,19 +146,6 @@
         </div>
       </article>
     </section>
-    <script>
-      imgix.init({
-        force: true,
-        useHttps: false,
-        host: 'assets.imgix.net',
-        srcInputAttribute: 'test-src',
-        pathInputAttribute: 'test-path',
-        paramsInputAttribute: 'test-params',
-        sizesInputAttribute: 'sizes',
-        document: document,
-        window: window,
-      });
-    </script>
   </body>
   <footer>
     <hr />
@@ -169,6 +155,20 @@
         test-path="/presskit/imgix-presskit.pdf?page=3&fm=png&w=320&dpr=2"
         width="160"
         height="60"
+        alt="footer-image"
     /></a>
   </footer>
+  <script>
+    // imgix.init({
+    //   force: true,
+    //   useHttps: false,
+    //   host: 'assets.imgix.net',
+    //   srcInputAttribute: 'test-src',
+    //   pathInputAttribute: 'test-path',
+    //   paramsInputAttribute: 'test-params',
+    //   sizesInputAttribute: 'sizes',
+    //   document: document,
+    //   window: window,
+    // });
+  </script>
 </html>
