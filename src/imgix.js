@@ -16,7 +16,9 @@ global.imgix = {
       'source[' + settings.pathInputAttribute + ']',
     ].join(',');
 
-    var allImgandSourceTags = document.querySelectorAll(elementQuery);
+    var allImgandSourceTags = settings.document
+      ? settings.document.querySelectorAll(elementQuery)
+      : [];
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
       new ImgixTag(allImgandSourceTags[i], settings);

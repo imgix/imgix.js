@@ -5,6 +5,7 @@ var util = require('./util.js'),
 var ImgixTag = (function () {
   function ImgixTag(el, opts) {
     this.el = el;
+    this.window = opts.window;
     this.settings = opts || {};
 
     if (!this.el) {
@@ -185,11 +186,22 @@ var ImgixTag = (function () {
 
   ImgixTag.prototype.sizes = function () {
     var existingSizes = this.el.getAttribute('sizes');
-    if (existingSizes) {
-      let auto = autoSize({ img: this.el });
-      if (!auto) {
-        console.info('No auto');
-        this.el.setAttribute('sizes', existingSizes);
+
+    const _window = window ? window : this.window;
+    _window.addEventListener('resize', () => {
+      if (existingSizes === 'auto') {
+        if (autoSize.imgCanBeSized({ img: this.el })) {
+          autoSize.setImageSize({ img: this.el });
+        } else {
+          console.warn('Could not set `sizes` attribute');
+        }
+      }
+    });
+    if (existingSizes === 'auto') {
+      if (autoSize.imgCanBeSized({ img: this.el })) {
+        autoSize.setImageSize({ img: this.el });
+      } else {
+        console.warn('Could not set `sizes` attribute');
       }
     } else {
       this.el.setAttribute('sizes', '100vw');

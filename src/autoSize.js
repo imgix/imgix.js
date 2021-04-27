@@ -71,17 +71,11 @@ const imgHasAttributes = ({ img }) => {
 
   try {
     if (img.hasAttributes()) {
-      const attrs = img.attributes;
-      for (let i = attrs.length - 1; i >= 0; i--) {
-        if (attrs[i].name === 'sizes' && attrs[i].value == 'auto') {
-          canBeSized = true;
-          break;
-        }
-      }
+      canBeSized = true;
     } else {
-      console.info('\nDid not find image with attributes, ');
-      console.info(img.hasAttributes());
-      console.info('\n');
+      console.warn('\nDid not find image with attributes, ');
+      console.warn(img.hasAttributes());
+      console.warn('\n');
     }
   } catch (error) {
     console.error(error.message);
@@ -120,20 +114,19 @@ const imgCanBeSized = ({ img }) => {
   // then its size can be set
   let canBeSized = false;
 
-  if (
-    IMG_REGEX.test(img.nodeName || '') &&
-    imageLoaded({ img }) &&
-    imgHasAttributes({ img })
-  ) {
+  const loaded = imageLoaded({ img });
+  const hasAttr = imgHasAttributes({ img });
+
+  if (IMG_REGEX.test(img.nodeName || '') && loaded && hasAttr) {
     canBeSized = true;
   } else {
     if (!IMG_REGEX.test(img.nodeName || '')) {
       console.warn('Img did not match REGEX');
     }
-    if (!imageLoaded({ img })) {
+    if (!loaded) {
       console.warn('\n Img has not loaded');
     }
-    if (!imgHasAttributes({ img })) {
+    if (!hasAttr) {
       console.warn('\n Image does not have attributes');
     }
   }
@@ -170,7 +163,8 @@ const resizeElement = ({ img, parent, width }) => {
   return rAF(function () {
     let sources, i;
     // store the value of width before it's stringified so it can be compared later
-    img._ixSizesWidth = width;
+    img.setAttribute('_ixSizesWidth', width);
+
     width += 'px';
 
     img.setAttribute('sizes', width);
@@ -190,19 +184,18 @@ const setImgSize = ({ img }) => {
   const canBeSized = imgCanBeSized({ img });
 
   if (canBeSized) {
-    console.info('\n---------  *  -----------');
-    console.info('Image can be sized!');
-    console.info(img);
-    console.info('\n---------  *  -----------');
     setElementSize({ img });
     result = true;
   } else {
-    console.info('\n---------  *  -----------');
-    console.info('Image could not be resized.');
-    console.info('\n---------  *  -----------');
+    console.warn('Image could not be resized.');
   }
 
   return result;
 };
 
-module.exports = setImgSize;
+const autoSize = {
+  setImageSize: setImgSize,
+  imgCanBeSized: imgCanBeSized,
+};
+
+module.exports = autoSize;
