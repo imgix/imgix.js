@@ -10,7 +10,7 @@ describe('On a page with meta tag imgix paramaters', () => {
       cy.get('img').should('have.length', 3);
     });
 
-    it('Have meta tag paramters correctly applied', () => {
+    it('Have meta tag parameters correctly applied', () => {
       cy.get('#sizes-test').each(($el) => {
         const imgSize = $el.attr('sizes');
         console.info($el, imgSize);
