@@ -7,6 +7,7 @@ var ImgixTag = (function () {
   function ImgixTag(el, opts) {
     this.el = el;
     this.settings = opts || {};
+    this.window = this.settings.window ? this.settings.window : null;
 
     if (!this.el) {
       console.warn('ImgixTag must be passed a DOM element.');
@@ -185,15 +186,32 @@ var ImgixTag = (function () {
   };
 
   ImgixTag.prototype.sizes = function () {
-    var existingSizes = this.el.getAttribute('sizes');
-    if (existingSizes) {
-      let auto = autoSize({ img: this.el });
-      if (!auto) {
-        console.info('No auto');
-        this.el.setAttribute('sizes', existingSizes);
+    var existingSizes = this.el.getAttribute(this.settings.sizesAttribute);
+
+    if (existingSizes === 'auto') {
+      // if access to window, add resize listener
+      if (this.window) {
+        this.window.addEventListener('resize', () => {
+          if (existingSizes === 'auto') {
+            if (autoSize.imgCanBeSized({ img: this.el })) {
+              autoSize.setImageSize({ img: this.el, existingSizes });
+            }
+          }
+        });
       }
+
+      if (autoSize.imgCanBeSized({ img: this.el })) {
+        autoSize.setImageSize({ img: this.el });
+      } else {
+        console.warn('Could not set `sizes` attribute');
+      }
+      // respect hard coded sizes values
+    } else if (existingSizes) {
+      return existingSizes;
+      // if no sizes value, use browser default
     } else {
-      this.el.setAttribute('sizes', '100vw');
+      this.el.setAttribute(this.settings.sizesAttribute, '100vw');
+      return '100vw';
     }
   };
 
@@ -209,59 +227,68 @@ const IMG_REGEX = /^img$/i;
 
 /*
  *
+ *
+ * - `rAF` requestAnimationFrame implementation that queues up calls to rAF
+ *
  * - `getElementSize` function that given an html element,
  *    determines its rendered size
  *
- * - `imgCanBeSized` function that determines if the `img` tag has
- *    necessary attributes(`src-set`, `src`) to have its`siz``es`
- *    automatically set
+ * - `imgCanBeSized` Verify that the img has attributes. If it does, check
+ *    that one of those is`sizes` and that its value is set to "auto".
+ *
+ * - `imgCanBeSized` function that determines if the `img` tag: 1) is an
+ *    `img`, has finished loading, and if it has attributes that can be
+ *     reassigned. This function is also exported.
  *
  * - `imageLoaded` function that determines if the `img` in question
  *    was rendered on the page
  *
- * - `setImgSize` function that updates an `img` tag’s `sizes`
- *    attribute to the best size for the given screen size
+ * - `getWidth` function checks if the element has a width. If it does,
+ *    is it less than the minimum? If it is, get it's parent node's
+ *    width instead.
+ *
+ * - `setElementSize` function that sets the element's size attribute if:
+ *    1) it has a parent node and 2) the attr has changed.
+ *
+ * - `resizeElement` function that uses rAF enqueuer to set an element's
+ *    `size` attr and store the previous size on the element as `ixImgSize`
+ *
+ *
+ * - `setImgSize` function that sets an elements `size` attribute if
+ *    `imgCanBeSized` by calling the `setElementSize` function.
+ *    This function is exported.
  *
  */
 
 // requestAnimationFrame implementation that queues up calls to rAF
 const rAF = (function () {
   let running, waiting;
-  let firstFns = [];
-  let secondFns = [];
-  let fns = firstFns;
+  let queue = [];
 
   const run = function () {
-    const runFns = fns;
-
-    // fun fns in FILO fashion
-    fns = firstFns.length ? secondFns : firstFns;
-
     running = true;
     waiting = false;
+    // debugger;
 
-    while (runFns.length) {
-      runFns.shift()();
+    while (queue.length) {
+      queue.shift()();
+      // debugger;
     }
 
     running = false;
   };
 
   // helper that either adds to the fns queue or run the raf call
-  const rafBatch = function (fn, queue) {
-    // if not queued, just invoke the function
-    if (running && !queue) {
-      fn.apply(this, arguments);
-      // otherwise add the fn to the batch
-    } else {
-      fns.push(fn);
+  const rafBatch = function (fn) {
+    queue.push(fn);
+    // debugger;
 
-      // if not running a current batch and document is visible, run the rafBatch
-      if (!waiting) {
-        waiting = true;
-        // if browser does not support rAF, use setTimeout, otherwise use rAF
-        (document.hidden ? setTimeout : requestAnimationFrame)(run);
-      }
+    // if not running a current batch and document is visible, run the rafBatch
+    if (!running && !waiting) {
+      waiting = true;
+      // if browser does not support rAF, use setTimeout, otherwise use rAF
+      // TODO(luis): this will break on SRR. Fix this.
+      (document.hidden ? setTimeout : requestAnimationFrame)(run);
     }
   };
 
@@ -276,20 +303,14 @@ const imgHasAttributes = ({ img }) => {
 
   try {
     if (img.hasAttributes()) {
-      const attrs = img.attributes;
-      for (let i = attrs.length - 1; i >= 0; i--) {
-        if (attrs[i].name === 'sizes' && attrs[i].value == 'auto') {
-          canBeSized = true;
-          break;
-        }
-      }
+      canBeSized = true;
     } else {
-      console.info('\nDid not find image with attributes, ');
-      console.info(img.hasAttributes());
-      console.info('\n');
+      console.warn('\nDid not find image with attributes, ');
+      console.warn(img.hasAttributes());
+      console.warn('\n');
     }
   } catch (error) {
-    console.info(error.message);
+    console.error(error.message);
   }
   return canBeSized;
 };
@@ -303,14 +324,14 @@ const imageLoaded = ({ img }) => {
   // browsers report this incorrectly.
   // More here: https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-complete
   if (!img.complete) {
-    console.info('\nImage did not load. `img.complete was`' + img.complete);
+    console.warn('\nImage did not load. `img.complete was`' + img.complete);
   }
 
   // naturalWidth and naturalHeight give the true size of the image.
   // If it failed to load, both of these will be zero.
   // More here: https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-naturalheight
   if (img.naturalWidth === 0) {
-    console.info(
+    console.warn(
       '\nImage did not load. `img.naturalWidth was`' + img.naturalWidth
     );
   }
@@ -321,64 +342,78 @@ const imageLoaded = ({ img }) => {
 };
 
 const imgCanBeSized = ({ img }) => {
-  // if the img is an `<img>` tag, has loaded, and has the sizes=auto attribute,
-  // then its size can be set
+  // true if the img is an `<img>` tag, has loaded, and has attributes.
   let canBeSized = false;
 
-  if (
-    IMG_REGEX.test(img.nodeName || '') &&
-    imageLoaded({ img }) &&
-    imgHasAttributes({ img })
-  ) {
+  const loaded = imageLoaded({ img });
+  const hasAttr = imgHasAttributes({ img });
+
+  if (IMG_REGEX.test(img.nodeName || '') && loaded && hasAttr) {
     canBeSized = true;
   } else {
     if (!IMG_REGEX.test(img.nodeName || '')) {
-      console.info('Img did not match REGEX');
+      console.warn('Img did not match REGEX');
     }
-    if (!imageLoaded({ img })) {
-      console.info('\n Img has not loaded');
+    if (!loaded) {
+      console.warn('\n Img has not loaded');
     }
-    if (!imgHasAttributes({ img })) {
-      console.info('\n Image does not have attributes');
+    if (!hasAttr) {
+      console.warn('\n Image does not have attributes');
     }
   }
 
   return canBeSized;
 };
 
+// Checks if the element has a width. If it does, is it less than the minimum?
+// If it is, get it's parent node's width instead.
 const getWidth = function ({ img, parent, width }) {
-  let elementWidth = width || img.offsetWidth;
+  let elementWidth = width !== undefined ? width : img.offsetWidth;
 
   while (elementWidth < WIDTH_MIN_SIZE && parent && !img._ixWidth) {
     elementWidth = parent.offsetWidth;
     parent = parent.parentNode;
   }
 
+  if (elementWidth < WIDTH_MIN_SIZE) {
+    elementWidth = WIDTH_MIN_SIZE;
+  }
+
+  console.log(elementWidth);
+
   return elementWidth;
 };
 
-const setElementSize = ({ img }) => {
+// Set the element's size attribute if: 1) it has a parent node, 2) the attr has changed.
+const setElementSize = ({ img, existingSizes }) => {
+  let result = existingSizes ? existingSizes : WIDTH_MIN_SIZE;
+  let width = img.offsetWidth;
   const parent = img.parentNode;
 
   if (parent) {
-    let width = img.offsetWidth;
     width = getWidth({ img, parent, width });
 
-    if (width && width !== img._ixWidth) {
-      resizeElement({ img, parent, width });
+    if (!!width && width !== img._ixWidth) {
+      result = resizeElement({ img, parent, width });
     }
   }
+  return result;
 };
 
 const resizeElement = ({ img, parent, width }) => {
   // use the rAFIt helper to avoid incurring performance hit
+  debugger;
   return rAF(function () {
+    let result;
     let sources, i;
     // store the value of width before it's stringified so it can be compared later
-    img._ixSizesWidth = width;
+    img.setAttribute('_ixSizesWidth', width);
+
     width += 'px';
 
     img.setAttribute('sizes', width);
+
+    result = width;
 
     // parent node is a <picture> element, so set sizes for each `<source>`
     if (PICTURE_REGEX.test(parent.nodeName || '')) {
@@ -387,30 +422,30 @@ const resizeElement = ({ img, parent, width }) => {
         sources[i].setAttribute('sizes', width);
       }
     }
+
+    return result;
   });
 };
 
-const setImgSize = ({ img }) => {
-  let result = false;
+const setImageSize = ({ img, existingSizes }) => {
+  let result = existingSizes;
   const canBeSized = imgCanBeSized({ img });
 
   if (canBeSized) {
-    console.info('\n---------  *  -----------');
-    console.info('Image can be sized!');
-    console.info(img);
-    console.info('\n---------  *  -----------');
-    setElementSize({ img });
-    result = true;
+    result = setElementSize({ img, existingSizes });
   } else {
-    console.info('\n---------  *  -----------');
-    console.info('Image could not be resized.');
-    console.info('\n---------  *  -----------');
+    console.warn('Image could not be resized.');
   }
 
   return result;
 };
 
-module.exports = setImgSize;
+const autoSize = {
+  setImageSize: setImageSize,
+  imgCanBeSized: imgCanBeSized,
+};
+
+module.exports = autoSize;
 
 },{}],3:[function(require,module,exports){
 module.exports = {
@@ -429,7 +464,11 @@ module.exports = {
   srcInputAttribute: 'ix-src',
   pathInputAttribute: 'ix-path',
   paramsInputAttribute: 'ix-params',
-  hostInputAttribute: 'ix-host'
+  hostInputAttribute: 'ix-host',
+
+  // DOM nodes
+  document: typeof document !== 'undefined' ? document : null,
+  window: typeof window !== 'undefined' ? window : null,
 };
 
 },{}],4:[function(require,module,exports){
@@ -452,7 +491,9 @@ global.imgix = {
       'source[' + settings.pathInputAttribute + ']',
     ].join(',');
 
-    var allImgandSourceTags = document.querySelectorAll(elementQuery);
+    var allImgandSourceTags = settings.document
+      ? settings.document.querySelectorAll(elementQuery)
+      : [];
 
     for (var i = 0, el; i < allImgandSourceTags.length; i++) {
       new ImgixTag(allImgandSourceTags[i], settings);

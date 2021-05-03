@@ -40,42 +40,32 @@ const IMG_REGEX = /^img$/i;
 // requestAnimationFrame implementation that queues up calls to rAF
 const rAF = (function () {
   let running, waiting;
-  let firstFns = [];
-  let secondFns = [];
-  let fns = firstFns;
+  let queue = [];
 
   const run = function () {
-    const runFns = fns;
-
-    // fun fns in FILO fashion
-    fns = firstFns.length ? secondFns : firstFns;
-
     running = true;
     waiting = false;
+    // debugger;
 
-    while (runFns.length) {
-      runFns.shift()();
+    while (queue.length) {
+      queue.shift()();
+      // debugger;
     }
 
     running = false;
   };
 
   // helper that either adds to the fns queue or run the raf call
-  const rafBatch = function (fn, queue) {
-    // if not queued, just invoke the function
-    if (running && !queue) {
-      fn.apply(this, arguments);
-      // otherwise add the fn to the batch
-    } else {
-      fns.push(fn);
+  const rafBatch = function (fn) {
+    queue.push(fn);
+    // debugger;
 
-      // if not running a current batch and document is visible, run the rafBatch
-      if (!waiting) {
-        waiting = true;
-        // if browser does not support rAF, use setTimeout, otherwise use rAF
-        // TODO(luis): this will break on SRR. Fix this.
-        (document.hidden ? setTimeout : requestAnimationFrame)(run);
-      }
+    // if not running a current batch and document is visible, run the rafBatch
+    if (!running && !waiting) {
+      waiting = true;
+      // if browser does not support rAF, use setTimeout, otherwise use rAF
+      // TODO(luis): this will break on SRR. Fix this.
+      (document.hidden ? setTimeout : requestAnimationFrame)(run);
     }
   };
 
@@ -155,14 +145,19 @@ const imgCanBeSized = ({ img }) => {
 // Checks if the element has a width. If it does, is it less than the minimum?
 // If it is, get it's parent node's width instead.
 const getWidth = function ({ img, parent, width }) {
-  let elementWidth = width !== undefined ? width : img.attributes.offsetWidth;
+  let elementWidth = width !== undefined ? width : img.offsetWidth;
 
   while (elementWidth < WIDTH_MIN_SIZE && parent && !img._ixWidth) {
     elementWidth = parent.offsetWidth;
     parent = parent.parentNode;
   }
 
-  console.log(elementWidth, width, img.attributes);
+  if (elementWidth < WIDTH_MIN_SIZE) {
+    elementWidth = WIDTH_MIN_SIZE;
+  }
+
+  console.log(elementWidth);
+
   return elementWidth;
 };
 
@@ -184,6 +179,7 @@ const setElementSize = ({ img, existingSizes }) => {
 
 const resizeElement = ({ img, parent, width }) => {
   // use the rAFIt helper to avoid incurring performance hit
+  debugger;
   return rAF(function () {
     let result;
     let sources, i;
