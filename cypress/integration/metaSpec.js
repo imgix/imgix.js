@@ -7,7 +7,7 @@ describe('On a page with meta tag imgix paramaters', () => {
     beforeEach(() => {
       cy.fixture('config.js').as('config');
       // expect the number of image elements on the page to equal fixture's
-      cy.get('img').should('have.length', 3);
+      cy.get('img').should('have.length', 4);
     });
     it('All loaded and rendered', () => {
       cy.get('img').each(($el) => {
