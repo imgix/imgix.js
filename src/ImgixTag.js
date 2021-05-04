@@ -187,6 +187,26 @@ var ImgixTag = (function () {
 
     if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
+    } else if (existingSizes === 'auto') {
+      // Throttle rAF calls to avoid multiple calls in the same frame
+      let currentRAF;
+
+      // Listen for resize
+      window.addEventListener(
+        'resize',
+        function (event) {
+          // If there's an existing rAF call, cancel it
+          if (currentRAF) {
+            window.cancelAnimationFrame(currentRAF);
+          }
+
+          // Setup the new requestAnimationFrame()
+          currentRAF = window.requestAnimationFrame(function () {
+            // Run our resize functions
+          });
+        },
+        false
+      );
     } else {
       return '100vw';
     }
