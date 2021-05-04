@@ -8,10 +8,10 @@ describe('On a pages first render', () => {
 
   it('Sizes attribute is correctly set', () => {
     cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
-      const expectedSize = 404 + 'px';
-      // const expectedSize = Math.ceil($el.width()) + 'px';
-      const imgSize = $el.attr('sizes');
-      expect(imgSize).to.equal(expectedSize);
+      const expectedSize = Math.ceil($el.width());
+      const imgSize = Number($el.attr('sizes').split('px')[0]);
+      assert.isAtMost(imgSize, 500);
+      assert.isAtLeast(imgSize, expectedSize);
     });
   });
 });
@@ -28,10 +28,10 @@ describe('When a page gets resized', () => {
 
   it('Updates the sizes attribute on resize', () => {
     cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
-      const expectedSize = 404 + 'px';
-      // const expectedSize = Math.ceil($el.width()) + 'px';
-      const imgSize = $el.attr('sizes');
-      expect(imgSize).to.equal(expectedSize);
+      const expectedSize = Math.ceil($el.width());
+      const imgSize = Number($el.attr('sizes').split('px')[0]);
+      assert.isAtMost(imgSize, 500);
+      assert.isAtLeast(imgSize, expectedSize);
     });
   });
 
