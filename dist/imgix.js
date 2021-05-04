@@ -1,8 +1,9 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 var util = require('./util.js'),
-  targetWidths = require('./targetWidths.js');
+  targetWidths = require('./targetWidths.js'),
+  autoSize = require('./autoSize');
 
-var ImgixTag = (function() {
+var ImgixTag = (function () {
   function ImgixTag(el, opts) {
     this.el = el;
     this.settings = opts || {};
@@ -11,6 +12,8 @@ var ImgixTag = (function() {
       console.warn('ImgixTag must be passed a DOM element.');
       return;
     }
+
+    this.window = this.settings.window ? this.settings.window : null;
 
     if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
       return;
@@ -61,7 +64,7 @@ var ImgixTag = (function() {
     this.el.setAttribute('ix-initialized', 'ix-initialized');
   }
 
-  ImgixTag.prototype._extractBaseParams = function() {
+  ImgixTag.prototype._extractBaseParams = function () {
     var params = {};
 
     if (
@@ -105,7 +108,7 @@ var ImgixTag = (function() {
     return params;
   };
 
-  ImgixTag.prototype._buildBaseUrl = function() {
+  ImgixTag.prototype._buildBaseUrl = function () {
     if (this.ixSrcVal) {
       return this.ixSrcVal;
     }
@@ -143,7 +146,7 @@ var ImgixTag = (function() {
     return url;
   };
 
-  ImgixTag.prototype._buildSrcsetPair = function(targetWidth) {
+  ImgixTag.prototype._buildSrcsetPair = function (targetWidth) {
     var clonedParams = util.shallowClone(this.baseParams);
     clonedParams.w = targetWidth;
 
@@ -166,14 +169,14 @@ var ImgixTag = (function() {
     return url + ' ' + targetWidth + 'w';
   };
 
-  ImgixTag.prototype.src = function() {
+  ImgixTag.prototype.src = function () {
     return this.baseUrl;
   };
 
   // Returns a comma-separated list of `url widthDescriptor` pairs,
   // scaled appropriately to the same aspect ratio as the base image
   // as appropriate.
-  ImgixTag.prototype.srcset = function() {
+  ImgixTag.prototype.srcset = function () {
     var pairs = [];
 
     for (var i = 0; i < targetWidths.length; i++) {
@@ -183,11 +186,53 @@ var ImgixTag = (function() {
     return pairs.join(', ');
   };
 
-  ImgixTag.prototype.sizes = function() {
+  ImgixTag.prototype.sizes = function () {
     var existingSizes = this.el.getAttribute('sizes');
+    const el = this.el;
+    const _window = this.window;
 
-    if (existingSizes) {
+    if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
+    } else if (existingSizes === 'auto') {
+      const newSize = () => {
+        return (
+          autoSize.getElementWidth({
+            el,
+            parent: el.parentNode,
+            width: el.offsetWidth,
+          }) + 'px'
+        );
+      };
+
+      // Throttle rAF calls to avoid multiple calls in the same frame
+      let currentRAF;
+
+      // Listen for resize
+      _window.addEventListener(
+        'resize',
+        function (event) {
+          // If there's an existing rAF call, cancel it
+          if (currentRAF) {
+            el.setAttribute('_ixListening', false);
+            el.setAttribute('_ixRaf', -1);
+            _window.cancelAnimationFrame(currentRAF);
+          }
+
+          // Setup the new requestAnimationFrame()
+          currentRAF = _window.requestAnimationFrame(function () {
+            // Run our resize functions
+            let currentSize = newSize();
+            el.setAttribute('sizes', currentSize);
+            // track the status of the listener
+            el.setAttribute('_ixListening', true);
+            return currentSize;
+          });
+          // track the rAF id
+          el.setAttribute('_ixRaf', currentRAF);
+        },
+        false
+      );
+      return newSize();
     } else {
       return '100vw';
     }
@@ -198,7 +243,43 @@ var ImgixTag = (function() {
 
 module.exports = ImgixTag;
 
-},{"./targetWidths.js":4,"./util.js":5}],2:[function(require,module,exports){
+},{"./autoSize":2,"./targetWidths.js":5,"./util.js":6}],2:[function(require,module,exports){
+const WIDTH_MIN_SIZE = 40;
+
+// If element's width is less than parent width, use the parent's. If
+// resulting width is less than minimum, use the minimum. Do this to
+// Avoid failing to resize when window expands and avoid setting sizes
+// to 0 when el.offsetWidth == 0.
+const getWidth = function ({ el, parent, width }) {
+  let parentWidth = parent.offsetWidth;
+
+  // get the fist parent that has a size over the minimum
+  while (parent.parentNode && parentWidth < WIDTH_MIN_SIZE) {
+    parentWidth = parent.parentNode.offsetWidth;
+    parent = parent.parentNode;
+  }
+
+  if (width < parentWidth) {
+    width = parentWidth;
+  }
+  if (width < WIDTH_MIN_SIZE) {
+    width = el._ixWidth ? el._ixWidth : WIDTH_MIN_SIZE;
+  }
+
+  console.log(el.offsetWidth, parentWidth, width);
+
+  el.setAttribute('_ixWidth', width);
+
+  return width;
+};
+
+const autoSize = {
+  getElementWidth: getWidth,
+};
+
+module.exports = autoSize;
+
+},{}],3:[function(require,module,exports){
 module.exports = {
   // URL assembly
   host: null,
@@ -215,42 +296,20 @@ module.exports = {
   srcInputAttribute: 'ix-src',
   pathInputAttribute: 'ix-path',
   paramsInputAttribute: 'ix-params',
-  hostInputAttribute: 'ix-host'
+  hostInputAttribute: 'ix-host',
+  window: typeof window !== 'undefined' ? window : null,
 };
 
-},{}],3:[function(require,module,exports){
-(function (global){
+},{}],4:[function(require,module,exports){
+(function (global){(function (){
 var ImgixTag = require('./ImgixTag.js'),
   util = require('./util.js'),
   defaultConfig = require('./defaultConfig');
 
 var VERSION = '3.4.2';
 
-function getMetaTagValue(propertyName) {
-  var metaTag = document.querySelector(
-      'meta[property="ix:' + propertyName + '"]'
-    ),
-    metaTagContent;
-
-  if (!metaTag) {
-    return;
-  }
-
-  metaTagContent = metaTag.getAttribute('content');
-
-  if (metaTagContent === 'true') {
-    return true;
-  } else if (metaTagContent === 'false') {
-    return false;
-  } else if (metaTagContent === '' || metaTagContent === 'null') {
-    return null;
-  } else {
-    return metaTagContent;
-  }
-}
-
 global.imgix = {
-  init: function(opts) {
+  init: function (opts) {
     var settings = util.shallowClone(this.config);
     util.extend(settings, opts || {});
 
@@ -258,7 +317,7 @@ global.imgix = {
       'img[' + settings.srcInputAttribute + ']',
       'source[' + settings.srcInputAttribute + ']',
       'img[' + settings.pathInputAttribute + ']',
-      'source[' + settings.pathInputAttribute + ']'
+      'source[' + settings.pathInputAttribute + ']',
     ].join(',');
 
     var allImgandSourceTags = document.querySelectorAll(elementQuery);
@@ -268,12 +327,12 @@ global.imgix = {
     }
   },
   config: defaultConfig,
-  VERSION: VERSION
+  VERSION: VERSION,
 };
 
-util.domReady(function() {
-  util.objectEach(defaultConfig, function(defaultValue, key) {
-    var metaTagValue = getMetaTagValue(key);
+util.domReady(function () {
+  util.objectEach(defaultConfig, function (defaultValue, key) {
+    var metaTagValue = util.getMetaTagValue(key);
 
     if (typeof metaTagValue !== 'undefined') {
       var defaultConfigType = typeof defaultConfig[key];
@@ -288,13 +347,13 @@ util.domReady(function() {
     }
   });
 
-  if (getMetaTagValue('autoInit') !== false) {
+  if (util.getMetaTagValue('autoInit') !== false) {
     global.imgix.init();
   }
 });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./ImgixTag.js":1,"./defaultConfig":2,"./util.js":5}],4:[function(require,module,exports){
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./ImgixTag.js":1,"./defaultConfig":3,"./util.js":6}],5:[function(require,module,exports){
 function targetWidths() {
   var resolutions = [];
   var prev = 100;
@@ -315,9 +374,9 @@ function targetWidths() {
 
 module.exports = targetWidths();
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = {
-  compact: function(arr) {
+  compact: function (arr) {
     var compactedArr = [];
 
     for (var i = 0; i < arr.length; i++) {
@@ -326,7 +385,7 @@ module.exports = {
 
     return compactedArr;
   },
-  shallowClone: function(obj) {
+  shallowClone: function (obj) {
     var clone = {};
 
     for (var key in obj) {
@@ -335,14 +394,14 @@ module.exports = {
 
     return clone;
   },
-  extend: function(dest, source) {
+  extend: function (dest, source) {
     for (var key in source) {
       dest[key] = source[key];
     }
 
     return dest;
   },
-  uniq: function(arr) {
+  uniq: function (arr) {
     var n = {},
       r = [],
       i;
@@ -356,17 +415,17 @@ module.exports = {
 
     return r;
   },
-  objectEach: function(obj, iterator) {
+  objectEach: function (obj, iterator) {
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
         iterator(obj[key], key);
       }
     }
   },
-  isString: function(value) {
+  isString: function (value) {
     return typeof value === 'string';
   },
-  encode64: function(str) {
+  encode64: function (str) {
     var encodedUtf8Str = unescape(encodeURIComponent(str)),
       b64Str = btoa(encodedUtf8Str),
       urlSafeB64Str = b64Str.replace(/\+/g, '-');
@@ -378,26 +437,48 @@ module.exports = {
 
     return urlSafeB64Str;
   },
-  decode64: function(urlSafeB64Str) {
+  decode64: function (urlSafeB64Str) {
     var b64Str = urlSafeB64Str.replace(/-/g, '+').replace(/_/g, '/'),
       encodedUtf8Str = atob(b64Str),
       str = decodeURIComponent(escape(encodedUtf8Str));
 
     return str;
   },
-  domReady: function(cb) {
+  domReady: function (cb) {
     if (document.readyState === 'complete') {
       setTimeout(cb, 0);
     } else if (document.addEventListener) {
       document.addEventListener('DOMContentLoaded', cb, false);
     } else {
-      document.attachEvent('onreadystatechange', function() {
+      document.attachEvent('onreadystatechange', function () {
         if (document.readyState === 'complete') {
           cb();
         }
       });
     }
-  }
+  },
+  getMetaTagValue: function (propertyName) {
+    var metaTag = document.querySelector(
+        'meta[property="ix:' + propertyName + '"]'
+      ),
+      metaTagContent;
+
+    if (!metaTag) {
+      return;
+    }
+
+    metaTagContent = metaTag.getAttribute('content');
+
+    if (metaTagContent === 'true') {
+      return true;
+    } else if (metaTagContent === 'false') {
+      return false;
+    } else if (metaTagContent === '' || metaTagContent === 'null') {
+      return null;
+    } else {
+      return metaTagContent;
+    }
+  },
 };
 
-},{}]},{},[3]);
+},{}]},{},[4]);
