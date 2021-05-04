@@ -184,6 +184,7 @@ var ImgixTag = (function () {
 
   ImgixTag.prototype.sizes = function () {
     var existingSizes = this.el.getAttribute('sizes');
+    const el = this.el;
 
     if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
@@ -203,6 +204,7 @@ var ImgixTag = (function () {
           // Setup the new requestAnimationFrame()
           currentRAF = window.requestAnimationFrame(function () {
             // Run our resize functions
+            el.setAttribute('sizes', el.offsetWidth);
           });
         },
         false
