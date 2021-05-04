@@ -12,7 +12,7 @@ var ImgixTag = (function () {
       return;
     }
 
-    this.window = this.settings.window || window;
+    this.window = this.settings.window ? this.settings.window : null;
 
     if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
       return;
@@ -212,6 +212,8 @@ var ImgixTag = (function () {
         function (event) {
           // If there's an existing rAF call, cancel it
           if (currentRAF) {
+            el.setAttribute('_ixListening', false);
+            el.setAttribute('_ixRaf', -1);
             _window.cancelAnimationFrame(currentRAF);
           }
 
@@ -219,10 +221,13 @@ var ImgixTag = (function () {
           currentRAF = _window.requestAnimationFrame(function () {
             // Run our resize functions
             let currentSize = newSize();
-            console.log(currentSize);
             el.setAttribute('sizes', currentSize);
+            // track the status of the listener
+            el.setAttribute('_ixListening', true);
             return currentSize;
           });
+          // track the rAF id
+          el.setAttribute('_ixRaf', currentRAF);
         },
         false
       );
