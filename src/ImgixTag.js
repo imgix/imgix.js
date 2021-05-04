@@ -1,7 +1,7 @@
 var util = require('./util.js'),
   targetWidths = require('./targetWidths.js');
 
-var ImgixTag = (function() {
+var ImgixTag = (function () {
   function ImgixTag(el, opts) {
     this.el = el;
     this.settings = opts || {};
@@ -60,7 +60,7 @@ var ImgixTag = (function() {
     this.el.setAttribute('ix-initialized', 'ix-initialized');
   }
 
-  ImgixTag.prototype._extractBaseParams = function() {
+  ImgixTag.prototype._extractBaseParams = function () {
     var params = {};
 
     if (
@@ -104,7 +104,7 @@ var ImgixTag = (function() {
     return params;
   };
 
-  ImgixTag.prototype._buildBaseUrl = function() {
+  ImgixTag.prototype._buildBaseUrl = function () {
     if (this.ixSrcVal) {
       return this.ixSrcVal;
     }
@@ -142,7 +142,7 @@ var ImgixTag = (function() {
     return url;
   };
 
-  ImgixTag.prototype._buildSrcsetPair = function(targetWidth) {
+  ImgixTag.prototype._buildSrcsetPair = function (targetWidth) {
     var clonedParams = util.shallowClone(this.baseParams);
     clonedParams.w = targetWidth;
 
@@ -165,14 +165,14 @@ var ImgixTag = (function() {
     return url + ' ' + targetWidth + 'w';
   };
 
-  ImgixTag.prototype.src = function() {
+  ImgixTag.prototype.src = function () {
     return this.baseUrl;
   };
 
   // Returns a comma-separated list of `url widthDescriptor` pairs,
   // scaled appropriately to the same aspect ratio as the base image
   // as appropriate.
-  ImgixTag.prototype.srcset = function() {
+  ImgixTag.prototype.srcset = function () {
     var pairs = [];
 
     for (var i = 0; i < targetWidths.length; i++) {
@@ -182,10 +182,10 @@ var ImgixTag = (function() {
     return pairs.join(', ');
   };
 
-  ImgixTag.prototype.sizes = function() {
+  ImgixTag.prototype.sizes = function () {
     var existingSizes = this.el.getAttribute('sizes');
 
-    if (existingSizes) {
+    if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
     } else {
       return '100vw';
