@@ -1,5 +1,6 @@
 var util = require('./util.js'),
-  targetWidths = require('./targetWidths.js');
+  targetWidths = require('./targetWidths.js'),
+  autoSize = require('./autoSize');
 
 var ImgixTag = (function () {
   function ImgixTag(el, opts) {
@@ -192,6 +193,16 @@ var ImgixTag = (function () {
     if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
     } else if (existingSizes === 'auto') {
+      const newSize = () => {
+        return (
+          autoSize.getElementWidth({
+            el,
+            parent: el.parentNode,
+            width: el.offsetWidth,
+          }) + 'px'
+        );
+      };
+
       // Throttle rAF calls to avoid multiple calls in the same frame
       let currentRAF;
 
@@ -207,13 +218,15 @@ var ImgixTag = (function () {
           // Setup the new requestAnimationFrame()
           currentRAF = _window.requestAnimationFrame(function () {
             // Run our resize functions
-
-            return el.offsetWidth + 'px';
+            let currentSize = newSize();
+            console.log(currentSize);
+            el.setAttribute('sizes', currentSize);
+            return currentSize;
           });
         },
         false
       );
-      return el.offsetWidth + 'px';
+      return newSize();
     } else {
       return '100vw';
     }
