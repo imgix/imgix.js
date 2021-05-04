@@ -21,6 +21,9 @@ const getWidth = function ({ el, parent, width }) {
   }
 
   console.log(el.offsetWidth, parentWidth, width);
+
+  el.setAttribute('_ixWidth', width);
+
   return width;
 };
 
