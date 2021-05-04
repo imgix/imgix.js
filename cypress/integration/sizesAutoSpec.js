@@ -24,7 +24,8 @@ describe('On a page with meta tag imgix parameters', () => {
     it('Sizes attribute is correctly set', () => {
       cy.get('.sizes-test').each(($el) => {
         const imgSize = $el.attr('sizes');
-        expect(imgSize).to.equal('984px');
+        const expectedSize = Math.ceil($el.width()) + 'px';
+        expect(imgSize).to.equal(expectedSize);
       });
     });
 
