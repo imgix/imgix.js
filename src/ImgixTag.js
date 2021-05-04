@@ -11,6 +11,8 @@ var ImgixTag = (function () {
       return;
     }
 
+    this.window = this.settings.window || window;
+
     if (this.el.hasAttribute('ix-initialized') && !this.settings.force) {
       return;
     }
@@ -185,6 +187,7 @@ var ImgixTag = (function () {
   ImgixTag.prototype.sizes = function () {
     var existingSizes = this.el.getAttribute('sizes');
     const el = this.el;
+    const _window = this.window;
 
     if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
@@ -193,22 +196,24 @@ var ImgixTag = (function () {
       let currentRAF;
 
       // Listen for resize
-      window.addEventListener(
+      _window.addEventListener(
         'resize',
         function (event) {
           // If there's an existing rAF call, cancel it
           if (currentRAF) {
-            window.cancelAnimationFrame(currentRAF);
+            _window.cancelAnimationFrame(currentRAF);
           }
 
           // Setup the new requestAnimationFrame()
-          currentRAF = window.requestAnimationFrame(function () {
+          currentRAF = _window.requestAnimationFrame(function () {
             // Run our resize functions
-            el.setAttribute('sizes', el.offsetWidth);
+
+            return el.offsetWidth + 'px';
           });
         },
         false
       );
+      return el.offsetWidth + 'px';
     } else {
       return '100vw';
     }
