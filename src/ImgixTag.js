@@ -193,45 +193,7 @@ var ImgixTag = (function () {
     if (existingSizes && existingSizes !== 'auto') {
       return existingSizes;
     } else if (existingSizes === 'auto') {
-      const newSize = () => {
-        return (
-          autoSize.getElementWidth({
-            el,
-            parent: el.parentNode,
-            width: el.offsetWidth,
-          }) + 'px'
-        );
-      };
-
-      // Throttle rAF calls to avoid multiple calls in the same frame
-      let currentRAF;
-
-      // Listen for resize
-      _window.addEventListener(
-        'resize',
-        function (event) {
-          // If there's an existing rAF call, cancel it
-          if (currentRAF) {
-            el.setAttribute('_ixListening', false);
-            el.setAttribute('_ixRaf', -1);
-            _window.cancelAnimationFrame(currentRAF);
-          }
-
-          // Setup the new requestAnimationFrame()
-          currentRAF = _window.requestAnimationFrame(function () {
-            // Run our resize functions
-            let currentSize = newSize();
-            el.setAttribute('sizes', currentSize);
-            // track the status of the listener
-            el.setAttribute('_ixListening', true);
-            return currentSize;
-          });
-          // track the rAF id
-          el.setAttribute('_ixRaf', currentRAF);
-        },
-        false
-      );
-      return newSize();
+      return autoSize.updateOnResize({ el, existingSizes, _window });
     } else {
       return '100vw';
     }
