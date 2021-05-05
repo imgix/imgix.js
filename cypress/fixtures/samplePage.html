@@ -45,6 +45,7 @@
     <!-- https://assets.imgix.net/base.png?txtsize=20&txtpad=25&txtfont=avenir-black&txtalign=center&txt=A+comparison+of+animals.&markpad=0&markalign=top&ba=top&bx=0&bm=multiply&q=100&fm=pjpg&chromasub=444&usm=10&w=1000&h=400&fit=crop&mark=https%3A%2F%2Fexampletext.imgix.net%2Fimgix-puffins.jpg%3Fw%3D500%26txt%3DPUFFINS&blend=https%3A%2F%2Fexampletext.imgix.net%2Fmothphoto.jpg%3Fw%3D500%26h%3D333%26fit%3Dcrop%26txt%3DMOTH+CREATURE&border=2%2CEF40E7&pad=2&txtclr=EF40E7 -->
     <div class="example">
       <img
+        data-test-id="metaSpec"
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         test-path="/base.png"
         test-params='{
@@ -97,6 +98,7 @@
         </p>
         <figure>
           <img
+            data-test-id="metaSpec"
             src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
             test-path="/base.png"
             test-params='{
@@ -152,12 +154,13 @@
         </p>
         <figure>
           <img
+            data-test-id="sizes"
             test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
             test-params="{}"
             sizes="auto"
-            class="sizes-test"
           />
-          <img class="100vw" style="width: 100vw"></img>
+          <img
+            data-test-id="100vw" style="width: 100vw"></img>
         </figure>
         <div class="button-group">
           <a
@@ -178,6 +181,7 @@
     <hr />
     <a href="https://imgix.com"
       ><img
+        data-test-id="metaSpec"
         src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
         test-path="/presskit/imgix-presskit.pdf?page=3&fm=png&w=320&dpr=2"
         width="160"
