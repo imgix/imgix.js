@@ -48,8 +48,7 @@ const imageLoaded = ({ el }) => {
   return true;
 };
 
-// Returns true if img has sizes attr, its sizes attr == "auto",
-// and the img has loaded.
+// Returns true if img has sizes attr and the img has loaded.
 const imgCanBeSized = ({ el, existingSizes }) => {
   if (!existingSizes) {
     return false;
