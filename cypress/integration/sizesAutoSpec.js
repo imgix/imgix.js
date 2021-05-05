@@ -90,11 +90,14 @@ describe('On an invalid image', () => {
   });
   it('Does not modify sizes if image has not loaded', () => {
     cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
-      const imgSize = $el.attr('sizes');
-      expect($el.attr('src')).to.equal(
-        'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-      );
-      expect(imgSize).to.equal('404px'); // 404 is 100vw in this context
+      cy.get('.100vw').each(($ele) => {
+        const imgSize = $el.attr('sizes');
+        const expectedSize = $ele.width() + 'px';
+        expect($el.attr('src')).to.equal(
+          'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+        );
+        expect(imgSize).to.equal(expectedSize);
+      });
     });
   });
 });
