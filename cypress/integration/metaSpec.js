@@ -6,18 +6,16 @@ describe('On a page with meta tag imgix paramaters', () => {
   context('The images on the page', () => {
     beforeEach(() => {
       cy.fixture('config.js').as('config');
-      // expect the number of image elements on the page to equal fixture's
-      cy.get('img').should('have.length', 4);
     });
     it('All loaded and rendered', () => {
-      cy.get('img').each(($el) => {
+      cy.get('[data-test-id="metaSpec"]').each(($el) => {
         // "naturalWidth" and "naturalHeight" are set when the image loads
         expect($el[0].naturalWidth).to.be.greaterThan(0);
       });
     });
 
     it('Interacted with the imgix instance', () => {
-      cy.get('img').each(($el) => {
+      cy.get('[data-test-id="metaSpec"]').each(($el) => {
         expect($el.attr('ix-initialized')).to.equal('ix-initialized');
       });
     });
@@ -35,7 +33,7 @@ describe('On a page with meta tag imgix paramaters', () => {
           })
           .then(() => {
             // check that all the images have the config correctly applied
-            cy.get('img').each(($el) => {
+            cy.get('[data-test-id="metaSpec"]').each(($el) => {
               const imgSrc = $el.attr('src');
               const url = new URL(imgSrc);
               const configProtocol =

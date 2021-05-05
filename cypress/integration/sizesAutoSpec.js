@@ -7,7 +7,7 @@ describe('On a pages first render', () => {
   });
 
   it('Sizes attribute is correctly set', () => {
-    cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
+    cy.get('[data-test-id="sizes"]', { timeout: 10000 }).each(($el) => {
       const expectedSize = Math.ceil($el.width());
       const imgSize = Number($el.attr('sizes').split('px')[0]);
       assert.isAtMost(imgSize, 500);
@@ -27,7 +27,7 @@ describe('When a page gets resized', () => {
   });
 
   it('Updates the sizes attribute on resize', () => {
-    cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
+    cy.get('[data-test-id="sizes"]', { timeout: 10000 }).each(($el) => {
       const expectedSize = Math.ceil($el.width());
       const imgSize = Number($el.attr('sizes').split('px')[0]);
       assert.isAtMost(imgSize, 500);
@@ -36,7 +36,7 @@ describe('When a page gets resized', () => {
   });
 
   it('Stores previous measured width value if window is resized', () => {
-    cy.get('.sizes-test', { timeout: 300 }).each(($el) => {
+    cy.get('[data-test-id="sizes"]', { timeout: 300 }).each(($el) => {
       const imgOffsetWidth = $el.attr('_ixWidth');
       // _ixWidth helps us avoid setting the sizes attr if
       // its already been updated to the current value. Ie
@@ -47,7 +47,7 @@ describe('When a page gets resized', () => {
   });
 
   it('Tracks the status of the resize event listener', () => {
-    cy.get('.sizes-test').each(($el) => {
+    cy.get('[data-test-id="sizes"]').each(($el) => {
       const listenerStatus = $el.attr('_ixListening');
       // _ixListening tracks if event listener has been
       // removed from the element yet or not.
@@ -56,7 +56,7 @@ describe('When a page gets resized', () => {
   });
 
   it('Tracks call to rAF', () => {
-    cy.get('.sizes-test').each(($el) => {
+    cy.get('[data-test-id="sizes"]').each(($el) => {
       const rAFId = $el.attr('_ixRaf');
       // _ixRaf tracks the rAF id of the element
       expect(rAFId).to.exist;
@@ -65,7 +65,7 @@ describe('When a page gets resized', () => {
 
   it('Cancels calls to rAF if a new call made in the same frame', () => {
     cy.viewport(500, 900);
-    cy.get('.sizes-test').each(($el) => {
+    cy.get('[data-test-id="sizes"]').each(($el) => {
       const rAFId = $el.attr('_ixRaf');
       // _ixRaf tracks the rAF id of the element
       expect(rAFId).to.not.equal(1);
@@ -78,7 +78,7 @@ describe('When a page gets resized', () => {
 describe('On an invalid image', () => {
   before(() => {
     cy.visit('/cypress/fixtures/samplePage.html');
-    cy.get('.sizes-test', { timeout: 10000 }).invoke(
+    cy.get('[data-test-id="sizes"]', { timeout: 10000 }).invoke(
       'attr',
       'src',
       'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
@@ -89,8 +89,8 @@ describe('On an invalid image', () => {
     cy.fixture('config.js').as('config');
   });
   it('Does not modify sizes if image has not loaded', () => {
-    cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
-      cy.get('.100vw').each(($ele) => {
+    cy.get('[data-test-id="sizes"]', { timeout: 10000 }).each(($el) => {
+      cy.get('[data-test-id="100vw"]').each(($ele) => {
         const imgSize = $el.attr('sizes');
         const expectedSize = $ele.width() + 'px';
         expect($el.attr('src')).to.equal(
