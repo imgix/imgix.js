@@ -74,3 +74,27 @@ describe('When a page gets resized', () => {
 
   //
 });
+
+describe('On an invalid image', () => {
+  before(() => {
+    cy.visit('/cypress/fixtures/samplePage.html');
+    cy.get('.sizes-test', { timeout: 10000 }).invoke(
+      'attr',
+      'src',
+      'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    );
+  });
+
+  beforeEach(() => {
+    cy.fixture('config.js').as('config');
+  });
+  it('Does not modify sizes if image has not loaded', () => {
+    cy.get('.sizes-test', { timeout: 10000 }).each(($el) => {
+      const imgSize = $el.attr('sizes');
+      expect($el.attr('src')).to.equal(
+        'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+      );
+      expect(imgSize).to.equal('404px'); // 404 is 100vw in this context
+    });
+  });
+});
