@@ -74,10 +74,6 @@ const getCurrentSize = ({ el, existingSizes }) => {
       }) + 'px'
     : existingSizes;
 
-  if (currentSize !== existingSizes) {
-    el.setAttribute('sizes', currentSize);
-  }
-
   return currentSize;
 };
 
@@ -91,10 +87,18 @@ const rAF = ({ el, existingSizes, _window }) => {
   }
 
   // Setup the new requestAnimationFrame()
-  currentRAF = _window.requestAnimationFrame(() =>
-    // Run our resize function callback
-    getCurrentSize({ el, existingSizes })
-  );
+  currentRAF = _window.requestAnimationFrame(() => {
+    // Run our resize function callback that calcs current size
+    // and updates the elements `sizes` to match.
+    const currentSize = getCurrentSize({ el, existingSizes });
+
+    // only update element attributes if changed
+    if (currentSize !== existingSizes) {
+      el.setAttribute('sizes', currentSize);
+    }
+
+    return currentSize;
+  });
   // track the rAF id
   el.setAttribute('_ixRaf', currentRAF);
 };
