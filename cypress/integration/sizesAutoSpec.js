@@ -69,10 +69,15 @@ describe('When a page gets resized', () => {
   });
 });
 
-describe('On an invalid image', () => {
+describe('On an image whos width is too small or undefined', () => {
   before(() => {
     cy.visit('/cypress/fixtures/samplePage.html');
-    cy.get('[data-test-id="sizes"]', { timeout: 10000 }).invoke(
+    cy.get('[data-test-id="sizes"]').invoke(
+      'attr',
+      'src',
+      'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+    );
+    cy.get('[data-test-id="invalid-img"]').invoke(
       'attr',
       'src',
       'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
@@ -82,16 +87,21 @@ describe('On an invalid image', () => {
   beforeEach(() => {
     cy.fixture('config.js').as('config');
   });
-  it('Does not modify sizes if image has not loaded', () => {
-    cy.get('[data-test-id="sizes"]', { timeout: 10000 }).each(($el) => {
-      cy.get('[data-test-id="100vw"]').each(($ele) => {
+
+  it('Uses parent size as fallback', () => {
+    cy.get('[data-test-id="sizes"]')
+      .first()
+      .then(($el) => {
         const imgSize = $el.attr('sizes');
-        const expectedSize = $ele.width() + 'px';
-        expect($el.attr('src')).to.equal(
-          'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-        );
-        expect(imgSize).to.equal(expectedSize);
+        cy.get('[data-test-id="sizes-parent"]')
+          .first()
+          .then(($parent) => {
+            const parentSize = $parent.width() + 'px';
+            expect($el.attr('src')).to.equal(
+              'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
+            );
+            expect(imgSize).to.equal(parentSize);
+          });
       });
-    });
   });
 });
