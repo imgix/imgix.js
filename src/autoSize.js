@@ -1,10 +1,15 @@
+const util = require('./util');
+
 const WIDTH_MIN_SIZE = 40;
+const DEBOUNCE_TIMEOUT = 200;
 
 // If element's width is less than parent width, use the parent's. If
 // resulting width is less than minimum, use the minimum. Do this to
 // Avoid failing to resize when window expands and avoid setting sizes
 // to 0 when el.offsetWidth == 0.
 const getWidth = function ({ el, parent, width }) {
+  // TODO: add check and test for parent == null
+
   let parentWidth = parent.offsetWidth;
 
   // get the fist parent that has a size over the minimum
@@ -16,11 +21,10 @@ const getWidth = function ({ el, parent, width }) {
   if (width < parentWidth) {
     width = parentWidth;
   }
-  if (width < WIDTH_MIN_SIZE) {
-    width = el._ixWidth ? el._ixWidth : WIDTH_MIN_SIZE;
-  }
 
-  el.setAttribute('_ixWidth', width);
+  if (width < WIDTH_MIN_SIZE) {
+    width = WIDTH_MIN_SIZE;
+  }
 
   return width;
 };
@@ -78,42 +82,32 @@ const getCurrentSize = ({ el, existingSizes }) => {
   return currentSize;
 };
 
-const rAF = ({ el, existingSizes, _window }) => {
-  // If there's an existing rAF call, cancel it
-  let currentRAF = el.getAttribute('_ixRaf');
-  if (currentRAF) {
-    el.setAttribute('_ixListening', false);
-    el.setAttribute('_ixRaf', -1);
-    _window.cancelAnimationFrame(currentRAF);
-  }
+const resizeElement = ({ el, existingSizes, _window }) => {
+  // Run our resize function callback that calcs current size
+  // and updates the elements `sizes` to match.
+  console.log('resizeElement called ...');
+  const currentSize = getCurrentSize({ el, existingSizes });
 
-  // Setup the new requestAnimationFrame()
-  currentRAF = _window.requestAnimationFrame(() => {
-    // Track the status of the listener
-    el.setAttribute('_ixListening', true);
-    // Run our resize function callback that calcs current size
-    // and updates the elements `sizes` to match.
-    const currentSize = getCurrentSize({ el, existingSizes });
-
-    // Only update element attributes if changed
-    if (currentSize !== existingSizes) {
+  // Only update element attributes if changed
+  if (currentSize !== existingSizes) {
+    _window.requestAnimationFrame(() => {
+      console.log('rAF run...');
       el.setAttribute('sizes', currentSize);
-    }
-
-    return currentSize;
-  });
-  // track the rAF id
-  el.setAttribute('_ixRaf', currentRAF);
+    });
+  }
 };
 
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
-const updateOnResize = ({ el, existingSizes, _window }) => {
+const updateOnResize = ({ state, el, existingSizes, _window }) => {
+  // debounce fn
+  const runDebounce = util.debounce(() => {
+    console.log('debounce run...');
+    _window.requestIdleCallback(() =>
+      resizeElement({ el, existingSizes, _window })
+    );
+  }, DEBOUNCE_TIMEOUT);
   // Listen for resize
-  _window.addEventListener(
-    'resize',
-    (event) => rAF({ el, existingSizes, _window }),
-    false
-  );
+  _window.addEventListener('resize', runDebounce, false);
   // Return the current size
   return (
     getWidth({
