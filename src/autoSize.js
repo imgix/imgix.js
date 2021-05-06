@@ -62,8 +62,9 @@ const imgCanBeSized = ({ el, existingSizes }) => {
 };
 
 const getCurrentSize = ({ el, existingSizes }) => {
-  // track the status of the listener
-  el.setAttribute('_ixListening', true);
+  // TODO: instead of sizes="557px" do sizes="(max-width: currentBrowserWidth + 100) 557px, 100vw"
+  // browserWidth = 1000px, image width = 500px
+  // sizes="(max-width: currentBrowserWidth + 100) 557px, (imageWidth / browserWidth * 100)vw" --> 50vw
 
   // If image loaded calc size, otherwise leave as existing
   let currentSize = imgCanBeSized({ el, existingSizes })
@@ -88,11 +89,13 @@ const rAF = ({ el, existingSizes, _window }) => {
 
   // Setup the new requestAnimationFrame()
   currentRAF = _window.requestAnimationFrame(() => {
+    // Track the status of the listener
+    el.setAttribute('_ixListening', true);
     // Run our resize function callback that calcs current size
     // and updates the elements `sizes` to match.
     const currentSize = getCurrentSize({ el, existingSizes });
 
-    // only update element attributes if changed
+    // Only update element attributes if changed
     if (currentSize !== existingSizes) {
       el.setAttribute('sizes', currentSize);
     }
