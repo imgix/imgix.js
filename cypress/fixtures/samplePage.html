@@ -18,24 +18,9 @@
     <meta property="ix:pathInputAttribute" content="test-path" />
     <meta property="ix:paramsInputAttribute" content="test-params" />
     <meta property="ix:sizesInputAttribute" content="sizes" />
-    <link rel="stylesheet" href="" />
+    <link rel="stylesheet" href="./sample.css"/>
   </head>
   <body>
-    <style>
-      .example {
-        display: block;
-        vertical-align: top;
-        text-align: center;
-        padding: 1em;
-      }
-      .example img {
-        margin-bottom: 1em;
-        max-width: 100%;
-      }
-      article figure img {
-        max-width: 100%;
-      }
-    </style>
     <!--[if lt IE 7]>
       <p class="browsehappy">
         You are using an <strong>outdated</strong> browser. Please
@@ -152,15 +137,23 @@
           As the page resizes, the image's `sizes` attribute should update to
           fit the page size.
         </p>
-        <figure>
+        <figure data-test-id="sizes-parent">
           <img
+            alt="sizes-auto-first-img"
             data-test-id="sizes"
             test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
             test-params="{}"
             sizes="auto"
           />
+          <!-- Invalid image -->
           <img
-            data-test-id="100vw" style="width: 100vw"></img>
+            alt="invalid-img"
+            data-test-id="invalid-img"
+            test-path="this_wont_work!.jpg"
+            test-params="{}"
+            sizes="auto"
+            width="0px"
+          />
         </figure>
         <div class="button-group">
           <a
@@ -174,6 +167,83 @@
           >
         </div>
       </article>
+      <article>
+        <h1>Automatically updating img tag's `sizes` attribute without sacrificing performance</h1>
+        <p>
+          Here is an example of an image with `sizes` attribute set to `auto`.
+          As the page resizes, the image's `sizes` attribute should update to
+          fit the page size. As you can see, having many images do this will not
+          affect performance.
+        </p>
+        <div id="photos-grid">
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+          <img
+            data-test-id="sizes-grid"
+            alt="img-grid-img"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="auto"
+          />
+      </article>
+        <div class="button-group">
+          <a
+            href="https://www.imgix.com/docs/reference"
+            class="button"
+            target="_blank"
+          >
+            View API documentation</a>
+          <a href="https://imgix.com" target="_blank" class="button">
+            Visit imgix.com
+          </a>
+        </div>
     </section>
     <script src="" async defer></script>
   </body>
