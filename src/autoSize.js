@@ -7,7 +7,7 @@ const DEBOUNCE_TIMEOUT = 200;
 // resulting width is less than minimum, use the minimum. Do this to
 // Avoid failing to resize when window expands and avoid setting sizes
 // to 0 when el.offsetWidth == 0.
-const getWidth = function ({ el, parent, width }) {
+const getWidth = function ({ parent, width }) {
   // TODO: add check and test for parent == null
 
   let parentWidth = parent.offsetWidth;
@@ -36,7 +36,9 @@ const imageLoaded = ({ el }) => {
   // weren’t downloaded as not complete. Some Gecko-based browsers
   // report this incorrectly. More here: https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-complete
   if (!el.complete) {
-    console.error('not complete');
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element with complete evaluating to false'
+    );
     return false;
   }
 
@@ -44,7 +46,9 @@ const imageLoaded = ({ el }) => {
   // density-corrected size of the image. If img failed to load,
   // both of these will be zero. More here: https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-naturalheight
   if (el.naturalWidth === 0) {
-    console.error('no natural width');
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element with no naturalWidth'
+    );
     return false;
   }
 
@@ -55,10 +59,16 @@ const imageLoaded = ({ el }) => {
 // Returns true if img has sizes attr and the img has loaded.
 const imgCanBeSized = ({ el, existingSizes }) => {
   if (!existingSizes) {
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element without existing sizes attribute value'
+    );
     return false;
   }
 
   if (!el.hasAttributes()) {
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element with no attributes'
+    );
     return false;
   }
 
@@ -85,23 +95,20 @@ const getCurrentSize = ({ el, existingSizes }) => {
 const resizeElement = ({ el, existingSizes, _window }) => {
   // Run our resize function callback that calcs current size
   // and updates the elements `sizes` to match.
-  console.log('resizeElement called ...');
   const currentSize = getCurrentSize({ el, existingSizes });
 
   // Only update element attributes if changed
   if (currentSize !== existingSizes) {
     _window.requestAnimationFrame(() => {
-      console.log('rAF run...');
       el.setAttribute('sizes', currentSize);
     });
   }
 };
 
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
-const updateOnResize = ({ state, el, existingSizes, _window }) => {
+const updateOnResize = ({ el, existingSizes, _window }) => {
   // debounce fn
   const runDebounce = util.debounce(() => {
-    console.log('debounce run...');
     _window.requestIdleCallback(() =>
       resizeElement({ el, existingSizes, _window })
     );
