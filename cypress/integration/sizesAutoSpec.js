@@ -34,45 +34,6 @@ describe('When a page gets resized', () => {
       assert.isAtLeast(imgSize, expectedSize);
     });
   });
-
-  it('Stores previous measured width value if window is resized', () => {
-    cy.get('[data-test-id="sizes"]', { timeout: 300 }).each(($el) => {
-      const imgOffsetWidth = $el.attr('_ixWidth');
-      // _ixWidth helps us avoid setting the sizes attr if
-      // its already been updated to the current value. Ie
-      // if _ixWidth == 40px and offsetWidth == 40px, don't
-      // overwrite sizes attr, already been done at this width.
-      expect(imgOffsetWidth).to.exist;
-    });
-  });
-
-  it('Tracks the status of the resize event listener', () => {
-    cy.get('[data-test-id="sizes"]').each(($el) => {
-      const listenerStatus = $el.attr('_ixListening');
-      // _ixListening tracks if event listener has been
-      // removed from the element yet or not.
-      expect(listenerStatus).to.exist;
-    });
-  });
-
-  it('Tracks call to rAF', () => {
-    cy.get('[data-test-id="sizes"]').each(($el) => {
-      const rAFId = $el.attr('_ixRaf');
-      // _ixRaf tracks the rAF id of the element
-      expect(rAFId).to.exist;
-    });
-  });
-
-  it('Cancels calls to rAF if a new call made in the same frame', () => {
-    cy.viewport(500, 900);
-    cy.get('[data-test-id="sizes"]').each(($el) => {
-      const rAFId = $el.attr('_ixRaf');
-      // _ixRaf tracks the rAF id of the element
-      expect(rAFId).to.not.equal(1);
-    });
-  });
-
-  //
 });
 
 describe('On an invalid image', () => {
