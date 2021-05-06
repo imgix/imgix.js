@@ -22,6 +22,7 @@
     "release": "npm run build && git add dist src/imgix.js && standard-version -a",
     "test": "./node_modules/jasmine/bin/jasmine.js & npm run cy:run",
     "test:watch": "chokidar \"src/*.js\" \"spec/*.js\" -c \"npm run test\"",
+    "cypress:watch": " npx nodemon cypress/integration -x 'npm run cy:run'",
     "cy:run": "cypress run"
   },
   "devDependencies": {
