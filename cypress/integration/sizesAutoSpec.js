@@ -69,27 +69,19 @@ describe('When a page gets resized', () => {
   });
 });
 
-describe('On an image whos width is too small or undefined', () => {
-  before(() => {
+describe('On an invalid image or an image that has not loaded', () => {
+  beforeEach(() => {
     cy.visit('/cypress/fixtures/samplePage.html');
-    cy.get('[data-test-id="sizes"]').invoke(
-      'attr',
-      'src',
-      'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
-    );
     cy.get('[data-test-id="invalid-img"]').invoke(
       'attr',
       'src',
       'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     );
-  });
-
-  beforeEach(() => {
     cy.fixture('config.js').as('config');
   });
 
   it('Uses parent size as fallback', () => {
-    cy.get('[data-test-id="sizes"]')
+    cy.get('[data-test-id="invalid-img"]')
       .first()
       .then(($el) => {
         const imgSize = $el.attr('sizes');
@@ -101,6 +93,30 @@ describe('On an image whos width is too small or undefined', () => {
               'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
             );
             expect(imgSize).to.equal(parentSize);
+          });
+      });
+  });
+
+  it('Does not update sizes on window resize', () => {
+    // resize the window and wait for debounce to execute
+    cy.viewport(1500, 500);
+    cy.wait(300);
+    cy.get('[data-test-id="sizes"]')
+      .first()
+      .then(($el) => {
+        // check sizes HAS changed on valid image
+        const newImgSize = Number($el.attr('sizes').split('px')[0]);
+        assert.isAtLeast(newImgSize, 500);
+        assert.isAtMost(newImgSize, 1500);
+        expect(newImgSize).to.not.equal(404);
+
+        //check sizes HAS NOT changed on invalid image
+        cy.get('[data-test-id="invalid-img"]')
+          .first()
+          .then(($ele) => {
+            const imgSize = Number($ele.attr('sizes').split('px')[0]);
+            assert.isAtLeast(imgSize, $ele.width());
+            assert.isAtMost(imgSize, 500);
           });
       });
   });
