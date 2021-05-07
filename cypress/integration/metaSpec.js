@@ -45,5 +45,10 @@ describe('On a page with meta tag imgix paramaters', () => {
           });
       });
     });
+    it('Does not significantly impact performance', () => {
+      cy.lighthouse({
+        performance: 97,
+      });
+    });
   });
 });

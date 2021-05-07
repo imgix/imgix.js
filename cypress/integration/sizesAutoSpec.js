@@ -35,7 +35,22 @@ describe('When a page gets resized', () => {
     });
   });
 
+  it('Does not significantly impact performance', () => {
+    cy.lighthouse({
+      // metaSpec consistently outputs a performance score of 98
+      performance: 97,
+    });
+  });
+
   context('When multiple resizes happen', () => {
+    it('Does not significantly impact performance', () => {
+      cy.viewport(1500, 500);
+      cy.viewport(500, 500);
+      cy.lighthouse({
+        // metaSpec consistently outputs a performance score of 98
+        performance: 97,
+      });
+    });
     it(`Does not update size before debounce is finished`, () => {
       cy.get('[data-test-id="sizes"]')
         .first()
