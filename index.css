@@ -27,6 +27,21 @@ article figure img {
   height: auto !important;
 }
 
+.size-info {
+  z-index: 1;
+  position: relative;
+  bottom: 40px;
+  color: white;
+  font-size: x-large;
+  background-color: black;
+  width: auto;
+  height: auto;
+}
+
+.size-info p {
+  text-align: right;
+}
+
 /* media queries test the browser width and adjust
   the number of columns accordingly. */
 
