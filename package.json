@@ -16,6 +16,7 @@
     "test": "tests"
   },
   "scripts": {
+    "start": "npx browser-sync start --server --files '*.html, js/*.js'",
     "build": "mkdir -p dist && ./node_modules/browserify/bin/cmd.js ./src/imgix.js > ./dist/imgix.js && ./node_modules/uglify-js/bin/uglifyjs ./dist/imgix.js --mangle > ./dist/imgix.min.js",
     "build:watch": "npx nodemon -w src -x 'npm run build'",
     "pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\"",
