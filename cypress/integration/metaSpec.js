@@ -1,6 +1,6 @@
 describe('On a page with meta tag imgix paramaters', () => {
   before(() => {
-    cy.visit('/cypress/fixtures/samplePage.html');
+    cy.visit('/cypress/fixtures/index.html');
   });
 
   context('The images on the page', () => {
