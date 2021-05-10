@@ -1,6 +1,6 @@
 describe('On a pages first render', () => {
   before(() => {
-    cy.visit('/cypress/fixtures/samplePage.html');
+    cy.visit('/cypress/fixtures/index.html');
   });
   beforeEach(() => {
     cy.fixture('config.js').as('config');
@@ -18,7 +18,7 @@ describe('On a pages first render', () => {
 
 describe('When a page gets resized', () => {
   before(() => {
-    cy.visit('/cypress/fixtures/samplePage.html');
+    cy.visit('/cypress/fixtures/index.html');
     cy.viewport(500, 500);
   });
 
@@ -86,7 +86,7 @@ describe('When a page gets resized', () => {
 
 describe('On an invalid image or an image that has not loaded', () => {
   beforeEach(() => {
-    cy.visit('/cypress/fixtures/samplePage.html');
+    cy.visit('/cypress/fixtures/index.html');
     cy.get('[data-test-id="invalid-img"]').invoke(
       'attr',
       'src',
