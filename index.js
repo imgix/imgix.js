@@ -10,7 +10,6 @@ images.forEach((img) => {
   newP.textContent = 'sizes=' + size;
   newDiv.appendChild(newP);
   img.insertAdjacentElement('afterend', newDiv);
-  console.log(img, newDiv);
 });
 
 window.addEventListener('resize', () => {
