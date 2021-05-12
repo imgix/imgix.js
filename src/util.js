@@ -102,38 +102,30 @@ module.exports = {
       return metaTagContent;
     }
   },
-  debounce: function (func, waitMs) {
-    // based off: http://modernjavascript.blogspot.com/2013/08/building-better-debounce.html
-    // we need to save these in the closure
-    var timeout, args, context, timestamp;
-
-    return function () {
-      // save details of latest call
-      context = this;
-      args = [].slice.call(arguments, 0);
-      timestamp = new Date();
-
-      // this is where the magic happens
-      var later = function () {
-        // how long ago was the last call
-        var timeSinceLastCallMs = new Date() - timestamp;
-
-        // if the latest call was less that the wait period ago
-        // then we reset the timeout to wait for the difference
-        if (timeSinceLastCallMs < waitMs) {
-          timeout = setTimeout(later, waitMs - timeSinceLastCallMs);
-
-          // or if not we can null out the timer and run the latest
-        } else {
-          timeout = null;
-          func.apply(context, args);
-        }
-      };
-
-      // we only need to set the timer now if one isn't already running
-      if (!timeout) {
-        timeout = setTimeout(later, waitMs);
+  rICShim: function (_window) {
+    // from: https://developers.google.com/web/updates/2015/08/using-requestidlecallback#checking_for_requestidlecallback
+    return (
+      _window.requestIdleCallback ||
+      function (cb) {
+        var start = Date.now();
+        return setTimeout(function () {
+          cb({
+            didTimeout: false,
+            timeRemaining: function () {
+              return Math.max(0, 50 - (Date.now() - start));
+            },
+          });
+        }, 1);
       }
-    };
+    );
+  },
+  cICShim: function (_window) {
+    // from: https://developers.google.com/web/updates/2015/08/using-requestidlecallback#checking_for_requestidlecallback
+    return (
+      _window.cancelIdleCallback ||
+      function (id) {
+        clearTimeout(id);
+      }
+    );
   },
 };
