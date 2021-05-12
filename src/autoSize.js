@@ -1,7 +1,8 @@
 const util = require('./util');
 
 const WIDTH_MIN_SIZE = 40;
-const DEBOUNCE_TIMEOUT = 200;
+const MAX_TIMEOUT = 200;
+const MAX_RUNTIME = 1;
 
 // If element's width is less than parent width, use the parent's. If
 // resulting width is less than minimum, use the minimum. Do this to
@@ -105,16 +106,76 @@ const resizeElement = ({ el, existingSizes, _window }) => {
   }
 };
 
+const enqueuePendingTasks = ({ state, _window }) => {
+  // Only schedule the rIC if one has not already been set.
+  if (state.isRequestIdleCallbackScheduled) return;
+
+  state.isRequestIdleCallbackScheduled = true;
+
+  // Wait at most 200 milliseconds before processing cbs.
+  _window.requestIdleCallback(processPendingIdleCallbacks, {
+    timeout: MAX_TIMEOUT,
+  });
+};
+
+const processPendingIdleCallbacks = ({ deadline, state, _window }) => {
+  // Reset the boolean so future rICs can be set.
+  state.isRequestIdleCallbackScheduled = false;
+
+  // If there is no deadline, just run as long as necessary.
+  // This will be the case if requestIdleCallback had to be shimmed.
+  if (typeof deadline === 'undefined') {
+    deadline = {
+      timeRemaining: function () {
+        return MAX_RUNTIME;
+      },
+    };
+  }
+
+  // Run for as long as there is time remaining and tasks in queue.
+  while (deadline.timeRemaining() > 0 && state.queue.length > 0) {
+    // remove task from queue
+    let task = state.queue.pop();
+    // run the task
+    task();
+  }
+
+  // Check if there are more tasks still to enqueue
+  if (state.queue.length > 0) enqueuePendingTasks({ state, _window });
+};
+
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
 const updateOnResize = ({ el, existingSizes, _window }) => {
-  // debounce fn
-  const runDebounce = util.debounce(() => {
-    _window.requestIdleCallback(() =>
-      resizeElement({ el, existingSizes, _window })
-    );
-  }, DEBOUNCE_TIMEOUT);
+  // ensure rIC is defined on _window
+  _window.requestIdleCallback = util.rICShim(_window);
+  _window.cancelIdleCallback = util.cICShim(_window);
+
   // Listen for resize
-  _window.addEventListener('resize', runDebounce, false);
+  _window.addEventListener(
+    'resize',
+    () => {
+      // store and or create the rIC queue
+      _window.requestIdleCallbackQueue = _window.requestIdleCallbackQueue
+        ? _window.requestIdleCallbackQueue
+        : [];
+
+      const queue = _window.requestIdleCallbackQueue;
+      queue.push(() => resizeElement({ el, existingSizes, _window }));
+      // when there's a lull in computation during render, add this callback to event loop
+      _window.requestIdleCallback(
+        (deadline) => {
+          const state = {
+            isRequestIdleCallbackScheduled: true,
+            queue,
+          };
+          processPendingIdleCallbacks({ deadline, state });
+        },
+        // otherwise, wait max milliseconds before adding cb to event loop
+        { timeout: MAX_TIMEOUT }
+      );
+    },
+    false
+  );
   // Return the current size
   return (
     getWidth({
