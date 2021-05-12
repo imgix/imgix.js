@@ -108,10 +108,9 @@ const resizeElement = ({ el, existingSizes, _window }) => {
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
 const updateOnResize = ({ el, existingSizes, _window }) => {
   // debounce fn
+  const requestIdleCallback = util.rICShim(_window);
   const runDebounce = util.debounce(() => {
-    _window.requestIdleCallback(() =>
-      resizeElement({ el, existingSizes, _window })
-    );
+    requestIdleCallback(() => resizeElement({ el, existingSizes, _window }));
   }, DEBOUNCE_TIMEOUT);
   // Listen for resize
   _window.addEventListener('resize', runDebounce, false);

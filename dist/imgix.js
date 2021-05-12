@@ -206,13 +206,18 @@ var ImgixTag = (function () {
 module.exports = ImgixTag;
 
 },{"./autoSize":2,"./targetWidths.js":5,"./util.js":6}],2:[function(require,module,exports){
+const util = require('./util');
+
 const WIDTH_MIN_SIZE = 40;
+const DEBOUNCE_TIMEOUT = 200;
 
 // If element's width is less than parent width, use the parent's. If
 // resulting width is less than minimum, use the minimum. Do this to
 // Avoid failing to resize when window expands and avoid setting sizes
 // to 0 when el.offsetWidth == 0.
-const getWidth = function ({ el, parent, width }) {
+const getWidth = function ({ parent, width }) {
+  // TODO: add check and test for parent == null
+
   let parentWidth = parent.offsetWidth;
 
   // get the fist parent that has a size over the minimum
@@ -224,11 +229,10 @@ const getWidth = function ({ el, parent, width }) {
   if (width < parentWidth) {
     width = parentWidth;
   }
-  if (width < WIDTH_MIN_SIZE) {
-    width = el._ixWidth ? el._ixWidth : WIDTH_MIN_SIZE;
-  }
 
-  el.setAttribute('_ixWidth', width);
+  if (width < WIDTH_MIN_SIZE) {
+    width = WIDTH_MIN_SIZE;
+  }
 
   return width;
 };
@@ -240,7 +244,9 @@ const imageLoaded = ({ el }) => {
   // weren’t downloaded as not complete. Some Gecko-based browsers
   // report this incorrectly. More here: https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-complete
   if (!el.complete) {
-    console.error('not complete');
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element with complete evaluating to false'
+    );
     return false;
   }
 
@@ -248,7 +254,9 @@ const imageLoaded = ({ el }) => {
   // density-corrected size of the image. If img failed to load,
   // both of these will be zero. More here: https://html.spec.whatwg.org/multipage/embedded-content.html#dom-img-naturalheight
   if (el.naturalWidth === 0) {
-    console.error('no natural width');
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element with no naturalWidth'
+    );
     return false;
   }
 
@@ -259,10 +267,16 @@ const imageLoaded = ({ el }) => {
 // Returns true if img has sizes attr and the img has loaded.
 const imgCanBeSized = ({ el, existingSizes }) => {
   if (!existingSizes) {
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element without existing sizes attribute value'
+    );
     return false;
   }
 
   if (!el.hasAttributes()) {
+    console.warn(
+      'Imgix.js: attempted to set sizes attribute on element with no attributes'
+    );
     return false;
   }
 
@@ -286,42 +300,28 @@ const getCurrentSize = ({ el, existingSizes }) => {
   return currentSize;
 };
 
-const rAF = ({ el, existingSizes, _window }) => {
-  // If there's an existing rAF call, cancel it
-  let currentRAF = el.getAttribute('_ixRaf');
-  if (currentRAF) {
-    el.setAttribute('_ixListening', false);
-    el.setAttribute('_ixRaf', -1);
-    _window.cancelAnimationFrame(currentRAF);
-  }
+const resizeElement = ({ el, existingSizes, _window }) => {
+  // Run our resize function callback that calcs current size
+  // and updates the elements `sizes` to match.
+  const currentSize = getCurrentSize({ el, existingSizes });
 
-  // Setup the new requestAnimationFrame()
-  currentRAF = _window.requestAnimationFrame(() => {
-    // Track the status of the listener
-    el.setAttribute('_ixListening', true);
-    // Run our resize function callback that calcs current size
-    // and updates the elements `sizes` to match.
-    const currentSize = getCurrentSize({ el, existingSizes });
-
-    // Only update element attributes if changed
-    if (currentSize !== existingSizes) {
+  // Only update element attributes if changed
+  if (currentSize !== existingSizes) {
+    _window.requestAnimationFrame(() => {
       el.setAttribute('sizes', currentSize);
-    }
-
-    return currentSize;
-  });
-  // track the rAF id
-  el.setAttribute('_ixRaf', currentRAF);
+    });
+  }
 };
 
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
 const updateOnResize = ({ el, existingSizes, _window }) => {
+  // debounce fn
+  const requestIdleCallback = util.rICShim(_window);
+  const runDebounce = util.debounce(() => {
+    requestIdleCallback(() => resizeElement({ el, existingSizes, _window }));
+  }, DEBOUNCE_TIMEOUT);
   // Listen for resize
-  _window.addEventListener(
-    'resize',
-    (event) => rAF({ el, existingSizes, _window }),
-    false
-  );
+  _window.addEventListener('resize', runDebounce, false);
   // Return the current size
   return (
     getWidth({
@@ -340,7 +340,7 @@ const autoSize = {
 
 module.exports = autoSize;
 
-},{}],3:[function(require,module,exports){
+},{"./util":6}],3:[function(require,module,exports){
 module.exports = {
   // URL assembly
   host: null,
@@ -539,6 +539,57 @@ module.exports = {
     } else {
       return metaTagContent;
     }
+  },
+  debounce: function (func, waitMs) {
+    // based off: http://modernjavascript.blogspot.com/2013/08/building-better-debounce.html
+    // we need to save these in the closure
+    var timeout, args, context, timestamp;
+
+    return function () {
+      // save details of latest call
+      context = this;
+      args = [].slice.call(arguments, 0);
+      timestamp = new Date();
+
+      // this is where the magic happens
+      var later = function () {
+        // how long ago was the last call
+        var timeSinceLastCallMs = new Date() - timestamp;
+
+        // if the latest call was less that the wait period ago
+        // then we reset the timeout to wait for the difference
+        if (timeSinceLastCallMs < waitMs) {
+          timeout = setTimeout(later, waitMs - timeSinceLastCallMs);
+
+          // or if not we can null out the timer and run the latest
+        } else {
+          timeout = null;
+          func.apply(context, args);
+        }
+      };
+
+      // we only need to set the timer now if one isn't already running
+      if (!timeout) {
+        timeout = setTimeout(later, waitMs);
+      }
+    };
+  },
+  rICShim: function (_window) {
+    // from: https://developers.google.com/web/updates/2015/08/using-requestidlecallback#checking_for_requestidlecallback
+    return (
+      _window.requestIdleCallback ||
+      function (cb) {
+        var start = Date.now();
+        return setTimeout(function () {
+          cb({
+            didTimeout: false,
+            timeRemaining: function () {
+              return Math.max(0, 50 - (Date.now() - start));
+            },
+          });
+        }, 1);
+      }
+    );
   },
 };
 
