@@ -21,10 +21,11 @@
     "build:watch": "npx nodemon -w src -x 'npm run build'",
     "pretty": "prettier --write \"src/**/*.js\" \"spec/**/*.js\"",
     "release": "npm run build && git add dist src/imgix.js && standard-version -a",
-    "test": "./node_modules/jasmine/bin/jasmine.js & npm run cy:run",
+    "test": "npm run build && ./node_modules/jasmine/bin/jasmine.js & npm run cy:runOnly",
     "test:watch": "chokidar \"src/*.js\" \"spec/*.js\" -c \"npm run test\"",
-    "cypress:watch": " npx nodemon cypress/integration -x 'npm run cy:run'",
-    "cy:run": "cypress run"
+    "cy:watch": "npx nodemon -w cypress/integration -w cypress/fixtures -w src -x 'npm run cy:run'",
+    "cy:runOnly": "cypress run",
+    "cy:run": "npm run build && cypress run"
   },
   "devDependencies": {
     "atob": "2.1.2",
