@@ -267,7 +267,7 @@ const imageLoaded = ({ el }) => {
 };
 
 // Returns true if img has sizes attr and the img has loaded.
-const imgCanBeSized = ({ el, existingSizes }) => {
+const imgCanBeSized = ({ el, existingSizes, elHasAttributes }) => {
   if (!existingSizes) {
     console.warn(
       'Imgix.js: attempted to set sizes attribute on element without existing sizes attribute value'
@@ -275,7 +275,7 @@ const imgCanBeSized = ({ el, existingSizes }) => {
     return false;
   }
 
-  if (!el.hasAttributes()) {
+  if (!elHasAttributes) {
     console.warn(
       'Imgix.js: attempted to set sizes attribute on element with no attributes'
     );
@@ -285,13 +285,13 @@ const imgCanBeSized = ({ el, existingSizes }) => {
   return imageLoaded({ el });
 };
 
-const getCurrentSize = ({ el, existingSizes }) => {
+const getCurrentSize = ({ el, existingSizes, elHasAttributes }) => {
   // TODO: instead of sizes="557px" do sizes="(max-width: currentBrowserWidth + 100) 557px, 100vw"
   // browserWidth = 1000px, image width = 500px
   // sizes="(max-width: currentBrowserWidth + 100) 557px, (imageWidth / browserWidth * 100)vw" --> 50vw
 
   // If image loaded calc size, otherwise leave as existing
-  let currentSize = imgCanBeSized({ el, existingSizes })
+  let currentSize = imgCanBeSized({ el, existingSizes, elHasAttributes })
     ? getWidth({
         el,
         parent: el.parentNode,
@@ -302,10 +302,10 @@ const getCurrentSize = ({ el, existingSizes }) => {
   return currentSize;
 };
 
-const resizeElement = ({ el, existingSizes, _window }) => {
+const resizeElement = ({ el, existingSizes, _window, elHasAttributes }) => {
   // Run our resize function callback that calcs current size
   // and updates the elements `sizes` to match.
-  const currentSize = getCurrentSize({ el, existingSizes });
+  const currentSize = getCurrentSize({ el, existingSizes, elHasAttributes });
 
   // Only update element attributes if changed
   if (currentSize !== existingSizes) {
@@ -318,9 +318,13 @@ const resizeElement = ({ el, existingSizes, _window }) => {
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
 const updateOnResize = ({ el, existingSizes, _window }) => {
   // debounce fn
+  const elHasAttributes = el.hasAttributes();
+
   const requestIdleCallback = util.rICShim(_window);
   const runDebounce = util.debounce(() => {
-    requestIdleCallback(() => resizeElement({ el, existingSizes, _window }));
+    requestIdleCallback(() =>
+      resizeElement({ el, existingSizes, _window, elHasAttributes })
+    );
   }, DEBOUNCE_TIMEOUT);
   // Listen for resize
   _window.addEventListener('resize', runDebounce, false);
