@@ -13,11 +13,11 @@ images.forEach((img) => {
   console.log(img, newDiv);
 });
 
-window.addEventListener('resize', () => {
+setInterval(() => {
   images.forEach((img) => {
     let div = img.nextSibling;
     let text = div.firstChild;
     let size = img.getAttribute('sizes');
     text.textContent = 'sizes=' + size;
   });
-});
+}, 100);
