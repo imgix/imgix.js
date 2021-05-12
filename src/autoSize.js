@@ -9,13 +9,15 @@ const DEBOUNCE_TIMEOUT = 200;
 // to 0 when el.offsetWidth == 0.
 const getWidth = function ({ parent, width }) {
   // TODO: add check and test for parent == null
-
   let parentWidth = parent.offsetWidth;
 
   // get the fist parent that has a size over the minimum
-  while (parent.parentNode && parentWidth < WIDTH_MIN_SIZE) {
-    parentWidth = parent.parentNode.offsetWidth;
-    parent = parent.parentNode;
+  let parentNode = parent.parentNode;
+  while (parentNode && parentWidth < WIDTH_MIN_SIZE) {
+    parentWidth = parentNode.offsetWidth;
+
+    // set for next loop
+    parentNode = parentNode.parentNode;
   }
 
   if (width < parentWidth) {
