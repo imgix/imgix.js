@@ -44,5 +44,8 @@
     "sinon": "10.0.0",
     "standard-version": "9.2.0",
     "uglify-js": "3.13.5"
+  },
+  "dependencies": {
+    "lodash.debounce": "^4.0.8"
   }
 }
