@@ -1,7 +1,5 @@
 const images = document.querySelectorAll('#photos-grid img');
 
-console.log(images);
-
 images.forEach((img) => {
   const newDiv = document.createElement('div');
   const newP = document.createElement('p');
@@ -10,7 +8,6 @@ images.forEach((img) => {
   newP.textContent = 'sizes=' + size;
   newDiv.appendChild(newP);
   img.insertAdjacentElement('afterend', newDiv);
-  console.log(img, newDiv);
 });
 
 setInterval(() => {
