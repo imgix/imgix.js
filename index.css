@@ -27,6 +27,11 @@ article figure img {
   height: auto !important;
 }
 
+img[data-sizes='auto'] {
+  display: block;
+  width: 100%;
+}
+
 .size-info {
   z-index: 1;
   position: relative;
