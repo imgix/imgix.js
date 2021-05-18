@@ -3,31 +3,39 @@ const util = require('./util');
 const WIDTH_MIN_SIZE = 40;
 const DEBOUNCE_TIMEOUT = 200;
 
-// If element's width is less than parent width, use the parent's. If
-// resulting width is less than minimum, use the minimum. Do this to
-// Avoid failing to resize when window expands and avoid setting sizes
-// to 0 when el.offsetWidth == 0.
+/**
+ * Function that returns an element width that's equal to or greater than
+ * WIDTH_MIN_SIZE.
+ *
+ * If the element width is less than the minimum, it will recursively
+ * look for first parent element with width greater than WIDTH_MIN_SIZE.
+ *
+ * As a fallback, if the resulting width is still less than minimum, width
+ * is set to WIDTH_MIN_SIZE.
+ *
+ * We do this to avoid failing to resize when window expands and avoid
+ * setting sizes to 0 when el.offsetWidth == 0.
+ */
 const getWidth = function ({ parent, width }) {
-  // TODO: add check and test for parent == null
-  let parentWidth = parent.offsetWidth;
-
-  // get the fist parent that has a size over the minimum
-  let parentNode = parent.parentNode;
-  while (parentNode && parentWidth < WIDTH_MIN_SIZE) {
-    parentWidth = parentNode.offsetWidth;
-
-    // set for next loop
-    parentNode = parentNode.parentNode;
-  }
-
-  if (width < parentWidth) {
-    width = parentWidth;
-  }
-
   if (width < WIDTH_MIN_SIZE) {
     width = WIDTH_MIN_SIZE;
-  }
 
+    // TODO: add check and test for parent == null
+    let parentWidth = parent.offsetWidth;
+    let parentNode = parent.parentNode;
+
+    // get the fist parent that has a size over the minimum
+    while (parentNode && parentWidth < width) {
+      parentWidth = parentNode.offsetWidth;
+
+      // set for next loop
+      parentNode = parentNode.parentNode;
+    }
+
+    if (parentWidth > width) {
+      width = parentWidth;
+    }
+  }
   return width;
 };
 
@@ -59,8 +67,8 @@ const imageLoaded = ({ el }) => {
 };
 
 // Returns true if img has sizes attr and the img has loaded.
-const imgCanBeSized = ({ el, existingSizes, elHasAttributes }) => {
-  if (!existingSizes) {
+const imgCanBeSized = ({ el, existingSizes, dataSizes, elHasAttributes }) => {
+  if (!existingSizes && !dataSizes) {
     console.warn(
       'Imgix.js: attempted to set sizes attribute on element without existing sizes attribute value'
     );
@@ -77,13 +85,25 @@ const imgCanBeSized = ({ el, existingSizes, elHasAttributes }) => {
   return imageLoaded({ el });
 };
 
-const getCurrentSize = ({ el, existingSizes, elHasAttributes }) => {
+const getCurrentSize = ({
+  el,
+  existingSizes,
+  dataSizes,
+  elHasAttributes,
+  _window,
+}) => {
   // TODO: instead of sizes="557px" do sizes="(max-width: currentBrowserWidth + 100) 557px, 100vw"
   // browserWidth = 1000px, image width = 500px
   // sizes="(max-width: currentBrowserWidth + 100) 557px, (imageWidth / browserWidth * 100)vw" --> 50vw
 
   // If image loaded calc size, otherwise leave as existing
-  let currentSize = imgCanBeSized({ el, existingSizes, elHasAttributes })
+  let currentSize = imgCanBeSized({
+    el,
+    existingSizes,
+    dataSizes,
+    elHasAttributes,
+    _window,
+  })
     ? getWidth({
         el,
         parent: el.parentNode,
@@ -94,10 +114,22 @@ const getCurrentSize = ({ el, existingSizes, elHasAttributes }) => {
   return currentSize;
 };
 
-const resizeElement = ({ el, existingSizes, _window, elHasAttributes }) => {
+const resizeElement = ({
+  el,
+  existingSizes,
+  dataSizes,
+  _window,
+  elHasAttributes,
+}) => {
   // Run our resize function callback that calcs current size
   // and updates the elements `sizes` to match.
-  const currentSize = getCurrentSize({ el, existingSizes, elHasAttributes });
+  const currentSize = getCurrentSize({
+    el,
+    existingSizes,
+    dataSizes,
+    elHasAttributes,
+    _window,
+  });
 
   // Only update element attributes if changed
   if (currentSize !== existingSizes) {
@@ -108,14 +140,14 @@ const resizeElement = ({ el, existingSizes, _window, elHasAttributes }) => {
 };
 
 // Function that makes throttled rAF calls to avoid multiple calls in the same frame
-const updateOnResize = ({ el, existingSizes, _window }) => {
+const updateOnResize = ({ el, existingSizes, dataSizes, _window }) => {
   // debounce fn
   const elHasAttributes = el.hasAttributes();
 
   const requestIdleCallback = util.rICShim(_window);
   const runDebounce = util.debounce(() => {
     requestIdleCallback(() =>
-      resizeElement({ el, existingSizes, _window, elHasAttributes })
+      resizeElement({ el, existingSizes, dataSizes, _window, elHasAttributes })
     );
   }, DEBOUNCE_TIMEOUT);
   // Listen for resize
