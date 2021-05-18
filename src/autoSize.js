@@ -3,11 +3,51 @@ const util = require('./util');
 const WIDTH_MIN_SIZE = 40;
 const DEBOUNCE_TIMEOUT = 200;
 
+const getParentColumnCount = ({ _window, parent, width }) => {
+  /**
+   *
+   * In order to avoid always setting `size` to the same value as the view-width,
+   * we need to check that the parent node is not itself divided into columns.
+   * We can use the `getComputedStyle` to get the parent's CSS `columnCount` &
+   * gridTemplateColumns values.
+   *
+   * For flex-box, grid, and other layout types, these property will be populated and
+   * describe the ideal number of columns into which the content of the element
+   * will be flowed.
+   *
+   * If the value is numeric, ie not the strings `auto`, `null`, etc, we can use
+   * it to calculate the desired width:
+   *
+   * (elementWidth / parentColumnCount) -> newWidth
+   *
+   * Read more on column-count property here:
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/column-count
+   *
+   */
+
+  let parentColumnCount = 1;
+  const parentStyles = _window.getComputedStyle(parent);
+  const [columnCount, gridTemplateColumns] = { ...parentStyles };
+
+  const alpha = /^[A-Za-z]+$/;
+
+  if (!columnCount.value.match(alpha)) {
+    parentColumnCount = columnCount;
+  } else if (!gridTemplateColumns.value.match(alpha)) {
+    if (gridTemplateColumns > parentColumnCount) {
+      parentColumnCount = gridTemplateColumns;
+    }
+  }
+
+  // TODO(luis): should we not math.floor here? Just seems more consistent w/breakpoints
+  return Math.floor(width / parentColumnCount);
+};
+
 // If element's width is less than parent width, use the parent's. If
 // resulting width is less than minimum, use the minimum. Do this to
 // Avoid failing to resize when window expands and avoid setting sizes
 // to 0 when el.offsetWidth == 0.
-const getWidth = function ({ parent, width }) {
+const getWidth = function ({ parent, width, _window }) {
   // TODO: add check and test for parent == null
   let parentWidth = parent.offsetWidth;
 
@@ -77,17 +117,23 @@ const imgCanBeSized = ({ el, existingSizes, elHasAttributes }) => {
   return imageLoaded({ el });
 };
 
-const getCurrentSize = ({ el, existingSizes, elHasAttributes }) => {
+const getCurrentSize = ({ el, existingSizes, elHasAttributes, _window }) => {
   // TODO: instead of sizes="557px" do sizes="(max-width: currentBrowserWidth + 100) 557px, 100vw"
   // browserWidth = 1000px, image width = 500px
   // sizes="(max-width: currentBrowserWidth + 100) 557px, (imageWidth / browserWidth * 100)vw" --> 50vw
 
   // If image loaded calc size, otherwise leave as existing
-  let currentSize = imgCanBeSized({ el, existingSizes, elHasAttributes })
+  let currentSize = imgCanBeSized({
+    el,
+    existingSizes,
+    elHasAttributes,
+    _window,
+  })
     ? getWidth({
         el,
         parent: el.parentNode,
         width: el.offsetWidth,
+        _window,
       }) + 'px'
     : existingSizes;
 
@@ -97,7 +143,12 @@ const getCurrentSize = ({ el, existingSizes, elHasAttributes }) => {
 const resizeElement = ({ el, existingSizes, _window, elHasAttributes }) => {
   // Run our resize function callback that calcs current size
   // and updates the elements `sizes` to match.
-  const currentSize = getCurrentSize({ el, existingSizes, elHasAttributes });
+  const currentSize = getCurrentSize({
+    el,
+    existingSizes,
+    elHasAttributes,
+    _window,
+  });
 
   // Only update element attributes if changed
   if (currentSize !== existingSizes) {
@@ -126,6 +177,7 @@ const updateOnResize = ({ el, existingSizes, _window }) => {
       el,
       parent: el.parentNode,
       width: el.offsetWidth,
+      _window,
     }) + 'px'
   );
 };
