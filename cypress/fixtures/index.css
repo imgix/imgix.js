@@ -21,10 +21,9 @@ article figure img {
   column-gap: 0px;
 }
 
-#photos-grid img {
-  /* Just in case there are inline attributes */
-  width: 100% !important;
-  height: auto !important;
+img[data-sizes='auto'] {
+  display: block;
+  width: 100%;
 }
 
 /* media queries test the browser width and adjust
