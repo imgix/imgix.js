@@ -10,6 +10,7 @@ describe('On a pages first render', () => {
     cy.get('[data-test-id="sizes"]', { timeout: 10000 }).each(($el) => {
       const expectedSize = Math.ceil($el.width());
       const imgSize = Number($el.attr('sizes').split('px')[0]);
+      cy.wait(100);
       assert.isAtMost(imgSize, 500);
       assert.isAtLeast(imgSize, expectedSize);
     });
@@ -130,7 +131,8 @@ describe('On an invalid image or an image that has not loaded', () => {
           .first()
           .then(($ele) => {
             const imgSize = Number($ele.attr('sizes').split('px')[0]);
-            assert.isAtLeast(imgSize, $ele.width());
+            const expectedSize = Number($ele.attr('width').split('px')[0]);
+            assert.isAtLeast(imgSize, expectedSize);
             assert.isAtMost(imgSize, 500);
           });
       });
