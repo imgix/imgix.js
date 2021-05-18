@@ -15,16 +15,13 @@ article figure img {
 #photos-grid {
   /* Prevent vertical gaps */
   line-height: 0;
-  -moz-column-count: 5;
-  -moz-column-gap: 0px;
   column-count: 5;
   column-gap: 0px;
 }
 
-#photos-grid img {
-  /* Just in case there are inline attributes */
-  width: 100% !important;
-  height: auto !important;
+.photo-grid-container {
+  width: 100%;
+  height: auto;
 }
 
 .size-info {
