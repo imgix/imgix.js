@@ -3,7 +3,7 @@ const util = require('./util');
 const WIDTH_MIN_SIZE = 40;
 const DEBOUNCE_TIMEOUT = 200;
 
-const getParentColumnCount = ({ _window, parent, width }) => {
+const getParentColumnCount = ({ _window, parent }) => {
   /**
    *
    * In order to avoid always setting `size` to the same value as the view-width,
@@ -26,21 +26,19 @@ const getParentColumnCount = ({ _window, parent, width }) => {
    */
 
   let parentColumnCount = 1;
-  const parentStyles = _window.getComputedStyle(parent);
-  const [columnCount, gridTemplateColumns] = { ...parentStyles };
-
   const alpha = /^[A-Za-z]+$/;
 
-  if (!columnCount.value.match(alpha)) {
+  const parentStyles = _window.getComputedStyle(parent);
+  const { columnCount, gridTemplateColumns, ...rest } = { ...parentStyles };
+
+  if (columnCount && !columnCount.match(alpha)) {
     parentColumnCount = columnCount;
-  } else if (!gridTemplateColumns.value.match(alpha)) {
+  } else if (gridTemplateColumns && !gridTemplateColumns.match(alpha)) {
     if (gridTemplateColumns > parentColumnCount) {
       parentColumnCount = gridTemplateColumns;
     }
   }
-
-  // TODO(luis): should we not math.floor here? Just seems more consistent w/breakpoints
-  return Math.floor(width / parentColumnCount);
+  return parentColumnCount;
 };
 
 // If element's width is less than parent width, use the parent's. If
@@ -68,7 +66,9 @@ const getWidth = function ({ parent, width, _window }) {
     width = WIDTH_MIN_SIZE;
   }
 
-  return width;
+  const parentColumnCount = getParentColumnCount({ _window, parent });
+
+  return width / parentColumnCount;
 };
 
 // Based off of: https://stackoverflow.com/questions/1977871/check-if-an-image-is-loaded-no-errors-with-jquery
