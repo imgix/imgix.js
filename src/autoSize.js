@@ -68,7 +68,7 @@ const getWidth = function ({ parent, width, _window }) {
 
   const parentColumnCount = getParentColumnCount({ _window, parent });
 
-  return width / parentColumnCount;
+  return Math.floor(width / parentColumnCount);
 };
 
 // Based off of: https://stackoverflow.com/questions/1977871/check-if-an-image-is-loaded-no-errors-with-jquery
