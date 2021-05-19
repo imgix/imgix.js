@@ -187,15 +187,16 @@ var ImgixTag = (function () {
 
   ImgixTag.prototype.sizes = function () {
     var existingSizes = this.el.getAttribute('sizes');
-    var dataSizes = this.el.getAttribute('data-sizes');
+    var dataSizes = this.el.getAttribute('ix-sizes');
     const el = this.el;
     const _window = this.window;
 
-    if (existingSizes && dataSizes !== 'auto') {
-      return existingSizes;
+    if (existingSizes || dataSizes !== 'auto') {
+      return existingSizes ? existingSizes : '100vw';
     } else if (dataSizes === 'auto') {
       return autoSize.updateOnResize({ el, existingSizes, dataSizes, _window });
     } else {
+      // TODO(luis): is this dead code? Unlikely to be reached ever
       return '100vw';
     }
   };
