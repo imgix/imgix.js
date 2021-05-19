@@ -27,7 +27,7 @@ article figure img {
   height: auto !important;
 }
 
-img[data-sizes='auto'] {
+img[ix-sizes='auto'] {
   display: block;
   width: 100%;
 }

@@ -21,7 +21,7 @@ article figure img {
   column-gap: 0px;
 }
 
-img[data-sizes='auto'] {
+img[ix-sizes='auto'] {
   display: block;
   width: 100%;
 }
