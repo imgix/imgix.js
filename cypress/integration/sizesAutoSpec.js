@@ -125,10 +125,22 @@ describe('On an invalid image or an image that has not loaded', () => {
         assert.isAtMost(newImgSize, 1500);
         expect(newImgSize).to.not.equal(404);
 
-        //check sizes HAS NOT changed on invalid image
+        // check sizes HAS NOT changed on invalid image
         cy.get('[data-test-id="invalid-img"]')
           .first()
           .then(($ele) => {
+            /**
+             * We want to test that autoSizes does not modify that image's sizes attribute.
+             * This is because an image that has not loaded should not get modified by the module.
+             * The invalid image, $ele, width here will evaluate to 100vw. This is despite the fact
+             * that it has not loaded. This is because $ele.width() is evaluated in the context of
+             * the test's runtime. At this point, other images on the page have loaded, changing the
+             * available width for the element. So it's not a good source of truth to ensure that
+             * sizes was not modified.
+             *
+             * Instead, we can use the elements width attribute, which does not get updated after the
+             * image above it (in the same container) loads.
+             */
             const imgSize = Number($ele.attr('sizes').split('px')[0]);
             const expectedSize = Number($ele.attr('width').split('px')[0]);
             assert.isAtLeast(imgSize, expectedSize);
