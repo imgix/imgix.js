@@ -192,7 +192,7 @@ var ImgixTag = (function () {
     const _window = this.window;
 
     if (existingSizes || ixSizes !== 'auto') {
-      return existingSizes ? existingSizes : '100vw';
+      return existingSizes != null ? existingSizes : '100vw';
     } else if (ixSizes === 'auto') {
       return autoSize.updateOnResize({ el, existingSizes, ixSizes, _window });
     } else {
