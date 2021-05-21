@@ -1,3 +1,39 @@
+describe('If `sizes` is already set on the image', () => {
+  before(() => {
+    cy.visit('/cypress/fixtures/index.html');
+  });
+  beforeEach(() => {
+    cy.fixture('config.js').as('config');
+  });
+
+  it('It leaves sizes as is even if `ix-sizes` is `auto`', () => {
+    cy.get('[data-test-id="sizes-defined"]', { timeout: 10000 }).each(($el) => {
+      const expectedSize = '25.123vw';
+      const imgSize = $el.attr('sizes');
+      expect(imgSize).to.equal(expectedSize);
+    });
+  });
+});
+
+describe('If `sizes` and `ix-sizes` not set', () => {
+  before(() => {
+    cy.visit('/cypress/fixtures/index.html');
+  });
+  beforeEach(() => {
+    cy.fixture('config.js').as('config');
+  });
+
+  it('It sets `sizes` to browser default', () => {
+    cy.get('[data-test-id="sizes-defined-as-false"]', { timeout: 10000 }).each(
+      ($el) => {
+        const expectedSize = '100vw';
+        const imgSize = $el.attr('sizes');
+        expect(imgSize).to.equal(expectedSize);
+      }
+    );
+  });
+});
+
 describe('On a pages first render', () => {
   before(() => {
     cy.visit('/cypress/fixtures/index.html');

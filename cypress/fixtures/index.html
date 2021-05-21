@@ -245,6 +245,34 @@
           </a>
         </div>
     </section>
+    <section>
+      <p>Images where `sizes` value is defined and not modified by library or
+        where `sizes` and `ix-sizes` are not defined and set to browser default
+        by library.
+      </p>
+      <div>
+        <figure>
+          <img
+            alt="sizes-auto-first-img"
+            data-test-id="sizes-defined"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+            sizes="25.123vw"
+            ix-sizes="auto"
+          />
+        </figure>
+        </div>
+        <div>
+        <figure>
+          <img
+            alt="sizes-auto-first-img"
+            data-test-id="sizes-defined-as-false"
+            test-path="+%3C%3E%5B%5D%7B%7D%7C%5C%5E%25.jpg"
+            test-params="{}"
+          />
+        </figure>
+        </div>
+    </section>
   </body>
   <footer>
     <hr />
