@@ -24,13 +24,11 @@ describe('If `sizes` and `ix-sizes` not set', () => {
   });
 
   it('It sets `sizes` to browser default', () => {
-    cy.get('[data-test-id="sizes-defined-as-false"]', { timeout: 10000 }).each(
-      ($el) => {
-        const expectedSize = '100vw';
-        const imgSize = $el.attr('sizes');
-        expect(imgSize).to.equal(expectedSize);
-      }
-    );
+    cy.get('[data-test-id="sizes-not-set"]', { timeout: 10000 }).each(($el) => {
+      const expectedSize = '100vw';
+      const imgSize = $el.attr('sizes');
+      expect(imgSize).to.equal(expectedSize);
+    });
   });
 });
 
