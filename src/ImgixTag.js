@@ -191,13 +191,22 @@ var ImgixTag = (function () {
     const el = this.el;
     const _window = this.window;
 
-    // if ixSizes not `auto` and no existingSizes, set `sizes` to `ix-sizes`
+    /**
+     *
+     * The conditionals bellow decide when to override the value for `sizes` for
+     * the given element.
+     *
+     * - If `sizes` set, we leave the value as is even if `ix-sizes` is `auto`
+     * - If `sizes` not set and `ix-sizes` not auto, set `sizes` to `ix-sizes`
+     * - If `sizes` not set and `ix-sizes` is auto, set `sizes` automatically
+     * - If `sizes` and `ix-sizes` not set, set `sizes` to browser default
+     */
+
     if (existingSizes == null && ixSizes !== 'auto') {
       return ixSizes ? ixSizes : '100vw';
     } else if (existingSizes == null && ixSizes === 'auto') {
       return autoSize.updateOnResize({ el, existingSizes, ixSizes, _window });
     } else {
-      // if no existingSizes and no ixSizes, use browser default `100vw`
       return existingSizes ? existingSizes : '100vw';
     }
   };
