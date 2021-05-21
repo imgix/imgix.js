@@ -191,13 +191,14 @@ var ImgixTag = (function () {
     const el = this.el;
     const _window = this.window;
 
-    if (existingSizes || ixSizes !== 'auto') {
-      return existingSizes != null ? existingSizes : '100vw';
-    } else if (ixSizes === 'auto') {
+    // if ixSizes not `auto` and no existingSizes, set `sizes` to `ix-sizes`
+    if (existingSizes == null && ixSizes !== 'auto') {
+      return ixSizes ? ixSizes : '100vw';
+    } else if (existingSizes == null && ixSizes === 'auto') {
       return autoSize.updateOnResize({ el, existingSizes, ixSizes, _window });
     } else {
-      // TODO(luis): is this dead code? Unlikely to be reached ever
-      return '100vw';
+      // if no existingSizes and no ixSizes, use browser default `100vw`
+      return existingSizes ? existingSizes : '100vw';
     }
   };
 
