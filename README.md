@@ -20,6 +20,7 @@
 - [Usage](#usage)
     * [`ix-src`](#ix-src)
     * [`ix-path` and `ix-params`](#ix-path-and-ix-params)
+    * [`ix-sizes` attribute](#ix-sizes-attribute)
     * [`picture` tags](#picture-tags)
 - [Advanced Usage](#advanced-usage)
     * [Overriding `ix-host`](#overriding-ix-host)
@@ -149,6 +150,41 @@ Here's how the previous example would be written out using `ix-path` and `ix-par
 ```
 
 **Please note**: `ix-params` must be a valid JSON string. This means that keys and string values must be surrounded by double quotes, e.g., `"fit": "crop"`.
+
+### `ix-sizes` attribute
+
+When set to `auto`, automatically updates an `img` tag's `sizes` attribute to match the image's display size.
+
+``` html
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  alt="A hot air balloon on a sunny day"
+  ix-sizes="auto"
+>
+```
+
+> **Please note**: the image width has to be calculable before the image has loaded, otherwise `sizes` will not match the width of the displayed image. In most cases, using the CSS rule `img[ix-sizes="auto"] { display: block; width: 100%; }` will ensure the image's `width` is calculable before it has loaded.
+
+Generates HTML similar to the following
+
+``` html
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  alt="A hot air balloon on a sunny day"
+  ix-sizes="auto"
+  sizes="200px"
+  srcset="
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=100&amp;h=167&amp;fit=crop&amp;crop=right 100w,
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=200&amp;h=333&amp;fit=crop&amp;crop=right 200w,
+    …
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=2560&amp;h=4267&amp;fit=crop&amp;crop=right 2560w
+  "
+  src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-initialized="ix-initialized"
+>
+```
+
+When using `ix-sizes="auto"`, the browser will not have the `sizes` attribute to reference on first render but only after `imgix.js` has loaded. This is why it's recommended to manually set `sizes` whenever possible.
 
 ### `picture` tags
 
