@@ -13,6 +13,16 @@ describe('If `sizes` is already set on the image', () => {
       expect(imgSize).to.equal(expectedSize);
     });
   });
+
+  it('It leaves sizes as is if `ix-sizes` is not `auto`', () => {
+    cy.get('[data-test-id="sizes-set-ix-sizes-not-auto"]', {
+      timeout: 10000,
+    }).each(($el) => {
+      const expectedSize = $el.attr('ix-sizes');
+      const imgSize = $el.attr('sizes');
+      expect(imgSize).not.to.equal(expectedSize);
+    });
+  });
 });
 
 describe('If `sizes` and `ix-sizes` not set', () => {
@@ -26,6 +36,25 @@ describe('If `sizes` and `ix-sizes` not set', () => {
   it('It sets `sizes` to browser default', () => {
     cy.get('[data-test-id="sizes-not-set"]', { timeout: 10000 }).each(($el) => {
       const expectedSize = '100vw';
+      const imgSize = $el.attr('sizes');
+      expect(imgSize).to.equal(expectedSize);
+    });
+  });
+});
+
+describe('If `sizes` not set and `ix-sizes` not "auto"', () => {
+  before(() => {
+    cy.visit('/cypress/fixtures/index.html');
+  });
+  beforeEach(() => {
+    cy.fixture('config.js').as('config');
+  });
+
+  it('It sets `sizes` to "ix-sizes"', () => {
+    cy.get('[data-test-id="sizes-not-set-ix-sizes-not-auto"]', {
+      timeout: 10000,
+    }).each(($el) => {
+      const expectedSize = $el.attr('ix-sizes');
       const imgSize = $el.attr('sizes');
       expect(imgSize).to.equal(expectedSize);
     });
