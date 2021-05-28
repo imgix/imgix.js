@@ -152,13 +152,3 @@ Here's a quick introduction to getting started with development on imgix.js:
 4. `npm run build && npm test`
 5. Repeat steps 2-4 as necessary.
 
-### Publishing
-
-Ensure all commits and PR titles are correctly described using the [Conventional Commits Specification](https://conventionalcommits.org/). Update src/imgix.js with new version number (can be found using `npm run release -- --dry-run`)
-
-```sh
-npm install                             # update dependencies to latest
-npm run release                         # build code, bump package version according to commit messages, and generate changelog
-git push --follow-tags origin main    # push to github and publish
-npm publish                             # publish to npm
-```
