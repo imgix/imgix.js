@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+
+---
+## [3.5.1](https://github.com/imgix/imgix.js/compare/v3.5.0...v3.5.1) (2021-06-07)
+
+### Bug Fixes
+- fix: bump version to match current ([a8c6e10](https://github.com/imgix/imgix.js/commit/a8c6e1053d9bc1013a8f7d988bb6c7a0918d8491))
+- fix(sizes): use ix-sizes as sizes fallback if ix-sizes not auto ([a6ad5cd](https://github.com/imgix/imgix.js/commit/a6ad5cd5a1524890fc9e77b1caa6f00d45a91291))
+
 ---
 ## [3.5.0](https://github.com/imgix/imgix.js/compare/v3.4.2...v3.5.0) (2021-05-21)
 
