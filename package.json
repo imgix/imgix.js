@@ -79,8 +79,8 @@
               "files": [
                 "src/imgix.js"
               ],
-              "from": "const VERSION = \".*\"",
-              "to": "const VERSION = \"${nextRelease.version}\"",
+              "from": "var VERSION = \".*\"",
+              "to": "var VERSION = \"${nextRelease.version}\"",
               "results": [
                 {
                   "file": "src/imgix.js",
