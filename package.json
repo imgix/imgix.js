@@ -52,7 +52,7 @@
     "prettier": "2.3.2",
     "sinon": "11.1.2",
     "standard-version": "9.3.2",
-    "uglify-js": "3.14.2"
+    "uglify-js": "3.14.3"
   },
   "dependencies": {
     "lodash.debounce": "^4.0.8"
