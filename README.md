@@ -286,7 +286,7 @@ imgix.init({
 
 ### Lazy Loading With [lazysizes](https://github.com/aFarkas/lazysizes)
 
-If lazy loading images is desired, we recommend using [lazysizes](https://github.com/aFarkas/lazysizes). In order to use `imgix.js` with lazysizes, generate images using lazysizes-compatible attributes instead of the standard `src`, `srcset`, and `sizes` by changing some configuration settings:
+If lazy loading images is desired, we recommend using [lazysizes](https://github.com/aFarkas/lazysizes). In order to use `imgix.js` with lazysizes, add `class=lazyload` to your image and generate images using lazysizes-compatible attributes instead of the standard `src`, `srcset`, and `sizes` by changing some configuration settings:
 
 Using `<meta>` tags:
 
@@ -304,6 +304,17 @@ Using JavaScript:
 imgix.config.srcAttribute = 'data-src';
 imgix.config.srcsetAttribute = 'data-srcset';
 imgix.config.sizesAttribute = 'data-sizes';
+```
+
+Image Tag Example:
+
+``` html
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  alt="A hot air balloon on a sunny day"
+  sizes="100vw"
+  class="lazyload"
+>
 ```
 
 ### Custom Input Attributes
