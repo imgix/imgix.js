@@ -169,6 +169,27 @@ describe('ImgixTag', function() {
       expect(tag.ixHostVal).toEqual('different-source.imgix.net');
     });
 
+    it("overrides custom 'srcAttribute' with 'src' when class = 'nolazyload'", function() {
+      global.imgix.config.srcAttribute = 'src-attribute-test';
+      global.mockElement.setAttribute('className', 'nolazyload');
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag['src']).toBeDefined();
+    });
+
+    it("overrides custom 'srcsetAttribute' with 'srcset' when class = 'nolazyload'", function() {
+      global.imgix.config.srcsetAttribute = 'srcset-attribute-test';
+      global.mockElement.setAttribute('className', 'nolazyload');
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag['srcset']).toBeDefined();
+    });
+
+    it("overrides custom 'sizesAttribute' with 'sizes' when class = 'nolazyload'", function() {
+      global.imgix.config.sizesAttribute = 'sizes-attribute-test';
+      global.mockElement.setAttribute('className', 'nolazyload');
+      var tag = new ImgixTag(global.mockElement, global.imgix.config);
+      expect(tag['sizes']).toBeDefined();
+    });
+
     it('errors if neither `imgix.host` or `ix-host` are specified, but the passed element has `ix-path`', function() {
       global.mockElement['ix-path'] = 'dogs.jpg';
       var expected_warning =
