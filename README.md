@@ -317,6 +317,18 @@ Image Tag Example:
 >
 ```
 
+If lazy loading is required for some images but undesirable for others, we provide the optional class `nolazyload` to disable lazy loading on select assets.
+
+Image Tag Example:
+
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  alt="A hot air balloon on a sunny day"
+  sizes="100vw"
+  class="nolazyload"
+>
+```
+
 ### Custom Input Attributes
 
 `imgix.js` defaults to pulling its data from the `ix-src`, `ix-path`, `ix-params`, and `ix-host` attributes. If custom input attributes are desired, they can be specified by changing some configuration settings. This can be useful if, say, there is a concern about W3C compliance.
