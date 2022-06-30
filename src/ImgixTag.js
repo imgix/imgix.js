@@ -45,6 +45,15 @@ var ImgixTag = (function () {
     this.baseUrl = this._buildBaseUrl();
     this.baseUrlWithoutQuery = this.baseUrl.split('?')[0];
 
+    //manual override to use sizes, srcset, and src when lazyloading
+    if(util.isString(this.el.className)){
+      if (this.el.className.includes("nolazyload")){
+        this.settings.sizesAttribute = "sizes";
+        this.settings.srcsetAttribute = "srcset";
+        this.settings.srcAttribute = "src";
+      }
+    }
+
     if (util.isString(this.settings.sizesAttribute)) {
       this.el.setAttribute(this.settings.sizesAttribute, this.sizes());
     }
