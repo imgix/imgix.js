@@ -18,6 +18,14 @@ jobs:
       - node/install-packages
       - run: npm run test
 
+  deploy:
+    docker:
+      - image: cimg/node:current
+    steps:
+      - checkout
+      - node/install-packages
+      - run: npx semantic-release
+
 workflows:
   test:
     jobs:
@@ -27,3 +35,7 @@ workflows:
               version:
                 - "current"
                 - "lts" 
+      
+      - deploy:
+          requires:
+            - test
