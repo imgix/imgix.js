@@ -79,7 +79,7 @@
               "files": [
                 "src/imgix.js"
               ],
-              "from": "var VERSION = \".*\"",
+              "from": "var VERSION = '.*'",
               "to": "var VERSION = \"${nextRelease.version}\"",
               "results": [
                 {
