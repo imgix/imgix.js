@@ -17,6 +17,9 @@ jobs:
       - checkout
       - node/install-packages
       - run: npm run test
+      - run:
+          name: "Test that build is succesful"
+          command: npm run build
 
   deploy:
     docker:
