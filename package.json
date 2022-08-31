@@ -91,7 +91,7 @@
                 "src/imgix.js"
               ],
               "from": "var VERSION = '.*'",
-              "to": "var VERSION = \"${nextRelease.version}\"",
+              "to": "var VERSION = '${nextRelease.version}'",
               "results": [
                 {
                   "file": "src/imgix.js",
