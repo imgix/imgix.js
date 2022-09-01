@@ -18,7 +18,7 @@ jobs:
       - node/install-packages
       - run: npm run test
       - run:
-          name: "Test that build is succesful"
+          name: "Test that build is successful"
           command: npm run build
 
   deploy:
