@@ -50,7 +50,7 @@
     "gulp-rename": "2.0.0",
     "gulp-uglify": "3.0.2",
     "jasmine": "4.4.0",
-    "nodemon": "2.0.15",
+    "nodemon": "2.0.20",
     "prettier": "2.7.1",
     "sinon": "14.0.0",
     "standard-version": "9.5.0",
