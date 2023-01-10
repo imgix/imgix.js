@@ -321,6 +321,7 @@ If lazy loading is required for some images but undesirable for others, we provi
 
 Image Tag Example:
 
+``` html
 <img
   ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
   alt="A hot air balloon on a sunny day"
