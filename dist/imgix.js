@@ -801,7 +801,7 @@ var ImgixTag = require('./ImgixTag.js'),
   util = require('./util.js'),
   defaultConfig = require('./defaultConfig');
 
-var VERSION = '3.6.1';
+var VERSION = '4.0.0';
 
 global.imgix = {
   init: function (opts) {
