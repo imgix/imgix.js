@@ -4,7 +4,7 @@
 `imgix.js` is a dependency-free JavaScript library for the browser that allows for easy integration of [imgix](https://www.imgix.com) into websites.
 
 [![NPM Version](https://img.shields.io/npm/v/imgix.js.svg)](https://www.npmjs.com/package/imgix.js)
-[![Build Status](https://travis-ci.com/imgix/imgix.js.svg?branch=main)](https://travis-ci.com/imgix/imgix.js)
+[![Build Status](https://circleci.com/gh/imgix/imgix.js.svg?style=shield)](https://circleci.com/gh/imgix/imgix.js)
 [![Monthly Downloads](https://img.shields.io/npm/dm/imgix.js.svg)](https://www.npmjs.com/package/imgix.js)
 [![Minified Size](https://img.shields.io/bundlephobia/min/imgix.js)](https://bundlephobia.com/result?p=imgix.js)
 [![License](https://img.shields.io/github/license/imgix/imgix.js)](https://github.com/imgix/imgix.js/blob/main/LICENSE.md)
