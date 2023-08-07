@@ -51,7 +51,7 @@
     "gulp-uglify": "3.0.2",
     "jasmine": "5.1.0",
     "nodemon": "3.0.1",
-    "prettier": "2.8.8",
+    "prettier": "3.0.1",
     "sinon": "15.2.0",
     "standard-version": "9.5.0",
     "uglify-js": "3.17.4"
