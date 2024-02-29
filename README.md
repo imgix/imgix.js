@@ -98,7 +98,7 @@ Creates an `img` tag with the `ix-src` attribute:
 
 ``` html
 <img
-  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   alt="A hot air balloon on a sunny day"
   sizes="100vw"
 >
@@ -110,16 +110,16 @@ This will generate HTML something like the following:
 
 ``` html
 <img
-  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   alt="A hot air balloon on a sunny day"
   sizes="100vw"
   srcset="
-    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=100&amp;h=167&amp;fit=crop&amp;crop=right 100w,
-    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=200&amp;h=333&amp;fit=crop&amp;crop=right 200w,
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=100&h=167&fit=crop&crop=right 100w,
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=200&h=333&fit=crop&crop=right 200w,
     …
-    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=2560&amp;h=4267&amp;fit=crop&amp;crop=right 2560w
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=2560&h=4267&fit=crop&crop=right 2560w
   "
-  src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   ix-initialized="ix-initialized"
 >
 ```
@@ -157,7 +157,7 @@ When set to `auto`, automatically updates an `img` tag's `sizes` attribute to ma
 
 ``` html
 <img
-  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   alt="A hot air balloon on a sunny day"
   ix-sizes="auto"
 >
@@ -169,17 +169,17 @@ Generates HTML similar to the following
 
 ``` html
 <img
-  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   alt="A hot air balloon on a sunny day"
   ix-sizes="auto"
   sizes="200px"
   srcset="
-    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=100&amp;h=167&amp;fit=crop&amp;crop=right 100w,
-    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=200&amp;h=333&amp;fit=crop&amp;crop=right 200w,
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=100&h=167&fit=crop&crop=right 100w,
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=200&h=333&fit=crop&crop=right 200w,
     …
-    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=2560&amp;h=4267&amp;fit=crop&amp;crop=right 2560w
+    https://assets.imgix.net/unsplash/hotairballoon.jpg?w=2560&h=4267&fit=crop&crop=right 2560w
   "
-  src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   ix-initialized="ix-initialized"
 >
 ```
@@ -310,7 +310,7 @@ Image Tag Example:
 
 ``` html
 <img
-  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   alt="A hot air balloon on a sunny day"
   sizes="100vw"
   class="lazyload"
@@ -323,7 +323,7 @@ Image Tag Example:
 
 ``` html
 <img
-  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&amp;h=500&amp;fit=crop&amp;crop=right"
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
   alt="A hot air balloon on a sunny day"
   sizes="100vw"
   class="nolazyload"
