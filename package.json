@@ -43,7 +43,7 @@
     "browserify": "17.0.0",
     "btoa": "1.2.1",
     "chokidar-cli": "3.0.0",
-    "cypress": "6.9.1",
+    "cypress": "13.7.1",
     "cypress-audit": "1.1.0",
     "cypress-terminal-report": "5.3.12",
     "gulp": "4.0.2",
