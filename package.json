@@ -32,7 +32,7 @@
     "release:publish": "semantic-release"
   },
   "devDependencies": {
-    "@google/semantic-release-replace-plugin": "1.2.7",
+    "semantic-release-replace-plugin": "1.2.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/commit-analyzer": "13.0.0",
     "@semantic-release/git": "10.0.1",
