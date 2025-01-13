@@ -1,5 +1,8 @@
 <!-- ix-docs-ignore -->
-![imgix logo](https://assets.imgix.net/sdk-imgix-logo-new.svg)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://assets.imgix.net/sdk-imgix-logo-new-dark.svg">
+  <img src="https://assets.imgix.net/sdk-imgix-logo-new.svg">
+</picture>
 
 `imgix.js` is a dependency-free JavaScript library for the browser that allows for easy integration of [imgix](https://www.imgix.com) into websites.
 
