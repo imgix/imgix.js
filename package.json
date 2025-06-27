@@ -52,7 +52,7 @@
     "jasmine": "5.8.0",
     "nodemon": "3.1.10",
     "prettier": "3.5.3",
-    "sinon": "20.0.0",
+    "sinon": "21.0.0",
     "standard-version": "9.5.0",
     "uglify-js": "3.19.3"
   },
