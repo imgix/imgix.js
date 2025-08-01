@@ -45,7 +45,7 @@
     "chokidar-cli": "3.0.0",
     "cypress": "14.5.2",
     "cypress-audit": "1.1.0",
-    "cypress-terminal-report": "7.2.0",
+    "cypress-terminal-report": "7.2.1",
     "gulp": "5.0.1",
     "gulp-rename": "2.1.0",
     "gulp-uglify": "3.0.2",
