@@ -32,7 +32,7 @@
     * [`imgix.init()` idempotency](#imgixinit-idempotency)
     * [Lazy Loading](#lazy-loading)
         * [Native Lazy Loading](#native-lazy-loading)
-        * [Lazy Loading With lazysizes](#https://github.com/imgix/imgix.js#lazy-loading-with-lazysizes)
+        * [Lazy Loading With lazysizes](#lazy-loading-with-lazysizes)
     * [Custom Input Attributes](#custom-input-attributes)
     * [Null Output Attributes](#null-output-attributes)
     * [Base-64 encoded parameters](#base-64-encoded-parameters)
