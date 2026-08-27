@@ -30,7 +30,9 @@
     * [Disabling auto-initialization](#disabling-auto-initialization)
     * [Manually initializing imgix.js](#manually-initializing-imgixjs)
     * [`imgix.init()` idempotency](#imgixinit-idempotency)
-    * [Lazy Loading With lazysizes](#https://github.com/imgix/imgix.js#lazy-loading-with-lazysizes)
+    * [Lazy Loading](#lazy-loading)
+        * [Native Lazy Loading](#native-lazy-loading)
+        * [Lazy Loading With lazysizes](#https://github.com/imgix/imgix.js#lazy-loading-with-lazysizes)
     * [Custom Input Attributes](#custom-input-attributes)
     * [Null Output Attributes](#null-output-attributes)
     * [Base-64 encoded parameters](#base-64-encoded-parameters)
@@ -287,9 +289,28 @@ imgix.init({
 })
 ```
 
-### Lazy Loading With [lazysizes](https://github.com/aFarkas/lazysizes)
+### Lazy Loading
 
-If lazy loading images is desired, we recommend using [lazysizes](https://github.com/aFarkas/lazysizes). In order to use `imgix.js` with lazysizes, add `class=lazyload` to your image and generate images using lazysizes-compatible attributes instead of the standard `src`, `srcset`, and `sizes` by changing some configuration settings:
+If lazy loading images is desired, there are two supported approaches: the browser's native `loading` attribute, or the [lazysizes](https://github.com/aFarkas/lazysizes) SDK. See our [guide on improving site performance](https://docs.imgix.com/en-US/getting-started/best-practices/improving-site-performance#lazy-loading-images) for more details on when to use each approach.
+
+#### Native Lazy Loading
+
+Modern browsers natively support the `loading` attribute on `img` tags, which defers loading an image until it is close to entering the viewport. Since `imgix.js` only resolves `ix-src`, `ix-srcset`, and related attributes into standard `src`/`srcset` attributes, native lazy loading works out of the box, simply add `loading="lazy"` to your image tag:
+
+``` html
+<img
+  ix-src="https://assets.imgix.net/unsplash/hotairballoon.jpg?w=300&h=500&fit=crop&crop=right"
+  alt="A hot air balloon on a sunny day"
+  sizes="100vw"
+  loading="lazy"
+>
+```
+
+For images that are above the fold, omit the `loading` attribute (or use `loading="eager"`) so they aren't delayed.
+
+#### Lazy Loading With [lazysizes](https://github.com/aFarkas/lazysizes)
+
+If finer-grained control over lazy loading is desired, such as custom intersection thresholds or callback hooks, we recommend using [lazysizes](https://github.com/aFarkas/lazysizes). In order to use `imgix.js` with lazysizes, add `class=lazyload` to your image and generate images using lazysizes-compatible attributes instead of the standard `src`, `srcset`, and `sizes` by changing some configuration settings:
 
 Using `<meta>` tags:
 
