@@ -8,6 +8,7 @@ module.exports = defineConfig({
   e2e: {
     specPattern: 'cypress/integration/**/*.js',
     supportFile: 'cypress/support/index.js',
+    testIsolation: false,
     setupNodeEvents(on, config) {
       require('cypress-terminal-report/src/installLogsPrinter')(on, {
         printLogsToConsole: 'onFail',
