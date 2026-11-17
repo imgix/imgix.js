@@ -158,12 +158,20 @@ var ImgixTag = (function () {
     var clonedParams = util.shallowClone(this.baseParams);
     clonedParams.w = targetWidth;
 
+    // `ix-params` values are raw, so encode them like `_buildBaseUrl` does for
+    // `src`. Values parsed out of an `ix-src` URL are already encoded.
+    var encode = this.ixPathVal
+      ? encodeURIComponent
+      : function (s) {
+          return s;
+        };
+
     var url = this.baseUrlWithoutQuery + '?',
       val,
       params = [];
     for (var key in clonedParams) {
       val = clonedParams[key];
-      params.push(key + '=' + val);
+      params.push(encode(key) + '=' + encode(val));
     }
 
     url += params.join('&');

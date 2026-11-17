@@ -451,6 +451,53 @@ describe('ImgixTag', function() {
         prev = element;
       }
     });
+
+    it('encodes `ix-params` values with a space and an ampersand', function() {
+      var mock = new global.MockElement();
+      mock['ix-path'] = 'presskit/imgix-presskit.pdf';
+      mock['ix-params'] = '{"txt": "Tom & Jerry", "w": 450}';
+
+      var tag = new ImgixTag(mock, global.imgix.config);
+      var query = '?txt=Tom%20%26%20Jerry&w=';
+      var pairs = tag.srcset().split(', ');
+
+      expect(tag.src()).toEqual(srcWithoutQuery + query + 450);
+      expect(pairs.length).toEqual(targetWidths.length);
+      pairs.forEach(function(pair, i) {
+        var width = targetWidths[i];
+        var url = srcWithoutQuery + query + width;
+        expect(pair).toEqual(url + ' ' + width + 'w');
+      });
+    });
+
+    it('encodes a URL with its own query string in `ix-params`', function() {
+      var mock = new global.MockElement();
+      mock['ix-path'] = 'presskit/imgix-presskit.pdf';
+      mock['ix-params'] =
+        '{"h": 500, "mark": "https://assets.imgix.net/logo.png?w=80&h=80"}';
+
+      var tag = new ImgixTag(mock, global.imgix.config);
+      var mark = 'https%3A%2F%2Fassets.imgix.net%2Flogo.png%3Fw%3D80%26h%3D80';
+      var expected = srcWithoutQuery + '?h=500&mark=' + mark + '&w=100';
+
+      expect(tag.srcset().split(', ')[0]).toEqual(expected + ' 100w');
+    });
+
+    it('does not double-encode already encoded `ix-src` params', function() {
+      var mock = new global.MockElement();
+      var query = '?txt=Tom%20%26%20Jerry&mark=logo.png%3Fw%3D80&w=';
+      mock['ix-src'] = srcWithoutQuery + query + 600;
+
+      var tag = new ImgixTag(mock, global.imgix.config);
+      var pairs = tag.srcset().split(', ');
+
+      expect(pairs.length).toEqual(targetWidths.length);
+      pairs.forEach(function(pair, i) {
+        var width = targetWidths[i];
+        var url = srcWithoutQuery + query + width;
+        expect(pair).toEqual(url + ' ' + width + 'w');
+      });
+    });
   });
 
   describe('#sizes', function() {
